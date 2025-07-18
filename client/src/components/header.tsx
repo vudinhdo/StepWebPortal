@@ -10,7 +10,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50 transition-all duration-300 hover:bg-white/98 hover:shadow-lg">
-      <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3">
@@ -22,37 +22,31 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
-            <a href="/" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium">
+          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+            <a href="/" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium whitespace-nowrap">
               Trang chủ
             </a>
             <div className="relative group">
-              <button className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors flex items-center font-medium">
-                Sản Phẩm & Dịch Vụ
+              <button className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors flex items-center font-medium whitespace-nowrap">
+                Dịch vụ
                 <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" />
               </button>
               <MegaMenu />
             </div>
-            <a href="/blog" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium">
+            <a href="/blog" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium whitespace-nowrap">
               Blog
             </a>
-            <a href="#pricing" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium">
-              Giá cả
-            </a>
-            <a href="#resources" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium">
-              Tài nguyên
-            </a>
-            <a href="#contact" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium">
+            <a href="#contact" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium whitespace-nowrap">
               Liên hệ
             </a>
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden lg:flex items-center space-x-4">
-            <Button variant="ghost" className="text-gray-700 hover:text-[hsl(207,100%,40%)] font-medium">
+          <div className="hidden lg:flex items-center space-x-3">
+            <Button variant="ghost" className="text-gray-700 hover:text-[hsl(207,100%,40%)] font-medium px-4 whitespace-nowrap">
               Đăng nhập
             </Button>
-            <Button className="bg-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,35%)] text-white font-medium px-6">
+            <Button className="bg-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,35%)] text-white font-medium px-4 whitespace-nowrap">
               Đăng ký
             </Button>
           </div>
@@ -106,20 +100,6 @@ export default function Header() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Blog
-                  </a>
-                  <a 
-                    href="#pricing" 
-                    className="block py-3 text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Giá cả
-                  </a>
-                  <a 
-                    href="#resources" 
-                    className="block py-3 text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Tài nguyên
                   </a>
                   <a 
                     href="#contact" 

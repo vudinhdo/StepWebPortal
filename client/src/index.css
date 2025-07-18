@@ -247,4 +247,68 @@
       transition-duration: 0.01ms !important;
     }
   }
+
+  /* Header and Navigation Fixes */
+  .header-fixed {
+    overflow-x: hidden;
+  }
+
+  /* Prevent mega menu overflow on smaller screens */
+  @media (max-width: 1024px) {
+    .mega-menu-dropdown {
+      left: 0 !important;
+      right: 0 !important;
+      transform: none !important;
+      margin: 0 1rem;
+      max-width: calc(100vw - 2rem);
+    }
+  }
+
+  /* Mobile menu improvements */
+  @media (max-width: 768px) {
+    .mobile-nav-item {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    
+    .mobile-nav-item:last-child {
+      border-bottom: none;
+    }
+  }
+
+  /* Ensure proper header layout */
+  .header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* Navigation spacing fixes */
+  .nav-desktop {
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 1280px) {
+    .nav-desktop {
+      gap: 2rem;
+    }
+  }
+
+  /* Mega menu responsive positioning */
+  .mega-menu-container {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    max-width: 80rem;
+    z-index: 9999;
+  }
+
+  @media (max-width: 1280px) {
+    .mega-menu-container {
+      width: 95vw;
+      max-width: 64rem;
+    }
+  }
 }

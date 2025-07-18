@@ -10,9 +10,9 @@ import {
 
 export default function MegaMenu() {
   return (
-    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-[95vw] max-w-7xl bg-white border border-gray-200 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out mt-3 step-gradient-border z-50">
-      <div className="p-8 lg:p-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-[90vw] max-w-5xl bg-white border border-gray-200 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out mt-3 step-gradient-border z-50">
+      <div className="p-6 lg:p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           
           {/* Domain */}
           <div className="group/item hover:bg-gray-50 p-4 rounded-xl transition-colors">
