@@ -76,5 +76,80 @@
   
   .step-hero-gradient {
     background: linear-gradient(135deg, hsl(210, 17%, 96%), hsl(0, 0%, 100%));
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .step-hero-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.1), transparent);
+    animation: shimmer 3s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  
+  .step-card-hover {
+    transition: all 0.3s ease;
+    transform: translateY(0);
+  }
+  
+  .step-card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 102, 204, 0.15);
+  }
+  
+  .step-pulse-animation {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes pulse-glow {
+    from {
+      box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+    }
+    to {
+      box-shadow: 0 0 30px rgba(0, 191, 255, 0.8);
+    }
+  }
+  
+  .step-fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .step-gradient-border {
+    position: relative;
+    background: white;
+    border-radius: 12px;
+  }
+  
+  .step-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(135deg, hsl(195, 100%, 50%), hsl(207, 100%, 40%));
+    border-radius: 12px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
   }
 }

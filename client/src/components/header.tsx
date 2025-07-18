@@ -8,22 +8,16 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50">
+    <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50 transition-all duration-300 hover:bg-white/98 hover:shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 step-gradient rounded-full flex items-center justify-center">
-              <ArrowRight className="text-white h-5 w-5 transform rotate-45" />
-            </div>
-            <div>
-              <div className="text-xl font-bold" style={{ color: "hsl(207, 100%, 40%)" }}>
-                STEP
-              </div>
-              <div className="text-xs" style={{ color: "hsl(210, 11%, 45%)" }}>
-                STEP BY STEP
-              </div>
-            </div>
+            <img 
+              src="/attached_assets/logo step_1752797244359.png" 
+              alt="STEP Logo" 
+              className="h-12 w-auto" 
+            />
           </div>
 
           {/* Desktop Navigation */}

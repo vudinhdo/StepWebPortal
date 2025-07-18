@@ -34,7 +34,7 @@ export default function Resources() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {articles.map((article, index) => (
-            <div key={index} className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+            <div key={index} className="bg-white rounded-xl overflow-hidden shadow-lg step-card-hover step-fade-in" style={{ animationDelay: `${index * 0.2}s` }}>
               <img 
                 src={article.image} 
                 alt={article.title} 

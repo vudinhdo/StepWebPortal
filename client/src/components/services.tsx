@@ -73,9 +73,9 @@ export default function Services() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow border-gray-200">
+            <Card key={index} className="step-card-hover border-gray-200 step-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
               <CardContent className="p-8">
-                <div className="w-12 h-12 step-gradient rounded-lg flex items-center justify-center mb-6">
+                <div className="w-12 h-12 step-gradient rounded-lg flex items-center justify-center mb-6 step-pulse-animation">
                   <service.icon className="text-white h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold text-[hsl(207,100%,40%)] mb-4">

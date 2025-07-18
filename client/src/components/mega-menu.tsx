@@ -2,7 +2,7 @@ import { Globe, Cloud, Server, Database, Mail, Monitor, Settings } from "lucide-
 
 export default function MegaMenu() {
   return (
-    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-screen max-w-6xl bg-white border border-gray-200 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2">
+    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-screen max-w-6xl bg-white border border-gray-200 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 step-gradient-border">
       <div className="p-8">
         <div className="grid grid-cols-3 gap-8">
           {/* Domain */}
@@ -12,11 +12,10 @@ export default function MegaMenu() {
               Tên Miền
             </h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <a href="#" className="text-gray-600 hover:text-[hsl(207,100%,40%)]">
-                  Cung cấp và quản lý tên miền cho doanh nghiệp
-                </a>
-              </li>
+              <li><a href="#" className="text-gray-600 hover:text-[hsl(207,100%,40%)]">Đăng ký tên miền</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-[hsl(207,100%,40%)]">Chuyển tên miền</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-[hsl(207,100%,40%)]">Quản lý DNS</a></li>
+              <li><a href="#" className="text-gray-600 hover:text-[hsl(207,100%,40%)]">Bảo vệ tên miền</a></li>
             </ul>
           </div>
 

@@ -23,6 +23,9 @@ export class MemStorage implements IStorage {
       id,
       createdAt: new Date(),
       isRead: false,
+      phone: insertContact.phone || null,
+      company: insertContact.company || null,
+      service: insertContact.service || null,
     };
     this.contacts.set(id, contact);
     return contact;

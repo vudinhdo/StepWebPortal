@@ -19,14 +19,14 @@ export default function Footer() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
-              className="bg-white text-[hsl(207,100%,40%)] px-8 py-4 rounded-lg font-semibold hover:shadow-lg transition-all h-14"
+              className="bg-white text-[hsl(207,100%,40%)] px-8 py-4 rounded-lg font-semibold hover:shadow-lg transition-all h-14 step-pulse-animation transform hover:scale-105"
               onClick={() => setShowContactForm(true)}
             >
               Tư vấn miễn phí
             </Button>
             <Button 
               variant="outline" 
-              className="border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-[hsl(207,100%,40%)] transition-all h-14"
+              className="border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-[hsl(207,100%,40%)] transition-all h-14 transform hover:scale-105"
               onClick={() => setShowContactForm(true)}
             >
               Xem demo sản phẩm
@@ -42,13 +42,11 @@ export default function Footer() {
             {/* Company Info */}
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-10 h-10 step-gradient rounded-full flex items-center justify-center">
-                  <ArrowRight className="text-white h-5 w-5 transform rotate-45" />
-                </div>
-                <div>
-                  <div className="text-xl font-bold text-[hsl(195,100%,50%)]">STEP</div>
-                  <div className="text-xs text-gray-400">STEP BY STEP</div>
-                </div>
+                <img 
+                  src="/attached_assets/logo step_1752797244359.png" 
+                  alt="STEP Logo" 
+                  className="h-12 w-auto filter brightness-0 invert" 
+                />
               </div>
               <h3 className="text-lg font-semibold mb-4">
                 CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP
