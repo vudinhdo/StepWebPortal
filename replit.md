@@ -15,14 +15,14 @@ Preferred communication style: Simple, everyday language.
 - **Build Tool**: Vite for fast development and optimized builds
 - **Routing**: Wouter for lightweight client-side routing
 - **UI Library**: Radix UI components with shadcn/ui styling system
-- **Styling**: Tailwind CSS with custom CSS variables for theming
+- **Styling**: Tailwind CSS with custom CSS variables for theming and advanced animations
 - **State Management**: React Query (@tanstack/react-query) for server state
 - **Form Handling**: React Hook Form with Zod validation
 
 ### Backend Architecture
 - **Runtime**: Node.js with Express.js framework
 - **Language**: TypeScript with ES modules
-- **Database**: PostgreSQL with Drizzle ORM
+- **Database**: PostgreSQL with Drizzle ORM (DatabaseStorage implementation)
 - **Database Provider**: Neon Database (serverless PostgreSQL)
 - **API Design**: RESTful API with JSON responses
 - **Development**: Full-stack development with Vite middleware integration
@@ -89,8 +89,8 @@ The application uses a simple contact management system with a single `contacts`
 
 ### Environment Requirements
 - Node.js environment with ES modules support
-- PostgreSQL database (via Neon Database)
-- Environment variable: `DATABASE_URL` for database connection
+- PostgreSQL database (via Neon Database) - **ACTIVE**
+- Environment variables: `DATABASE_URL`, `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE` for database connection
 
 ### Production Setup
 - **Start Command**: `npm start` runs the bundled server

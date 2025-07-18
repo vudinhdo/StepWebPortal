@@ -1,4 +1,6 @@
 import { contacts, type Contact, type InsertContact } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   createContact(contact: InsertContact): Promise<Contact>;
@@ -7,49 +9,40 @@ export interface IStorage {
   markContactAsRead(id: number): Promise<Contact | undefined>;
 }
 
-export class MemStorage implements IStorage {
-  private contacts: Map<number, Contact>;
-  currentId: number;
-
-  constructor() {
-    this.contacts = new Map();
-    this.currentId = 1;
-  }
-
+export class DatabaseStorage implements IStorage {
   async createContact(insertContact: InsertContact): Promise<Contact> {
-    const id = this.currentId++;
-    const contact: Contact = {
-      ...insertContact,
-      id,
-      createdAt: new Date(),
-      isRead: false,
-      phone: insertContact.phone || null,
-      company: insertContact.company || null,
-      service: insertContact.service || null,
-    };
-    this.contacts.set(id, contact);
+    const [contact] = await db
+      .insert(contacts)
+      .values({
+        ...insertContact,
+        phone: insertContact.phone || null,
+        company: insertContact.company || null,
+        service: insertContact.service || null,
+      })
+      .returning();
     return contact;
   }
 
   async getContacts(): Promise<Contact[]> {
-    return Array.from(this.contacts.values()).sort((a, b) => 
+    const allContacts = await db.select().from(contacts);
+    return allContacts.sort((a, b) => 
       new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
     );
   }
 
   async getContact(id: number): Promise<Contact | undefined> {
-    return this.contacts.get(id);
+    const [contact] = await db.select().from(contacts).where(eq(contacts.id, id));
+    return contact || undefined;
   }
 
   async markContactAsRead(id: number): Promise<Contact | undefined> {
-    const contact = this.contacts.get(id);
-    if (contact) {
-      const updatedContact = { ...contact, isRead: true };
-      this.contacts.set(id, updatedContact);
-      return updatedContact;
-    }
-    return undefined;
+    const [contact] = await db
+      .update(contacts)
+      .set({ isRead: true })
+      .where(eq(contacts.id, id))
+      .returning();
+    return contact || undefined;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
