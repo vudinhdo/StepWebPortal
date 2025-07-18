@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { insertContactSchema, type InsertContact } from "@shared/schema";
@@ -71,6 +71,9 @@ export default function ContactForm({ open, onOpenChange }: ContactFormProps) {
           <DialogTitle className="text-2xl font-bold text-[hsl(207,100%,40%)]">
             Liên hệ với chuyên gia STEP
           </DialogTitle>
+          <DialogDescription className="text-gray-600">
+            Điền thông tin bên dưới để nhận tư vấn miễn phí về giải pháp CNTT phù hợp với doanh nghiệp của bạn.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

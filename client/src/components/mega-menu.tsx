@@ -1,4 +1,12 @@
-import { Globe, Cloud, Server, Database, Mail, Monitor, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
+import { 
+  DomainIcon, 
+  CloudIcon, 
+  HostingIcon, 
+  ServerIcon, 
+  EmailIcon, 
+  SoftwareIcon 
+} from "./icons/custom-icons";
 
 export default function MegaMenu() {
   return (
@@ -8,7 +16,7 @@ export default function MegaMenu() {
           {/* Domain */}
           <div>
             <h3 className="text-[hsl(207,100%,40%)] font-semibold mb-4 flex items-center">
-              <Globe className="mr-2 h-5 w-5" />
+              <DomainIcon className="mr-2 h-5 w-5" />
               Tên Miền
             </h3>
             <ul className="space-y-2 text-sm">
@@ -22,7 +30,7 @@ export default function MegaMenu() {
           {/* Cloud */}
           <div>
             <h3 className="text-[hsl(207,100%,40%)] font-semibold mb-4 flex items-center">
-              <Cloud className="mr-2 h-5 w-5" />
+              <CloudIcon className="mr-2 h-5 w-5" />
               Cloud
             </h3>
             <ul className="space-y-2 text-sm">
@@ -37,7 +45,7 @@ export default function MegaMenu() {
           {/* Hosting */}
           <div>
             <h3 className="text-[hsl(207,100%,40%)] font-semibold mb-4 flex items-center">
-              <Server className="mr-2 h-5 w-5" />
+              <HostingIcon className="mr-2 h-5 w-5" />
               Hosting
             </h3>
             <ul className="space-y-2 text-sm">
@@ -51,7 +59,7 @@ export default function MegaMenu() {
           {/* Máy Chủ */}
           <div>
             <h3 className="text-[hsl(207,100%,40%)] font-semibold mb-4 flex items-center">
-              <Database className="mr-2 h-5 w-5" />
+              <ServerIcon className="mr-2 h-5 w-5" />
               Máy Chủ
             </h3>
             <ul className="space-y-2 text-sm">
@@ -65,7 +73,7 @@ export default function MegaMenu() {
           {/* Email */}
           <div>
             <h3 className="text-[hsl(207,100%,40%)] font-semibold mb-4 flex items-center">
-              <Mail className="mr-2 h-5 w-5" />
+              <EmailIcon className="mr-2 h-5 w-5" />
               Email
             </h3>
             <ul className="space-y-2 text-sm">
@@ -79,7 +87,7 @@ export default function MegaMenu() {
           {/* Phần Mềm */}
           <div>
             <h3 className="text-[hsl(207,100%,40%)] font-semibold mb-4 flex items-center">
-              <Monitor className="mr-2 h-5 w-5" />
+              <SoftwareIcon className="mr-2 h-5 w-5" />
               Phần Mềm
             </h3>
             <ul className="space-y-2 text-sm">

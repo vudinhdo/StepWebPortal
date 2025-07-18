@@ -1,40 +1,51 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Globe, Cloud, Server, Database, Mail, Monitor, Lightbulb, Settings, Headphones } from "lucide-react";
+import { Lightbulb, Settings, Headphones } from "lucide-react";
+import { 
+  DomainIcon, 
+  CloudIcon, 
+  HostingIcon, 
+  ServerIcon, 
+  EmailIcon, 
+  SoftwareIcon,
+  ConsultingIcon,
+  DeploymentIcon,
+  SupportIcon
+} from "./icons/custom-icons";
 
 export default function Services() {
   const services = [
     {
-      icon: Globe,
+      icon: DomainIcon,
       title: "Tên miền",
       description: "Cung cấp và quản lý tên miền cho doanh nghiệp, dễ dàng tích hợp với các dịch vụ khác.",
       href: "#domain"
     },
     {
-      icon: Cloud,
+      icon: CloudIcon,
       title: "Cloud",
       description: "Cloud GPU, Cloud Server, Cloud Odoo, Cloud AMD, Cloud N8N (hỗ trợ K8s và workflow automation) – Giải pháp đám mây linh hoạt cho DevOps và SysOps.",
       href: "#cloud"
     },
     {
-      icon: Server,
+      icon: HostingIcon,
       title: "Hosting",
       description: "Hosting WordPress, Hosting Laravel, Hosting NVME, Reseller Hosting – Tối ưu tốc độ và bảo mật cho website doanh nghiệp.",
       href: "#hosting"
     },
     {
-      icon: Database,
+      icon: ServerIcon,
       title: "Máy chủ",
       description: "Thiết bị máy chủ, thiết bị mạng, thuê máy chủ vật lý, chỗ đặt máy chủ, thuê thiết bị mạng – Hạ tầng mạnh mẽ cho IT Manager.",
       href: "#servers"
     },
     {
-      icon: Mail,
+      icon: EmailIcon,
       title: "Email",
       description: "Email server cho doanh nghiệp, Google Workspace, Microsoft 365, Hybrid Email, dịch vụ vận hành Email server – Giải pháp email an toàn và chuyên nghiệp.",
       href: "#email"
     },
     {
-      icon: Monitor,
+      icon: SoftwareIcon,
       title: "Phần mềm",
       description: "Microsoft, Google, VMware, Sangfor, phần mềm bản quyền, phần mềm AI, phần mềm khác – Cung cấp license và hỗ trợ tích hợp.",
       href: "#software"
@@ -43,17 +54,17 @@ export default function Services() {
 
   const additionalServices = [
     {
-      icon: Lightbulb,
+      icon: ConsultingIcon,
       title: "Tư vấn & Thiết kế",
       description: "Tư vấn hạ tầng, thiết kế hạ tầng phù hợp với doanh nghiệp"
     },
     {
-      icon: Settings,
+      icon: DeploymentIcon,
       title: "Triển khai",
       description: "Triển khai hạ tầng chuyên nghiệp và đáng tin cậy"
     },
     {
-      icon: Headphones,
+      icon: SupportIcon,
       title: "Vận hành & Hỗ trợ",
       description: "Vận hành hạ tầng, IT Support, Manage Service 24/7"
     }
