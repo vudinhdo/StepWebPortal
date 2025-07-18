@@ -23,7 +23,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <a href="#" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium">
+            <a href="/" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium">
               Trang chủ
             </a>
             <div className="relative group">
@@ -33,6 +33,9 @@ export default function Header() {
               </button>
               <MegaMenu />
             </div>
+            <a href="/blog" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium">
+              Blog
+            </a>
             <a href="#pricing" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium">
               Giá cả
             </a>
@@ -88,7 +91,7 @@ export default function Header() {
                 {/* Navigation */}
                 <nav className="flex-1 px-4 py-6 space-y-2">
                   <a 
-                    href="#" 
+                    href="/" 
                     className="block py-3 text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -97,6 +100,13 @@ export default function Header() {
                   
                   <MobileMegaMenu />
                   
+                  <a 
+                    href="/blog" 
+                    className="block py-3 text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Blog
+                  </a>
                   <a 
                     href="#pricing" 
                     className="block py-3 text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium"

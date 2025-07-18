@@ -1,24 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import type { Article } from "@shared/schema";
+
 export default function Resources() {
-  const articles = [
-    {
-      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=300",
-      title: "Cách chọn Cloud Server phù hợp",
-      description: "Hướng dẫn chi tiết về việc lựa chọn giải pháp cloud phù hợp với nhu cầu doanh nghiệp.",
-      href: "#cloud-guide"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=300",
-      title: "Bảo mật Email doanh nghiệp",
-      description: "Những biện pháp bảo mật cần thiết để bảo vệ hệ thống email doanh nghiệp.",
-      href: "#email-security"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=300",
-      title: "Xu hướng DevOps 2025",
-      description: "Những xu hướng mới nhất trong DevOps và cách áp dụng vào doanh nghiệp.",
-      href: "#devops-trends"
-    }
-  ];
+  const { data: articles = [] } = useQuery<Article[]>({
+    queryKey: ["/api/articles/published"],
+  });
 
   return (
     <section id="resources" className="py-20 bg-[hsl(210,17%,96%)]">
@@ -33,30 +21,52 @@ export default function Resources() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {articles.map((article, index) => (
-            <div key={index} className="bg-white rounded-xl overflow-hidden shadow-lg step-card-hover step-fade-in" style={{ animationDelay: `${index * 0.2}s` }}>
-              <img 
-                src={article.image} 
-                alt={article.title} 
-                className="w-full h-48 object-cover" 
-              />
+          {articles.slice(0, 3).map((article, index) => (
+            <div key={article.id} className="bg-white rounded-xl overflow-hidden shadow-lg step-card-hover step-fade-in" style={{ animationDelay: `${index * 0.2}s` }}>
+              {article.imageUrl && (
+                <img 
+                  src={article.imageUrl} 
+                  alt={article.title} 
+                  className="w-full h-48 object-cover" 
+                />
+              )}
               <div className="p-6">
-                <h3 className="font-semibold text-[hsl(207,100%,40%)] mb-2">
+                <h3 className="font-semibold text-[hsl(207,100%,40%)] mb-2 line-clamp-2">
                   {article.title}
                 </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  {article.description}
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                  {article.excerpt}
                 </p>
-                <a 
-                  href={article.href} 
-                  className="text-[hsl(207,100%,40%)] hover:text-[hsl(207,100%,35%)] font-semibold text-sm"
-                >
-                  Đọc thêm →
-                </a>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                    {article.category}
+                  </span>
+                  <a 
+                    href="/blog" 
+                    className="text-[hsl(207,100%,40%)] hover:text-[hsl(207,100%,35%)] font-semibold text-sm inline-flex items-center group"
+                  >
+                    Đọc thêm 
+                    <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </div>
               </div>
             </div>
           ))}
         </div>
+        
+        {articles.length > 3 && (
+          <div className="text-center mt-12">
+            <Button 
+              asChild
+              className="bg-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,35%)] text-white px-8 py-3"
+            >
+              <a href="/blog">
+                Xem tất cả bài viết
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );

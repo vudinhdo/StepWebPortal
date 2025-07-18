@@ -26,11 +26,14 @@ Preferred communication style: Simple, everyday language.
 - **Database Provider**: Neon Database (serverless PostgreSQL)
 - **API Design**: RESTful API with JSON responses
 - **Development**: Full-stack development with Vite middleware integration
+- **Blog Management**: Full CRUD operations for articles with admin interface
 
 ## Key Components
 
 ### Database Schema
-The application uses a simple contact management system with a single `contacts` table:
+The application uses two main tables for data management:
+
+#### Contacts Table
 - `id`: Primary key (serial)
 - `name`: Contact name (required)
 - `email`: Contact email (required)
@@ -41,21 +44,51 @@ The application uses a simple contact management system with a single `contacts`
 - `createdAt`: Timestamp
 - `isRead`: Boolean flag for contact status
 
+#### Articles Table (Blog System)
+- `id`: Primary key (serial)
+- `title`: Article title (required)
+- `slug`: URL-friendly slug (required)
+- `excerpt`: Article summary (required)
+- `content`: Full article content (required)
+- `category`: Article category (required)
+- `tags`: Array of tags
+- `imageUrl`: Optional featured image
+- `author`: Article author (default: "STEP Team")
+- `isPublished`: Publication status
+- `isFeatured`: Featured article flag
+- `createdAt`: Creation timestamp
+- `updatedAt`: Last update timestamp
+
 ### API Endpoints
+
+#### Contact Management
 - `POST /api/contact`: Submit new contact form
 - `GET /api/contacts`: Retrieve all contacts (admin)
 - `GET /api/contacts/:id`: Retrieve specific contact
-- `PUT /api/contacts/:id/read`: Mark contact as read
+- `PATCH /api/contacts/:id/read`: Mark contact as read
+
+#### Blog/Article Management
+- `POST /api/articles`: Create new article
+- `PATCH /api/articles/:id`: Update existing article
+- `DELETE /api/articles/:id`: Delete article
+- `GET /api/articles`: Get all articles (admin)
+- `GET /api/articles/published`: Get published articles (public)
+- `GET /api/articles/featured`: Get featured articles
+- `GET /api/articles/category/:category`: Get articles by category
+- `GET /api/articles/:id`: Get single article by ID
+- `GET /api/articles/slug/:slug`: Get article by slug
 
 ### UI Components
-- **Header**: Navigation with mega menu for services
+- **Header**: Navigation with mega menu for services and blog link
 - **Hero**: Main landing section with call-to-action
 - **Services**: Grid layout showcasing IT services
 - **Statistics**: Key metrics and achievements
 - **Testimonials**: Customer testimonials with imagery
-- **Resources**: Blog-style content cards
+- **Resources**: Dynamic blog articles from database
 - **Footer**: Company info and additional CTAs
 - **ContactForm**: Modal form for lead generation
+- **Blog**: Public blog listing with search and categories
+- **Admin**: Blog management interface with full CRUD operations
 
 ## Data Flow
 
@@ -133,3 +166,39 @@ The architecture prioritizes simplicity and developer experience while providing
 - **Button Interactions**: Added micro-interactions and hover effects for better user experience
 
 The system is now fully optimized for production use with excellent mobile performance and accessibility standards.
+
+## Blog Management System (January 2025)
+
+### Core Features
+- **Full CRUD Operations**: Create, read, update, and delete articles
+- **Publication Control**: Draft and published states with featured article support
+- **Category System**: Organized content categorization
+- **Tag Support**: Flexible tagging system for better content discovery
+- **Rich Content**: Support for markdown-style content with images
+- **SEO-Friendly**: URL slugs and meta descriptions
+- **Responsive Design**: Mobile-optimized blog interface
+
+### Admin Interface
+- **Article Editor**: Rich form interface for content creation
+- **Publication Controls**: Toggle publish and featured status
+- **Category Management**: Predefined categories for consistent organization
+- **Image Integration**: Featured image support with URL input
+- **Tag Management**: Comma-separated tag input system
+- **Seed Data**: Sample content generator for testing
+
+### Public Blog Features
+- **Search Functionality**: Real-time article search
+- **Category Filtering**: Filter articles by category
+- **Featured Articles**: Highlighted content section
+- **Responsive Grid**: Mobile-first article grid layout
+- **Author Attribution**: Article author display
+- **Publication Dates**: Formatted creation dates
+- **Dynamic Integration**: Homepage resources section pulls from actual articles
+
+### Database Integration
+- **PostgreSQL Storage**: Full article data persistence
+- **Drizzle ORM**: Type-safe database operations
+- **Query Optimization**: Efficient data retrieval with proper indexing
+- **Data Validation**: Zod schema validation for all inputs
+
+The blog system provides STEP with a comprehensive content management solution for sharing technical insights, company news, and industry trends with their audience.
