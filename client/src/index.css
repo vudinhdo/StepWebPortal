@@ -162,20 +162,89 @@
     overflow: visible !important;
   }
 
-  /* Mega menu responsive adjustments */
-  @media (max-width: 1024px) {
-    .mega-menu {
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-      width: 95vw !important;
-      max-width: none !important;
+  /* Mobile optimization */
+  @media (max-width: 640px) {
+    .container {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+    
+    header .h-16 {
+      height: 4rem !important;
+    }
+    
+    .step-hero-gradient {
+      padding-top: 6rem !important;
+    }
+    
+    .step-card-hover {
+      padding: 1.5rem !important;
+    }
+    
+    .step-gradient-border {
+      margin: 0.5rem !important;
     }
   }
 
-  @media (max-width: 768px) {
-    .mega-menu {
-      width: 98vw !important;
-      padding: 1rem !important;
+  /* Tablet optimization */
+  @media (max-width: 1024px) {
+    .step-hero-gradient {
+      padding-top: 5rem !important;
+    }
+    
+    .step-card-hover {
+      padding: 2rem !important;
+    }
+  }
+
+  /* Desktop optimization */
+  @media (min-width: 1025px) {
+    .step-hero-gradient {
+      padding-top: 8rem !important;
+    }
+  }
+
+  /* Smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Performance optimizations */
+  * {
+    box-sizing: border-box;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Button animations */
+  .button-hover {
+    transition: all 0.2s ease;
+  }
+
+  .button-hover:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  }
+
+  /* Focus styles for accessibility */
+  button:focus,
+  a:focus,
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: 2px solid hsl(207, 100%, 40%);
+    outline-offset: 2px;
+  }
+
+  /* Reduced motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
   }
 }
