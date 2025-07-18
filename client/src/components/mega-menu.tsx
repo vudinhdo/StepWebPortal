@@ -10,9 +10,9 @@ import {
 
 export default function MegaMenu() {
   return (
-    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-screen max-w-6xl bg-white border border-gray-200 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 step-gradient-border">
+    <div className="mega-menu absolute top-full left-1/2 transform -translate-x-1/2 w-[90vw] max-w-6xl bg-white border border-gray-200 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 step-gradient-border z-50">
       <div className="p-8">
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Domain */}
           <div>
             <h3 className="text-[hsl(207,100%,40%)] font-semibold mb-4 flex items-center">
@@ -106,7 +106,7 @@ export default function MegaMenu() {
             <Settings className="mr-2 h-5 w-5" />
             Dịch Vụ
           </h3>
-          <div className="grid grid-cols-3 gap-4 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
             <a href="#" className="text-gray-600 hover:text-[hsl(207,100%,40%)]">Tư vấn hạ tầng</a>
             <a href="#" className="text-gray-600 hover:text-[hsl(207,100%,40%)]">Thiết kế hạ tầng</a>
             <a href="#" className="text-gray-600 hover:text-[hsl(207,100%,40%)]">Triển khai hạ tầng</a>

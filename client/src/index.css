@@ -152,4 +152,30 @@
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
   }
+
+  /* Ensure proper overflow and positioning for header */
+  header {
+    overflow: visible !important;
+  }
+
+  header .container {
+    overflow: visible !important;
+  }
+
+  /* Mega menu responsive adjustments */
+  @media (max-width: 1024px) {
+    .mega-menu {
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      width: 95vw !important;
+      max-width: none !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mega-menu {
+      width: 98vw !important;
+      padding: 1rem !important;
+    }
+  }
 }

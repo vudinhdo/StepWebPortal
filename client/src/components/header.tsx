@@ -9,7 +9,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50 transition-all duration-300 hover:bg-white/98 hover:shadow-lg">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 overflow-visible">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3">
@@ -25,7 +25,7 @@ export default function Header() {
             <a href="#" className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors">
               Trang chủ
             </a>
-            <div className="relative group">
+            <div className="relative group overflow-visible">
               <button className="text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors flex items-center">
                 Sản Phẩm & Dịch Vụ
                 <ChevronDown className="ml-1 h-4 w-4" />
