@@ -249,47 +249,29 @@
   }
 
   /* Header and Navigation Fixes */
-  .header-fixed {
-    overflow-x: hidden;
+  header {
+    background-color: white !important;
+    border-bottom: 1px solid #e5e7eb !important;
   }
 
-  /* Prevent text wrapping in navigation */
   header nav a,
   header nav button {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    text-decoration: none !important;
     white-space: nowrap !important;
-    font-size: 0.875rem !important; /* 14px */
-    line-height: 1.2 !important;
   }
 
-  @media (min-width: 1280px) {
-    header nav a,
-    header nav button {
-      font-size: 1rem !important; /* 16px */
-    }
+  header nav a:hover,
+  header nav button:hover {
+    color: #2563eb !important;
   }
 
-  /* Header container optimizations */
-  header .max-w-7xl {
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
-  }
-
-  @media (min-width: 1024px) {
-    header .max-w-7xl {
-      padding-left: 1rem !important;
-      padding-right: 1rem !important;
-    }
-  }
-
-  /* Navigation spacing optimization */
-  header nav {
-    gap: 1rem !important;
-  }
-
-  @media (min-width: 1280px) {
-    header nav {
-      gap: 1.5rem !important;
-    }
+  header .container {
+    max-width: 1280px !important;
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
   }
 
   /* Prevent mega menu overflow on smaller screens */
