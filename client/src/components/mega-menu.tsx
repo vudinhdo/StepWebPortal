@@ -87,73 +87,188 @@ export default function MegaMenu() {
   ];
 
   return (
-    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-[95vw] max-w-7xl bg-white border border-gray-200 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1 z-50">
-      <div className="p-8">
-        {/* Header */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Sản Phẩm & Dịch Vụ</h2>
-          <p className="text-sm text-gray-600">Giải pháp công nghệ toàn diện cho doanh nghiệp</p>
-        </div>
+    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-[95vw] max-w-6xl bg-white border border-gray-200 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1 z-50">
+      <div className="flex">
+        {/* Left Main Content */}
+        <div className="flex-1 p-8 pr-4">
+          {/* Header */}
+          <div className="mb-6">
+            <h2 className="text-xs font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-3">SẢN PHẨM</h2>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          
-          {/* Product Categories */}
-          {categories.map((category) => (
-            <div key={category.id}>
-              <h3 className="text-sm font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-4 flex items-center">
-                <category.icon className="mr-2 h-4 w-4" />
-                {category.name}
-              </h3>
+          {/* Products Grid - Cloudflare Style */}
+          <div className="grid grid-cols-4 gap-8">
+            
+            {/* Column 1 */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[0].name}</h3>
               <ul className="space-y-3">
-                {category.items.map((item, index) => (
+                {categories[0].items.map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="flex items-start group/item">
-                      <div className="mr-3 mt-0.5">
-                        <div className="w-2 h-2 bg-[hsl(207,100%,40%)] rounded-full"></div>
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-gray-900 group-hover/item:text-[hsl(207,100%,40%)]">{item.name}</div>
-                        <div className="text-xs text-gray-500">{item.desc}</div>
-                      </div>
+                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
+                      {item.name}
                     </a>
                   </li>
                 ))}
               </ul>
             </div>
-          ))}
-        </div>
 
-        {/* Services Section */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <h3 className="text-sm font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-4">Dịch Vụ</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {services.map((service, index) => (
-              <a
-                key={index}
-                href="#"
-                className="text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors"
-              >
-                {service}
-              </a>
-            ))}
+            {/* Column 2 */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[1].name}</h3>
+              <ul className="space-y-3">
+                {categories[1].items.map((item, index) => (
+                  <li key={index}>
+                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              
+              <h3 className="text-sm font-semibold text-gray-900 mb-4 mt-8">{categories[2].name}</h3>
+              <ul className="space-y-3">
+                {categories[2].items.map((item, index) => (
+                  <li key={index}>
+                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 3 */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[3].name}</h3>
+              <ul className="space-y-3">
+                {categories[3].items.map((item, index) => (
+                  <li key={index}>
+                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              
+              <h3 className="text-sm font-semibold text-gray-900 mb-4 mt-8">{categories[4].name}</h3>
+              <ul className="space-y-3">
+                {categories[4].items.map((item, index) => (
+                  <li key={index}>
+                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 4 */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[5].name}</h3>
+              <ul className="space-y-3">
+                {categories[5].items.map((item, index) => (
+                  <li key={index}>
+                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Plans & Pricing Section */}
+          <div className="mt-10 pt-6 border-t border-gray-100">
+            <h2 className="text-xs font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-4">GÓI DỊCH VỤ</h2>
+            <div className="grid grid-cols-4 gap-6">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                  <div className="w-4 h-4 bg-orange-500 rounded-full"></div>
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-900">Gói Cơ Bản</div>
+                  <div className="text-xs text-gray-500">Phù hợp startup</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                  <div className="w-4 h-4 bg-[hsl(207,100%,40%)] rounded-full"></div>
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-900">Gói Doanh Nghiệp</div>
+                  <div className="text-xs text-gray-500">Giải pháp toàn diện</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                  <div className="w-4 h-4 bg-purple-500 rounded-full"></div>
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-900">Gói Premium</div>
+                  <div className="text-xs text-gray-500">Hiệu năng cao</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                  <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-900">Tùy Chỉnh</div>
+                  <div className="text-xs text-gray-500">Theo yêu cầu</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Global Services Section */}
+          <div className="mt-8 pt-6 border-t border-gray-100">
+            <h2 className="text-xs font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-4">DỊCH VỤ CHUYÊN NGHIỆP</h2>
+            <div className="grid grid-cols-4 gap-6">
+              <div>
+                <div className="text-sm font-medium text-gray-900 mb-2">Tư vấn & Hỗ trợ</div>
+                <div className="text-xs text-gray-500 leading-relaxed">Tối ưu trải nghiệm Cloudflare</div>
+              </div>
+              
+              <div>
+                <div className="text-sm font-medium text-gray-900 mb-2">Dịch vụ chuyên nghiệp</div>
+                <div className="text-xs text-gray-500 leading-relaxed">Triển khai chuyên gia</div>
+              </div>
+              
+              <div>
+                <div className="text-sm font-medium text-gray-900 mb-2">Quản lý tài khoản kỹ thuật</div>
+                <div className="text-xs text-gray-500 leading-relaxed">Quản lý kỹ thuật tập trung</div>
+              </div>
+              
+              <div>
+                <div className="text-sm font-medium text-gray-900 mb-2">Dịch vụ vận hành bảo mật</div>
+                <div className="text-xs text-gray-500 leading-relaxed">Phản hồi bảo mật Cloudflare</div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* CTA Footer */}
-        <div className="mt-8 pt-6 border-t border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between">
-            <div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">Cần tư vấn giải pháp?</h4>
-              <p className="text-sm text-gray-600">Đội ngũ chuyên gia STEP sẵn sàng hỗ trợ 24/7</p>
-            </div>
-            <div className="mt-4 sm:mt-0 flex space-x-3">
-              <button className="px-4 py-2 bg-[hsl(207,100%,40%)] text-white text-sm font-medium rounded-lg hover:bg-[hsl(207,100%,35%)] transition-colors">
-                Liên hệ ngay
-              </button>
-              <button className="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">
-                Xem báo giá
-              </button>
-            </div>
+        {/* Right Sidebar */}
+        <div className="w-80 bg-gray-50 border-l border-gray-200 p-8">
+          <div className="mb-8">
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Đăng ký tên miền</h3>
+            <p className="text-xs text-gray-600 mb-4">Mua và quản lý tên miền</p>
+            
+            <h3 className="text-sm font-semibold text-gray-900 mb-3 mt-6">DNS resolver miễn phí</h3>
+            <p className="text-xs text-gray-600 mb-4">Duyệt web nhanh, riêng tư</p>
+          </div>
+          
+          <div className="border-t border-gray-200 pt-6">
+            <h3 className="text-sm font-semibold text-gray-900 mb-4">Tài nguyên</h3>
+            <ul className="space-y-3">
+              <li><a href="#" className="text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Hướng dẫn sản phẩm</a></li>
+              <li><a href="#" className="text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Kiến trúc tham khảo</a></li>
+              <li><a href="#" className="text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Báo cáo phân tích</a></li>
+              <li><a href="#" className="text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Demo và tour sản phẩm</a></li>
+            </ul>
           </div>
         </div>
       </div>
