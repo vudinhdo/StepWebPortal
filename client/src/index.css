@@ -253,6 +253,45 @@
     overflow-x: hidden;
   }
 
+  /* Prevent text wrapping in navigation */
+  header nav a,
+  header nav button {
+    white-space: nowrap !important;
+    font-size: 0.875rem !important; /* 14px */
+    line-height: 1.2 !important;
+  }
+
+  @media (min-width: 1280px) {
+    header nav a,
+    header nav button {
+      font-size: 1rem !important; /* 16px */
+    }
+  }
+
+  /* Header container optimizations */
+  header .max-w-7xl {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  @media (min-width: 1024px) {
+    header .max-w-7xl {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+  }
+
+  /* Navigation spacing optimization */
+  header nav {
+    gap: 1rem !important;
+  }
+
+  @media (min-width: 1280px) {
+    header nav {
+      gap: 1.5rem !important;
+    }
+  }
+
   /* Prevent mega menu overflow on smaller screens */
   @media (max-width: 1024px) {
     .mega-menu-dropdown {
