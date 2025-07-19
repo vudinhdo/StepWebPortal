@@ -101,11 +101,15 @@ export default function MegaMenu() {
             
             {/* Column 1 */}
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[0].name}</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                <a href="/domain" className="hover:text-[hsl(207,100%,40%)] transition-colors">
+                  {categories[0].name}
+                </a>
+              </h3>
               <ul className="space-y-3">
                 {categories[0].items.map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
+                    <a href="/domain" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
                       {item.name}
                     </a>
                   </li>
@@ -254,7 +258,11 @@ export default function MegaMenu() {
         {/* Right Sidebar */}
         <div className="w-80 bg-gray-50 border-l border-gray-200 p-8">
           <div className="mb-8">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Đăng ký tên miền</h3>
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">
+              <a href="/domain" className="hover:text-[hsl(207,100%,40%)] transition-colors">
+                Đăng ký tên miền
+              </a>
+            </h3>
             <p className="text-xs text-gray-600 mb-4">Mua và quản lý tên miền</p>
             
             <h3 className="text-sm font-semibold text-gray-900 mb-3 mt-6">DNS resolver miễn phí</h3>
