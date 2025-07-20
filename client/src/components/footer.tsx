@@ -38,9 +38,9 @@ export default function Footer() {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-6">
             {/* Company Info */}
-            <div className="md:col-span-2">
+            <div className="lg:col-span-1">
               <div className="flex items-center space-x-3 mb-6">
                 <img 
                   src="/attached_assets/logo step_1752797244359.png" 
@@ -188,51 +188,46 @@ export default function Footer() {
                 </div>
               </div>
 
-              {/* QR Codes */}
+              {/* QR Codes Section */}
               <div className="space-y-4">
-                <h4 className="text-sm font-semibold text-white">Quét mã QR để kết nối</h4>
-                <div className="grid grid-cols-2 gap-3">
-                  {/* Facebook QR */}
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-white rounded-lg p-2 mx-auto mb-2">
-                      <div className="w-full h-full bg-gray-800 rounded flex items-center justify-center">
-                        <Facebook className="h-8 w-8 text-white" />
-                      </div>
-                    </div>
-                    <p className="text-xs text-gray-400">Facebook</p>
-                  </div>
-                  
+                <h4 className="text-sm font-semibold text-white">Quét mã QR</h4>
+                
+                {/* Main QR Codes Grid */}
+                <div className="space-y-4">
                   {/* Zalo QR */}
                   <div className="text-center">
-                    <div className="w-20 h-20 bg-white rounded-lg p-1 mx-auto mb-2">
+                    <h5 className="text-xs font-medium text-white mb-2">Zalo OA STEP</h5>
+                    <div className="bg-white rounded-lg p-2 w-28 h-28 mx-auto mb-2">
                       <img 
                         src="/attached_assets/zalo oa_1753023637193.jpg" 
                         alt="Zalo OA STEP QR Code" 
-                        className="w-full h-full object-contain rounded"
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          console.log('Zalo QR failed to load');
+                          e.currentTarget.style.display = 'none';
+                        }}
                       />
                     </div>
-                    <p className="text-xs text-gray-400">Zalo OA</p>
+                    <p className="text-xs text-gray-400">Hỗ trợ 24/7</p>
                   </div>
-                </div>
-                
-                {/* Payment QR */}
-                <div className="pt-4 border-t border-gray-700">
-                  <h5 className="text-xs font-semibold text-white mb-2">Thanh toán QR</h5>
+                  
+                  {/* Payment QR */}
                   <div className="text-center">
-                    <div className="bg-white rounded-lg p-2 inline-block">
+                    <h5 className="text-xs font-medium text-white mb-2">Thanh toán QR</h5>
+                    <div className="bg-white rounded-lg p-2 w-28 mx-auto mb-2">
                       <img 
                         src="/attached_assets/image_1753023597322.png" 
                         alt="QR Techcombank Payment" 
-                        className="w-24 h-auto rounded"
+                        className="w-full h-auto object-contain"
+                        onError={(e) => {
+                          console.log('Payment QR failed to load');
+                          e.currentTarget.style.display = 'none';
+                        }}
                       />
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">Techcombank</p>
+                    <p className="text-xs text-gray-400">STK: 19132608991888</p>
                   </div>
                 </div>
-                
-                <p className="text-xs text-gray-500 text-center">
-                  Quét mã để liên hệ và thanh toán
-                </p>
               </div>
             </div>
 
@@ -277,11 +272,11 @@ export default function Footer() {
             </div>
           </div>
           
-          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col lg:flex-row justify-between items-center">
             <div className="text-sm text-gray-400">
               © 2025 STEP. All rights reserved.
             </div>
-            <div className="flex space-x-6 mt-4 md:mt-0">
+            <div className="flex space-x-6 mt-4 lg:mt-0">
               <a href="#" className="text-sm text-gray-400 hover:text-[hsl(195,100%,50%)]">
                 Chính sách bảo mật
               </a>
