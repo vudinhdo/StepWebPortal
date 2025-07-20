@@ -134,7 +134,7 @@ export default function MegaMenu() {
 
   return (
     <motion.div 
-      className="absolute top-full left-1/2 transform -translate-x-1/2 w-[95vw] max-w-7xl bg-white border border-gray-200 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 z-50 overflow-hidden"
+      className="fixed top-16 left-1/2 transform -translate-x-1/2 w-[95vw] max-w-7xl bg-white border border-gray-200 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 z-50 overflow-hidden"
       initial="hidden"
       whileInView="visible"
       variants={containerVariants}
