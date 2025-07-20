@@ -43,9 +43,9 @@ export default function Footer() {
             <div className="lg:col-span-1">
               <div className="flex items-center space-x-3 mb-6">
                 <img 
-                  src="/attached_assets/logo step_1752797244359.png" 
+                  src="/attached_assets/logo step_1753026304764.png" 
                   alt="STEP Logo" 
-                  className="h-12 w-auto filter brightness-0 invert" 
+                  className="h-12 w-auto" 
                 />
               </div>
               <h3 className="text-lg font-semibold mb-4">
@@ -188,45 +188,13 @@ export default function Footer() {
                 </div>
               </div>
 
-              {/* QR Codes Section */}
+              {/* Additional Info */}
               <div className="space-y-4">
-                <h4 className="text-sm font-semibold text-white">Quét mã QR</h4>
-                
-                {/* Main QR Codes Grid */}
-                <div className="space-y-4">
-                  {/* Zalo QR */}
-                  <div className="text-center">
-                    <h5 className="text-xs font-medium text-white mb-2">Zalo OA STEP</h5>
-                    <div className="bg-white rounded-lg p-2 w-28 h-28 mx-auto mb-2">
-                      <img 
-                        src="/attached_assets/zalo oa_1753023637193.jpg" 
-                        alt="Zalo OA STEP QR Code" 
-                        className="w-full h-full object-contain"
-                        onError={(e) => {
-                          console.log('Zalo QR failed to load');
-                          e.currentTarget.style.display = 'none';
-                        }}
-                      />
-                    </div>
-                    <p className="text-xs text-gray-400">Hỗ trợ 24/7</p>
-                  </div>
-                  
-                  {/* Payment QR */}
-                  <div className="text-center">
-                    <h5 className="text-xs font-medium text-white mb-2">Thanh toán QR</h5>
-                    <div className="bg-white rounded-lg p-2 w-28 mx-auto mb-2">
-                      <img 
-                        src="/attached_assets/image_1753023597322.png" 
-                        alt="QR Techcombank Payment" 
-                        className="w-full h-auto object-contain"
-                        onError={(e) => {
-                          console.log('Payment QR failed to load');
-                          e.currentTarget.style.display = 'none';
-                        }}
-                      />
-                    </div>
-                    <p className="text-xs text-gray-400">STK: 19132608991888</p>
-                  </div>
+                <h4 className="text-sm font-semibold text-white">Liên hệ nhanh</h4>
+                <div className="space-y-2 text-xs text-gray-400">
+                  <p><strong className="text-white">Hotline 24/7:</strong> 0985.636.289</p>
+                  <p><strong className="text-white">Email:</strong> info@step.com.vn</p>
+                  <p><strong className="text-white">Zalo OA:</strong> Tìm kiếm "STEP Technology"</p>
                 </div>
               </div>
             </div>

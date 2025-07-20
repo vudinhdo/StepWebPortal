@@ -15,7 +15,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <img 
-              src="/attached_assets/logo step_1752797244359.png" 
+              src="/attached_assets/logo step_1753026304764.png" 
               alt="STEP Technology Investment Company" 
               className="h-10 w-auto" 
             />
