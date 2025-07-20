@@ -1,298 +1,239 @@
+import { motion } from "framer-motion";
 import { 
-  DomainIcon, 
-  CloudIcon, 
-  HostingIcon, 
-  ServerIcon, 
-  EmailIcon, 
-  SoftwareIcon 
-} from "./icons/custom-icons";
+  Globe, 
+  Cloud, 
+  Server, 
+  Mail, 
+  Shield, 
+  Code, 
+  Users, 
+  Settings,
+  Lightbulb,
+  Rocket,
+  HeartHandshake,
+  HardDrive,
+  Palette,
+  Wrench,
+  Monitor,
+  MousePointer,
+  Cpu,
+  Database,
+  FileText,
+  Zap,
+  Building2,
+  Star
+} from "lucide-react";
 
 export default function MegaMenu() {
-  const categories = [
+  const menuSections = [
     {
-      id: 'domain',
-      name: 'Tên Miền',
-      icon: DomainIcon,
+      title: "Tên Miền",
+      icon: Globe,
       items: [
-        { name: 'Đăng ký tên miền', desc: '.com, .vn, .net, .org' },
-        { name: 'Chuyển tên miền', desc: 'Transfer domain dễ dàng' },
-        { name: 'Quản lý DNS', desc: 'Cấu hình DNS chuyên nghiệp' },
-        { name: 'Bảo vệ tên miền', desc: 'Domain protection & privacy' }
+        { name: "Đăng ký tên miền", desc: "Mua và quản lý tên miền", icon: MousePointer },
+        { name: "DNS resolver miễn phí", desc: "Duyệt web nhanh, riêng tư", icon: Zap },
+        { name: "Tài nguyên", desc: "", icon: FileText },
+        { name: "Hướng dẫn sản phẩm", desc: "", icon: Lightbulb },
+        { name: "Kiến trúc tham khảo", desc: "", icon: Settings },
+        { name: "Báo cáo phân tích", desc: "", icon: Database },
+        { name: "Demo và tour sản phẩm", desc: "", icon: Monitor }
       ]
     },
     {
-      id: 'cloud',
-      name: 'Cloud',
-      icon: CloudIcon,
+      title: "Cloud Computing", 
+      icon: Cloud,
       items: [
-        { name: 'Cloud GPU', desc: 'GPU mạnh mẽ cho AI/ML' },
-        { name: 'Cloud Server', desc: 'Máy chủ đám mây linh hoạt' },
-        { name: 'Cloud Odoo', desc: 'ERP trên nền tảng cloud' },
-        { name: 'Cloud AMD', desc: 'Hiệu năng cao với AMD' }
+        { name: "Cloud GPU", desc: "", icon: Cpu },
+        { name: "Cloud Server", desc: "", icon: Server },
+        { name: "Cloud Odoo", desc: "", icon: Building2 },
+        { name: "Cloud AMD", desc: "", icon: Rocket },
+        { name: "Cloud N8N", desc: "", icon: Settings }
       ]
     },
     {
-      id: 'hosting',
-      name: 'Hosting',
-      icon: HostingIcon,
+      title: "Hosting",
+      icon: HardDrive,
       items: [
-        { name: 'Hosting WordPress', desc: 'Tối ưu cho WordPress' },
-        { name: 'Hosting Laravel', desc: 'PHP framework hosting' },
-        { name: 'Hosting NVME', desc: 'Tốc độ siêu nhanh' },
-        { name: 'Reseller Hosting', desc: 'Hosting cho đại lý' }
+        { name: "Hosting WordPress", desc: "", icon: Palette },
+        { name: "Hosting Laravel", desc: "", icon: Code },
+        { name: "Hosting NVME", desc: "", icon: Zap },
+        { name: "Reseller Hosting", desc: "", icon: Users }
       ]
     },
     {
-      id: 'server',
-      name: 'Máy Chủ',
-      icon: ServerIcon,
+      title: "Máy Chủ",
+      icon: Server,
       items: [
-        { name: 'Thiết bị máy chủ', desc: 'Server hardware' },
-        { name: 'Thiết bị mạng', desc: 'Network equipment' },
-        { name: 'Thuê máy chủ vật lý', desc: 'Physical server rental' },
-        { name: 'Chỗ đặt máy chủ', desc: 'Colocation services' }
+        { name: "Thiết bị máy chủ", desc: "", icon: Server },
+        { name: "Thiết bị mạng", desc: "", icon: Settings },
+        { name: "Thuê máy chủ vật lý", desc: "", icon: HardDrive },
+        { name: "Chỗ đặt máy chủ", desc: "", icon: Building2 }
       ]
     },
     {
-      id: 'email',
-      name: 'Email',
-      icon: EmailIcon,
+      title: "Phần Mềm",
+      icon: Code,
       items: [
-        { name: 'Email server doanh nghiệp', desc: 'Enterprise email' },
-        { name: 'Google Workspace', desc: 'G Suite for business' },
-        { name: 'Microsoft 365', desc: 'Office 365 & email' },
-        { name: 'Hybrid Email', desc: 'Giải pháp email lai' }
+        { name: "Microsoft", desc: "", icon: Monitor },
+        { name: "Google", desc: "", icon: Palette },
+        { name: "VMware", desc: "", icon: Settings },
+        { name: "Phần mềm AI", desc: "", icon: Lightbulb }
       ]
     },
     {
-      id: 'software',
-      name: 'Phần Mềm',
-      icon: SoftwareIcon,
+      title: "Email",
+      icon: Mail,
       items: [
-        { name: 'Microsoft', desc: 'Windows, Office licenses' },
-        { name: 'Google', desc: 'Google Cloud Platform' },
-        { name: 'VMware', desc: 'Virtualization solutions' },
-        { name: 'Phần mềm AI', desc: 'AI & Machine Learning' }
+        { name: "Email server doanh nghiệp", desc: "", icon: Building2 },
+        { name: "Google Workspace", desc: "", icon: Palette },
+        { name: "Microsoft 365", desc: "", icon: Monitor },
+        { name: "Hybrid Email", desc: "", icon: Settings }
       ]
     }
   ];
 
-  const services = [
-    'Tư vấn hạ tầng',
-    'Thiết kế hạ tầng',
-    'Triển khai hạ tầng',
-    'Vận hành hạ tầng',
-    'IT Support',
-    'Manage Service'
+  const packages = [
+    { name: "Gói Cơ Bản", desc: "Phù hợp startup", icon: Star, color: "blue" },
+    { name: "Gói Doanh Nghiệp", desc: "Giải pháp toàn diện", icon: Building2, color: "purple" },
+    { name: "Gói Premium", desc: "Hiệu năng cao", icon: Rocket, color: "orange" },
+    { name: "Tùy Chỉnh", desc: "Theo yêu cầu", icon: Settings, color: "green" }
   ];
 
+  const containerVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: -10,
+      scale: 0.95
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        staggerChildren: 0.05,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 25
+      }
+    }
+  };
+
   return (
-    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-[95vw] max-w-6xl bg-white border border-gray-200 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1 z-50">
+    <motion.div 
+      className="absolute top-full left-1/2 transform -translate-x-1/2 w-[95vw] max-w-7xl bg-white border border-gray-200 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 z-50 overflow-hidden"
+      initial="hidden"
+      whileInView="visible"
+      variants={containerVariants}
+    >
       <div className="flex">
-        {/* Left Main Content */}
-        <div className="flex-1 p-8 pr-4">
-          {/* Header */}
-          <div className="mb-6">
-            <h2 className="text-xs font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-3">SẢN PHẨM</h2>
-          </div>
+        {/* Main Services Grid */}
+        <div className="flex-1 p-8">
+          <motion.div variants={itemVariants}>
+            <h2 className="text-xs font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-6 flex items-center">
+              <Settings className="mr-2" size={14} />
+              SẢN PHẨM & DỊCH VỤ
+            </h2>
+          </motion.div>
 
-          {/* Products Grid - Cloudflare Style */}
-          <div className="grid grid-cols-4 gap-8">
-            
-            {/* Column 1 */}
-            <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">
-                <a href="/domain" className="hover:text-[hsl(207,100%,40%)] transition-colors">
-                  {categories[0].name}
-                </a>
-              </h3>
-              <ul className="space-y-3">
-                {categories[0].items.map((item, index) => (
-                  <li key={index}>
-                    <a href="/domain" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 2 */}
-            <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">
-                <a href="/cloud" className="hover:text-[hsl(207,100%,40%)] transition-colors">
-                  Cloud Computing
-                </a>
-              </h3>
-              <ul className="space-y-3">
-                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud GPU</a></li>
-                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud Server</a></li>
-                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud Odoo</a></li>
-                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud AMD</a></li>
-                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud N8N</a></li>
-              </ul>
-              
-              <h3 className="text-sm font-semibold text-gray-900 mb-4 mt-8">{categories[1].name}</h3>
-              <ul className="space-y-3">
-                {categories[1].items.map((item, index) => (
-                  <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              
-              <h3 className="text-sm font-semibold text-gray-900 mb-4 mt-8">{categories[2].name}</h3>
-              <ul className="space-y-3">
-                {categories[2].items.map((item, index) => (
-                  <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 3 */}
-            <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[3].name}</h3>
-              <ul className="space-y-3">
-                {categories[3].items.map((item, index) => (
-                  <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              
-              <h3 className="text-sm font-semibold text-gray-900 mb-4 mt-8">{categories[4].name}</h3>
-              <ul className="space-y-3">
-                {categories[4].items.map((item, index) => (
-                  <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 4 */}
-            <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[5].name}</h3>
-              <ul className="space-y-3">
-                {categories[5].items.map((item, index) => (
-                  <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Plans & Pricing Section */}
-          <div className="mt-10 pt-6 border-t border-gray-100">
-            <h2 className="text-xs font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-4">GÓI DỊCH VỤ</h2>
-            <div className="grid grid-cols-4 gap-6">
-              <div className="flex items-center">
-                <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
-                  <div className="w-4 h-4 bg-orange-500 rounded-full"></div>
+          <div className="grid grid-cols-3 gap-8">
+            {menuSections.map((section, sectionIndex) => (
+              <motion.div key={section.title} variants={itemVariants}>
+                <div className="mb-6">
+                  <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center hover:text-[hsl(207,100%,40%)] transition-colors cursor-pointer">
+                    <section.icon className="mr-2 text-[hsl(207,100%,40%)]" size={16} />
+                    {section.title}
+                  </h3>
+                  <ul className="space-y-3">
+                    {section.items.map((item, index) => (
+                      <motion.li 
+                        key={index}
+                        whileHover={{ x: 4 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      >
+                        <a 
+                          href="#" 
+                          className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group/item py-1"
+                        >
+                          <item.icon className="mr-2 text-gray-400 group-hover/item:text-[hsl(207,100%,40%)] transition-colors" size={14} />
+                          <span>{item.name}</span>
+                        </a>
+                      </motion.li>
+                    ))}
+                  </ul>
                 </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-900">Gói Cơ Bản</div>
-                  <div className="text-xs text-gray-500">Phù hợp startup</div>
-                </div>
-              </div>
-              
-              <div className="flex items-center">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                  <div className="w-4 h-4 bg-[hsl(207,100%,40%)] rounded-full"></div>
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-900">Gói Doanh Nghiệp</div>
-                  <div className="text-xs text-gray-500">Giải pháp toàn diện</div>
-                </div>
-              </div>
-              
-              <div className="flex items-center">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
-                  <div className="w-4 h-4 bg-purple-500 rounded-full"></div>
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-900">Gói Premium</div>
-                  <div className="text-xs text-gray-500">Hiệu năng cao</div>
-                </div>
-              </div>
-              
-              <div className="flex items-center">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                  <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-900">Tùy Chỉnh</div>
-                  <div className="text-xs text-gray-500">Theo yêu cầu</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Global Services Section */}
-          <div className="mt-8 pt-6 border-t border-gray-100">
-            <h2 className="text-xs font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-4">DỊCH VỤ CHUYÊN NGHIỆP</h2>
-            <div className="grid grid-cols-4 gap-6">
-              <div>
-                <div className="text-sm font-medium text-gray-900 mb-2">Tư vấn & Hỗ trợ</div>
-                <div className="text-xs text-gray-500 leading-relaxed">Tối ưu trải nghiệm Cloudflare</div>
-              </div>
-              
-              <div>
-                <div className="text-sm font-medium text-gray-900 mb-2">Dịch vụ chuyên nghiệp</div>
-                <div className="text-xs text-gray-500 leading-relaxed">Triển khai chuyên gia</div>
-              </div>
-              
-              <div>
-                <div className="text-sm font-medium text-gray-900 mb-2">Quản lý tài khoản kỹ thuật</div>
-                <div className="text-xs text-gray-500 leading-relaxed">Quản lý kỹ thuật tập trung</div>
-              </div>
-              
-              <div>
-                <div className="text-sm font-medium text-gray-900 mb-2">Dịch vụ vận hành bảo mật</div>
-                <div className="text-xs text-gray-500 leading-relaxed">Phản hồi bảo mật Cloudflare</div>
-              </div>
-            </div>
+              </motion.div>
+            ))}
           </div>
         </div>
 
-        {/* Right Sidebar */}
-        <div className="w-80 bg-gray-50 border-l border-gray-200 p-8">
-          <div className="mb-8">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">
-              <a href="/domain" className="hover:text-[hsl(207,100%,40%)] transition-colors">
-                Đăng ký tên miền
-              </a>
-            </h3>
-            <p className="text-xs text-gray-600 mb-4">Mua và quản lý tên miền</p>
-            
-            <h3 className="text-sm font-semibold text-gray-900 mb-3 mt-6">DNS resolver miễn phí</h3>
-            <p className="text-xs text-gray-600 mb-4">Duyệt web nhanh, riêng tư</p>
+        {/* Right Sidebar - Packages */}
+        <div className="w-80 bg-gradient-to-br from-gray-50 to-blue-50 p-8 border-l border-gray-100">
+          <motion.div variants={itemVariants}>
+            <h2 className="text-xs font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-6 flex items-center">
+              <Rocket className="mr-2" size={14} />
+              GÓI DỊCH VỤ
+            </h2>
+          </motion.div>
+
+          <div className="space-y-4">
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                whileHover={{ scale: 1.02, x: 4 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              >
+                <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-[hsl(207,100%,40%)] transition-all duration-200 cursor-pointer group shadow-sm hover:shadow-md">
+                  <div className="flex items-center mb-2">
+                    <div className={`p-2 rounded-lg bg-${pkg.color}-100 mr-3 group-hover:bg-[hsl(207,100%,40%)] transition-colors`}>
+                      <pkg.icon className={`text-${pkg.color}-600 group-hover:text-white transition-colors`} size={16} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-sm text-gray-900 group-hover:text-[hsl(207,100%,40%)] transition-colors">
+                        {pkg.name}
+                      </h4>
+                      <p className="text-xs text-gray-500">{pkg.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
-          
-          <div className="border-t border-gray-200 pt-6">
-            <h3 className="text-sm font-semibold text-gray-900 mb-4">Tài nguyên</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Hướng dẫn sản phẩm</a></li>
-              <li><a href="#" className="text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Kiến trúc tham khảo</a></li>
-              <li><a href="#" className="text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Báo cáo phân tích</a></li>
-              <li><a href="#" className="text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Demo và tour sản phẩm</a></li>
-            </ul>
-          </div>
+
+          <motion.div variants={itemVariants} className="mt-8">
+            <div className="bg-gradient-to-r from-[hsl(207,100%,40%)] to-[hsl(207,100%,30%)] rounded-lg p-4 text-white">
+              <div className="flex items-center mb-3">
+                <HeartHandshake className="mr-2" size={20} />
+                <h3 className="font-semibold">Tư vấn miễn phí</h3>
+              </div>
+              <p className="text-sm text-blue-100 mb-4">
+                Để lại thông tin để được tư vấn giải pháp phù hợp nhất
+              </p>
+              <motion.button 
+                className="w-full bg-white text-[hsl(207,100%,40%)] font-semibold py-2 px-4 rounded-lg text-sm hover:bg-blue-50 transition-colors"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Liên hệ ngay
+              </motion.button>
+            </div>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
