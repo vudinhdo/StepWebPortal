@@ -119,7 +119,20 @@ export default function MegaMenu() {
 
             {/* Column 2 */}
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[1].name}</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                <a href="/cloud" className="hover:text-[hsl(207,100%,40%)] transition-colors">
+                  Cloud Computing
+                </a>
+              </h3>
+              <ul className="space-y-3">
+                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud GPU</a></li>
+                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud Server</a></li>
+                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud Odoo</a></li>
+                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud AMD</a></li>
+                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud N8N</a></li>
+              </ul>
+              
+              <h3 className="text-sm font-semibold text-gray-900 mb-4 mt-8">{categories[1].name}</h3>
               <ul className="space-y-3">
                 {categories[1].items.map((item, index) => (
                   <li key={index}>

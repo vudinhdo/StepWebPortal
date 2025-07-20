@@ -1,0 +1,55 @@
+Trang Dịch Vụ: Cloud
+Tiêu Đề Trang (Hero Section):
+
+Giải Pháp Cloud Linh Hoạt – Xây Dựng Hạ Tầng Mạnh Mẽ Cho Doanh Nghiệp SMEs!
+
+(Mô tả ngắn: Cung cấp Cloud GPU, Cloud Server, Cloud Odoo, Cloud AMD và Cloud N8N với hỗ trợ K8s & workflow automation. Tối ưu hiệu suất, tiết kiệm chi phí, dễ dàng mở rộng. Bắt đầu ngay để trải nghiệm đám mây đáng tin cậy!)
+
+Nút CTA Nổi Bật: "Khám Phá Gói Cloud Phù Hợp" (liên kết đến bảng gói dịch vụ dưới, khuyến khích click để cuộn trang và khám phá chi tiết).
+
+Lợi Ích Của Dịch Vụ Cloud Từ STEP
+
+Hiệu Suất Cao & Linh Hoạt: Cloud GPU/AMD xử lý AI và dữ liệu lớn nhanh chóng; Cloud Server hỗ trợ K8s cho DevOps; Cloud N8N tự động hóa workflow – phù hợp SMEs cần scale nhanh mà không đầu tư hạ tầng đắt đỏ.
+Tiết Kiệm Chi Phí: Pay-as-you-go, chỉ trả phí sử dụng thực tế. Tiết kiệm lên đến 50% so với máy chủ vật lý, với tích hợp dễ dàng vào Hosting hoặc Email.
+An Toàn & Đáng Tin Cậy: Bảo mật dữ liệu cao cấp (SOC 2 compliant), sao lưu tự động, uptime 99.99%. Hỗ trợ 24/7 từ đội ngũ chuyên gia tại Hà Nội.
+Ứng Dụng Thực Tế: Lý tưởng cho IT Manager xử lý machine learning, SysOps quản lý workflow, hoặc doanh nghiệp cần Cloud Odoo cho ERP.
+Bảng Gói Dịch Vụ Cloud (Ví Dụ)
+
+
+Gói Cơ Bản	Gói Nâng Cao	Gói Doanh Nghiệp
+Cloud Server cơ bản
+Hỗ trợ K8s
+Giá: Từ 500.000 VNĐ/tháng	Cloud GPU/AMD
+Workflow automation (N8N)
+Giá: Từ 1.500.000 VNĐ/tháng	Cloud Odoo toàn diện
+Tích hợp AI & bảo mật nâng cao
+Giá: Từ 3.000.000 VNĐ/tháng
+Phù hợp: Startup thử nghiệm	Phù hợp: SMEs cần hiệu suất cao	Phù hợp: Doanh nghiệp lớn với dữ liệu phức tạp
+(Chú thích: Bảng này khuyến khích khách hàng click "Chọn Gói & Tư Vấn" bên dưới mỗi cột, dẫn đến form để lại thông tin, tăng tỷ lệ tương tác và conversion.)
+
+Tại Sao Chọn Dịch Vụ Cloud Từ STEP?
+
+Tích Hợp Mượt Mà: Kết nối liền mạch với các dịch vụ khác như Hosting Laravel hoặc Email Google Workspace, giúp doanh nghiệp của bạn hoạt động không gián đoạn.
+Đánh Giá Từ Khách Hàng: "Cloud GPU của STEP đã giúp chúng tôi xử lý AI nhanh gấp đôi, hỗ trợ tuyệt vời!" – Chị B., IT Manager tại SMEs Hà Nội.
+Cam Kết: Dùng thử miễn phí 7 ngày, hoàn tiền nếu không hài lòng. Chúng tôi cam kết hạ tầng Việt Nam, an toàn và tối ưu cho doanh nghiệp địa phương.
+CTA Chính (Form Để Lại Thông Tin):
+
+Sẵn Sàng Nâng Cấp Hạ Tầng Cloud Của Bạn?
+
+Form: Tên, Email, Số Điện Thoại, Dịch Vụ Quan Tâm (dropdown: Cloud GPU, Cloud Server, v.v.), Nút "Gửi Yêu Cầu & Nhận Báo Giá" (sync tự động vào HubSpot để nurture, sau đó sang Perfex cho sales).
+
+(Mục tiêu: Form đơn giản với ưu đãi "Nhận báo giá cá nhân hóa và ưu đãi 20% cho tháng đầu!", khuyến khích để lại info chi tiết để tăng lead quality.)
+
+Popup Điền Email (Xuất Hiện Sau 10 Giây Hoặc Khi Scroll 50% Trang)
+
+Popup Tiêu Đề: "Nhận Khuyến Mãi Đặc Biệt & Khuyến Nghị Bảo Mật Cloud Miễn Phí!"
+
+(Mô tả: Đăng ký ngay để nhận mã giảm 30% cho Cloud Server đầu tiên, kèm hướng dẫn bảo mật dữ liệu (e-book PDF) giúp doanh nghiệp bạn tránh rủi ro hack. Chỉ mất 1 phút!)
+
+Form Popup: Email (bắt buộc), Tên (tùy chọn), Số Điện Thoại (tùy chọn), Checkbox "Tôi đồng ý nhận khuyến nghị bảo mật & ưu đãi", Nút "Nhận Ngay" (sync vào HubSpot như lead riêng, khuyến khích để lại thêm info ngoài form chính bằng lời hứa giá trị như e-book bảo mật, tăng tỷ lệ subscribe 20-30%).
+
+(Chú thích: Popup không xâm phạm (dễ đóng), sử dụng tông xanh dương từ logo, mục tiêu kích thích click bằng ưu đãi thời hạn "Chỉ trong 7 ngày!" và giá trị gia tăng (khuyến nghị bảo mật), dẫn đến form chi tiết hơn nếu cần.)
+
+(Footer: Thông tin công ty STEP đầy đủ: Tên công ty, số tài khoản, ngân hàng, số điện thoại, mã số thuế, địa chỉ, văn phòng, email, website, Facebook, bản đồ, Zalo OA với QR – để xây dựng lòng tin và khuyến khích liên hệ.)
+
+Nội dung này được tối ưu với CTA mạnh mẽ (click khám phá, chọn gói, gửi form), ưu đãi hấp dẫn và popup giá trị để khuyến khích khách hàng tương tác, click và để lại thông tin, phù hợp mục tiêu marketing.
