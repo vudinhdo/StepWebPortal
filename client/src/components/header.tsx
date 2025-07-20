@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-import { Menu, ChevronDown, X, Home, MessageCircle, FileText } from "lucide-react";
+import { Menu, ChevronDown, X } from "lucide-react";
 import MegaMenu from "./mega-menu";
 import MobileMegaMenu from "./mobile-mega-menu";
 
@@ -25,43 +25,39 @@ export default function Header() {
           <nav className="hidden lg:flex items-center space-x-8">
             <a 
               href="/" 
-              className="text-gray-700 hover:text-[hsl(207,100%,40%)] font-medium transition-colors flex items-center"
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
             >
-              <Home className="mr-2" size={16} />
               Trang chủ
             </a>
             <div className="relative group">
               <button 
-                className="text-gray-700 hover:text-[hsl(207,100%,40%)] font-medium transition-colors flex items-center"
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors flex items-center"
               >
-                <Menu className="mr-2" size={16} />
                 Dịch vụ
-                <ChevronDown className="ml-1 h-4 w-4 group-hover:rotate-180 transition-transform duration-300" />
+                <ChevronDown className="ml-1 h-4 w-4" />
               </button>
               <MegaMenu />
             </div>
             <a 
               href="/blog" 
-              className="text-gray-700 hover:text-[hsl(207,100%,40%)] font-medium transition-colors flex items-center"
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
             >
-              <FileText className="mr-2" size={16} />
               Blog
             </a>
             <a 
               href="#contact" 
-              className="text-gray-700 hover:text-[hsl(207,100%,40%)] font-medium transition-colors flex items-center"
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
             >
-              <MessageCircle className="mr-2" size={16} />
               Liên hệ
             </a>
           </nav>
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
-            <Button variant="ghost" className="text-gray-700 hover:text-[hsl(207,100%,40%)]">
+            <Button variant="ghost" className="text-gray-700 hover:text-blue-600">
               Đăng nhập
             </Button>
-            <Button className="step-gradient text-white hover:shadow-lg transition-all">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
               Đăng ký
             </Button>
           </div>

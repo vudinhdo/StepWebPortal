@@ -1,6 +1,13 @@
 import { useState } from "react";
-import { ChevronDown, ChevronRight, Globe, Cloud, Server, Mail, Code, HardDrive, Settings } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { 
+  DomainIcon, 
+  CloudIcon, 
+  HostingIcon, 
+  ServerIcon, 
+  EmailIcon, 
+  SoftwareIcon 
+} from "./icons/custom-icons";
 
 export default function MobileMegaMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,18 +17,18 @@ export default function MobileMegaMenu() {
     {
       id: 'domain',
       name: 'Tên Miền',
-      icon: Globe,
+      icon: DomainIcon,
       items: [
         'Đăng ký tên miền',
-        'DNS resolver miễn phí',
+        'Chuyển tên miền',
         'Quản lý DNS',
         'Bảo vệ tên miền'
       ]
     },
     {
       id: 'cloud',
-      name: 'Cloud Computing',
-      icon: Cloud,
+      name: 'Cloud',
+      icon: CloudIcon,
       items: [
         'Cloud GPU',
         'Cloud Server',
@@ -33,7 +40,7 @@ export default function MobileMegaMenu() {
     {
       id: 'hosting',
       name: 'Hosting',
-      icon: HardDrive,
+      icon: HostingIcon,
       items: [
         'Hosting WordPress',
         'Hosting Laravel',
@@ -44,7 +51,7 @@ export default function MobileMegaMenu() {
     {
       id: 'server',
       name: 'Máy Chủ',
-      icon: Server,
+      icon: ServerIcon,
       items: [
         'Thiết bị máy chủ',
         'Thiết bị mạng',
@@ -55,7 +62,7 @@ export default function MobileMegaMenu() {
     {
       id: 'email',
       name: 'Email',
-      icon: Mail,
+      icon: EmailIcon,
       items: [
         'Email server doanh nghiệp',
         'Google Workspace',
@@ -66,97 +73,86 @@ export default function MobileMegaMenu() {
     {
       id: 'software',
       name: 'Phần Mềm',
-      icon: Code,
+      icon: SoftwareIcon,
       items: [
         'Microsoft',
         'Google',
         'VMware',
+        'Sangfor',
         'Phần mềm AI'
       ]
     }
   ];
 
-  const toggleCategory = (categoryId: string) => {
-    setActiveCategory(activeCategory === categoryId ? null : categoryId);
-  };
+  const services = [
+    'Tư vấn hạ tầng',
+    'Thiết kế hạ tầng',
+    'Triển khai hạ tầng',
+    'Vận hành hạ tầng',
+    'IT Support',
+    'Manage Service'
+  ];
 
   return (
-    <div className="py-3">
+    <div className="border-b border-gray-200 last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center justify-between w-full py-3 text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium"
       >
-        <div className="flex items-center">
-          <Settings className="mr-2" size={16} />
-          Dịch vụ
-        </div>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <ChevronDown size={16} />
-        </motion.div>
+        Sản Phẩm & Dịch Vụ
+        <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden bg-gray-50 rounded-lg mt-2"
-          >
-            <div className="p-3 space-y-2">
-              {categories.map((category) => (
-                <div key={category.id}>
-                  <button
-                    onClick={() => toggleCategory(category.id)}
-                    className="flex items-center justify-between w-full py-2 px-3 text-sm text-gray-700 hover:text-[hsl(207,100%,40%)] hover:bg-white rounded-lg transition-all"
-                  >
-                    <div className="flex items-center">
-                      <category.icon className="mr-3 text-[hsl(207,100%,40%)]" size={16} />
-                      {category.name}
-                    </div>
-                    <motion.div
-                      animate={{ rotate: activeCategory === category.id ? 90 : 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <ChevronRight size={14} />
-                    </motion.div>
-                  </button>
-
-                  <AnimatePresence>
-                    {activeCategory === category.id && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: "easeInOut" }}
-                        className="overflow-hidden ml-4"
-                      >
-                        <div className="py-2 space-y-1">
-                          {category.items.map((item, index) => (
-                            <motion.a
-                              key={index}
-                              href="#"
-                              className="block py-2 px-3 text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] hover:bg-white rounded-lg transition-all"
-                              whileHover={{ x: 4 }}
-                              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                            >
-                              {item}
-                            </motion.a>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+      
+      {isOpen && (
+        <div className="pb-2 space-y-1">
+          {categories.map((category) => (
+            <div key={category.id} className="border-l-2 border-gray-100 ml-2">
+              <button
+                onClick={() => setActiveCategory(activeCategory === category.id ? null : category.id)}
+                className="flex items-center justify-between w-full pl-4 pr-2 py-2 text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors"
+              >
+                <div className="flex items-center">
+                  <category.icon className="h-4 w-4 mr-2" />
+                  {category.name}
                 </div>
-              ))}
+                <ChevronRight className={`h-3 w-3 transition-transform ${activeCategory === category.id ? 'rotate-90' : ''}`} />
+              </button>
+              
+              {activeCategory === category.id && (
+                <div className="pl-10 pr-2 pb-2 space-y-1">
+                  {category.items.map((item, index) => (
+                    <a
+                      key={index}
+                      href="#"
+                      className="block py-1 text-sm text-gray-500 hover:text-[hsl(207,100%,40%)] transition-colors"
+                    >
+                      {item}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          ))}
+          
+          {/* Services */}
+          <div className="border-l-2 border-gray-100 ml-2">
+            <div className="pl-4 pr-2 py-2">
+              <h4 className="text-sm font-medium text-[hsl(207,100%,40%)] mb-2">Dịch Vụ</h4>
+              <div className="space-y-1">
+                {services.map((service, index) => (
+                  <a
+                    key={index}
+                    href="#"
+                    className="block py-1 text-sm text-gray-500 hover:text-[hsl(207,100%,40%)] transition-colors"
+                  >
+                    {service}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
