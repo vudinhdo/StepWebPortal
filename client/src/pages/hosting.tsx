@@ -324,6 +324,197 @@ export default function Hosting() {
         </div>
       </section>
 
+      {/* Control Panel Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              Control Panel Hỗ Trợ Trong Hosting STEP
+            </h2>
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+              Chúng tôi hỗ trợ các control panel hàng đầu: cPanel, aPanel (AAPanel – panel miễn phí phổ biến), và DirectAdmin, 
+              giúp bạn dễ dàng quản lý hosting mà không cần kỹ thuật cao.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* cPanel */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                  <Server className="text-[hsl(207,100%,40%)] w-6 h-6" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900">cPanel</h3>
+              </div>
+              
+              <p className="text-gray-600 mb-4">
+                Panel quản lý hosting phổ biến nhất thế giới, dễ sử dụng với giao diện thân thiện.
+              </p>
+              
+              <div className="mb-6">
+                <h4 className="font-semibold text-gray-900 mb-3">Tính năng nổi bật:</h4>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Quản lý file (File Manager), cơ sở dữ liệu (MySQL)
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Email (tạo tài khoản nhanh)
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Cài đặt ứng dụng một click (Softaculous cho WordPress/Laravel)
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Backup tự động, thống kê tài nguyên (CPU/RAM)
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Bảo mật mạnh với ModSecurity
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                <p className="text-sm text-gray-700">
+                  <strong>Lợi ích cho STEP:</strong> Tích hợp hoàn hảo với Hosting NVME, giúp bạn quản lý đa domain dễ dàng.
+                </p>
+              </div>
+              
+              <Button className="w-full bg-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,35%)]">
+                Thử cPanel Demo
+              </Button>
+            </motion.div>
+
+            {/* aPanel */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                  <Zap className="text-green-600 w-6 h-6" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900">aPanel (AAPanel)</h3>
+              </div>
+              
+              <p className="text-gray-600 mb-4">
+                Panel miễn phí, nhẹ nhàng, phù hợp doanh nghiệp nhỏ tại Việt Nam với giao diện đơn giản và hỗ trợ đa ngôn ngữ.
+              </p>
+              
+              <div className="mb-6">
+                <h4 className="font-semibold text-gray-900 mb-3">Tính năng nổi bật:</h4>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Quản lý server (Nginx/Apache), cơ sở dữ liệu (MariaDB)
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    FTP/SSH, firewall cơ bản
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    One-click install (WordPress, PHPMyAdmin)
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Giám sát hệ thống thời gian thực (CPU, memory, disk)
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Hỗ trợ script tự động và cập nhật nhanh
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="bg-green-50 p-4 rounded-lg mb-6">
+                <p className="text-sm text-gray-700">
+                  <strong>Lợi ích cho STEP:</strong> Tiết kiệm chi phí, lý tưởng cho Hosting Laravel với hiệu suất cao.
+                </p>
+              </div>
+              
+              <Button className="w-full bg-green-600 hover:bg-green-700">
+                Khám Phá aPanel
+              </Button>
+            </motion.div>
+
+            {/* DirectAdmin */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                  <Shield className="text-purple-600 w-6 h-6" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900">DirectAdmin</h3>
+              </div>
+              
+              <p className="text-gray-600 mb-4">
+                Panel ổn định, giá rẻ, tập trung vào hiệu suất cao và bảo mật.
+              </p>
+              
+              <div className="mb-6">
+                <h4 className="font-semibold text-gray-900 mb-3">Tính năng nổi bật:</h4>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Quản lý domain/email (tạo subdomain nhanh)
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Cơ sở dữ liệu (PostgreSQL hỗ trợ)
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    File manager nâng cao, SSL tự động
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Reseller tools (quản lý user riêng)
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    Báo cáo sử dụng tài nguyên chi tiết
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="bg-purple-50 p-4 rounded-lg mb-6">
+                <p className="text-sm text-gray-700">
+                  <strong>Lợi ích cho STEP:</strong> Phù hợp Reseller Hosting, dễ scale cho SMEs cần bán lại dịch vụ.
+                </p>
+              </div>
+              
+              <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                Test DirectAdmin
+              </Button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-[hsl(207,100%,40%)] to-blue-700">
         <div className="container mx-auto px-6">
