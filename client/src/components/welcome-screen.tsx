@@ -106,15 +106,16 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto"
     >
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="w-full max-w-2xl"
-      >
+      <div className="min-h-screen flex items-start justify-center p-4 pt-8">
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.9, opacity: 0, y: 20 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          className="w-full max-w-2xl"
+        >
         <Card className="border-0 shadow-2xl">
           <CardContent className="p-8">
             {/* Header */}
@@ -329,7 +330,8 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
             </motion.div>
           </CardContent>
         </Card>
-      </motion.div>
+        </motion.div>
+      </div>
     </motion.div>
   );
 }

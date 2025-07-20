@@ -356,14 +356,14 @@ export default function Hosting() {
       {/* Email Popup */}
       {showPopup && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed top-6 right-6 z-50 w-96 max-w-[calc(100vw-3rem)]"
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-white rounded-xl p-8 max-w-md w-full relative"
+            className="bg-white rounded-xl p-6 shadow-2xl border border-gray-200 relative"
           >
             <button
               onClick={() => {
@@ -375,16 +375,16 @@ export default function Hosting() {
               <X className="h-5 w-5" />
             </button>
 
-            <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            <div className="text-center mb-4">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
                 Nhận Khuyến Mãi Đặc Biệt!
               </h3>
-              <p className="text-gray-600">
+              <p className="text-sm text-gray-600">
                 Nhận mã giảm 30% cho Hosting NVME đầu tiên, kèm e-book "5 Mẹo Bảo Mật Website 2025"
               </p>
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-3">
               <div>
                 <Input
                   type="email"
@@ -426,7 +426,7 @@ export default function Hosting() {
               </Button>
             </form>
 
-            <p className="text-xs text-gray-500 text-center mt-4">
+            <p className="text-xs text-gray-500 text-center mt-3">
               Chỉ trong 48h! Đừng bỏ lỡ cơ hội này.
             </p>
           </motion.div>
