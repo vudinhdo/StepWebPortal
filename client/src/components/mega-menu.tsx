@@ -118,17 +118,17 @@ export default function MegaMenu() {
             <h2 className="text-xs font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-3">SẢN PHẨM</h2>
           </div>
 
-          {/* Products Grid - Cloudflare Style */}
-          <div className="grid grid-cols-4 gap-8">
+          {/* Products Grid - Balanced Layout */}
+          <div className="grid grid-cols-3 gap-12">
             
-            {/* Column 1 */}
+            {/* Column 1: Domain & Cloud */}
             <div>
               <h3 className="text-sm font-semibold text-gray-900 mb-4">
                 <a href="/domain" className="hover:text-[hsl(207,100%,40%)] transition-colors">
                   {categories[0].name}
                 </a>
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-3 mb-8">
                 {categories[0].items.map((item, index) => (
                   <li key={index}>
                     <a href="/domain" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
@@ -141,13 +141,10 @@ export default function MegaMenu() {
                   </li>
                 ))}
               </ul>
-            </div>
-
-            {/* Column 2 */}
-            <div>
+              
               <h3 className="text-sm font-semibold text-gray-900 mb-4">
                 <a href="/cloud" className="hover:text-[hsl(207,100%,40%)] transition-colors">
-                  Cloud Computing
+                  {categories[1].name}
                 </a>
               </h3>
               <ul className="space-y-3">
@@ -163,9 +160,12 @@ export default function MegaMenu() {
                   </li>
                 ))}
               </ul>
-              
-              <h3 className="text-sm font-semibold text-gray-900 mb-4 mt-8">{categories[2].name}</h3>
-              <ul className="space-y-3">
+            </div>
+
+            {/* Column 2: Hosting & Server */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[2].name}</h3>
+              <ul className="space-y-3 mb-8">
                 {categories[2].items.map((item, index) => (
                   <li key={index}>
                     <a href="#" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
@@ -179,11 +179,6 @@ export default function MegaMenu() {
                 ))}
               </ul>
               
-
-            </div>
-
-            {/* Column 3 */}
-            <div>
               <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[3].name}</h3>
               <ul className="space-y-3">
                 {categories[3].items.map((item, index) => (
@@ -198,9 +193,12 @@ export default function MegaMenu() {
                   </li>
                 ))}
               </ul>
-              
-              <h3 className="text-sm font-semibold text-gray-900 mb-4 mt-8">{categories[4].name}</h3>
-              <ul className="space-y-3">
+            </div>
+
+            {/* Column 3: Email & Software */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[4].name}</h3>
+              <ul className="space-y-3 mb-8">
                 {categories[4].items.map((item, index) => (
                   <li key={index}>
                     <a href="#" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
@@ -213,10 +211,7 @@ export default function MegaMenu() {
                   </li>
                 ))}
               </ul>
-            </div>
-
-            {/* Column 4 */}
-            <div>
+              
               <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[5].name}</h3>
               <ul className="space-y-3">
                 {categories[5].items.map((item, index) => (
@@ -237,7 +232,7 @@ export default function MegaMenu() {
           {/* Plans & Pricing Section */}
           <div className="mt-10 pt-6 border-t border-gray-100">
             <h2 className="text-xs font-semibold text-[hsl(207,100%,40%)] uppercase tracking-wide mb-4">GÓI DỊCH VỤ</h2>
-            <div className="grid grid-cols-4 gap-6">
+            <div className="grid grid-cols-3 gap-8">
               <div className="flex items-center">
                 <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
                   <div className="w-4 h-4 bg-orange-500 rounded-full"></div>
