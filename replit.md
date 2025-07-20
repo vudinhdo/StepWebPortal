@@ -175,6 +175,39 @@ The architecture prioritizes simplicity and developer experience while providing
 
 The system is now fully optimized for production use with excellent mobile performance, accessibility standards, and engaging animation effects.
 
+## Personalized User Experience System (January 2025)
+
+### Welcome Screen Flow
+- **Smart Timing**: Welcome screen appears after 2 seconds for first-time visitors
+- **Multi-Step Onboarding**: 3-step process collecting name, role, and interests
+- **Role-Based Targeting**: 7 predefined roles (CEO, CTO, IT Manager, Developer, SysAdmin, Business Owner, Other)
+- **Interest Selection**: 8 service categories with visual selection interface
+- **Progress Tracking**: Visual progress bar and smooth step transitions
+- **Skip Option**: Users can bypass personalization while maintaining experience
+
+### Personalized Content Engine
+- **Dynamic Hero Section**: Replaces standard hero with personalized greeting and recommendations
+- **Role-Specific Recommendations**: Curated service suggestions based on user role
+- **Interest-Based Filtering**: Highlighted services matching user selections
+- **Personalized Benefits**: Role-specific value propositions and success metrics
+- **Smart CTAs**: Contextual call-to-action buttons based on user profile
+
+### Personalization Management
+- **Persistent Storage**: User preferences saved in localStorage for return visits
+- **Settings Panel**: Expandable settings widget for viewing and managing personalization
+- **Edit Capability**: Users can modify their preferences without losing context
+- **Reset Function**: Complete personalization reset with fresh welcome screen
+- **Privacy Focused**: All data stored locally, no external tracking
+
+### User Experience Features
+- **Time-Based Greetings**: Dynamic welcome messages based on time of day
+- **Animated Interactions**: Smooth transitions between personalization steps
+- **Responsive Design**: Optimized for all device sizes and touch interactions
+- **Accessibility**: Proper ARIA labels and keyboard navigation support
+- **Performance Optimized**: Lazy loading and efficient state management
+
+The personalization system creates a tailored experience for each visitor while maintaining the professional STEP brand identity and ensuring optimal conversion rates.
+
 ## Blog Management System (January 2025)
 
 ### Core Features
