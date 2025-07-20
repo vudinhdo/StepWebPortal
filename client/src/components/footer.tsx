@@ -89,6 +89,19 @@ export default function Footer() {
                     <p><strong className="text-white">STK:</strong> 19132608991888</p>
                     <p><strong className="text-white">Ngân hàng:</strong> Techcombank – Chi nhánh Hoàng Quốc Việt – PGD Trần Thái Tông</p>
                   </div>
+                  
+                  {/* QR Payment Code */}
+                  <div className="mt-4">
+                    <h5 className="text-white font-medium mb-2 text-xs">QR Thanh toán</h5>
+                    <div className="bg-white rounded-lg p-3 inline-block">
+                      <img 
+                        src="/attached_assets/image_1753023597322.png" 
+                        alt="QR Code Techcombank - STEP" 
+                        className="w-32 h-auto rounded"
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">Quét mã để thanh toán nhanh</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -178,7 +191,7 @@ export default function Footer() {
               {/* QR Codes */}
               <div className="space-y-4">
                 <h4 className="text-sm font-semibold text-white">Quét mã QR để kết nối</h4>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   {/* Facebook QR */}
                   <div className="text-center">
                     <div className="w-20 h-20 bg-white rounded-lg p-2 mx-auto mb-2">
@@ -199,8 +212,24 @@ export default function Footer() {
                     <p className="text-xs text-gray-400">Zalo OA</p>
                   </div>
                 </div>
+                
+                {/* Payment QR */}
+                <div className="pt-4 border-t border-gray-700">
+                  <h5 className="text-xs font-semibold text-white mb-2">Thanh toán QR</h5>
+                  <div className="text-center">
+                    <div className="bg-white rounded-lg p-2 inline-block">
+                      <img 
+                        src="/attached_assets/image_1753023597322.png" 
+                        alt="QR Techcombank Payment" 
+                        className="w-24 h-auto rounded"
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">Techcombank</p>
+                  </div>
+                </div>
+                
                 <p className="text-xs text-gray-500 text-center">
-                  Quét mã để nhận hỗ trợ 24/7
+                  Quét mã để liên hệ và thanh toán
                 </p>
               </div>
             </div>
