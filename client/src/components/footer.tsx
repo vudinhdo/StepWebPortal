@@ -204,10 +204,12 @@ export default function Footer() {
                   
                   {/* Zalo QR */}
                   <div className="text-center">
-                    <div className="w-20 h-20 bg-white rounded-lg p-2 mx-auto mb-2">
-                      <div className="w-full h-full bg-blue-500 rounded flex items-center justify-center">
-                        <MessageCircle className="h-8 w-8 text-white" />
-                      </div>
+                    <div className="w-20 h-20 bg-white rounded-lg p-1 mx-auto mb-2">
+                      <img 
+                        src="/attached_assets/zalo oa_1753023637193.jpg" 
+                        alt="Zalo OA STEP QR Code" 
+                        className="w-full h-full object-contain rounded"
+                      />
                     </div>
                     <p className="text-xs text-gray-400">Zalo OA</p>
                   </div>
