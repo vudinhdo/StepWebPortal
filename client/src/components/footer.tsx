@@ -85,9 +85,9 @@ export default function Footer() {
                 <div className="mt-6 pt-4 border-t border-gray-700">
                   <h4 className="text-white font-semibold mb-3">Thông tin ngân hàng</h4>
                   <div className="space-y-2 text-xs">
-                    <p><strong className="text-white">Ngân hàng:</strong> Vietcombank - Chi nhánh Hà Nội</p>
-                    <p><strong className="text-white">Số tài khoản:</strong> 0021000374467</p>
                     <p><strong className="text-white">Chủ tài khoản:</strong> CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP</p>
+                    <p><strong className="text-white">STK:</strong> 19132608991888</p>
+                    <p><strong className="text-white">Ngân hàng:</strong> Techcombank – Chi nhánh Hoàng Quốc Việt – PGD Trần Thái Tông</p>
                   </div>
                 </div>
               </div>
