@@ -15,24 +15,93 @@ import {
 } from "./icons/custom-icons";
 
 export default function Services() {
+  // Enhanced tooltip content for services
+  const serviceTooltips = {
+    domain: {
+      title: "Quản lý Tên miền Chuyên nghiệp",
+      description: "Dịch vụ tên miền toàn diện với DNS management, domain protection và auto-renewal.",
+      type: 'feature' as const,
+      features: [
+        "Đăng ký tên miền quốc tế (.com, .net, .org)",
+        "Tên miền Việt Nam (.vn, .com.vn)",
+        "DNS management với giao diện dễ sử dụng",
+        "Domain forwarding và redirection",
+        "WHOIS privacy protection"
+      ],
+      benefits: ["99.9% Uptime", "Bảo mật cao", "Hỗ trợ 24/7"],
+      tips: [
+        "Đăng ký nhiều năm để có giá tốt hơn",
+        "Sử dụng WHOIS privacy để bảo vệ thông tin",
+        "Thiết lập auto-renewal để không bị mất domain"
+      ],
+      cta: {
+        text: "Tìm hiểu Domain Services",
+        action: () => window.location.href = '/domain'
+      }
+    },
+    cloud: {
+      title: "Cloud Infrastructure Mạnh mẽ",
+      description: "Giải pháp cloud computing với GPU, Kubernetes và workflow automation cho doanh nghiệp hiện đại.",
+      type: 'feature' as const,
+      features: [
+        "Cloud GPU cho AI/ML workloads",
+        "Kubernetes cluster management",
+        "Auto-scaling theo nhu cầu",
+        "Load balancer và CDN",
+        "Backup tự động và disaster recovery"
+      ],
+      benefits: ["Hiệu suất cao", "Tiết kiệm chi phí", "Scalable"],
+      tips: [
+        "Sử dụng monitoring để tối ưu resource",
+        "Thiết lập alerts cho critical metrics",
+        "Backup trước khi deploy"
+      ],
+      cta: {
+        text: "Khám phá Cloud Solutions",
+        action: () => window.location.href = '/cloud'
+      }
+    },
+    hosting: {
+      title: "Web Hosting Tối ưu",
+      description: "Hosting chuyên biệt cho WordPress, Laravel với SSD NVMe và caching tối ưu.",
+      type: 'info' as const,
+      features: [
+        "WordPress hosting tối ưu",
+        "Laravel hosting với Composer",
+        "SSD NVMe storage",
+        "Free SSL certificates",
+        "Daily backups"
+      ],
+      benefits: ["Tốc độ nhanh", "Bảo mật cao", "Easy management"],
+      tips: [
+        "Sử dụng caching để tăng tốc website",
+        "Cập nhật CMS thường xuyên",
+        "Monitor uptime và performance"
+      ]
+    }
+  };
+
   const services = [
     {
       icon: DomainIcon,
       title: "Tên miền",
       description: "Cung cấp và quản lý tên miền cho doanh nghiệp, dễ dàng tích hợp với các dịch vụ khác.",
-      href: "#domain"
+      href: "#domain",
+      tooltip: serviceTooltips.domain
     },
     {
       icon: CloudIcon,
       title: "Cloud",
       description: "Cloud GPU, Cloud Server, Cloud Odoo, Cloud AMD, Cloud N8N (hỗ trợ K8s và workflow automation) – Giải pháp đám mây linh hoạt cho DevOps và SysOps.",
-      href: "#cloud"
+      href: "#cloud",
+      tooltip: serviceTooltips.cloud
     },
     {
       icon: HostingIcon,
       title: "Hosting",
       description: "Hosting WordPress, Hosting Laravel, Hosting NVME, Reseller Hosting – Tối ưu tốc độ và bảo mật cho website doanh nghiệp.",
-      href: "#hosting"
+      href: "#hosting",
+      tooltip: serviceTooltips.hosting
     },
     {
       icon: ServerIcon,
@@ -118,13 +187,32 @@ export default function Services() {
             >
               <Card className="h-full border-gray-200 transition-all duration-300 hover:shadow-xl hover:border-[hsl(207,100%,40%)]">
                 <CardContent className="p-6 sm:p-8 h-full flex flex-col">
-                  <motion.div 
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="w-12 h-12 step-gradient rounded-lg flex items-center justify-center mb-6"
-                  >
-                    <service.icon className="text-white h-6 w-6" />
-                  </motion.div>
+                  {service.tooltip ? (
+                    <InteractiveTooltip
+                      content={service.tooltip}
+                      trigger="hover"
+                      position="auto"
+                    >
+                      <motion.div 
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        className="w-12 h-12 step-gradient rounded-lg flex items-center justify-center mb-6 cursor-help relative"
+                      >
+                        <service.icon className="text-white h-6 w-6" />
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center">
+                          <Lightbulb className="text-white" size={10} />
+                        </div>
+                      </motion.div>
+                    </InteractiveTooltip>
+                  ) : (
+                    <motion.div 
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      className="w-12 h-12 step-gradient rounded-lg flex items-center justify-center mb-6"
+                    >
+                      <service.icon className="text-white h-6 w-6" />
+                    </motion.div>
+                  )}
                   <h3 className="text-lg sm:text-xl font-semibold text-[hsl(207,100%,40%)] mb-4">
                     {service.title}
                   </h3>
