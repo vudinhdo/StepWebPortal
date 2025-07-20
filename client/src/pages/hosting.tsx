@@ -20,31 +20,36 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export default function Hosting() {
   const [showContactForm, setShowContactForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [popupCount, setPopupCount] = useState(0);
   const [popupData, setPopupData] = useState({
     email: "",
     name: "",
     phone: ""
   });
 
-  // Show popup after 15 seconds or 50% scroll
+  // Show popup at 15s and 200s only (max 2 times)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPopup(true);
+    if (popupCount >= 2) return;
+
+    const timer1 = setTimeout(() => {
+      if (popupCount < 2) {
+        setShowPopup(true);
+        setPopupCount(prev => prev + 1);
+      }
     }, 15000);
 
-    const handleScroll = () => {
-      const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      if (scrolled > 50 && !showPopup) {
+    const timer2 = setTimeout(() => {
+      if (popupCount < 2) {
         setShowPopup(true);
+        setPopupCount(prev => prev + 1);
       }
-    };
+    }, 200000);
 
-    window.addEventListener('scroll', handleScroll);
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
     };
-  }, [showPopup]);
+  }, [popupCount]);
 
   const benefits = [
     {
@@ -361,7 +366,10 @@ export default function Hosting() {
             className="bg-white rounded-xl p-8 max-w-md w-full relative"
           >
             <button
-              onClick={() => setShowPopup(false)}
+              onClick={() => {
+                setShowPopup(false);
+                // Don't increment count when manually closing
+              }}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
             >
               <X className="h-5 w-5" />
@@ -410,6 +418,8 @@ export default function Hosting() {
                   // Handle popup form submission
                   console.log('Popup form data:', popupData);
                   setShowPopup(false);
+                  // Mark as completed to prevent future popups
+                  setPopupCount(2);
                 }}
               >
                 Nhận Ngay & Đăng Ký
