@@ -12,6 +12,8 @@ import {
   Star,
   X
 } from "lucide-react";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import ContactForm from "@/components/contact-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -109,6 +111,7 @@ export default function Hosting() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-50 to-white py-20 overflow-hidden">
         <div className="absolute inset-0 opacity-30">
@@ -432,6 +435,8 @@ export default function Hosting() {
           </motion.div>
         </motion.div>
       )}
+
+      <Footer />
     </div>
   );
 }
