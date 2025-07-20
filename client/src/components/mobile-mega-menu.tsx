@@ -1,5 +1,26 @@
 import { useState } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { 
+  ChevronDown, 
+  ChevronRight,
+  Globe,
+  Shield,
+  ArrowRightLeft,
+  Settings,
+  Cpu,
+  Zap,
+  Database,
+  Monitor,
+  HardDrive,
+  Network,
+  Building,
+  Mail,
+  Users,
+  MessageSquare,
+  Briefcase,
+  Chrome,
+  CloudDownload,
+  Brain
+} from "lucide-react";
 import { 
   DomainIcon, 
   CloudIcon, 
@@ -19,10 +40,10 @@ export default function MobileMegaMenu() {
       name: 'Tên Miền',
       icon: DomainIcon,
       items: [
-        'Đăng ký tên miền',
-        'Chuyển tên miền',
-        'Quản lý DNS',
-        'Bảo vệ tên miền'
+        { name: 'Đăng ký tên miền', icon: Globe },
+        { name: 'Chuyển tên miền', icon: ArrowRightLeft },
+        { name: 'Quản lý DNS', icon: Settings },
+        { name: 'Bảo vệ tên miền', icon: Shield }
       ]
     },
     {
@@ -30,11 +51,11 @@ export default function MobileMegaMenu() {
       name: 'Cloud',
       icon: CloudIcon,
       items: [
-        'Cloud GPU',
-        'Cloud Server',
-        'Cloud Odoo',
-        'Cloud AMD',
-        'Cloud N8N'
+        { name: 'Cloud GPU', icon: Cpu },
+        { name: 'Cloud Server', icon: Monitor },
+        { name: 'Cloud Odoo', icon: Briefcase },
+        { name: 'Cloud AMD', icon: Zap },
+        { name: 'Cloud N8N', icon: Settings }
       ]
     },
     {
@@ -42,10 +63,10 @@ export default function MobileMegaMenu() {
       name: 'Hosting',
       icon: HostingIcon,
       items: [
-        'Hosting WordPress',
-        'Hosting Laravel',
-        'Hosting NVME',
-        'Reseller Hosting'
+        { name: 'Hosting WordPress', icon: Chrome },
+        { name: 'Hosting Laravel', icon: Settings },
+        { name: 'Hosting NVME', icon: Zap },
+        { name: 'Reseller Hosting', icon: Users }
       ]
     },
     {
@@ -53,10 +74,10 @@ export default function MobileMegaMenu() {
       name: 'Máy Chủ',
       icon: ServerIcon,
       items: [
-        'Thiết bị máy chủ',
-        'Thiết bị mạng',
-        'Thuê máy chủ vật lý',
-        'Chỗ đặt máy chủ'
+        { name: 'Thiết bị máy chủ', icon: HardDrive },
+        { name: 'Thiết bị mạng', icon: Network },
+        { name: 'Thuê máy chủ vật lý', icon: Database },
+        { name: 'Chỗ đặt máy chủ', icon: Building }
       ]
     },
     {
@@ -64,10 +85,10 @@ export default function MobileMegaMenu() {
       name: 'Email',
       icon: EmailIcon,
       items: [
-        'Email server doanh nghiệp',
-        'Google Workspace',
-        'Microsoft 365',
-        'Hybrid Email'
+        { name: 'Email server doanh nghiệp', icon: Mail },
+        { name: 'Google Workspace', icon: Chrome },
+        { name: 'Microsoft 365', icon: Briefcase },
+        { name: 'Hybrid Email', icon: MessageSquare }
       ]
     },
     {
@@ -75,11 +96,11 @@ export default function MobileMegaMenu() {
       name: 'Phần Mềm',
       icon: SoftwareIcon,
       items: [
-        'Microsoft',
-        'Google',
-        'VMware',
-        'Sangfor',
-        'Phần mềm AI'
+        { name: 'Microsoft', icon: Briefcase },
+        { name: 'Google', icon: CloudDownload },
+        { name: 'VMware', icon: Monitor },
+        { name: 'Sangfor', icon: Shield },
+        { name: 'Phần mềm AI', icon: Brain }
       ]
     }
   ];
@@ -124,9 +145,10 @@ export default function MobileMegaMenu() {
                     <a
                       key={index}
                       href="#"
-                      className="block py-1 text-sm text-gray-500 hover:text-[hsl(207,100%,40%)] transition-colors"
+                      className="flex items-center py-1 text-sm text-gray-500 hover:text-[hsl(207,100%,40%)] transition-colors group"
                     >
-                      {item}
+                      <item.icon className="w-3 h-3 mr-2 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
+                      {item.name}
                     </a>
                   ))}
                 </div>

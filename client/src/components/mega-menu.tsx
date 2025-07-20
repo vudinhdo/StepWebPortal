@@ -6,6 +6,28 @@ import {
   EmailIcon, 
   SoftwareIcon 
 } from "./icons/custom-icons";
+import { 
+  Globe,
+  Shield,
+  ArrowRightLeft,
+  Settings,
+  Cpu,
+  Zap,
+  Database,
+  Monitor,
+  Smartphone,
+  HardDrive,
+  Network,
+  Building,
+  Mail,
+  Users,
+  MessageSquare,
+  Briefcase,
+  Chrome,
+  CloudDownload,
+  Brain,
+  Lock
+} from "lucide-react";
 
 export default function MegaMenu() {
   const categories = [
@@ -14,10 +36,10 @@ export default function MegaMenu() {
       name: 'Tên Miền',
       icon: DomainIcon,
       items: [
-        { name: 'Đăng ký tên miền', desc: '.com, .vn, .net, .org' },
-        { name: 'Chuyển tên miền', desc: 'Transfer domain dễ dàng' },
-        { name: 'Quản lý DNS', desc: 'Cấu hình DNS chuyên nghiệp' },
-        { name: 'Bảo vệ tên miền', desc: 'Domain protection & privacy' }
+        { name: 'Đăng ký tên miền', desc: '.com, .vn, .net, .org', icon: Globe },
+        { name: 'Chuyển tên miền', desc: 'Transfer domain dễ dàng', icon: ArrowRightLeft },
+        { name: 'Quản lý DNS', desc: 'Cấu hình DNS chuyên nghiệp', icon: Settings },
+        { name: 'Bảo vệ tên miền', desc: 'Domain protection & privacy', icon: Shield }
       ]
     },
     {
@@ -25,10 +47,10 @@ export default function MegaMenu() {
       name: 'Cloud',
       icon: CloudIcon,
       items: [
-        { name: 'Cloud GPU', desc: 'GPU mạnh mẽ cho AI/ML' },
-        { name: 'Cloud Server', desc: 'Máy chủ đám mây linh hoạt' },
-        { name: 'Cloud Odoo', desc: 'ERP trên nền tảng cloud' },
-        { name: 'Cloud AMD', desc: 'Hiệu năng cao với AMD' }
+        { name: 'Cloud GPU', desc: 'GPU mạnh mẽ cho AI/ML', icon: Cpu },
+        { name: 'Cloud Server', desc: 'Máy chủ đám mây linh hoạt', icon: Monitor },
+        { name: 'Cloud Odoo', desc: 'ERP trên nền tảng cloud', icon: Briefcase },
+        { name: 'Cloud AMD', desc: 'Hiệu năng cao với AMD', icon: Zap }
       ]
     },
     {
@@ -36,10 +58,10 @@ export default function MegaMenu() {
       name: 'Hosting',
       icon: HostingIcon,
       items: [
-        { name: 'Hosting WordPress', desc: 'Tối ưu cho WordPress' },
-        { name: 'Hosting Laravel', desc: 'PHP framework hosting' },
-        { name: 'Hosting NVME', desc: 'Tốc độ siêu nhanh' },
-        { name: 'Reseller Hosting', desc: 'Hosting cho đại lý' }
+        { name: 'Hosting WordPress', desc: 'Tối ưu cho WordPress', icon: Chrome },
+        { name: 'Hosting Laravel', desc: 'PHP framework hosting', icon: Settings },
+        { name: 'Hosting NVME', desc: 'Tốc độ siêu nhanh', icon: Zap },
+        { name: 'Reseller Hosting', desc: 'Hosting cho đại lý', icon: Users }
       ]
     },
     {
@@ -47,10 +69,10 @@ export default function MegaMenu() {
       name: 'Máy Chủ',
       icon: ServerIcon,
       items: [
-        { name: 'Thiết bị máy chủ', desc: 'Server hardware' },
-        { name: 'Thiết bị mạng', desc: 'Network equipment' },
-        { name: 'Thuê máy chủ vật lý', desc: 'Physical server rental' },
-        { name: 'Chỗ đặt máy chủ', desc: 'Colocation services' }
+        { name: 'Thiết bị máy chủ', desc: 'Server hardware', icon: HardDrive },
+        { name: 'Thiết bị mạng', desc: 'Network equipment', icon: Network },
+        { name: 'Thuê máy chủ vật lý', desc: 'Physical server rental', icon: Database },
+        { name: 'Chỗ đặt máy chủ', desc: 'Colocation services', icon: Building }
       ]
     },
     {
@@ -58,10 +80,10 @@ export default function MegaMenu() {
       name: 'Email',
       icon: EmailIcon,
       items: [
-        { name: 'Email server doanh nghiệp', desc: 'Enterprise email' },
-        { name: 'Google Workspace', desc: 'G Suite for business' },
-        { name: 'Microsoft 365', desc: 'Office 365 & email' },
-        { name: 'Hybrid Email', desc: 'Giải pháp email lai' }
+        { name: 'Email server doanh nghiệp', desc: 'Enterprise email', icon: Mail },
+        { name: 'Google Workspace', desc: 'G Suite for business', icon: Chrome },
+        { name: 'Microsoft 365', desc: 'Office 365 & email', icon: Briefcase },
+        { name: 'Hybrid Email', desc: 'Giải pháp email lai', icon: MessageSquare }
       ]
     },
     {
@@ -69,10 +91,10 @@ export default function MegaMenu() {
       name: 'Phần Mềm',
       icon: SoftwareIcon,
       items: [
-        { name: 'Microsoft', desc: 'Windows, Office licenses' },
-        { name: 'Google', desc: 'Google Cloud Platform' },
-        { name: 'VMware', desc: 'Virtualization solutions' },
-        { name: 'Phần mềm AI', desc: 'AI & Machine Learning' }
+        { name: 'Microsoft', desc: 'Windows, Office licenses', icon: Briefcase },
+        { name: 'Google', desc: 'Google Cloud Platform', icon: CloudDownload },
+        { name: 'VMware', desc: 'Virtualization solutions', icon: Monitor },
+        { name: 'Phần mềm AI', desc: 'AI & Machine Learning', icon: Brain }
       ]
     }
   ];
@@ -109,8 +131,12 @@ export default function MegaMenu() {
               <ul className="space-y-3">
                 {categories[0].items.map((item, index) => (
                   <li key={index}>
-                    <a href="/domain" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
+                    <a href="/domain" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                      <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
+                      <div>
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-xs text-gray-500">{item.desc}</div>
+                      </div>
                     </a>
                   </li>
                 ))}
@@ -125,19 +151,14 @@ export default function MegaMenu() {
                 </a>
               </h3>
               <ul className="space-y-3">
-                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud GPU</a></li>
-                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud Server</a></li>
-                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud Odoo</a></li>
-                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud AMD</a></li>
-                <li><a href="/cloud" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">Cloud N8N</a></li>
-              </ul>
-              
-              <h3 className="text-sm font-semibold text-gray-900 mb-4 mt-8">{categories[1].name}</h3>
-              <ul className="space-y-3">
                 {categories[1].items.map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
+                    <a href="/cloud" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                      <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
+                      <div>
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-xs text-gray-500">{item.desc}</div>
+                      </div>
                     </a>
                   </li>
                 ))}
@@ -147,12 +168,18 @@ export default function MegaMenu() {
               <ul className="space-y-3">
                 {categories[2].items.map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
+                    <a href="#" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                      <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
+                      <div>
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-xs text-gray-500">{item.desc}</div>
+                      </div>
                     </a>
                   </li>
                 ))}
               </ul>
+              
+
             </div>
 
             {/* Column 3 */}
@@ -161,8 +188,12 @@ export default function MegaMenu() {
               <ul className="space-y-3">
                 {categories[3].items.map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
+                    <a href="#" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                      <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
+                      <div>
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-xs text-gray-500">{item.desc}</div>
+                      </div>
                     </a>
                   </li>
                 ))}
@@ -172,8 +203,12 @@ export default function MegaMenu() {
               <ul className="space-y-3">
                 {categories[4].items.map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
+                    <a href="#" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                      <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
+                      <div>
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-xs text-gray-500">{item.desc}</div>
+                      </div>
                     </a>
                   </li>
                 ))}
@@ -186,8 +221,12 @@ export default function MegaMenu() {
               <ul className="space-y-3">
                 {categories[5].items.map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="block text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors">
-                      {item.name}
+                    <a href="#" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                      <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
+                      <div>
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-xs text-gray-500">{item.desc}</div>
+                      </div>
                     </a>
                   </li>
                 ))}
