@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContactSchema, insertArticleSchema, updateArticleSchema } from "@shared/schema";
+import { insertContactSchema, insertDomainContactSchema, insertArticleSchema, updateArticleSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -70,6 +70,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.status(404).json({ 
           success: false, 
           message: "Không tìm thấy liên hệ" 
+        });
+        return;
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ 
+        success: false, 
+        message: "Lỗi máy chủ nội bộ" 
+      });
+    }
+  });
+
+  // Domain contact form submission
+  app.post("/api/domain-contact", async (req, res) => {
+    try {
+      const validatedData = insertDomainContactSchema.parse(req.body);
+      const domainContact = await storage.createDomainContact(validatedData);
+      res.json({ success: true, id: domainContact.id });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          message: "Dữ liệu không hợp lệ",
+          errors: error.errors 
+        });
+      } else {
+        res.status(500).json({ 
+          success: false, 
+          message: "Lỗi máy chủ nội bộ" 
+        });
+      }
+    }
+  });
+
+  // Get all domain contacts (for admin purposes)
+  app.get("/api/domain-contacts", async (req, res) => {
+    try {
+      const domainContacts = await storage.getDomainContacts();
+      res.json(domainContacts);
+    } catch (error) {
+      res.status(500).json({ 
+        success: false, 
+        message: "Lỗi máy chủ nội bộ" 
+      });
+    }
+  });
+
+  // Get single domain contact
+  app.get("/api/domain-contacts/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const domainContact = await storage.getDomainContact(id);
+      if (!domainContact) {
+        res.status(404).json({ 
+          success: false, 
+          message: "Không tìm thấy liên hệ tên miền" 
+        });
+        return;
+      }
+      res.json(domainContact);
+    } catch (error) {
+      res.status(500).json({ 
+        success: false, 
+        message: "Lỗi máy chủ nội bộ" 
+      });
+    }
+  });
+
+  // Mark domain contact as read
+  app.patch("/api/domain-contacts/:id/read", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const domainContact = await storage.markDomainContactAsRead(id);
+      if (!domainContact) {
+        res.status(404).json({ 
+          success: false, 
+          message: "Không tìm thấy liên hệ tên miền" 
         });
         return;
       }

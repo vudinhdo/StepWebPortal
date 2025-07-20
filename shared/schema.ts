@@ -14,6 +14,17 @@ export const contacts = pgTable("contacts", {
   isRead: boolean("is_read").default(false),
 });
 
+// Domain-specific contact form for lead generation
+export const domainContacts = pgTable("domain_contacts", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone").notNull(),
+  desiredDomain: text("desired_domain").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  isRead: boolean("is_read").default(false),
+});
+
 export const articles = pgTable("articles", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -36,6 +47,12 @@ export const insertContactSchema = createInsertSchema(contacts).omit({
   isRead: true,
 });
 
+export const insertDomainContactSchema = createInsertSchema(domainContacts).omit({
+  id: true,
+  createdAt: true,
+  isRead: true,
+});
+
 export const insertArticleSchema = createInsertSchema(articles).omit({
   id: true,
   createdAt: true,
@@ -50,6 +67,8 @@ export const updateArticleSchema = createInsertSchema(articles).omit({
 
 export type InsertContact = z.infer<typeof insertContactSchema>;
 export type Contact = typeof contacts.$inferSelect;
+export type InsertDomainContact = z.infer<typeof insertDomainContactSchema>;
+export type DomainContact = typeof domainContacts.$inferSelect;
 export type InsertArticle = z.infer<typeof insertArticleSchema>;
 export type UpdateArticle = z.infer<typeof updateArticleSchema>;
 export type Article = typeof articles.$inferSelect;

@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import DomainContactForm from "@/components/domain-contact-form";
 
 export default function Domain() {
   const [searchDomain, setSearchDomain] = useState("");
@@ -355,25 +356,8 @@ export default function Domain() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-[hsl(207,100%,40%)]">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Sẵn sàng bắt đầu với tên miền của bạn?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Đăng ký ngay hôm nay và nhận được hỗ trợ miễn phí từ đội ngũ chuyên gia của chúng tôi
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-[hsl(207,100%,40%)] hover:bg-gray-100">
-              Đăng ký tên miền
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-[hsl(207,100%,40%)]">
-              Liên hệ tư vấn
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Domain Contact Form CTA */}
+      <DomainContactForm />
 
       <Footer />
     </div>

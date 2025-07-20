@@ -1,4 +1,4 @@
-import { contacts, articles, type Contact, type InsertContact, type Article, type InsertArticle, type UpdateArticle } from "@shared/schema";
+import { contacts, articles, domainContacts, type Contact, type InsertContact, type DomainContact, type InsertDomainContact, type Article, type InsertArticle, type UpdateArticle } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
 
@@ -8,6 +8,12 @@ export interface IStorage {
   getContacts(): Promise<Contact[]>;
   getContact(id: number): Promise<Contact | undefined>;
   markContactAsRead(id: number): Promise<Contact | undefined>;
+  
+  // Domain Contact methods
+  createDomainContact(contact: InsertDomainContact): Promise<DomainContact>;
+  getDomainContacts(): Promise<DomainContact[]>;
+  getDomainContact(id: number): Promise<DomainContact | undefined>;
+  markDomainContactAsRead(id: number): Promise<DomainContact | undefined>;
   
   // Article methods
   createArticle(article: InsertArticle): Promise<Article>;
@@ -54,6 +60,36 @@ export class DatabaseStorage implements IStorage {
       .where(eq(contacts.id, id))
       .returning();
     return contact || undefined;
+  }
+
+  // Domain Contact methods
+  async createDomainContact(insertDomainContact: InsertDomainContact): Promise<DomainContact> {
+    const [domainContact] = await db
+      .insert(domainContacts)
+      .values(insertDomainContact)
+      .returning();
+    return domainContact;
+  }
+
+  async getDomainContacts(): Promise<DomainContact[]> {
+    const allDomainContacts = await db.select().from(domainContacts);
+    return allDomainContacts.sort((a, b) => 
+      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
+    );
+  }
+
+  async getDomainContact(id: number): Promise<DomainContact | undefined> {
+    const [domainContact] = await db.select().from(domainContacts).where(eq(domainContacts.id, id));
+    return domainContact || undefined;
+  }
+
+  async markDomainContactAsRead(id: number): Promise<DomainContact | undefined> {
+    const [domainContact] = await db
+      .update(domainContacts)
+      .set({ isRead: true })
+      .where(eq(domainContacts.id, id))
+      .returning();
+    return domainContact || undefined;
   }
 
   // Article methods
