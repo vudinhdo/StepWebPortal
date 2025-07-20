@@ -9,6 +9,7 @@ import Home from "@/pages/home";
 import Blog from "@/pages/blog";
 import Admin from "@/pages/admin";
 import Domain from "@/pages/domain";
+import Hosting from "@/pages/hosting";
 import Cloud from "@/pages/cloud";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
         <Route path="/blog" component={Blog} />
         <Route path="/admin" component={Admin} />
         <Route path="/domain" component={Domain} />
+        <Route path="/hosting" component={Hosting} />
         <Route path="/cloud" component={Cloud} />
         <Route component={NotFound} />
       </Switch>

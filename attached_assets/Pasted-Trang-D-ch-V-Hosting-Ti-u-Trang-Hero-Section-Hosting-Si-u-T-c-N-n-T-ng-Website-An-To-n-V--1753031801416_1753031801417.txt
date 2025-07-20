@@ -1,0 +1,55 @@
+Trang Dịch Vụ: Hosting
+Tiêu Đề Trang (Hero Section):
+
+Hosting Siêu Tốc – Nền Tảng Website An Toàn Và Hiệu Quả Cho SMEs!
+
+(Mô tả ngắn: Cung cấp Hosting WordPress, Hosting Laravel, Hosting NVME và Reseller Hosting với tốc độ cao, bảo mật tối ưu. Dễ dàng thiết lập, giá cạnh tranh – giúp doanh nghiệp bạn online mạnh mẽ mà không lo gián đoạn. Khám phá ngay để nâng cấp website!)
+
+Nút CTA Nổi Bật: "Tìm Gói Hosting Lý Tưởng" (liên kết đến bảng gói dịch vụ dưới, khuyến khích click để cuộn trang và xem chi tiết, tăng tương tác ngay từ đầu).
+
+Lợi Ích Của Dịch Vụ Hosting Từ STEP
+
+Tốc Độ Vượt Trội: Hosting NVME với SSD siêu nhanh, load website dưới 1 giây; lý tưởng cho DevOps cần hiệu suất cao mà không cần đầu tư server đắt đỏ.
+Dễ Dàng Tích Hợp: Tùy chỉnh cho WordPress/Laravel, tự động cài đặt CMS, kết nối với tên miền hoặc Cloud Server – phù hợp SMEs muốn nhanh chóng lên mạng.
+Bảo Mật & Ổn Định: Firewall nâng cao, SSL miễn phí, backup hàng ngày, uptime 99.99%. Bảo vệ dữ liệu doanh nghiệp bạn khỏi tấn công.
+Tiết Kiệm & Linh Hoạt: Giá từ 100.000 VNĐ/tháng, scale dễ dàng với Reseller Hosting cho đại lý – hỗ trợ IT Manager quản lý đa website.
+Bảng Gói Dịch Vụ Hosting (Ví Dụ)
+
+
+Gói Cơ Bản	Gói Nâng Cao	Gói Reseller
+Hosting WordPress cơ bản
+Lưu trữ 10GB
+Giá: Từ 100.000 VNĐ/tháng	Hosting Laravel/NVME
+Lưu trữ 50GB, SSL miễn phí
+Giá: Từ 300.000 VNĐ/tháng	Reseller Hosting
+Quản lý đa domain, bán lại linh hoạt
+Giá: Từ 500.000 VNĐ/tháng
+Phù hợp: Website nhỏ/startup	Phù hợp: SMEs cần tốc độ cao	Phù hợp: Đại lý/hosting reseller
+(Chú thích: Bảng này khuyến khích khách hàng click "Chọn Gói & Nhận Ưu Đãi" bên dưới mỗi cột, dẫn đến form để lại thông tin, tạo cảm giác cấp bách và giá trị để tăng click rate.)
+
+Tại Sao Chọn Dịch Vụ Hosting Từ STEP?
+
+Tích Hợp Toàn Diện: Kết nối mượt mà với dịch vụ khác như Email Microsoft 365 hoặc Máy chủ Thuê, giúp doanh nghiệp bạn vận hành liền mạch từ A-Z.
+Đánh Giá Từ Khách Hàng: "Hosting NVME của STEP đã tăng tốc website tôi gấp đôi, hỗ trợ nhanh chóng!" – Anh C., DevOps tại SMEs Thanh Xuân.
+Cam Kết: Dùng thử miễn phí 14 ngày, hoàn tiền nếu không hài lòng. Chúng tôi tập trung vào hạ tầng Việt Nam, an toàn và tối ưu cho doanh nghiệp địa phương.
+CTA Chính (Form Để Lại Thông Tin):
+
+Sẵn Sàng Tăng Tốc Website Của Bạn Với Hosting STEP?
+
+Form: Tên, Email, Số Điện Thoại, Gói Quan Tâm (dropdown: WordPress, Laravel, NVME, Reseller), Nút "Gửi Yêu Cầu & Nhận Báo Giá" (sync tự động vào HubSpot để nurture leads, sau đó sang Perfex cho sales follow-up).
+
+(Mục tiêu: Form đơn giản với ưu đãi "Nhận báo giá cá nhân hóa và giảm 25% tháng đầu!", khuyến khích để lại info chi tiết để tăng lead quality và conversion.)
+
+Popup Điền Email (Xuất Hiện Sau 15 Giây Hoặc Khi Scroll 50% Trang)
+
+Popup Tiêu Đề: "Nhận Khuyến Mãi Đặc Biệt & Khuyến Nghị Bảo Mật Hosting Miễn Phí Ngay!"
+
+(Mô tả: Chỉ cần điền email để nhận mã giảm 30% cho Hosting NVME đầu tiên, kèm e-book "5 Mẹo Bảo Mật Website 2025" giúp tránh rủi ro hack và tối ưu hiệu suất. Đừng bỏ lỡ – thêm tên/số điện thoại để nhận tư vấn cá nhân hóa miễn phí!)
+
+Form Popup: Email (bắt buộc, field chính), Tên (tùy chọn), Số Điện Thoại (tùy chọn), Nút "Nhận Ngay & Đăng Ký" (sync vào HubSpot như lead riêng, khuyến khích để lại thêm info ngoài form chính bằng lời hứa giá trị như e-book bảo mật và ưu đãi thời hạn "Chỉ trong 48h!", tăng tỷ lệ subscribe 20-30% mà không ép buộc).
+
+(Chú thích: Popup thân thiện, dễ đóng, sử dụng tông xanh dương từ logo, mục tiêu kích thích click bằng ưu đãi cấp bách và nội dung hữu ích, dẫn đến form chi tiết hơn nếu khách quan tâm thêm.)
+
+(Footer: Thông tin công ty STEP đầy đủ: Tên công ty CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP, số tài khoản 19132608991888 tại Techcombank – Chi nhánh Hoàng Quốc Việt – PGD Trần Thái Tông, số điện thoại 0985636289, mã số thuế 0108230633, địa chỉ Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội, văn phòng Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội, email info@step.com.vn, website https://step.com.vn/, Facebook https://www.facebook.com/profile.php?id=61564705138608, bản đồ https://maps.app.goo.gl/Tg8mLAs6qHtVpDUZ8, Zalo OA https://zalo.me/93171011934970677 với QR – để xây dựng lòng tin và khuyến khích liên hệ thêm.)
+
+Nội dung này được tối ưu với CTA mạnh mẽ (click tìm gói, chọn gói, gửi form), ưu đãi hấp dẫn và popup giá trị để khuyến khích khách hàng tương tác, click và để lại thông tin, phù hợp mục tiêu marketing.

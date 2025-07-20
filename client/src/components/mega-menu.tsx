@@ -164,11 +164,15 @@ export default function MegaMenu() {
 
             {/* Column 2: Hosting & Server */}
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[2].name}</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                <a href="/hosting" className="hover:text-[hsl(207,100%,40%)] transition-colors">
+                  {categories[2].name}
+                </a>
+              </h3>
               <ul className="space-y-3 mb-8">
                 {categories[2].items.map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                    <a href="/hosting" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
                       <div>
                         <div className="font-medium">{item.name}</div>
