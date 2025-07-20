@@ -178,7 +178,7 @@ The system is now fully optimized for production use with excellent mobile perfo
 ## Personalized User Experience System (January 2025)
 
 ### Welcome Screen Flow
-- **Smart Timing**: Welcome screen appears after 2 seconds for first-time visitors
+- **Smart Timing**: Welcome screen appears after 10 seconds for first-time visitors
 - **Multi-Step Onboarding**: 3-step process collecting name, role, and interests
 - **Role-Based Targeting**: 7 predefined roles (CEO, CTO, IT Manager, Developer, SysAdmin, Business Owner, Other)
 - **Interest Selection**: 8 service categories with visual selection interface

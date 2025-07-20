@@ -35,7 +35,7 @@ export default function Home() {
       // Show welcome screen for first-time visitors
       const timer = setTimeout(() => {
         setShowWelcome(true);
-      }, 2000); // Show after 2 seconds
+      }, 10000); // Show after 10 seconds
       
       return () => clearTimeout(timer);
     }
