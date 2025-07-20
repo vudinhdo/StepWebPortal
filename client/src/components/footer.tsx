@@ -90,18 +90,7 @@ export default function Footer() {
                     <p><strong className="text-white">Ngân hàng:</strong> Techcombank – Chi nhánh Hoàng Quốc Việt – PGD Trần Thái Tông</p>
                   </div>
                   
-                  {/* QR Payment Code */}
-                  <div className="mt-4">
-                    <h5 className="text-white font-medium mb-2 text-xs">QR Thanh toán</h5>
-                    <div className="bg-white rounded-lg p-3 inline-block">
-                      <img 
-                        src="/attached_assets/image_1753023597322.png" 
-                        alt="QR Code Techcombank - STEP" 
-                        className="w-32 h-auto rounded"
-                      />
-                    </div>
-                    <p className="text-xs text-gray-500 mt-2">Quét mã để thanh toán nhanh</p>
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -188,14 +177,15 @@ export default function Footer() {
                 </div>
               </div>
 
-              {/* Additional Info */}
+              {/* Additional Links */}
               <div className="space-y-4">
-                <h4 className="text-sm font-semibold text-white">Liên hệ nhanh</h4>
-                <div className="space-y-2 text-xs text-gray-400">
-                  <p><strong className="text-white">Hotline 24/7:</strong> 0985.636.289</p>
-                  <p><strong className="text-white">Email:</strong> info@step.com.vn</p>
-                  <p><strong className="text-white">Zalo OA:</strong> Tìm kiếm "STEP Technology"</p>
-                </div>
+                <h4 className="text-sm font-semibold text-white">Hỗ trợ</h4>
+                <ul className="space-y-2 text-xs text-gray-400">
+                  <li><a href="#" className="hover:text-[hsl(195,100%,50%)] transition-colors">Trung tâm hỗ trợ</a></li>
+                  <li><a href="#" className="hover:text-[hsl(195,100%,50%)] transition-colors">Hướng dẫn sử dụng</a></li>
+                  <li><a href="#" className="hover:text-[hsl(195,100%,50%)] transition-colors">Tài liệu API</a></li>
+                  <li><a href="#" className="hover:text-[hsl(195,100%,50%)] transition-colors">Yêu cầu hỗ trợ</a></li>
+                </ul>
               </div>
             </div>
 
