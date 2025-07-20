@@ -10,6 +10,7 @@ import Blog from "@/pages/blog";
 import Admin from "@/pages/admin";
 import Domain from "@/pages/domain";
 import Hosting from "@/pages/hosting";
+import HostingWordPress from "@/pages/hosting-wordpress";
 import Cloud from "@/pages/cloud";
 
 function Router() {
@@ -21,6 +22,7 @@ function Router() {
         <Route path="/admin" component={Admin} />
         <Route path="/domain" component={Domain} />
         <Route path="/hosting" component={Hosting} />
+        <Route path="/hosting-wordpress" component={HostingWordPress} />
         <Route path="/cloud" component={Cloud} />
         <Route component={NotFound} />
       </Switch>

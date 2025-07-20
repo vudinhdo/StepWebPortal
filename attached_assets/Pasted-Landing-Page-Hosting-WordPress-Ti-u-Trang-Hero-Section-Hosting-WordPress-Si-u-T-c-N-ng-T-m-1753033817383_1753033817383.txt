@@ -1,0 +1,55 @@
+Landing Page: Hosting WordPress
+Tiêu Đề Trang (Hero Section):
+
+Hosting WordPress Siêu Tốc – Nâng Tầm Website CMS Của Bạn Chỉ Trong Phút Chốc!
+
+(Mô tả ngắn: Dịch vụ Hosting chuyên biệt cho WordPress, tối ưu tốc độ, bảo mật và dễ dàng cài đặt. Dành riêng cho doanh nghiệp SMEs, blogger và developer sử dụng CMS WordPress – giúp site load nhanh, an toàn mà không lo chi phí cao. Bắt đầu miễn phí hôm nay để trải nghiệm sự khác biệt!)
+
+Nút CTA Nổi Bật: "Kiểm Tra Hosting WordPress Phù Hợp" (liên kết đến công cụ kiểm tra tốc độ hoặc bảng gói dưới, khuyến khích click để tương tác ngay, dẫn đến form nếu cần).
+
+Lợi Ích Của Hosting WordPress Từ STEP
+
+Tối Ưu Cho WordPress: Cài đặt một click qua Softaculous, hỗ trợ plugin/theme không giới hạn, cache tích hợp (LiteSpeed) để load site dưới 1 giây – lý tưởng cho người dùng CMS WordPress muốn tốc độ cao mà không cần tùy chỉnh phức tạp.
+Bảo Mật Nâng Cao: Firewall chuyên biệt chống hack WordPress (e.g., chống brute-force, malware scan tự động), SSL miễn phí, backup hàng ngày – bảo vệ dữ liệu website bạn khỏi rủi ro, đặc biệt cho SMEs quản lý nội dung động.
+Hiệu Suất & Linh Hoạt: Lưu trữ NVME SSD, băng thông không giới hạn, dễ scale khi traffic tăng (từ blog cá nhân đến e-commerce). Tích hợp với tên miền, Cloud hoặc Email – phù hợp developer/DevOps cần môi trường staging.
+Tiết Kiệm Chi Phí: Giá từ 100.000 VNĐ/tháng, không phí ẩn, hỗ trợ di chuyển site WordPress miễn phí từ host cũ. Hơn nữa, hỗ trợ 24/7 qua Zalo OA để giải quyết vấn đề nhanh chóng.
+Bảng Gói Hosting WordPress (Ví Dụ)
+
+
+Gói Cơ Bản	Gói Nâng Cao	Gói Pro
+Lưu trữ 5GB
+Cài đặt WP 1 click
+Giá: Từ 100.000 VNĐ/tháng	Lưu trữ 20GB
+Cache LiteSpeed + SSL
+Giá: Từ 200.000 VNĐ/tháng	Lưu trữ 50GB
+Bảo mật nâng cao + Staging
+Giá: Từ 400.000 VNĐ/tháng
+Phù hợp: Blog cá nhân/startup WP	Phù hợp: SMEs với traffic trung bình	Phù hợp: E-commerce/developer WP chuyên sâu
+(Chú thích: Bảng này khuyến khích khách hàng click "Chọn Gói & Di Chuyển Site Miễn Phí" bên dưới mỗi cột, dẫn đến form để lại thông tin, tạo cảm giác dễ dàng và giá trị để tăng click rate.)
+
+Tại Sao Chọn Hosting WordPress Từ STEP?
+
+Tích Hợp Hoàn Hảo Với CMS: Được tối ưu hóa cho WordPress (hỗ trợ phiên bản mới nhất, plugin phổ biến như Yoast SEO/WooCommerce), kết nối mượt mà với dịch vụ khác như Cloud GPU hoặc Email Google Workspace – giúp bạn tập trung sáng tạo nội dung thay vì kỹ thuật.
+Đánh Giá Từ Khách Hàng: "Hosting WP của STEP đã làm site WordPress tôi load siêu nhanh, không còn lo crash!" – Chị D., Blogger & IT Help Desk tại Hà Nội.
+Cam Kết: Di chuyển site miễn phí, dùng thử 30 ngày, hoàn tiền nếu không hài lòng. Chúng tôi hiểu nhu cầu của người dùng WordPress Việt Nam, với hạ tầng tại Hà Nội đảm bảo tốc độ ổn định.
+CTA Chính (Form Để Lại Thông Tin):
+
+Bạn Sẵn Sàng Tối Ưu Website WordPress Của Mình?
+
+Form: Tên, Email, Số Điện Thoại, URL Site Hiện Tại (tùy chọn, để kiểm tra di chuyển), Gói Quan Tâm (dropdown: Cơ Bản, Nâng Cao, Pro), Nút "Gửi Yêu Cầu & Nhận Ưu Đãi Di Chuyển" (sync tự động vào HubSpot để nurture leads, sau đó sang Perfex cho sales follow-up).
+
+(Mục tiêu: Form đơn giản với ưu đãi "Nhận di chuyển site miễn phí + giảm 30% tháng đầu!", khuyến khích để lại info chi tiết như URL site để tăng lead quality và cá nhân hóa tư vấn.)
+
+Popup Điền Email (Xuất Hiện Sau 10 Giây Hoặc Khi Scroll 50% Trang) , xuất hiện ở góc phải màn hình 
+
+Popup Tiêu Đề: "Nhận Khuyến Mãi Đặc Biệt & Khuyến Nghị Bảo Mật WordPress Miễn Phí!"
+
+(Mô tả: Chỉ cần điền email để nhận mã giảm 40% cho Hosting WordPress đầu tiên, kèm e-book "10 Mẹo Bảo Mật & Tối Ưu WordPress 2025" giúp tránh hack và tăng tốc site. Thêm tên/số điện thoại để nhận tư vấn cá nhân hóa miễn phí – hành động ngay để site bạn an toàn hơn!)
+
+Form Popup: Email (bắt buộc, field chính), Tên (tùy chọn), Số Điện Thoại (tùy chọn), Nút "Nhận Ngay & Đăng Ký" (sync vào HubSpot như lead riêng, khuyến khích để lại thêm info ngoài form chính bằng lời hứa giá trị như e-book bảo mật và ưu đãi thời hạn "Chỉ trong 24h!", tăng tỷ lệ subscribe 20-30% mà không ép buộc).
+
+(Chú thích: Popup thân thiện, dễ đóng, sử dụng tông xanh dương từ logo, mục tiêu kích thích click bằng ưu đãi cấp bách và nội dung hữu ích dành riêng cho người dùng WordPress, dẫn đến form chi tiết hơn nếu khách quan tâm thêm.)
+
+(Footer: Thông tin công ty STEP đầy đủ: Tên công ty CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP, số tài khoản 19132608991888 tại Techcombank – Chi nhánh Hoàng Quốc Việt – PGD Trần Thái Tông, số điện thoại 0985636289, mã số thuế 0108230633, địa chỉ Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội, văn phòng Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội, email info@step.com.vn, website https://step.com.vn/, Facebook https://www.facebook.com/profile.php?id=61564705138608, bản đồ https://maps.app.goo.gl/Tg8mLAs6qHtVpDUZ8, Zalo OA https://zalo.me/93171011934970677 với QR – để xây dựng lòng tin và khuyến khích liên hệ thêm.)
+
+Nội dung này được tối ưu với CTA mạnh mẽ (click kiểm tra gói, chọn gói, gửi form), ưu đãi hấp dẫn và popup giá trị để khuyến khích khách hàng sử dụng WordPress tương tác, click và để lại thông tin, phù hợp mục tiêu marketing.
