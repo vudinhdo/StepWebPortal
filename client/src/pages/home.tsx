@@ -5,6 +5,7 @@ import Services from "@/components/services";
 import Statistics from "@/components/statistics";
 import Testimonials from "@/components/testimonials";
 import Resources from "@/components/resources";
+import TooltipShowcase from "@/components/tooltip-showcase";
 import Footer from "@/components/footer";
 import WelcomeScreen from "@/components/welcome-screen";
 import PersonalizedContent from "@/components/personalized-content";
@@ -84,6 +85,7 @@ export default function Home() {
       <Services />
       <Statistics />
       <Testimonials />
+      <TooltipShowcase />
       <Resources />
       <Footer />
 

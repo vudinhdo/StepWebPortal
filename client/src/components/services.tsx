@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Lightbulb, Settings, Headphones } from "lucide-react";
 import { motion } from "framer-motion";
+import InteractiveTooltip from "@/components/interactive-tooltip";
 import { 
   DomainIcon, 
   CloudIcon, 
