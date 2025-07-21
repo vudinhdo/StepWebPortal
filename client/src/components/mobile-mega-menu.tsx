@@ -144,7 +144,11 @@ export default function MobileMegaMenu() {
                   {category.items.map((item, index) => (
                     <a
                       key={index}
-                      href={category.id === 'hosting' && item.name === 'Hosting WordPress' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress' : category.id === 'hosting' ? '/hosting' : '#'}
+                      href={
+                        category.id === 'hosting' && item.name === 'Hosting WordPress' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress' :
+                        category.id === 'hosting' && item.name === 'Hosting Laravel' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel' :
+                        category.id === 'hosting' ? '/hosting' : '#'
+                      }
                       className="flex items-center py-1 text-sm text-gray-500 hover:text-[hsl(207,100%,40%)] transition-colors group"
                     >
                       <item.icon className="w-3 h-3 mr-2 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />

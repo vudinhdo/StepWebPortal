@@ -1,0 +1,55 @@
+Landing Page: Hosting Laravel
+Tiêu Đề Trang (Hero Section):
+
+Hosting Laravel Chuyên Biệt – Deploy Ứng Dụng Framework Của Bạn Siêu Nhanh & Ổn Định!
+
+(Mô tả ngắn: Dịch vụ Hosting tối ưu cho lập trình viên sử dụng Laravel framework, hỗ trợ SSH, Composer, CI/CD và hiệu suất cao. Dành riêng cho developer, DevOps xây dựng web app mạnh mẽ – deploy chỉ trong phút, scale linh hoạt mà không lo downtime. Khám phá ngay để nâng cấp project Laravel của bạn!)
+
+Nút CTA Nổi Bật: "Kiểm Tra Gói Hosting Laravel Phù Hợp" (liên kết đến bảng gói dịch vụ dưới, khuyến khích click để cuộn trang và xem chi tiết, tăng tương tác ngay từ đầu).
+
+Lợi Ích Của Hosting Laravel Từ STEP
+
+Deploy Nhanh Chóng & Dễ Dàng: Hỗ trợ SSH access đầy đủ để chạy artisan commands, Composer install, và Git integration cho deployment tự động – lý tưởng cho lập trình viên cần push code nhanh mà không cần config phức tạp.laracasts.com+2 more
+Hiệu Suất Vượt Trội: Sử dụng NVME SSD, LiteSpeed server, Redis/Memcached cho caching, và hỗ trợ PHP 8+ – giúp app Laravel load nhanh, xử lý queues hiệu quả, phù hợp project với traffic cao.blog.back4app.com+2 more
+Bảo Mật & Scale Linh Hoạt: Firewall nâng cao, SSL miễn phí, auto-backup, và hỗ trợ cron jobs/schedulers. Dễ scale với Kubernetes hoặc multi-server, an toàn cho dev làm việc với .env và database sensitive.digitalocean.com+2 more
+Tiết Kiệm & Developer-Friendly: Giá từ 200.000 VNĐ/tháng, không phí ẩn, hỗ trợ CI/CD (GitHub Actions/Jenkins), và dashboard user-friendly (như Vultr style) để monitor resources thời gian thực.blog.back4app.combenjamincrozat.com
+Bảng Gói Hosting Laravel (Ví Dụ)
+
+
+Gói Cơ Bản	Gói Nâng Cao	Gói Pro
+PHP 8+, Composer
+Lưu trữ 10GB SSD
+Giá: Từ 200.000 VNĐ/tháng	SSH + Git Integration
+Lưu trữ 30GB, Redis Cache
+Giá: Từ 400.000 VNĐ/tháng	CI/CD Full, Multi-Server
+Lưu trữ 100GB, Priority Support
+Giá: Từ 800.000 VNĐ/tháng
+Phù hợp: Project cá nhân/dev thử nghiệm	Phù hợp: App trung bình với queues	Phù hợp: Production app lớn/scale
+(Chú thích: Bảng này khuyến khích khách hàng click "Chọn Gói & Deploy Test" bên dưới mỗi cột, dẫn đến form để lại thông tin, tạo cảm giác kỹ thuật và giá trị để tăng click rate cho lập trình viên.)
+
+Tại Sao Chọn Hosting Laravel Từ STEP?
+
+Tích Hợp Framework Hoàn Hảo: Được tối ưu hóa cho Laravel (hỗ trợ artisan migrate, queue workers, env config), kết nối mượt mà với dịch vụ khác như Cloud N8N hoặc Database MySQL – giúp dev tập trung code thay vì server management.forge.laravel.comlaravel.com
+Đánh Giá Từ Khách Hàng: "Hosting Laravel của STEP deploy siêu nhanh, hỗ trợ SSH giúp tôi push code dễ dàng!" – Anh E., Lập trình viên DevOps tại Hà Nội.
+Cam Kết: Deploy test miễn phí 14 ngày, hoàn tiền nếu không hài lòng. Chúng tôi hiểu nhu cầu của developer Việt Nam, với hạ tầng địa phương đảm bảo latency thấp.
+CTA Chính (Form Để Lại Thông Tin):
+
+Sẵn Sàng Deploy Project Laravel Của Bạn Trên Hosting STEP?
+
+Form: Tên, Email, Số Điện Thoại, Project Description (tùy chọn, e.g., "App Laravel với queues"), Gói Quan Tâm (dropdown: Cơ Bản, Nâng Cao, Pro), Nút "Gửi Yêu Cầu & Nhận Code Deploy Mẫu" (sync tự động vào HubSpot để nurture leads, sau đó sang Perfex cho sales follow-up).
+
+(Mục tiêu: Form đơn giản với ưu đãi "Nhận code deploy mẫu miễn phí + giảm 25% tháng đầu!", khuyến khích để lại info chi tiết như project desc để tăng lead quality và cá nhân hóa tư vấn cho dev.)
+
+Popup Điền Email (Xuất Hiện Sau 10 Giây Hoặc Khi Scroll 50% Trang), hiển thị góc phải màn hình 
+
+Popup Tiêu Đề: "Nhận Khuyến Mãi Đặc Biệt & Khuyến Nghị Bảo Mật Laravel Miễn Phí!"
+
+(Mô tả: Chỉ cần điền email để nhận mã giảm 35% cho Hosting Laravel đầu tiên, kèm e-book "7 Mẹo Bảo Mật & Optimize Laravel 2025" giúp tránh vulnerabilities và tăng performance. Thêm tên/số điện thoại để nhận tư vấn deploy cá nhân hóa miễn phí – hành động ngay để project bạn an toàn hơn!)
+
+Form Popup: Email (bắt buộc, field chính), Tên (tùy chọn), Số Điện Thoại (tùy chọn), Nút "Nhận Ngay & Đăng Ký" (sync vào HubSpot như lead riêng, khuyến khích để lại thêm info ngoài form chính bằng lời hứa giá trị như e-book bảo mật và ưu đãi thời hạn "Chỉ trong 24h!", tăng tỷ lệ subscribe 20-30% mà không ép buộc).
+
+(Chú thích: Popup thân thiện, dễ đóng, sử dụng tông xanh dương từ logo, mục tiêu kích thích click bằng ưu đãi cấp bách và nội dung hữu ích dành riêng cho lập trình viên Laravel, dẫn đến form chi tiết hơn nếu khách quan tâm thêm.)
+
+(Footer: Thông tin công ty STEP đầy đủ: Tên công ty CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP, số tài khoản 19132608991888 tại Techcombank – Chi nhánh Hoàng Quốc Việt – PGD Trần Thái Tông, số điện thoại 0985636289, mã số thuế 0108230633, địa chỉ Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội, văn phòng Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội, email info@step.com.vn, website https://step.com.vn/, Facebook https://www.facebook.com/profile.php?id=61564705138608, bản đồ https://maps.app.goo.gl/Tg8mLAs6qHtVpDUZ8, Zalo OA https://zalo.me/93171011934970677 với QR – để xây dựng lòng tin và khuyến khích liên hệ thêm.)
+
+Nội dung này được tối ưu với CTA mạnh mẽ (click kiểm tra gói, chọn gói, gửi form), ưu đãi hấp dẫn và popup giá trị để khuyến khích lập trình viên Laravel tương tác, click và để lại thông tin, phù hợp mục tiêu marketing.

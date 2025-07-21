@@ -11,6 +11,7 @@ import Admin from "@/pages/admin";
 import Domain from "@/pages/domain";
 import Hosting from "@/pages/hosting";
 import HostingWordPress from "@/pages/hosting-wordpress";
+import HostingLaravel from "@/pages/hosting-laravel";
 import Cloud from "@/pages/cloud";
 
 function Router() {
@@ -23,6 +24,7 @@ function Router() {
         <Route path="/domain" component={Domain} />
         <Route path="/hosting" component={Hosting} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress" component={HostingWordPress} />
+        <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel" component={HostingLaravel} />
         <Route path="/cloud" component={Cloud} />
         <Route component={NotFound} />
       </Switch>

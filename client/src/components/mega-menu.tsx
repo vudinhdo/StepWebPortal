@@ -172,7 +172,11 @@ export default function MegaMenu() {
               <ul className="space-y-3 mb-8">
                 {categories[2].items.map((item, index) => (
                   <li key={index}>
-                    <a href={item.name === 'Hosting WordPress' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress' : '/hosting'} className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                    <a href={
+                      item.name === 'Hosting WordPress' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress' :
+                      item.name === 'Hosting Laravel' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel' :
+                      '/hosting'
+                    } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
                       <div>
                         <div className="font-medium">{item.name}</div>
