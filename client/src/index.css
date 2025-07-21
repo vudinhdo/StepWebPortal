@@ -74,6 +74,36 @@
     background: linear-gradient(135deg, hsl(195, 100%, 50%), hsl(207, 100%, 40%));
   }
   
+  /* Onboarding highlight effect */
+  .onboarding-highlight {
+    position: relative;
+    z-index: 41;
+  }
+
+  .onboarding-highlight::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border: 2px solid #3B82F6;
+    border-radius: 12px;
+    background: rgba(59, 130, 246, 0.1);
+    backdrop-filter: blur(4px);
+    animation: highlight-pulse 2s infinite;
+    pointer-events: none;
+  }
+
+  @keyframes highlight-pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.02);
+    }
+  }
+}
+  
   .step-hero-gradient {
     background: linear-gradient(135deg, hsl(210, 17%, 96%), hsl(0, 0%, 100%));
     position: relative;
@@ -364,4 +394,3 @@
     visibility: visible;
     transform: translateX(-50%) translateY(0);
   }
-}

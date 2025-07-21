@@ -10,6 +10,7 @@ import Footer from "@/components/footer";
 import WelcomeScreen from "@/components/welcome-screen";
 import PersonalizedContent from "@/components/personalized-content";
 import PersonalizationSettings from "@/components/personalization-settings";
+import OnboardingTooltip, { useOnboarding, homeOnboardingSteps } from "@/components/onboarding-tooltip";
 import { AnimatePresence } from "framer-motion";
 
 interface UserInfo {
@@ -23,6 +24,7 @@ export default function Home() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isPersonalized, setIsPersonalized] = useState(false);
+  const { startOnboarding } = useOnboarding();
 
   useEffect(() => {
     // Check if user has already completed welcome screen
@@ -48,6 +50,11 @@ export default function Home() {
     setIsPersonalized(true);
     localStorage.setItem('stepWelcomeShown', 'true');
     localStorage.setItem('stepUserInfo', JSON.stringify(info));
+    
+    // Start onboarding tour after welcome screen
+    setTimeout(() => {
+      startOnboarding(homeOnboardingSteps);
+    }, 1000);
   };
 
   const handleSkipPersonalization = () => {
@@ -116,6 +123,9 @@ export default function Home() {
           </button>
         </div>
       )}
+
+      {/* Onboarding Tooltip System */}
+      <OnboardingTooltip />
     </div>
   );
 }

@@ -7,7 +7,7 @@ export default function Hero() {
   const [showContactForm, setShowContactForm] = useState(false);
 
   return (
-    <section className="pt-20 pb-16 step-hero-gradient relative overflow-hidden">
+    <section className="pt-20 pb-16 step-hero-gradient relative overflow-hidden" data-onboarding="hero-section">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
           <motion.h1 
@@ -40,6 +40,7 @@ export default function Hero() {
               <Button 
                 className="step-gradient text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:shadow-lg transition-all h-12 sm:h-14 step-pulse-animation button-hover"
                 onClick={() => setShowContactForm(true)}
+                data-onboarding="hero-cta-button"
               >
                 Bắt đầu miễn phí
               </Button>

@@ -13,7 +13,7 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center" data-onboarding="header-logo">
             <img 
               src="/attached_assets/logo step_1753026304764.png" 
               alt="STEP Technology Investment Company" 
@@ -29,7 +29,7 @@ export default function Header() {
             >
               Trang chủ
             </a>
-            <div className="relative group">
+            <div className="relative group" data-onboarding="services-menu">
               <button 
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors flex items-center"
               >
@@ -57,7 +57,7 @@ export default function Header() {
             <Button variant="ghost" className="text-gray-700 hover:text-blue-600">
               Đăng nhập
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white" data-onboarding="contact-button">
               Đăng ký
             </Button>
           </div>
