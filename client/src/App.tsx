@@ -22,7 +22,7 @@ function Router() {
         <Route path="/admin" component={Admin} />
         <Route path="/domain" component={Domain} />
         <Route path="/hosting" component={Hosting} />
-        <Route path="/hosting-wordpress" component={HostingWordPress} />
+        <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress" component={HostingWordPress} />
         <Route path="/cloud" component={Cloud} />
         <Route component={NotFound} />
       </Switch>
