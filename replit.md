@@ -299,3 +299,25 @@ The blog system provides STEP with a comprehensive content management solution f
 - Added `/domain` route to application routing
 - Updated mega menu to link to domain page
 - Consistent branding and navigation flow
+
+## Nested Hosting Services Structure (January 2025)
+
+### WordPress Hosting Page
+- **URL Structure**: `/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress`
+- **Target Audience**: Vietnamese users and WordPress enthusiasts
+- **Pricing**: 100k/200k/400k VNĐ with 40% discount popup
+- **Features**: WordPress-optimized hosting with Vietnamese content
+
+### Laravel Hosting Page  
+- **URL Structure**: `/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel`
+- **Target Audience**: PHP developers using Laravel framework
+- **Pricing**: 200k/400k/800k VNĐ with developer-focused features
+- **Enhanced Content**: Added comprehensive Laravel framework advantages section
+- **Developer Benefits**: 6 key Laravel advantages including easy learning, rich features, security, community support, performance, and modern integrations
+- **Technical Focus**: Terminal demos, SSH access, Artisan commands, Queue workers, Redis integration
+- **CTA Strategy**: 35% discount popup with Laravel security e-book, project description fields for developers
+
+### Navigation Updates
+- **Nested Menu Structure**: Both desktop and mobile mega menus support nested routing
+- **Smart Link Logic**: Conditional navigation based on service type (WordPress/Laravel/General hosting)
+- **Consistent UX**: Smooth transitions and proper breadcrumb navigation for specialized hosting pages

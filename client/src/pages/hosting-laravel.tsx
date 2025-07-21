@@ -88,6 +88,39 @@ export default function HostingLaravel() {
     }
   ];
 
+  const laravelAdvantages = [
+    {
+      icon: Code2,
+      title: "Dễ Học Và Sử Dụng",
+      description: "Laravel có cú pháp sạch sẽ, dễ hiểu với documentation chi tiết và ví dụ cụ thể. Artisan CLI hỗ trợ automation tasks như migrations và seeding, giúp người mới học nhanh hơn và giảm thời gian code thủ công."
+    },
+    {
+      icon: Settings,
+      title: "Tích Hợp Tính Năng Phong Phú",
+      description: "Built-in features như Eloquent ORM, routing, authentication, caching, và queue management giúp phát triển nhanh mà không cần third-party libraries. Lý tưởng cho dự án vừa và lớn."
+    },
+    {
+      icon: Lock,
+      title: "Bảo Mật Mạnh Mẽ",
+      description: "Tích hợp sẵn CSRF protection, encryption, và password hashing, giúp tránh lỗ hổng phổ biến. Laravel cập nhật nhanh để đối phó với threats mới, an toàn cho app doanh nghiệp."
+    },
+    {
+      icon: Users,
+      title: "Cộng Đồng Và Hỗ Trợ Lớn",
+      description: "Cộng đồng developer đông đảo với Laravel Forge/Envoyer cho deployment dễ dàng. Dễ tìm packages trên Packagist, hỗ trợ tốt cho dự án dài hạn với LTS versions."
+    },
+    {
+      icon: TrendingUp,
+      title: "Hiệu Suất Cao Và Scalability",
+      description: "Hỗ trợ caching (Redis/Memcached), queue (Horizon), và API building (Sanctum), giúp app scale dễ dàng. Performance tốt hơn framework lightweight nhưng thiếu features."
+    },
+    {
+      icon: Monitor,
+      title: "Tích Hợp Hiện Đại",
+      description: "Hỗ trợ Vue/React cho frontend, API RESTful, và tools như Laravel Nova cho admin panels – giúp xây dựng app full-stack nhanh chóng, tiết kiệm thời gian cho developer."
+    }
+  ];
+
   const packages = [
     {
       name: "Gói Cơ Bản",
@@ -387,6 +420,46 @@ export default function HostingLaravel() {
         </div>
       </section>
 
+      {/* Laravel Framework Advantages Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              Ưu Điểm Của Laravel Framework Cho Phát Triển Web
+            </h2>
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+              Laravel là framework PHP mã nguồn mở mạnh mẽ, được thiết kế để phát triển ứng dụng web 
+              nhanh chóng, an toàn và dễ bảo trì. Hosting STEP tối ưu hóa hoàn hảo cho tất cả ưu điểm này.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {laravelAdvantages.map((advantage, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow group"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <advantage.icon className="text-white w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">{advantage.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{advantage.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Why Choose Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
@@ -414,11 +487,28 @@ export default function HostingLaravel() {
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">
                     Tích Hợp Framework Hoàn Hảo
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed mb-6">
                     Được tối ưu hóa cho Laravel (hỗ trợ artisan migrate, queue workers, env config), 
                     kết nối mượt mà với dịch vụ khác như Cloud N8N hoặc Database MySQL – 
                     giúp dev tập trung code thay vì server management.
                   </p>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-red-50 p-4 rounded-lg">
+                      <div className="flex items-center mb-2">
+                        <Terminal className="w-5 h-5 text-red-500 mr-2" />
+                        <span className="font-semibold text-gray-900">Artisan Ready</span>
+                      </div>
+                      <p className="text-sm text-gray-600">Full SSH access & Artisan commands</p>
+                    </div>
+                    <div className="bg-red-50 p-4 rounded-lg">
+                      <div className="flex items-center mb-2">
+                        <Database className="w-5 h-5 text-red-500 mr-2" />
+                        <span className="font-semibold text-gray-900">Queue Workers</span>
+                      </div>
+                      <p className="text-sm text-gray-600">Horizon support & Redis integration</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="bg-red-50 p-6 rounded-xl">
@@ -464,10 +554,18 @@ export default function HostingLaravel() {
                   <CheckCircle className="h-5 w-5 text-green-600 mr-3" />
                   <span className="text-gray-700">Support từ team developer Việt Nam</span>
                 </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-3" />
+                  <span className="text-gray-700">Cộng đồng Laravel developer lớn</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-3" />
+                  <span className="text-gray-700">Packages & extensions phong phú</span>
+                </div>
               </div>
 
               <p className="text-sm text-gray-600 mt-6">
-                Chúng tôi hiểu nhu cầu của developer Việt Nam
+                Hosting được thiết kế bởi developers, cho developers Việt Nam
               </p>
             </motion.div>
           </div>
