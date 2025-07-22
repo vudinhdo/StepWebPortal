@@ -309,6 +309,18 @@ The blog system provides STEP with a comprehensive content management solution f
 - Updated mega menu to link to domain page
 - Consistent branding and navigation flow
 
+## NVME Hosting Page (January 2025)
+
+### High-Performance NVME Hosting
+- **URL Structure**: `/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME`
+- **Target Audience**: Developers and DevOps requiring high-speed, backup-intensive, secure hosting
+- **Pricing**: 300k/600k/1.2M VNĐ with developer-focused features
+- **Performance Focus**: Sub-0.5s load times, 3x daily backups, NVME SSD storage
+- **Developer Features**: SSH access, Git deployment, multi-server scaling, 24/7 support
+- **Security**: DDoS protection, SSL, ModSecurity, malware scanning, .env file protection
+- **CTA Strategy**: Backup test discount popup with security e-book, project description fields
+- **Interactive Elements**: Terminal demo, performance stats, smooth animations
+
 ## Nested Hosting Services Structure (January 2025)
 
 ### WordPress Hosting Page

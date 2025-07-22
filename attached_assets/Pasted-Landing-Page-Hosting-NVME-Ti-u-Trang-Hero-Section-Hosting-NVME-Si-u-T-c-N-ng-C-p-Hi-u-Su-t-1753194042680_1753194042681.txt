@@ -1,0 +1,55 @@
+Landing Page: Hosting NVME
+Tiêu Đề Trang (Hero Section):
+
+Hosting NVME Siêu Tốc – Nâng Cấp Hiệu Suất Website Với Backup Đầy Đủ & Bảo Mật Tuyệt Đối!
+
+(Mô tả ngắn: Dịch vụ Hosting NVME tối ưu cho lập trình viên và DevOps cần tốc độ cao, backup nhiều lần/ngày và bảo mật hàng đầu. Xử lý tải lớn, an toàn dữ liệu – lý tưởng cho dự án đòi hỏi performance đỉnh cao. Khám phá ngay để tối ưu website của bạn!)
+
+Nút CTA Nổi Bật: "Kiểm Tra Gói Hosting NVME Phù Hợp" (liên kết đến bảng gói dịch vụ dưới, khuyến khích click để cuộn trang và xem chi tiết, tăng tương tác ngay từ đầu).
+
+Lợi Ích Của Hosting NVME Từ STEP
+
+Tốc Độ Cao Nhất: Sử dụng ổ cứng NVME SSD, load website dưới 0.5 giây, hỗ trợ PHP 8+, Redis caching – lý tưởng cho lập trình viên cần xử lý tải lớn hoặc app phức tạp như e-commerce/API.
+Backup Đầy Đủ: Backup tự động 3 lần/ngày, lưu trữ 30 ngày, khôi phục dễ dàng qua dashboard – đảm bảo không mất dữ liệu, phù hợp DevOps cần phục hồi nhanh sau lỗi.
+Bảo Mật Tuyệt Đối: Firewall chống DDoS, SSL miễn phí, ModSecurity, quét malware định kỳ, và bảo vệ .env file – an toàn tuyệt đối cho dự án nhạy cảm, bảo vệ dữ liệu lập trình viên trước tấn công.
+Linh Hoạt & Hỗ Trợ: Tích hợp SSH, Git deployment, scale dễ dàng với multi-server, và đội ngũ hỗ trợ 24/7 qua Zalo OA – giúp dev tập trung phát triển thay vì quản lý server.
+Bảng Gói Dịch Vụ Hosting NVME (Ví Dụ)
+
+
+Gói Cơ Bản	Gói Nâng Cao	Gói Pro
+NVME SSD 10GB
+Backup 1 lần/ngày
+Giá: Từ 300.000 VNĐ/tháng	NVME SSD 50GB
+Backup 3 lần/ngày
+Giá: Từ 600.000 VNĐ/tháng	NVME SSD 100GB
+Backup + Multi-Server
+Giá: Từ 1.200.000 VNĐ/tháng
+Phù hợp: Dự án nhỏ/dev thử nghiệm	Phù hợp: App trung bình với backup nhiều	Phù hợp: Project lớn cần scale và bảo mật cao
+(Chú thích: Bảng này khuyến khích khách hàng click "Chọn Gói & Nhận Backup Test" bên dưới mỗi cột, dẫn đến form để lại thông tin, tạo cảm giác kỹ thuật và giá trị để tăng click rate cho lập trình viên.)
+
+Tại Sao Chọn Hosting NVME Từ STEP?
+
+Tối Ưu Hiệu Suất & Backup: Được thiết kế cho dev cần tốc độ cao (e.g., API Laravel, WordPress nặng), backup đa tầng giúp khôi phục chỉ trong phút, giảm downtime 99.99%.
+Đánh Giá Từ Khách Hàng: "Hosting NVME của STEP tăng tốc API gấp đôi, backup cứu tôi khỏi lỗi code!" – Anh F., Lập trình viên DevOps tại TP.HCM.
+Cam Kết: Backup test miễn phí 14 ngày, hoàn tiền nếu không hài lòng. Hạ tầng tại Việt Nam đảm bảo latency thấp, an toàn cho dev địa phương.
+CTA Chính (Form Để Lại Thông Tin):
+
+Bạn Sẵn Sàng Tăng Tốc & Bảo Vệ Dự Án Với Hosting NVME?
+
+Form: Tên, Email, Số Điện Thoại, Project Description (tùy chọn, e.g., "API với tải lớn"), Gói Quan Tâm (dropdown: Cơ Bản, Nâng Cao, Pro), Nút "Gửi Yêu Cầu & Nhận Backup Miễn Phí" (sync tự động vào HubSpot để nurture leads, sau đó sang Perfex cho sales follow-up).
+
+(Mục tiêu: Form đơn giản với ưu đãi "Nhận backup miễn phí 7 ngày + giảm 30% tháng đầu!", khuyến khích để lại info chi tiết như project desc để tăng lead quality và cá nhân hóa tư vấn cho dev cần tốc độ cao.)
+
+Popup Điền Email (Xuất Hiện Sau 10 Giây Hoặc Khi Scroll 50% Trang)
+
+Popup Tiêu Đề: "Nhận Khuyến Mãi Đặc Biệt & Khuyến Nghị Bảo Mật NVME Miễn Phí!"
+
+(Mô tả: Chỉ cần điền email để nhận mã giảm 35% cho Hosting NVME đầu tiên, kèm e-book "Top 5 Mẹo Bảo Mật Hosting NVME 2025" giúp tránh DDoS và tối ưu performance. Thêm tên/số điện thoại để nhận tư vấn bảo mật cá nhân hóa miễn phí – hành động ngay để dự án an toàn hơn!)
+
+Form Popup: Email (bắt buộc, field chính), Tên (tùy chọn), Số Điện Thoại (tùy chọn), Nút "Nhận Ngay & Đăng Ký" (sync vào HubSpot như lead riêng, khuyến khích để lại thêm info ngoài form chính bằng lời hứa giá trị như e-book bảo mật và ưu đãi thời hạn "Chỉ trong 24h!", tăng tỷ lệ subscribe 20-30% mà không ép buộc).
+
+(Chú thích: Popup thân thiện, dễ đóng, sử dụng tông xanh dương từ logo, mục tiêu kích thích click bằng ưu đãi cấp bách và nội dung hữu ích dành riêng cho dev cần tốc độ/bảo mật, dẫn đến form chi tiết hơn nếu khách quan tâm thêm.)
+
+(Footer: Thông tin công ty STEP đầy đủ: Tên công ty CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP, số tài khoản 19132608991888 tại Techcombank – Chi nhánh Hoàng Quốc Việt – PGD Trần Thái Tông, số điện thoại 0985636289, mã số thuế 0108230633, địa chỉ Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội, văn phòng Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội, email info@step.com.vn, website https://step.com.vn/, Facebook https://www.facebook.com/profile.php?id=61564705138608, bản đồ https://maps.app.goo.gl/Tg8mLAs6qHtVpDUZ8, Zalo OA https://zalo.me/93171011934970677 với QR – để xây dựng lòng tin và khuyến khích liên hệ thêm.)
+
+Nội dung này được tối ưu với CTA mạnh mẽ (click kiểm tra gói, chọn gói, gửi form), ưu đãi hấp dẫn và popup giá trị để khuyến khích lập trình viên cần tốc độ cao, backup nhiều, và bảo mật tương tác, click và để lại thông tin, phù hợp mục tiêu marketing.

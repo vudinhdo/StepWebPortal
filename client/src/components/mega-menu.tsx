@@ -175,6 +175,7 @@ export default function MegaMenu() {
                     <a href={
                       item.name === 'Hosting WordPress' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress' :
                       item.name === 'Hosting Laravel' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel' :
+                      item.name === 'Hosting NVME' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME' :
                       '/hosting'
                     } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />

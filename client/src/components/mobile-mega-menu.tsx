@@ -147,6 +147,7 @@ export default function MobileMegaMenu() {
                       href={
                         category.id === 'hosting' && item.name === 'Hosting WordPress' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress' :
                         category.id === 'hosting' && item.name === 'Hosting Laravel' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel' :
+                        category.id === 'hosting' && item.name === 'Hosting NVME' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME' :
                         category.id === 'hosting' ? '/hosting' : '#'
                       }
                       className="flex items-center py-1 text-sm text-gray-500 hover:text-[hsl(207,100%,40%)] transition-colors group"
