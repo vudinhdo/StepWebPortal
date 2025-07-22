@@ -61,7 +61,7 @@ export default function MegaMenu() {
         { name: 'Hosting WordPress', desc: 'Tối ưu cho WordPress', icon: Chrome },
         { name: 'Hosting Laravel', desc: 'PHP framework hosting', icon: Settings },
         { name: 'Hosting NVME', desc: 'Tốc độ siêu nhanh', icon: Zap },
-        { name: 'Reseller Hosting', desc: 'Hosting cho đại lý', icon: Users }
+        { name: 'Reseller Hosting', desc: 'Kinh doanh hosting', icon: Users }
       ]
     },
     {
@@ -176,6 +176,7 @@ export default function MegaMenu() {
                       item.name === 'Hosting WordPress' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress' :
                       item.name === 'Hosting Laravel' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel' :
                       item.name === 'Hosting NVME' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME' :
+                      item.name === 'Reseller Hosting' ? '/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting' :
                       '/hosting'
                     } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />

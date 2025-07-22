@@ -398,7 +398,17 @@ The blog system provides STEP with a comprehensive content management solution f
 - **Technical Focus**: Terminal demos, SSH access, Artisan commands, Queue workers, Redis integration
 - **CTA Strategy**: 35% discount popup with Laravel security e-book, project description fields for developers
 
+### Reseller Hosting Page (January 2025)
+- **URL Structure**: `/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting`
+- **Target Audience**: Freelancers, agencies, and businesses wanting to sell hosting services
+- **Pricing**: 500k/1.2M/2.5M VNĐ with 40-60% commission structure
+- **Business Focus**: White-label branding, passive income generation, customer management
+- **Features**: WHM control panel, billing integration, marketing materials, 24/7 support
+- **CTA Strategy**: 25% discount popup with business hosting e-book, expected client fields
+- **Performance Integration**: Full benchmark visualization for reseller plan comparison
+
 ### Navigation Updates
 - **Nested Menu Structure**: Both desktop and mobile mega menus support nested routing
-- **Smart Link Logic**: Conditional navigation based on service type (WordPress/Laravel/General hosting)
+- **Smart Link Logic**: Conditional navigation based on service type (WordPress/Laravel/NVME/Reseller hosting)
 - **Consistent UX**: Smooth transitions and proper breadcrumb navigation for specialized hosting pages
+- **Reseller Integration**: Added Reseller Hosting to mega menu with proper routing

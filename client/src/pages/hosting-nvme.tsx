@@ -15,6 +15,13 @@ import PerformanceBenchmark from "@/components/performance-benchmark";
 
 export default function HostingNVME() {
   const [showPopup, setShowPopup] = useState(false);
+  const [popupData, setPopupData] = useState({
+    email: "",
+    name: "",
+    phone: ""
+  });
+
+
 
   const handleEmailSubmit = async (email: string) => {
     console.log('Email submitted for NVME hosting:', email);
@@ -59,10 +66,9 @@ export default function HostingNVME() {
 
   const handlePopupSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Popup form submitted');
-    // Here you would integrate with HubSpot
+    console.log('Popup submitted:', popupData);
     setShowPopup(false);
-    alert('Mã giảm 35% đã được gửi qua email! Kiểm tra hộp thư của bạn.');
+    alert('Cảm ơn! Mã giảm giá và khuyến nghị bảo mật đã được gửi qua email.');
   };
 
   const packages = [
@@ -539,52 +545,71 @@ export default function HostingNVME() {
         </div>
       </section>
 
-      {/* Popup */}
-      <Dialog open={showPopup} onOpenChange={setShowPopup}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-center text-xl font-bold text-gray-900">
-              🎁 Nhận Khuyến Mãi Đặc Biệt & Khuyến Nghị Bảo Mật NVME Miễn Phí!
-            </DialogTitle>
-            <DialogDescription className="text-center text-gray-600">
-              Chỉ cần điền email để nhận mã giảm 35% cho Hosting NVME đầu tiên, kèm e-book 
-              "Top 5 Mẹo Bảo Mật Hosting NVME 2025" - Chỉ trong 24h!
-            </DialogDescription>
-          </DialogHeader>
-          
-          <form onSubmit={handlePopupSubmit} className="space-y-4 mt-4">
-            <div>
-              <Label htmlFor="popup-email">Email *</Label>
-              <Input id="popup-email" type="email" required className="mt-1" />
+      {/* Popup matching WordPress style */}
+      {showPopup && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed top-6 right-6 z-50 w-96 max-w-[calc(100vw-3rem)]"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white rounded-xl p-6 shadow-2xl border border-gray-200 relative"
+          >
+            <button
+              onClick={() => setShowPopup(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <div className="text-center mb-4">
+              <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Lock className="text-white w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Nhận Khuyến Mãi Đặc Biệt & Khuyến Nghị Bảo Mật NVME Miễn Phí!
+              </h3>
+              <p className="text-sm text-gray-600">
+                Chỉ cần điền email để nhận mã giảm 35% cho Hosting NVME đầu tiên, 
+                kèm e-book "Top 5 Mẹo Bảo Mật Hosting NVME 2025"
+              </p>
             </div>
-            <div>
-              <Label htmlFor="popup-name">Tên (tùy chọn)</Label>
-              <Input id="popup-name" className="mt-1" />
-            </div>
-            <div>
-              <Label htmlFor="popup-phone">Số Điện Thoại (tùy chọn)</Label>
-              <Input id="popup-phone" className="mt-1" />
-            </div>
-            
-            <div className="flex space-x-3 pt-4">
-              <Button
+
+            <form onSubmit={handlePopupSubmit} className="space-y-3">
+              <Input
+                type="email"
+                placeholder="Email của bạn *"
+                value={popupData.email}
+                onChange={(e) => setPopupData({...popupData, email: e.target.value})}
+                required
+              />
+              <Input
+                placeholder="Tên (tùy chọn)"
+                value={popupData.name}
+                onChange={(e) => setPopupData({...popupData, name: e.target.value})}
+              />
+              <Input
+                type="tel"
+                placeholder="Số điện thoại (tùy chọn)"
+                value={popupData.phone}
+                onChange={(e) => setPopupData({...popupData, phone: e.target.value})}
+              />
+              <Button 
                 type="submit"
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                className="w-full bg-blue-500 hover:bg-blue-600"
               >
                 Nhận Ngay & Đăng Ký
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setShowPopup(false)}
-                className="px-3"
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+            </form>
+
+            <p className="text-xs text-gray-500 text-center mt-3">
+              Chỉ trong 24h! Hành động ngay để project bạn an toàn hơn!
+            </p>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Contact Form Modal */}
       <ContactForm 

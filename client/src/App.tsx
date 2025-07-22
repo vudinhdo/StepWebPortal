@@ -11,6 +11,7 @@ import Admin from "@/pages/admin";
 import Domain from "@/pages/domain";
 import Hosting from "@/pages/hosting";
 import HostingWordPress from "@/pages/hosting-wordpress";
+import HostingReseller from "@/pages/hosting-reseller";
 import HostingLaravel from "@/pages/hosting-laravel";
 import HostingNVME from "@/pages/hosting-nvme";
 import Cloud from "@/pages/cloud";
@@ -27,6 +28,7 @@ function Router() {
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress" component={HostingWordPress} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel" component={HostingLaravel} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME" component={HostingNVME} />
+        <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting" component={HostingReseller} />
         <Route path="/cloud" component={Cloud} />
         <Route component={NotFound} />
       </Switch>
