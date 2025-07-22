@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: step_postgres
+    environment:
+      POSTGRES_DB: step_website
+      POSTGRES_USER: step_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_password_123}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - step_network
+
+  # Main Application
+  app:
+    build: .
+    container_name: step_app
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://step_user:${POSTGRES_PASSWORD:-secure_password_123}@postgres:5432/step_website
+      PGHOST: postgres
+      PGPORT: 5432
+      PGUSER: step_user
+      PGPASSWORD: ${POSTGRES_PASSWORD:-secure_password_123}
+      PGDATABASE: step_website
+      SESSION_SECRET: ${SESSION_SECRET:-your_session_secret_here}
+      REPLIT_DOMAINS: ${DOMAIN:-localhost}
+      REPL_ID: step-website-production
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - step_network
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: step_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - app
+    restart: unless-stopped
+    networks:
+      - step_network
+
+  # Redis for Session Storage (Optional)
+  redis:
+    image: redis:7-alpine
+    container_name: step_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - step_network
+    command: redis-server --appendonly yes
+
+volumes:
+  postgres_data:
+  redis_data:
+  nginx_logs:
+
+networks:
+  step_network:
+    driver: bridge
