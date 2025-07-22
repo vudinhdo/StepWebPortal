@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from 
 import { Menu, ChevronDown, X } from "lucide-react";
 import MegaMenu from "./mega-menu";
 import MobileMegaMenu from "./mobile-mega-menu";
+import stepLogo from "@assets/logo step_1753193285585.png";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +16,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center" data-onboarding="header-logo">
             <img 
-              src="/attached_assets/logo step_1753193285585.png" 
+              src={stepLogo} 
               alt="STEP Technology Investment Company" 
               className="h-12 w-auto" 
             />

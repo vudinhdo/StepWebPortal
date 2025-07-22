@@ -2,6 +2,7 @@ import { ArrowRight, Phone, Mail, MapPin, Facebook, MessageCircle } from "lucide
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import ContactForm from "./contact-form";
+import stepLogo from "@assets/logo step_1753193285585.png";
 
 export default function Footer() {
   const [showContactForm, setShowContactForm] = useState(false);
@@ -43,7 +44,7 @@ export default function Footer() {
             <div className="lg:col-span-1">
               <div className="flex items-center space-x-3 mb-6">
                 <img 
-                  src="/attached_assets/logo step_1753193285585.png" 
+                  src={stepLogo} 
                   alt="STEP Logo" 
                   className="h-16 w-auto" 
                 />
