@@ -20,6 +20,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ContactForm from "@/components/contact-form";
 import PerformanceBenchmark from "@/components/performance-benchmark";
+import EmailPopup from "@/components/email-popup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -32,6 +33,12 @@ export default function HostingWordPress() {
     name: "",
     phone: ""
   });
+
+  const handleEmailSubmit = async (email: string) => {
+    console.log('Email submitted for WordPress hosting:', email);
+    // Integration with email service would go here
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  };
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -602,6 +609,15 @@ export default function HostingWordPress() {
       )}
 
       <Footer />
+
+      {/* Email Popup - Show after 15 seconds */}
+      <EmailPopup
+        title="💎 Ưu Đãi WordPress Hosting!"
+        description="Đăng ký email để nhận mã giảm giá 30% hosting WordPress + di chuyển site miễn phí!"
+        buttonText="Nhận Mã Giảm Giá"
+        onSubmit={handleEmailSubmit}
+        delay={15000}
+      />
     </div>
   );
 }

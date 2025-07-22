@@ -10,7 +10,8 @@ import Footer from "@/components/footer";
 import WelcomeScreen from "@/components/welcome-screen";
 import PersonalizedContent from "@/components/personalized-content";
 import PersonalizationSettings from "@/components/personalization-settings";
-import OnboardingTooltip, { useOnboarding, homeOnboardingSteps } from "@/components/onboarding-tooltip";
+// import OnboardingTooltip, { useOnboarding, homeOnboardingSteps } from "@/components/onboarding-tooltip";
+import EmailPopup from "@/components/email-popup";
 import { AnimatePresence } from "framer-motion";
 
 interface UserInfo {
@@ -24,7 +25,6 @@ export default function Home() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isPersonalized, setIsPersonalized] = useState(false);
-  const { startOnboarding } = useOnboarding();
 
   useEffect(() => {
     // Check if user has already completed welcome screen
@@ -51,10 +51,7 @@ export default function Home() {
     localStorage.setItem('stepWelcomeShown', 'true');
     localStorage.setItem('stepUserInfo', JSON.stringify(info));
     
-    // Start onboarding tour after welcome screen
-    setTimeout(() => {
-      startOnboarding(homeOnboardingSteps);
-    }, 1000);
+    // Note: onboarding removed for now
   };
 
   const handleSkipPersonalization = () => {
@@ -72,6 +69,13 @@ export default function Home() {
 
   const handleEditPersonalization = () => {
     setShowWelcome(true);
+  };
+
+  const handleEmailSubmit = async (email: string) => {
+    console.log('Email submitted:', email);
+    // Here you would integrate with your email service or backend
+    // For now, just simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
   };
 
   return (
@@ -124,8 +128,14 @@ export default function Home() {
         </div>
       )}
 
-      {/* Onboarding Tooltip System */}
-      <OnboardingTooltip />
+      {/* Email Popup - Show after 15 seconds */}
+      <EmailPopup
+        title="🎁 Ưu Đâi Đặc Biệt STEP!"
+        description="Đăng ký email để nhận mã giảm giá 30% hosting và tips tối ưu website miễn phí!"
+        buttonText="Nhận Mã Giảm Giá"
+        onSubmit={handleEmailSubmit}
+        delay={15000}
+      />
     </div>
   );
 }

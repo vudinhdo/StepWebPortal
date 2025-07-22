@@ -10,10 +10,17 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Zap, Shield, HardDrive, Users, Server, Lock, Database, X } from "lucide-react";
 import { motion } from "framer-motion";
 import ContactForm from "@/components/contact-form";
+import EmailPopup from "@/components/email-popup";
 import PerformanceBenchmark from "@/components/performance-benchmark";
 
 export default function HostingNVME() {
   const [showPopup, setShowPopup] = useState(false);
+
+  const handleEmailSubmit = async (email: string) => {
+    console.log('Email submitted for NVME hosting:', email);
+    // Integration with email service would go here
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  };
   const [showContactForm, setShowContactForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -583,6 +590,15 @@ export default function HostingNVME() {
       <ContactForm 
         open={showContactForm} 
         onOpenChange={setShowContactForm}
+      />
+
+      {/* Email Popup - Show after 15 seconds */}
+      <EmailPopup
+        title="🚀 Ưu Đãi NVME Hosting!"
+        description="Đăng ký email để nhận mã giảm giá 35% hosting NVME + backup test miễn phí!"
+        buttonText="Nhận Mã Giảm Giá"
+        onSubmit={handleEmailSubmit}
+        delay={15000}
       />
     </div>
   );

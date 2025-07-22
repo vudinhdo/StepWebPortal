@@ -24,6 +24,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ContactForm from "@/components/contact-form";
 import PerformanceBenchmark from "@/components/performance-benchmark";
+import EmailPopup from "@/components/email-popup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -44,6 +45,12 @@ export default function HostingLaravel() {
     projectDescription: "",
     package: ""
   });
+
+  const handleEmailSubmit = async (email: string) => {
+    console.log('Email submitted for Laravel hosting:', email);
+    // Integration with email service would go here
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  };
 
   // Show popup after 10 seconds or 50% scroll
   useEffect(() => {
@@ -730,6 +737,15 @@ export default function HostingLaravel() {
       )}
 
       <Footer />
+
+      {/* Email Popup - Show after 15 seconds */}
+      <EmailPopup
+        title="🔥 Ưu Đãi Laravel Hosting!"
+        description="Đăng ký email để nhận mã giảm giá 25% hosting Laravel + e-book bảo mật miễn phí!"
+        buttonText="Nhận Mã Giảm Giá"
+        onSubmit={handleEmailSubmit}
+        delay={15000}
+      />
     </div>
   );
 }
