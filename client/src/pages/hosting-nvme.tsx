@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Zap, Shield, HardDrive, Users, Server, Lock, Database, X } from "lucide-react";
 import { motion } from "framer-motion";
 import ContactForm from "@/components/contact-form";
+import PerformanceBenchmark from "@/components/performance-benchmark";
 
 export default function HostingNVME() {
   const [showPopup, setShowPopup] = useState(false);
@@ -418,6 +419,17 @@ export default function HostingNVME() {
             </motion.div>
           </div>
         </div>
+      </section>
+
+      {/* Performance Benchmark Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-slate-50 to-blue-50">
+        <PerformanceBenchmark 
+          selectedPlan="advanced"
+          onPlanSelect={(plan) => {
+            setFormData({...formData, package: plan});
+            setShowContactForm(true);
+          }}
+        />
       </section>
 
       {/* CTA Form Section */}

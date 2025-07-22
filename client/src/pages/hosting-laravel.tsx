@@ -23,6 +23,7 @@ import {
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ContactForm from "@/components/contact-form";
+import PerformanceBenchmark from "@/components/performance-benchmark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -570,6 +571,17 @@ export default function HostingLaravel() {
             </motion.div>
           </div>
         </div>
+      </section>
+
+      {/* Performance Benchmark Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-slate-50 to-blue-50">
+        <PerformanceBenchmark 
+          selectedPlan="advanced"
+          onPlanSelect={(plan) => {
+            setFormData({...formData, package: plan});
+            setShowContactForm(true);
+          }}
+        />
       </section>
 
       {/* CTA Form Section */}
