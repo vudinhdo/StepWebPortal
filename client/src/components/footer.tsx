@@ -43,9 +43,9 @@ export default function Footer() {
             <div className="lg:col-span-1">
               <div className="flex items-center space-x-3 mb-6">
                 <img 
-                  src="/attached_assets/logo step_1753026304764.png" 
+                  src="/attached_assets/logo step_1753193285585.png" 
                   alt="STEP Logo" 
-                  className="h-12 w-auto" 
+                  className="h-16 w-auto" 
                 />
               </div>
               <h3 className="text-lg font-semibold mb-4">

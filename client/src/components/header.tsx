@@ -15,9 +15,9 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center" data-onboarding="header-logo">
             <img 
-              src="/attached_assets/logo step_1753026304764.png" 
+              src="/attached_assets/logo step_1753193285585.png" 
               alt="STEP Technology Investment Company" 
-              className="h-10 w-auto" 
+              className="h-12 w-auto" 
             />
           </div>
 
