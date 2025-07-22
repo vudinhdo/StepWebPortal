@@ -183,7 +183,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteArticle(id: number): Promise<boolean> {
     const result = await db.delete(articles).where(eq(articles.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getArticles(): Promise<Article[]> {
@@ -248,7 +248,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteService(id: number): Promise<boolean> {
     const result = await db.delete(services).where(eq(services.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getServices(): Promise<Service[]> {
@@ -296,7 +296,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteTestimonial(id: number): Promise<boolean> {
     const result = await db.delete(testimonials).where(eq(testimonials.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getTestimonials(): Promise<Testimonial[]> {
@@ -336,7 +336,7 @@ export class DatabaseStorage implements IStorage {
 
   async deletePageContent(id: number): Promise<boolean> {
     const result = await db.delete(pageContents).where(eq(pageContents.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getPageContents(): Promise<PageContent[]> {
@@ -497,7 +497,7 @@ export class DatabaseStorage implements IStorage {
     const result = await db
       .delete(websiteBackups)
       .where(eq(websiteBackups.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 }
 

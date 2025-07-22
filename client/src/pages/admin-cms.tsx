@@ -27,6 +27,7 @@ import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import CMSLogin from "./cms-login";
+import { CompleteCMSLayout } from "./admin-cms-complete";
 
 interface AuthResponse {
   success: boolean;
@@ -107,7 +108,7 @@ export default function AdminCMS() {
   }
 
   // Main CMS Interface - only rendered when authenticated
-  return <AdminCMSContent onLogout={handleLogout} />;
+  return <CompleteCMSLayout onLogout={handleLogout} />;
 }
 
 // Separate component for authenticated CMS content
