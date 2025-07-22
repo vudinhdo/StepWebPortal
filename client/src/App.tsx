@@ -8,6 +8,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Blog from "@/pages/blog";
 import Admin from "@/pages/admin";
+import AdminCMS from "@/pages/admin-cms";
 import Domain from "@/pages/domain";
 import Hosting from "@/pages/hosting";
 import HostingWordPress from "@/pages/hosting-wordpress";
@@ -23,6 +24,7 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/blog" component={Blog} />
         <Route path="/admin" component={Admin} />
+        <Route path="/Admin_CMS" component={AdminCMS} />
         <Route path="/domain" component={Domain} />
         <Route path="/hosting" component={Hosting} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress" component={HostingWordPress} />

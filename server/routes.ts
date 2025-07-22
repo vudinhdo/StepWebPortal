@@ -1,7 +1,11 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContactSchema, insertDomainContactSchema, insertArticleSchema, updateArticleSchema } from "@shared/schema";
+import { 
+  insertContactSchema, insertDomainContactSchema, insertArticleSchema, updateArticleSchema,
+  insertServiceSchema, updateServiceSchema, insertTestimonialSchema, updateTestimonialSchema,
+  insertPageContentSchema, updatePageContentSchema, insertSiteSettingSchema, insertEmailPopupLeadSchema
+} from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -326,6 +330,202 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: false, 
         message: "Lỗi máy chủ nội bộ" 
       });
+    }
+  });
+
+  // Services API routes
+  app.get("/api/services", async (req, res) => {
+    try {
+      const services = await storage.getServices();
+      res.json(services);
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  app.post("/api/services", async (req, res) => {
+    try {
+      const validatedData = insertServiceSchema.parse(req.body);
+      const service = await storage.createService(validatedData);
+      res.json({ success: true, id: service.id });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ success: false, message: "Dữ liệu không hợp lệ", errors: error.errors });
+      } else {
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  app.patch("/api/services/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = updateServiceSchema.parse(req.body);
+      const service = await storage.updateService(id, validatedData);
+      if (!service) {
+        res.status(404).json({ success: false, message: "Không tìm thấy dịch vụ" });
+        return;
+      }
+      res.json(service);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ success: false, message: "Dữ liệu không hợp lệ", errors: error.errors });
+      } else {
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  app.delete("/api/services/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await storage.deleteService(id);
+      if (!deleted) {
+        res.status(404).json({ success: false, message: "Không tìm thấy dịch vụ" });
+        return;
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Testimonials API routes
+  app.get("/api/testimonials", async (req, res) => {
+    try {
+      const testimonials = await storage.getTestimonials();
+      res.json(testimonials);
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  app.post("/api/testimonials", async (req, res) => {
+    try {
+      const validatedData = insertTestimonialSchema.parse(req.body);
+      const testimonial = await storage.createTestimonial(validatedData);
+      res.json({ success: true, id: testimonial.id });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ success: false, message: "Dữ liệu không hợp lệ", errors: error.errors });
+      } else {
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  app.patch("/api/testimonials/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = updateTestimonialSchema.parse(req.body);
+      const testimonial = await storage.updateTestimonial(id, validatedData);
+      if (!testimonial) {
+        res.status(404).json({ success: false, message: "Không tìm thấy testimonial" });
+        return;
+      }
+      res.json(testimonial);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ success: false, message: "Dữ liệu không hợp lệ", errors: error.errors });
+      } else {
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  app.delete("/api/testimonials/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await storage.deleteTestimonial(id);
+      if (!deleted) {
+        res.status(404).json({ success: false, message: "Không tìm thấy testimonial" });
+        return;
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Page Contents API routes
+  app.get("/api/page-contents", async (req, res) => {
+    try {
+      const pageContents = await storage.getPageContents();
+      res.json(pageContents);
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  app.post("/api/page-contents", async (req, res) => {
+    try {
+      const validatedData = insertPageContentSchema.parse(req.body);
+      const pageContent = await storage.createPageContent(validatedData);
+      res.json({ success: true, id: pageContent.id });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ success: false, message: "Dữ liệu không hợp lệ", errors: error.errors });
+      } else {
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  // Site Settings API routes
+  app.get("/api/site-settings", async (req, res) => {
+    try {
+      const siteSettings = await storage.getSiteSettings();
+      res.json(siteSettings);
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  app.post("/api/site-settings", async (req, res) => {
+    try {
+      const validatedData = insertSiteSettingSchema.parse(req.body);
+      const siteSetting = await storage.createSiteSetting(validatedData);
+      res.json({ success: true, key: siteSetting.key });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ success: false, message: "Dữ liệu không hợp lệ", errors: error.errors });
+      } else {
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  // Email Popup Leads API routes
+  app.get("/api/email-leads", async (req, res) => {
+    try {
+      const emailLeads = await storage.getEmailPopupLeads();
+      res.json(emailLeads);
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  app.post("/api/email-leads", async (req, res) => {
+    try {
+      const validatedData = insertEmailPopupLeadSchema.parse(req.body);
+      const emailLead = await storage.createEmailPopupLead(validatedData);
+      res.json({ success: true, id: emailLead.id });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ success: false, message: "Dữ liệu không hợp lệ", errors: error.errors });
+      } else {
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  // Domain Contacts API route
+  app.get("/api/domain-contacts", async (req, res) => {
+    try {
+      const domainContacts = await storage.getDomainContacts();
+      res.json(domainContacts);
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
     }
   });
 
