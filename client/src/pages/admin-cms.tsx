@@ -44,15 +44,20 @@ export default function AdminCMS() {
         // Check localStorage first for faster loading
         const localAuth = localStorage.getItem("cms_authenticated");
         if (localAuth === "true") {
+          console.log("Found local auth, checking server");
           const response = await fetch("/api/auth/status");
           const data: AuthResponse = await response.json();
+          console.log("Server auth status:", data);
           if (data.success && data.authenticated) {
+            console.log("Setting authenticated to true");
             setIsAuthenticated(true);
           } else {
+            console.log("Server auth failed, removing local auth");
             localStorage.removeItem("cms_authenticated");
             setIsAuthenticated(false);
           }
         } else {
+          console.log("No local auth found");
           setIsAuthenticated(false);
         }
       } catch (error) {
@@ -68,6 +73,7 @@ export default function AdminCMS() {
   }, []);
 
   const handleLoginSuccess = () => {
+    console.log("handleLoginSuccess called");
     setIsAuthenticated(true);
   };
 

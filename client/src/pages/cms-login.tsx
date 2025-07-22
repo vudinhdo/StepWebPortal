@@ -28,6 +28,7 @@ export default function CMSLogin({ onLoginSuccess }: { onLoginSuccess: () => voi
       return await apiRequest("POST", "/api/auth/login", credentials) as LoginResponse;
     },
     onSuccess: (data) => {
+      console.log("Login response:", data);
       if (data.success && data.user) {
         toast({
           title: "Đăng nhập thành công!",
@@ -35,8 +36,11 @@ export default function CMSLogin({ onLoginSuccess }: { onLoginSuccess: () => voi
         });
         // Store login state
         localStorage.setItem("cms_authenticated", "true");
+        console.log("Stored auth state, calling onLoginSuccess");
         queryClient.invalidateQueries();
         onLoginSuccess();
+      } else {
+        console.log("Login failed:", data);
       }
     },
     onError: (error: any) => {
