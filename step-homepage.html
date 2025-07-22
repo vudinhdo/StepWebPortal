@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STEP Technology Investment Company - Giải pháp CNTT toàn diện</title>
-    <meta name="description" content="Cung cấp giải pháp cloud, hosting, máy chủ và dịch vụ IT đáng tin cậy, giúp doanh nghiệp của bạn phát triển nhanh chóng và an toàn hơn. Hơn 100 dịch vụ dành cho SMEs và chuyên gia IT.">
+    <meta name="description" content="Kết nối, bảo vệ và xây dựng hạ tầng CNTT toàn diện với STEP. Cung cấp giải pháp cloud, hosting, máy chủ và dịch vụ IT đáng tin cậy, giúp doanh nghiệp của bạn phát triển nhanh chóng và an toàn hơn. Hơn 100 dịch vụ dành cho SMEs và chuyên gia IT.">
     
     <!-- Open Graph Tags -->
     <meta property="og:title" content="STEP Technology Investment Company - Giải pháp CNTT toàn diện">
@@ -56,29 +56,12 @@
         .logo {
             display: flex;
             align-items: center;
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: hsl(207, 100%, 40%);
             text-decoration: none;
         }
 
-        .logo-icon {
-            width: 40px;
+        .logo img {
             height: 40px;
-            background: hsl(207, 100%, 40%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-        }
-
-        .logo-shape {
-            width: 24px;
-            height: 24px;
-            background: white;
-            border-radius: 2px;
-            transform: rotate(45deg);
+            width: auto;
         }
 
         .nav-menu {
@@ -110,13 +93,24 @@
         }
 
         .btn-primary {
-            background: hsl(207, 100%, 40%);
+            background: linear-gradient(135deg, hsl(195, 100%, 50%), hsl(207, 100%, 40%));
             color: white;
+            animation: pulse 2s infinite;
         }
 
         .btn-primary:hover {
-            background: hsl(207, 100%, 35%);
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, hsl(195, 100%, 45%), hsl(207, 100%, 35%));
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(0, 191, 255, 0.5);
+            }
         }
 
         .btn-outline {
@@ -133,10 +127,30 @@
         /* Hero Section */
         .hero {
             padding: 5rem 0 4rem;
-            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            background: linear-gradient(135deg, hsl(210, 17%, 96%), hsl(0, 0%, 100%));
             text-align: center;
             position: relative;
             overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(200%);
+            }
         }
 
         .hero-content {
@@ -254,7 +268,7 @@
         /* Statistics Section */
         .statistics {
             padding: 5rem 0;
-            background: #f9fafb;
+            background: hsl(210,17%,96%);
         }
 
         .stats-grid {
@@ -334,9 +348,17 @@
             font-size: 0.875rem;
         }
 
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, hsl(195, 100%, 50%), hsl(207, 100%, 40%));
+            color: white;
+            text-align: center;
+        }
+
         /* Footer */
         .footer {
-            background: #1f2937;
+            background: #111827;
             color: white;
             padding: 4rem 0 2rem;
         }
@@ -462,10 +484,7 @@
         <div class="container">
             <nav class="nav-container">
                 <a href="#" class="logo">
-                    <div class="logo-icon">
-                        <div class="logo-shape"></div>
-                    </div>
-                    STEP
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTQwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjMDA3N0ZGIi8+CjxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgcng9IjIiIGZpbGw9IndoaXRlIiB0cmFuc2Zvcm09InJvdGF0ZSg0NSAxNiAyMCkiLz4KPHR4dCB4PSI1MCIgeT0iMjYiIGZvbnQtZmFtaWx5PSJJbnRlciIgZm9udC13ZWlnaHQ9IjcwMCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzAwNzdGRiI+U1RFUDU8L3R4dD4KPC9zdmc+" alt="STEP Technology Investment Company" />
                 </a>
                 
                 <div class="nav-menu">
@@ -506,42 +525,76 @@
             
             <div class="services-grid">
                 <div class="service-card fade-in">
-                    <div class="service-icon">🌐</div>
+                    <div class="service-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                            <path d="M2 12h20"/>
+                        </svg>
+                    </div>
                     <h3 class="service-title">Tên miền</h3>
                     <p class="service-description">Cung cấp và quản lý tên miền cho doanh nghiệp, dễ dàng tích hợp với các dịch vụ khác.</p>
                     <a href="#" class="service-link">Tìm hiểu thêm →</a>
                 </div>
                 
                 <div class="service-card fade-in">
-                    <div class="service-icon">☁️</div>
+                    <div class="service-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                        </svg>
+                    </div>
                     <h3 class="service-title">Cloud</h3>
                     <p class="service-description">Cloud GPU, Cloud Server, Cloud Odoo, Cloud AMD, Cloud N8N (hỗ trợ K8s và workflow automation) – Giải pháp đám mây linh hoạt cho DevOps và SysOps.</p>
                     <a href="#" class="service-link">Tìm hiểu thêm →</a>
                 </div>
                 
                 <div class="service-card fade-in">
-                    <div class="service-icon">🌍</div>
+                    <div class="service-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                    </div>
                     <h3 class="service-title">Hosting</h3>
                     <p class="service-description">Hosting WordPress, Hosting Laravel, Hosting NVME, Reseller Hosting – Tối ưu tốc độ và bảo mật cho website doanh nghiệp.</p>
                     <a href="#" class="service-link">Tìm hiểu thêm →</a>
                 </div>
                 
                 <div class="service-card fade-in">
-                    <div class="service-icon">🖥️</div>
+                    <div class="service-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M6 8h.01"/>
+                            <path d="M10 8h.01"/>
+                            <path d="M14 8h.01"/>
+                        </svg>
+                    </div>
                     <h3 class="service-title">Máy chủ</h3>
                     <p class="service-description">Thiết bị máy chủ, thiết bị mạng, thuê máy chủ vật lý, chỗ đặt máy chủ, thuê thiết bị mạng – Hạ tầng mạnh mẽ cho IT Manager.</p>
                     <a href="#" class="service-link">Tìm hiểu thêm →</a>
                 </div>
                 
                 <div class="service-card fade-in">
-                    <div class="service-icon">📧</div>
+                    <div class="service-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
                     <h3 class="service-title">Email</h3>
                     <p class="service-description">Email server cho doanh nghiệp, Google Workspace, Microsoft 365, Hybrid Email, dịch vụ vận hành Email server – Giải pháp email an toàn và chuyên nghiệp.</p>
                     <a href="#" class="service-link">Tìm hiểu thêm →</a>
                 </div>
                 
                 <div class="service-card fade-in">
-                    <div class="service-icon">💻</div>
+                    <div class="service-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <rect x="7" y="7" width="3" height="9"/>
+                            <rect x="14" y="7" width="3" height="5"/>
+                        </svg>
+                    </div>
                     <h3 class="service-title">Phần mềm</h3>
                     <p class="service-description">Microsoft, Google, VMware, Sangfor, phần mềm bản quyền, phần mềm AI, phần mềm khác – Cung cấp license và hỗ trợ tích hợp.</p>
                     <a href="#" class="service-link">Tìm hiểu thêm →</a>
@@ -554,24 +607,25 @@
     <section class="statistics">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Con số ấn tượng</h2>
+                <h2 class="section-title">Tại sao chọn STEP?</h2>
+                <p class="section-subtitle">Đối tác tin cậy cho hạ tầng CNTT của bạn</p>
             </div>
             <div class="stats-grid">
                 <div class="stat-item fade-in">
-                    <div class="stat-number">1000+</div>
-                    <div class="stat-label">Khách hàng tin tưởng</div>
-                </div>
-                <div class="stat-item fade-in">
-                    <div class="stat-number">99.9%</div>
-                    <div class="stat-label">Uptime đảm bảo</div>
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Giải pháp CNTT</div>
                 </div>
                 <div class="stat-item fade-in">
                     <div class="stat-number">24/7</div>
-                    <div class="stat-label">Hỗ trợ kỹ thuật</div>
+                    <div class="stat-label">Hỗ trợ cho SMEs</div>
                 </div>
                 <div class="stat-item fade-in">
-                    <div class="stat-number">100+</div>
-                    <div class="stat-label">Dịch vụ IT</div>
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Doanh nghiệp tin dùng</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Thời gian hoạt động</div>
                 </div>
             </div>
         </div>
@@ -581,41 +635,49 @@
     <section class="testimonials">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Khách hàng nói gì về STEP</h2>
+                <h2 class="section-title">Các doanh nghiệp hàng đầu tin dùng STEP</h2>
+                <p class="section-subtitle">Hàng ngàn SMEs đã tối ưu hóa hạ tầng với chúng tôi</p>
             </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card fade-in">
-                    <p class="testimonial-quote">"STEP đã giúp chúng tôi xây dựng hạ tầng IT ổn định và bảo mật. Dịch vụ hỗ trợ 24/7 rất chuyên nghiệp."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">NV</div>
-                        <div class="author-info">
-                            <h4>Nguyễn Văn A</h4>
-                            <p>CTO, Công ty ABC</p>
+            
+            <!-- Modern IT infrastructure image -->
+            <div class="mb-16">
+                <div style="background: hsl(210,17%,96%); border-radius: 1rem; padding: 2rem;">
+                    <img 
+                        src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=600" 
+                        alt="Professional business team discussing IT infrastructure" 
+                        style="border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); width: 100%; height: 16rem; object-fit: cover; margin-bottom: 2rem; transition: transform 0.3s ease;" 
+                        onmouseover="this.style.transform='scale(1.02)'"
+                        onmouseout="this.style.transform='scale(1)'"
+                    />
+                    <div style="text-align: center;">
+                        <blockquote style="font-size: 1.125rem; color: #374151; font-style: italic; margin-bottom: 1rem;">
+                            "STEP đã giúp chúng tôi xây dựng hạ tầng CNTT hiện đại và bảo mật. Đội ngũ chuyên nghiệp và hỗ trợ tận tình 24/7."
+                        </blockquote>
+                        <div style="color: hsl(207,100%,40%); font-weight: 600;">
+                            CEO - Công ty Công nghệ ABC
                         </div>
                     </div>
                 </div>
-                
-                <div class="testimonial-card fade-in">
-                    <p class="testimonial-quote">"Giải pháp cloud của STEP giúp chúng tôi tiết kiệm 40% chi phí vận hành và tăng hiệu suất làm việc đáng kể."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">LT</div>
-                        <div class="author-info">
-                            <h4>Lê Thị B</h4>
-                            <p>IT Manager, Công ty XYZ</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card fade-in">
-                    <p class="testimonial-quote">"Hosting WordPress của STEP có tốc độ nhanh và độ ổn định cao. Website của chúng tôi hoạt động mượt mà 24/7."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">PT</div>
-                        <div class="author-info">
-                            <h4>Phạm Thanh C</h4>
-                            <p>CEO, Startup DEF</p>
-                        </div>
-                    </div>
-                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem;">
+                Sẵn sàng nâng cấp hạ tầng CNTT của bạn?
+            </h2>
+            <p style="font-size: 1.25rem; margin-bottom: 2rem;">
+                Liên hệ với chuyên gia STEP để được tư vấn miễn phí
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 1rem; justify-content: center; align-items: center;">
+                <a href="#contact" class="btn" style="background: white; color: hsl(207,100%,40%); padding: 1rem 2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; height: 3.5rem; line-height: 1.5rem;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    Tư vấn miễn phí
+                </a>
+                <a href="#contact" class="btn btn-outline" style="border: 2px solid white; color: white; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; background: transparent; transition: all 0.3s ease; height: 3.5rem; line-height: 1.5rem;" onmouseover="this.style.background='white'; this.style.color='hsl(207,100%,40%)'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='transparent'; this.style.color='white'; this.style.transform='scale(1)'">
+                    Xem demo sản phẩm
+                </a>
             </div>
         </div>
     </section>
@@ -625,11 +687,33 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>STEP Technology</h3>
-                    <p>Đối tác tin cậy cho giải pháp CNTT toàn diện của doanh nghiệp bạn.</p>
-                    <div class="mt-4">
-                        <p><strong>Hotline:</strong> 1900-xxxx</p>
-                        <p><strong>Email:</strong> info@step.com.vn</p>
+                    <h3>CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP</h3>
+                    <div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 1.5rem;">
+                        <p><strong style="color: white;">Mã số thuế:</strong> 0108230633</p>
+                        <p><strong style="color: white;">Địa chỉ:</strong> Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội</p>
+                        <p><strong style="color: white;">Văn phòng:</strong> Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội</p>
+                        
+                        <div style="margin-top: 1.5rem;">
+                            <p style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                <svg width="16" height="16" fill="hsl(195,100%,50%)" viewBox="0 0 24 24">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                                <span style="color: white; font-weight: 500;">Hotline:</span>
+                                <a href="tel:0985636289" style="color: hsl(195,100%,50%); text-decoration: none; transition: color 0.3s ease;">
+                                    0985.636.289
+                                </a>
+                            </p>
+                            <p style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                <svg width="16" height="16" fill="hsl(195,100%,50%)" viewBox="0 0 24 24">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                                <span style="color: white; font-weight: 500;">Email:</span>
+                                <a href="mailto:info@step.com.vn" style="color: hsl(195,100%,50%); text-decoration: none; transition: color 0.3s ease;">
+                                    info@step.com.vn
+                                </a>
+                            </p>
+                        </div>
                     </div>
                 </div>
                 
