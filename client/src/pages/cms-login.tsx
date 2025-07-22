@@ -25,7 +25,14 @@ export default function CMSLogin({ onLoginSuccess }: { onLoginSuccess: () => voi
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: { username: string; password: string }) => {
-      return await apiRequest("POST", "/api/auth/login", credentials) as LoginResponse;
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+      return await response.json() as LoginResponse;
     },
     onSuccess: (data) => {
       console.log("Login response:", data);
