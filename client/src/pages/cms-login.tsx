@@ -33,6 +33,8 @@ export default function CMSLogin({ onLoginSuccess }: { onLoginSuccess: () => voi
           title: "Đăng nhập thành công!",
           description: `Chào mừng ${data.user.username}`,
         });
+        // Store login state
+        localStorage.setItem("cms_authenticated", "true");
         queryClient.invalidateQueries();
         onLoginSuccess();
       }

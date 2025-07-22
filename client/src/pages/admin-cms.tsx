@@ -41,13 +41,23 @@ export default function AdminCMS() {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch("/api/auth/status");
-        const data: AuthResponse = await response.json();
-        if (data.success && data.authenticated) {
-          setIsAuthenticated(true);
+        // Check localStorage first for faster loading
+        const localAuth = localStorage.getItem("cms_authenticated");
+        if (localAuth === "true") {
+          const response = await fetch("/api/auth/status");
+          const data: AuthResponse = await response.json();
+          if (data.success && data.authenticated) {
+            setIsAuthenticated(true);
+          } else {
+            localStorage.removeItem("cms_authenticated");
+            setIsAuthenticated(false);
+          }
+        } else {
+          setIsAuthenticated(false);
         }
       } catch (error) {
         console.error("Auth check error:", error);
+        localStorage.removeItem("cms_authenticated");
         setIsAuthenticated(false);
       } finally {
         setIsCheckingAuth(false);
@@ -64,9 +74,12 @@ export default function AdminCMS() {
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
+      localStorage.removeItem("cms_authenticated");
       setIsAuthenticated(false);
     } catch (error) {
       console.error("Logout error:", error);
+      localStorage.removeItem("cms_authenticated");
+      setIsAuthenticated(false);
     }
   };
 
