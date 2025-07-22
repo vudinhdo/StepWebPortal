@@ -1,10 +1,12 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { authenticateAdmin, loginAdmin, logoutAdmin, getCurrentUser, isAuthenticated } from "./auth";
 import { 
   insertContactSchema, insertDomainContactSchema, insertArticleSchema, updateArticleSchema,
   insertServiceSchema, updateServiceSchema, insertTestimonialSchema, updateTestimonialSchema,
-  insertPageContentSchema, updatePageContentSchema, insertSiteSettingSchema, insertEmailPopupLeadSchema
+  insertPageContentSchema, updatePageContentSchema, insertSiteSettingSchema, insertEmailPopupLeadSchema,
+  loginSchema
 } from "@shared/schema";
 import { z } from "zod";
 
@@ -527,6 +529,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
     }
+  });
+
+  // Authentication routes for CMS
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const validatedData = loginSchema.parse(req.body);
+      const user = await loginAdmin(validatedData.username, validatedData.password);
+      
+      if (user) {
+        res.json({ success: true, user: { id: user.id, username: user.username, role: user.role } });
+      } else {
+        res.status(401).json({ success: false, message: "Tên đăng nhập hoặc mật khẩu không đúng" });
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          message: "Dữ liệu không hợp lệ",
+          errors: error.errors 
+        });
+      } else {
+        res.status(500).json({ 
+          success: false, 
+          message: "Lỗi máy chủ nội bộ" 
+        });
+      }
+    }
+  });
+
+  app.post("/api/auth/logout", (req, res) => {
+    logoutAdmin();
+    res.json({ success: true, message: "Đã đăng xuất thành công" });
+  });
+
+  app.get("/api/auth/user", (req, res) => {
+    const user = getCurrentUser();
+    if (user) {
+      res.json({ success: true, user: { id: user.id, username: user.username, role: user.role } });
+    } else {
+      res.status(401).json({ success: false, message: "Chưa đăng nhập" });
+    }
+  });
+
+  app.get("/api/auth/status", (req, res) => {
+    res.json({ success: true, authenticated: isAuthenticated() });
   });
 
   const httpServer = createServer(app);

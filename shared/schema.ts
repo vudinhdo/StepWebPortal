@@ -1,6 +1,43 @@
-import { pgTable, text, serial, timestamp, boolean, integer, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean, integer, jsonb, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+
+// Admin Users table for CMS authentication
+export const adminUsers = pgTable("admin_users", {
+  id: serial("id").primaryKey(),
+  username: varchar("username", { length: 50 }).notNull().unique(),
+  email: varchar("email", { length: 100 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(), // hashed password
+  role: varchar("role", { length: 20 }).notNull().default("admin"),
+  lastLogin: timestamp("last_login"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// CMS Activity Logs
+export const activityLogs = pgTable("activity_logs", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => adminUsers.id),
+  action: varchar("action", { length: 50 }).notNull(), // 'create', 'update', 'delete'
+  resource: varchar("resource", { length: 50 }).notNull(), // 'article', 'service', etc.
+  resourceId: integer("resource_id"),
+  changes: jsonb("changes"), // what was changed
+  ipAddress: varchar("ip_address", { length: 45 }),
+  userAgent: varchar("user_agent", { length: 500 }),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Website Backups
+export const websiteBackups = pgTable("website_backups", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(),
+  description: varchar("description", { length: 500 }),
+  filePath: varchar("file_path", { length: 255 }).notNull(),
+  size: integer("size"), // file size in bytes
+  createdBy: integer("created_by").references(() => adminUsers.id),
+  createdAt: timestamp("created_at").defaultNow(),
+});
 
 export const contacts = pgTable("contacts", {
   id: serial("id").primaryKey(),
@@ -204,3 +241,25 @@ export type SiteSetting = typeof siteSettings.$inferSelect;
 
 export type InsertEmailPopupLead = z.infer<typeof insertEmailPopupLeadSchema>;
 export type EmailPopupLead = typeof emailPopupLeads.$inferSelect;
+
+// Admin and CMS schemas
+export const insertAdminUserSchema = createInsertSchema(adminUsers, {
+  username: z.string().min(3).max(50),
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+
+export const loginSchema = z.object({
+  username: z.string().min(1),
+  password: z.string().min(1),
+});
+
+export const insertActivityLogSchema = createInsertSchema(activityLogs);
+export const insertWebsiteBackupSchema = createInsertSchema(websiteBackups);
+
+export type AdminUser = typeof adminUsers.$inferSelect;
+export type InsertAdminUser = typeof adminUsers.$inferInsert;
+export type ActivityLog = typeof activityLogs.$inferSelect;
+export type InsertActivityLog = typeof activityLogs.$inferInsert;
+export type WebsiteBackup = typeof websiteBackups.$inferSelect;
+export type InsertWebsiteBackup = typeof websiteBackups.$inferInsert;

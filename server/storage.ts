@@ -1,12 +1,13 @@
 import { 
-  contacts, articles, domainContacts, services, testimonials, pageContents, siteSettings, emailPopupLeads,
+  contacts, articles, domainContacts, services, testimonials, pageContents, siteSettings, emailPopupLeads, adminUsers, activityLogs, websiteBackups,
   type Contact, type InsertContact, type DomainContact, type InsertDomainContact, 
   type Article, type InsertArticle, type UpdateArticle,
   type Service, type InsertService, type UpdateService,
   type Testimonial, type InsertTestimonial, type UpdateTestimonial,
   type PageContent, type InsertPageContent, type UpdatePageContent,
   type SiteSetting, type InsertSiteSetting,
-  type EmailPopupLead, type InsertEmailPopupLead
+  type EmailPopupLead, type InsertEmailPopupLead,
+  type AdminUser, type InsertAdminUser, type ActivityLog, type InsertActivityLog, type WebsiteBackup, type InsertWebsiteBackup
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -72,6 +73,22 @@ export interface IStorage {
   getEmailPopupLeads(): Promise<EmailPopupLead[]>;
   getEmailPopupLead(id: number): Promise<EmailPopupLead | undefined>;
   markEmailPopupLeadAsProcessed(id: number): Promise<EmailPopupLead | undefined>;
+
+  // Authentication methods
+  createAdminUser(user: InsertAdminUser): Promise<AdminUser>;
+  getAdminUser(id: number): Promise<AdminUser | undefined>;
+  getAdminUserByUsername(username: string): Promise<AdminUser | undefined>;
+  updateAdminUserLastLogin(id: number): Promise<AdminUser | undefined>;
+
+  // Activity log methods
+  createActivityLog(log: InsertActivityLog): Promise<ActivityLog>;
+  getActivityLogs(limit?: number): Promise<ActivityLog[]>;
+
+  // Backup methods
+  createWebsiteBackup(backup: InsertWebsiteBackup): Promise<WebsiteBackup>;
+  getWebsiteBackups(): Promise<WebsiteBackup[]>;
+  getWebsiteBackup(id: number): Promise<WebsiteBackup | undefined>;
+  deleteWebsiteBackup(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -399,6 +416,88 @@ export class DatabaseStorage implements IStorage {
       .where(eq(emailPopupLeads.id, id))
       .returning();
     return lead || undefined;
+  }
+
+  // Authentication methods implementation
+  async createAdminUser(user: InsertAdminUser): Promise<AdminUser> {
+    const [newUser] = await db
+      .insert(adminUsers)
+      .values(user)
+      .returning();
+    return newUser;
+  }
+
+  async getAdminUser(id: number): Promise<AdminUser | undefined> {
+    const [user] = await db
+      .select()
+      .from(adminUsers)
+      .where(eq(adminUsers.id, id));
+    return user;
+  }
+
+  async getAdminUserByUsername(username: string): Promise<AdminUser | undefined> {
+    const [user] = await db
+      .select()
+      .from(adminUsers)
+      .where(eq(adminUsers.username, username));
+    return user;
+  }
+
+  async updateAdminUserLastLogin(id: number): Promise<AdminUser | undefined> {
+    const [user] = await db
+      .update(adminUsers)
+      .set({ lastLogin: new Date() })
+      .where(eq(adminUsers.id, id))
+      .returning();
+    return user;
+  }
+
+  // Activity log methods implementation
+  async createActivityLog(log: InsertActivityLog): Promise<ActivityLog> {
+    const [newLog] = await db
+      .insert(activityLogs)
+      .values(log)
+      .returning();
+    return newLog;
+  }
+
+  async getActivityLogs(limit: number = 100): Promise<ActivityLog[]> {
+    return await db
+      .select()
+      .from(activityLogs)
+      .orderBy(desc(activityLogs.createdAt))
+      .limit(limit);
+  }
+
+  // Backup methods implementation
+  async createWebsiteBackup(backup: InsertWebsiteBackup): Promise<WebsiteBackup> {
+    const [newBackup] = await db
+      .insert(websiteBackups)
+      .values(backup)
+      .returning();
+    return newBackup;
+  }
+
+  async getWebsiteBackups(): Promise<WebsiteBackup[]> {
+    return await db
+      .select()
+      .from(websiteBackups)
+      .orderBy(desc(websiteBackups.createdAt));
+  }
+
+  async getWebsiteBackup(id: number): Promise<WebsiteBackup | undefined> {
+    const [backup] = await db
+      .select()
+      .from(websiteBackups)
+      .where(eq(websiteBackups.id, id));
+    return backup;
+  }
+
+  async deleteWebsiteBackup(id: number): Promise<boolean> {
+    const result = await db
+      .delete(websiteBackups)
+      .where(eq(websiteBackups.id, id));
+    return result.rowCount > 0;
   }
 }
 
