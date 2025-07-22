@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STEP Technology Investment Company - Giải pháp CNTT toàn diện</title>
+    <meta name="description" content="Cung cấp giải pháp cloud, hosting, máy chủ và dịch vụ IT đáng tin cậy, giúp doanh nghiệp của bạn phát triển nhanh chóng và an toàn hơn. Hơn 100 dịch vụ dành cho SMEs và chuyên gia IT.">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="STEP Technology Investment Company - Giải pháp CNTT toàn diện">
+    <meta property="og:description" content="Cung cấp giải pháp cloud, hosting, máy chủ và dịch vụ IT đáng tin cậy cho doanh nghiệp">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://step.com.vn">
+    
+    <!-- CSS Styles -->
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 50;
+            height: 64px;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: hsl(207, 100%, 40%);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: hsl(207, 100%, 40%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+
+        .logo-shape {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 2px;
+            transform: rotate(45deg);
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: hsl(207, 100%, 40%);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: hsl(207, 100%, 40%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: hsl(207, 100%, 35%);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            border: 2px solid hsl(207, 100%, 40%);
+            color: hsl(207, 100%, 40%);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: hsl(207, 100%, 40%);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 5rem 0 4rem;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: hsl(207, 100%, 40%);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: hsl(207, 100%, 40%);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border-color: hsl(207, 100%, 40%);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, hsl(207, 100%, 40%) 0%, hsl(207, 100%, 35%) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .service-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: hsl(207, 100%, 40%);
+            margin-bottom: 1rem;
+        }
+
+        .service-description {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-link {
+            color: hsl(207, 100%, 40%);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Statistics Section */
+        .statistics {
+            padding: 5rem 0;
+            background: #f9fafb;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: hsl(207, 100%, 40%);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .testimonial-quote {
+            font-size: 1.125rem;
+            color: #374151;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: hsl(207, 100%, 40%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .author-info h4 {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .author-info p {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: hsl(207, 100%, 40%);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: hsl(207, 100%, 40%);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mt-4 { margin-top: 1rem; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" data-onboarding="header-logo">
+        <div class="container">
+            <nav class="nav-container">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <div class="logo-shape"></div>
+                    </div>
+                    STEP
+                </a>
+                
+                <div class="nav-menu">
+                    <a href="#" class="nav-link">Trang chủ</a>
+                    <a href="#services" class="nav-link" data-onboarding="services-menu">Dịch vụ</a>
+                    <a href="#" class="nav-link">Blog</a>
+                    <a href="#contact" class="nav-link">Liên hệ</a>
+                    <a href="#" class="btn btn-outline">Đăng nhập</a>
+                    <a href="#" class="btn btn-primary" data-onboarding="contact-button">Đăng ký</a>
+                </div>
+                
+                <button class="mobile-menu-btn">☰</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" data-onboarding="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Kết nối, bảo vệ và xây dựng hạ tầng CNTT toàn diện với STEP</h1>
+                <p>Cung cấp giải pháp cloud, hosting, máy chủ và dịch vụ IT đáng tin cậy, giúp doanh nghiệp của bạn phát triển nhanh chóng và an toàn hơn. Hơn 100 dịch vụ dành cho SMEs và chuyên gia IT.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary" data-onboarding="hero-cta-button">Bắt đầu miễn phí</a>
+                    <a href="#contact" class="btn btn-outline">Liên hệ chuyên gia</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services" data-onboarding="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Giải pháp CNTT toàn diện từ STEP</h2>
+                <p class="section-subtitle">Tối ưu hóa hạ tầng công nghệ cho doanh nghiệp của bạn</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-icon">🌐</div>
+                    <h3 class="service-title">Tên miền</h3>
+                    <p class="service-description">Cung cấp và quản lý tên miền cho doanh nghiệp, dễ dàng tích hợp với các dịch vụ khác.</p>
+                    <a href="#" class="service-link">Tìm hiểu thêm →</a>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">☁️</div>
+                    <h3 class="service-title">Cloud</h3>
+                    <p class="service-description">Cloud GPU, Cloud Server, Cloud Odoo, Cloud AMD, Cloud N8N (hỗ trợ K8s và workflow automation) – Giải pháp đám mây linh hoạt cho DevOps và SysOps.</p>
+                    <a href="#" class="service-link">Tìm hiểu thêm →</a>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">🌍</div>
+                    <h3 class="service-title">Hosting</h3>
+                    <p class="service-description">Hosting WordPress, Hosting Laravel, Hosting NVME, Reseller Hosting – Tối ưu tốc độ và bảo mật cho website doanh nghiệp.</p>
+                    <a href="#" class="service-link">Tìm hiểu thêm →</a>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">🖥️</div>
+                    <h3 class="service-title">Máy chủ</h3>
+                    <p class="service-description">Thiết bị máy chủ, thiết bị mạng, thuê máy chủ vật lý, chỗ đặt máy chủ, thuê thiết bị mạng – Hạ tầng mạnh mẽ cho IT Manager.</p>
+                    <a href="#" class="service-link">Tìm hiểu thêm →</a>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">📧</div>
+                    <h3 class="service-title">Email</h3>
+                    <p class="service-description">Email server cho doanh nghiệp, Google Workspace, Microsoft 365, Hybrid Email, dịch vụ vận hành Email server – Giải pháp email an toàn và chuyên nghiệp.</p>
+                    <a href="#" class="service-link">Tìm hiểu thêm →</a>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">💻</div>
+                    <h3 class="service-title">Phần mềm</h3>
+                    <p class="service-description">Microsoft, Google, VMware, Sangfor, phần mềm bản quyền, phần mềm AI, phần mềm khác – Cung cấp license và hỗ trợ tích hợp.</p>
+                    <a href="#" class="service-link">Tìm hiểu thêm →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="statistics">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Con số ấn tượng</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Khách hàng tin tưởng</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime đảm bảo</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Hỗ trợ kỹ thuật</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Dịch vụ IT</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Khách hàng nói gì về STEP</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-quote">"STEP đã giúp chúng tôi xây dựng hạ tầng IT ổn định và bảo mật. Dịch vụ hỗ trợ 24/7 rất chuyên nghiệp."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">NV</div>
+                        <div class="author-info">
+                            <h4>Nguyễn Văn A</h4>
+                            <p>CTO, Công ty ABC</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-quote">"Giải pháp cloud của STEP giúp chúng tôi tiết kiệm 40% chi phí vận hành và tăng hiệu suất làm việc đáng kể."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">LT</div>
+                        <div class="author-info">
+                            <h4>Lê Thị B</h4>
+                            <p>IT Manager, Công ty XYZ</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-quote">"Hosting WordPress của STEP có tốc độ nhanh và độ ổn định cao. Website của chúng tôi hoạt động mượt mà 24/7."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">PT</div>
+                        <div class="author-info">
+                            <h4>Phạm Thanh C</h4>
+                            <p>CEO, Startup DEF</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>STEP Technology</h3>
+                    <p>Đối tác tin cậy cho giải pháp CNTT toàn diện của doanh nghiệp bạn.</p>
+                    <div class="mt-4">
+                        <p><strong>Hotline:</strong> 1900-xxxx</p>
+                        <p><strong>Email:</strong> info@step.com.vn</p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Dịch vụ</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Cloud Computing</a></li>
+                        <li><a href="#">Web Hosting</a></li>
+                        <li><a href="#">Email Server</a></li>
+                        <li><a href="#">Tên miền</a></li>
+                        <li><a href="#">Máy chủ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Hỗ trợ</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Trung tâm hỗ trợ</a></li>
+                        <li><a href="#">Tài liệu kỹ thuật</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Báo cáo sự cố</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Công ty</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Tuyển dụng</a></li>
+                        <li><a href="#">Điều khoản</a></li>
+                        <li><a href="#">Bảo mật</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 STEP Technology Investment Company. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with fade-in class
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter animation for statistics
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const target = counter.textContent;
+                const isPercentage = target.includes('%');
+                const isPlus = target.includes('+');
+                const cleanTarget = parseInt(target.replace(/[^0-9]/g, ''));
+                
+                let current = 0;
+                const increment = cleanTarget / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= cleanTarget) {
+                        current = cleanTarget;
+                        clearInterval(timer);
+                    }
+                    
+                    let displayValue = Math.floor(current);
+                    if (isPercentage) {
+                        displayValue += '%';
+                    } else if (isPlus) {
+                        displayValue += '+';
+                    }
+                    counter.textContent = displayValue;
+                }, 20);
+            });
+        }
+
+        // Trigger counter animation when statistics section is visible
+        const statsSection = document.querySelector('.statistics');
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        // Mobile menu toggle (basic implementation)
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('.nav-menu');
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Simple contact form handling (placeholder)
+        function handleContact() {
+            alert('Cảm ơn bạn đã quan tâm! Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.');
+        }
+
+        // Add contact form handler to CTA buttons
+        document.querySelectorAll('a[href="#contact"]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if (btn.classList.contains('btn')) {
+                    e.preventDefault();
+                    handleContact();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
