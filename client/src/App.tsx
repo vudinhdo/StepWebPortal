@@ -17,6 +17,7 @@ import HostingReseller from "@/pages/hosting-reseller";
 import HostingLaravel from "@/pages/hosting-laravel";
 import HostingNVME from "@/pages/hosting-nvme";
 import Cloud from "@/pages/cloud";
+import PerformanceBenchmark from "@/pages/performance-benchmark";
 
 function Router() {
   return (
@@ -34,6 +35,7 @@ function Router() {
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME" component={HostingNVME} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting" component={HostingReseller} />
         <Route path="/cloud" component={Cloud} />
+        <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route component={NotFound} />
       </Switch>
     </PageTransition>

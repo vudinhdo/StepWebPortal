@@ -114,6 +114,13 @@ export default function Header() {
                     Blog
                   </a>
                   <a 
+                    href="/performance-benchmark" 
+                    className="block py-3 text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Performance Benchmark
+                  </a>
+                  <a 
                     href="#contact" 
                     className="block py-3 text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
