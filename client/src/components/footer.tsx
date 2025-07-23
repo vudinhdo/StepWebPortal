@@ -130,6 +130,7 @@ export default function Footer() {
                 <h4 className="text-sm font-semibold text-white mb-3">Tài nguyên</h4>
                 <ul className="space-y-2 text-xs text-gray-400">
                   <li><a href="/blog" className="hover:text-[hsl(195,100%,50%)] transition-colors">Blog & Tin tức</a></li>
+                  <li><a href="/performance-benchmark" className="hover:text-[hsl(195,100%,50%)] transition-colors">Performance Benchmark</a></li>
                   <li><a href="#" className="hover:text-[hsl(195,100%,50%)] transition-colors">Hướng dẫn sử dụng</a></li>
                   <li><a href="#" className="hover:text-[hsl(195,100%,50%)] transition-colors">Tài liệu kỹ thuật</a></li>
                   <li><a href="#" className="hover:text-[hsl(195,100%,50%)] transition-colors">Báo giá dịch vụ</a></li>
