@@ -12,6 +12,7 @@ import { MediaManager } from "@/components/cms/media-manager";
 import { PageBuilder } from "@/components/cms/page-builder";
 import { UserManagement } from "@/components/cms/user-management";
 import { MenuManagement } from "@/components/cms/menu-management";
+import { ContentManager } from "@/components/cms/content-manager";
 import { format } from "date-fns";
 
 interface CMSLayoutProps {
@@ -23,8 +24,9 @@ export function CompleteCMSLayout({ onLogout }: CMSLayoutProps) {
   
   const menuItems = [
     { id: "dashboard", label: "Tổng quan", icon: LayoutDashboard },
+    { id: "content", label: "Nội dung Website", icon: Globe },
     { id: "articles", label: "Bài viết", icon: FileText },
-    { id: "pages", label: "Trang & Page Builder", icon: Globe },
+    { id: "pages", label: "Page Builder", icon: Layout },
     { id: "media", label: "Media Manager", icon: Image },
     { id: "menus", label: "Quản lý Menu", icon: Menu },
     { id: "users", label: "Người dùng", icon: Users },
@@ -50,6 +52,8 @@ export function CompleteCMSLayout({ onLogout }: CMSLayoutProps) {
     switch (activeTab) {
       case "dashboard":
         return <DashboardContent articles={articles} contacts={contacts} services={services} />;
+      case "content":
+        return <ContentManager />;
       case "articles":
         return <ArticlesContent />;
       case "pages":

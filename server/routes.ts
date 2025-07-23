@@ -576,6 +576,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ success: true, authenticated: isAuthenticated() });
   });
 
+  // Page Content Management Routes
+  app.get("/api/page-contents", async (req, res) => {
+    try {
+      const { page } = req.query;
+      const contents = page 
+        ? await storage.getPageContentsByPage(page as string)
+        : await storage.getPageContents();
+      res.json(contents);
+    } catch (error) {
+      console.error("Error fetching page contents:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  app.post("/api/page-contents", async (req, res) => {
+    try {
+      const content = await storage.createPageContent(req.body);
+      res.json({ success: true, data: content });
+    } catch (error) {
+      console.error("Error creating page content:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  app.patch("/api/page-contents/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const content = await storage.updatePageContent(parseInt(id), req.body);
+      if (!content) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy nội dung" });
+      }
+      res.json({ success: true, data: content });
+    } catch (error) {
+      console.error("Error updating page content:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  app.delete("/api/page-contents/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const success = await storage.deletePageContent(parseInt(id));
+      if (!success) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy nội dung" });
+      }
+      res.json({ success: true, message: "Đã xóa nội dung" });
+    } catch (error) {
+      console.error("Error deleting page content:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

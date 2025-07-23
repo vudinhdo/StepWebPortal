@@ -9,6 +9,7 @@ import Home from "@/pages/home";
 import Blog from "@/pages/blog";
 import Admin from "@/pages/admin";
 import AdminCMS from "@/pages/admin-cms";
+import AdminLogin from "@/pages/admin-login";
 import Domain from "@/pages/domain";
 import Hosting from "@/pages/hosting";
 import HostingWordPress from "@/pages/hosting-wordpress";
@@ -24,6 +25,7 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/blog" component={Blog} />
         <Route path="/admin" component={Admin} />
+        <Route path="/admin-login" component={AdminLogin} />
         <Route path="/Admin_CMS" component={AdminCMS} />
         <Route path="/domain" component={Domain} />
         <Route path="/hosting" component={Hosting} />

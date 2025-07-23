@@ -10,9 +10,11 @@ import Footer from "@/components/footer";
 import WelcomeScreen from "@/components/welcome-screen";
 import PersonalizedContent from "@/components/personalized-content";
 import PersonalizationSettings from "@/components/personalization-settings";
-// import OnboardingTooltip, { useOnboarding, homeOnboardingSteps } from "@/components/onboarding-tooltip";
 import EmailPopup from "@/components/email-popup";
+import { LiveContentEditor } from "@/components/live-content-editor";
+import { EditableSection } from "@/components/editable-section";
 import { AnimatePresence } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 
 interface UserInfo {
   name: string;
@@ -25,6 +27,7 @@ export default function Home() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isPersonalized, setIsPersonalized] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Check if user has already completed welcome screen
@@ -73,69 +76,106 @@ export default function Home() {
 
   const handleEmailSubmit = async (email: string) => {
     console.log('Email submitted:', email);
-    // Here you would integrate with your email service or backend
-    // For now, just simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
   };
 
+
+
   return (
-    <div className="min-h-screen">
-      <Header />
-      
-      {/* Personalized Hero Section */}
-      {isPersonalized && userInfo ? (
-        <section className="pt-20 pb-8 bg-gradient-to-br from-blue-50 to-indigo-100">
-          <div className="container mx-auto px-4">
-            <PersonalizedContent userInfo={userInfo} />
-          </div>
-        </section>
-      ) : (
-        <Hero />
-      )}
-      
-      <Services />
-      <Statistics />
-      <Testimonials />
-      <TooltipShowcase />
-      <Resources />
-      <Footer />
-
-      {/* Personalization Settings */}
-      {isPersonalized && userInfo && (
-        <PersonalizationSettings
-          userInfo={userInfo}
-          onReset={handleResetPersonalization}
-          onEdit={handleEditPersonalization}
-        />
-      )}
-
-      {/* Welcome Screen Modal */}
-      <AnimatePresence>
-        {showWelcome && (
-          <WelcomeScreen onComplete={handleWelcomeComplete} />
-        )}
-      </AnimatePresence>
-
-      {/* Skip button for welcome screen */}
-      {showWelcome && (
-        <div className="fixed bottom-4 right-4 z-[60]">
-          <button
-            onClick={handleSkipPersonalization}
-            className="text-white bg-black/50 hover:bg-black/70 px-4 py-2 rounded-lg text-sm transition-all"
+    <LiveContentEditor pageName="Trang chủ">
+      <div className="min-h-screen bg-white">
+        <Header />
+        
+        <main>
+          {isPersonalized && userInfo ? (
+            <EditableSection
+              sectionId="personalized-hero"
+              title="Nội dung cá nhân hóa"
+              className="pt-20 pb-8 bg-gradient-to-br from-blue-50 to-indigo-100"
+            >
+              <PersonalizedContent userInfo={userInfo} />
+            </EditableSection>
+          ) : (
+            <EditableSection
+              sectionId="hero"
+              title="Giải pháp IT toàn diện cho doanh nghiệp"
+              subtitle="STEP Technology - Đối tác đáng tin cậy"
+              content="Chúng tôi cung cấp dịch vụ hosting, cloud computing, và các giải pháp IT chuyên nghiệp"
+              ctaText="Khám phá dịch vụ"
+              ctaUrl="/services"
+            >
+              <Hero />
+            </EditableSection>
+          )}
+          
+          <EditableSection
+            sectionId="services"
+            title="Dịch vụ của chúng tôi"
+            subtitle="Giải pháp IT toàn diện"
+            content="Hosting, Cloud, Domain và nhiều dịch vụ IT chuyên nghiệp khác"
           >
-            Bỏ qua
-          </button>
-        </div>
-      )}
-
-      {/* Email Popup - Show after 15 seconds */}
-      <EmailPopup
-        title="🎁 Ưu Đâi Đặc Biệt STEP!"
-        description="Đăng ký email để nhận mã giảm giá 30% hosting và tips tối ưu website miễn phí!"
-        buttonText="Nhận Mã Giảm Giá"
-        onSubmit={handleEmailSubmit}
-        delay={15000}
-      />
-    </div>
+            <Services />
+          </EditableSection>
+          
+          <EditableSection
+            sectionId="statistics"
+            title="Thống kê ấn tượng"
+            content="Những con số chứng minh chất lượng dịch vụ"
+          >
+            <Statistics />
+          </EditableSection>
+          
+          <EditableSection
+            sectionId="testimonials"
+            title="Khách hàng nói gì về chúng tôi"
+            content="Feedback từ những khách hàng tin tưởng STEP"
+          >
+            <Testimonials />
+          </EditableSection>
+          
+          <EditableSection
+            sectionId="resources"
+            title="Tài nguyên & Blog"
+            content="Cập nhật tin tức công nghệ và hướng dẫn kỹ thuật"
+          >
+            <Resources />
+          </EditableSection>
+          
+          <EditableSection
+            sectionId="tooltip-showcase"
+            title="Tính năng nổi bật"
+            content="Khám phá các tính năng đặc biệt của STEP"
+          >
+            <TooltipShowcase />
+          </EditableSection>
+        </main>
+        
+        <Footer />
+        
+        {/* Only show personalization settings if user has completed welcome */}
+        {isPersonalized && userInfo && (
+          <PersonalizationSettings 
+            userInfo={userInfo}
+            onEdit={handleEditPersonalization}
+            onReset={handleResetPersonalization}
+          />
+        )}
+        
+        {/* Welcome Screen */}
+        <AnimatePresence>
+          {showWelcome && (
+            <WelcomeScreen
+              onComplete={handleWelcomeComplete}
+              onSkip={handleSkipPersonalization}
+            />
+          )}
+        </AnimatePresence>
+        
+        {/* Email Popup */}
+        <EmailPopup 
+          popupId="home-popup"
+          onSubmit={handleEmailSubmit}
+        />
+      </div>
+    </LiveContentEditor>
   );
 }
