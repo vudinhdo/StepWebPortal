@@ -463,13 +463,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertPageContentSchema.parse(req.body);
       const pageContent = await storage.createPageContent(validatedData);
-      res.json({ success: true, id: pageContent.id });
+      res.json({ success: true, data: pageContent });
     } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json({ success: false, message: "Dữ liệu không hợp lệ", errors: error.errors });
       } else {
         res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
       }
+    }
+  });
+
+  app.patch("/api/page-contents/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = updatePageContentSchema.parse(req.body);
+      const pageContent = await storage.updatePageContent(id, validatedData);
+      if (!pageContent) {
+        res.status(404).json({ success: false, message: "Không tìm thấy nội dung trang" });
+        return;
+      }
+      res.json({ success: true, data: pageContent });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ success: false, message: "Dữ liệu không hợp lệ", errors: error.errors });
+      } else {
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  app.delete("/api/page-contents/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await storage.deletePageContent(id);
+      if (!deleted) {
+        res.status(404).json({ success: false, message: "Không tìm thấy nội dung trang" });
+        return;
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
     }
   });
 

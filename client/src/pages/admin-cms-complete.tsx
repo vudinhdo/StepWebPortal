@@ -13,6 +13,9 @@ import { PageBuilder } from "@/components/cms/page-builder";
 import { UserManagement } from "@/components/cms/user-management";
 import { MenuManagement } from "@/components/cms/menu-management";
 import { ContentManager } from "@/components/cms/content-manager";
+import { LiveArticleManager } from "@/components/cms/live-article-manager";
+import { LivePageManager } from "@/components/cms/live-page-manager";
+import { LiveMenuManager } from "@/components/cms/live-menu-manager";
 import { format } from "date-fns";
 
 interface CMSLayoutProps {
@@ -55,13 +58,13 @@ export function CompleteCMSLayout({ onLogout }: CMSLayoutProps) {
       case "content":
         return <ContentManager />;
       case "articles":
-        return <ArticlesContent />;
+        return <LiveArticleManager />;
       case "pages":
-        return <PageBuilder />;
+        return <LivePageManager />;
       case "media":
         return <MediaManager />;
       case "menus":
-        return <MenuManagement />;
+        return <LiveMenuManager />;
       case "users":
         return <UserManagement />;
       case "contacts":

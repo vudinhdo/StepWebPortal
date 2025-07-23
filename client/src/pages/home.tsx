@@ -11,8 +11,7 @@ import WelcomeScreen from "@/components/welcome-screen";
 import PersonalizedContent from "@/components/personalized-content";
 import PersonalizationSettings from "@/components/personalization-settings";
 import EmailPopup from "@/components/email-popup";
-import { LiveContentEditor } from "@/components/live-content-editor";
-import { EditableSection } from "@/components/editable-section";
+import { InlineEditor } from "@/components/inline-editor";
 import { AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 
@@ -81,72 +80,23 @@ export default function Home() {
 
 
   return (
-    <LiveContentEditor pageName="Trang chủ">
       <div className="min-h-screen bg-white">
         <Header />
         
         <main>
           {isPersonalized && userInfo ? (
-            <EditableSection
-              sectionId="personalized-hero"
-              title="Nội dung cá nhân hóa"
-              className="pt-20 pb-8 bg-gradient-to-br from-blue-50 to-indigo-100"
-            >
+            <div className="pt-20 pb-8 bg-gradient-to-br from-blue-50 to-indigo-100">
               <PersonalizedContent userInfo={userInfo} />
-            </EditableSection>
+            </div>
           ) : (
-            <EditableSection
-              sectionId="hero"
-              title="Giải pháp IT toàn diện cho doanh nghiệp"
-              subtitle="STEP Technology - Đối tác đáng tin cậy"
-              content="Chúng tôi cung cấp dịch vụ hosting, cloud computing, và các giải pháp IT chuyên nghiệp"
-              ctaText="Khám phá dịch vụ"
-              ctaUrl="/services"
-            >
-              <Hero />
-            </EditableSection>
+            <Hero />
           )}
           
-          <EditableSection
-            sectionId="services"
-            title="Dịch vụ của chúng tôi"
-            subtitle="Giải pháp IT toàn diện"
-            content="Hosting, Cloud, Domain và nhiều dịch vụ IT chuyên nghiệp khác"
-          >
-            <Services />
-          </EditableSection>
-          
-          <EditableSection
-            sectionId="statistics"
-            title="Thống kê ấn tượng"
-            content="Những con số chứng minh chất lượng dịch vụ"
-          >
-            <Statistics />
-          </EditableSection>
-          
-          <EditableSection
-            sectionId="testimonials"
-            title="Khách hàng nói gì về chúng tôi"
-            content="Feedback từ những khách hàng tin tưởng STEP"
-          >
-            <Testimonials />
-          </EditableSection>
-          
-          <EditableSection
-            sectionId="resources"
-            title="Tài nguyên & Blog"
-            content="Cập nhật tin tức công nghệ và hướng dẫn kỹ thuật"
-          >
-            <Resources />
-          </EditableSection>
-          
-          <EditableSection
-            sectionId="tooltip-showcase"
-            title="Tính năng nổi bật"
-            content="Khám phá các tính năng đặc biệt của STEP"
-          >
-            <TooltipShowcase />
-          </EditableSection>
+          <Services />
+          <Statistics />
+          <Testimonials />
+          <Resources />
+          <TooltipShowcase />
         </main>
         
         <Footer />
@@ -172,10 +122,9 @@ export default function Home() {
         
         {/* Email Popup */}
         <EmailPopup 
-          popupId="home-popup"
-          onSubmit={handleEmailSubmit}
+          servicePage="home"
+          onEmailSubmit={handleEmailSubmit}
         />
       </div>
-    </LiveContentEditor>
   );
 }

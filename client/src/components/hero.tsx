@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import ContactForm from "./contact-form";
+import { InlineEditor } from "./inline-editor";
 
 export default function Hero() {
   const [showContactForm, setShowContactForm] = useState(false);
@@ -10,22 +11,22 @@ export default function Hero() {
     <section className="pt-20 pb-16 step-hero-gradient relative overflow-hidden" data-onboarding="hero-section">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
-          <motion.h1 
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+          <InlineEditor
+            page="home"
+            section="hero"
+            elementId="main-title"
+            defaultContent="Kết nối, bảo vệ và xây dựng hạ tầng CNTT toàn diện với STEP"
+            tag="h1"
             className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-[hsl(207,100%,40%)] mb-6 leading-tight"
-          >
-            Kết nối, bảo vệ và xây dựng hạ tầng CNTT toàn diện với STEP
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          />
+          <InlineEditor
+            page="home"
+            section="hero"
+            elementId="subtitle"
+            defaultContent="Cung cấp giải pháp cloud, hosting, máy chủ và dịch vụ IT đáng tin cậy, giúp doanh nghiệp của bạn phát triển nhanh chóng và an toàn hơn. Hơn 100 dịch vụ dành cho SMEs và chuyên gia IT."
+            tag="p"
             className="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed"
-          >
-            Cung cấp giải pháp cloud, hosting, máy chủ và dịch vụ IT đáng tin cậy, giúp doanh nghiệp của bạn phát triển nhanh chóng và an toàn hơn. Hơn 100 dịch vụ dành cho SMEs và chuyên gia IT.
-          </motion.p>
+          />
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
