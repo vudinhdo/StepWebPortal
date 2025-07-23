@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   LayoutDashboard, FileText, Users, Settings, Menu, Image,
   Globe, Database, Shield, Activity, MessageSquare, LogOut,
-  BarChart3, TrendingUp
+  BarChart3, TrendingUp, Layout
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { MediaManager } from "@/components/cms/media-manager";
