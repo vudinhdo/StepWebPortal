@@ -39,7 +39,7 @@ export function InlineEditor({
     retry: false,
   });
 
-  const isAuthenticated = authStatus?.authenticated;
+  const isAuthenticated = authStatus?.authenticated || false;
 
   // Fetch content from server
   const { data: serverContent } = useQuery({
@@ -50,7 +50,7 @@ export function InlineEditor({
         if (!response.ok) return null;
         const data = await response.json();
         return data.find((item: any) => 
-          item.page === page && 
+          item.pageName === page && 
           item.section === section && 
           item.elementId === elementId
         );
@@ -77,7 +77,7 @@ export function InlineEditor({
       } else {
         // Create new content
         return apiRequest("/api/page-contents", "POST", {
-          page,
+          pageName: page,
           section,
           elementId,
           content: newContent,

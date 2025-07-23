@@ -18,6 +18,8 @@ import HostingLaravel from "@/pages/hosting-laravel";
 import HostingNVME from "@/pages/hosting-nvme";
 import Cloud from "@/pages/cloud";
 import PerformanceBenchmark from "@/pages/performance-benchmark";
+// import AdminCMSComplete from "@/pages/admin-cms-complete";
+import CMSGuide from "@/pages/cms-guide";
 
 function Router() {
   return (
@@ -28,6 +30,8 @@ function Router() {
         <Route path="/admin" component={Admin} />
         <Route path="/admin-login" component={AdminLogin} />
         <Route path="/Admin_CMS" component={AdminCMS} />
+        <Route path="/admin-cms-complete" component={AdminCMS} />
+        <Route path="/huong-dan-cms" component={CMSGuide} />
         <Route path="/domain" component={Domain} />
         <Route path="/hosting" component={Hosting} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress" component={HostingWordPress} />
