@@ -134,6 +134,7 @@ export default function Footer() {
                   <li><a href="#" className="hover:text-[hsl(195,100%,50%)] transition-colors">Hướng dẫn sử dụng</a></li>
                   <li><a href="#" className="hover:text-[hsl(195,100%,50%)] transition-colors">Tài liệu kỹ thuật</a></li>
                   <li><a href="#" className="hover:text-[hsl(195,100%,50%)] transition-colors">Báo giá dịch vụ</a></li>
+                  <li><a href="/admin-login" className="hover:text-[hsl(195,100%,50%)] transition-colors">Đăng nhập CMS</a></li>
                 </ul>
               </div>
             </div>
