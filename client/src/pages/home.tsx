@@ -40,7 +40,7 @@ export default function Home() {
       // Show welcome screen for first-time visitors
       const timer = setTimeout(() => {
         setShowWelcome(true);
-      }, 10000); // Show after 10 seconds
+      }, 2000); // Show after 2 seconds for testing
       
       return () => clearTimeout(timer);
     }
@@ -57,8 +57,13 @@ export default function Home() {
   };
 
   const handleSkipPersonalization = () => {
+    console.log('Skip personalization called');
     setShowWelcome(false);
     localStorage.setItem('stepWelcomeShown', 'true');
+    toast({
+      title: "Đã bỏ qua cá nhân hóa",
+      description: "Bạn có thể bật lại bất cứ lúc nào",
+    });
   };
 
   const handleResetPersonalization = () => {
@@ -122,8 +127,7 @@ export default function Home() {
         
         {/* Email Popup */}
         <EmailPopup 
-          servicePage="home"
-          onEmailSubmit={handleEmailSubmit}
+          onSubmit={handleEmailSubmit}
         />
       </div>
   );

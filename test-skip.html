@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Skip Button</title>
+</head>
+<body>
+    <h1>Test Skip Personalization</h1>
+    <button onclick="clearStorage()">Clear Storage</button>
+    <button onclick="openApp()">Open App</button>
+    
+    <script>
+        function clearStorage() {
+            localStorage.removeItem('stepWelcomeShown');
+            localStorage.removeItem('stepUserInfo');
+            alert('Cleared localStorage!');
+        }
+        
+        function openApp() {
+            window.open('http://localhost:5000', '_blank');
+        }
+    </script>
+</body>
+</html>

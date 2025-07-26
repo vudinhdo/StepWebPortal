@@ -124,8 +124,11 @@ export default function WelcomeScreen({ onComplete, onSkip }: WelcomeScreenProps
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={onSkip}
-                className="absolute top-0 right-0 text-gray-400 hover:text-gray-600 p-2"
+                onClick={() => {
+                  console.log('Skip button clicked');
+                  onSkip();
+                }}
+                className="absolute top-0 right-0 text-gray-400 hover:text-gray-600 p-2 z-10"
                 title="Bỏ qua cá nhân hóa"
               >
                 ✕
