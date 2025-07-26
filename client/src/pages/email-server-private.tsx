@@ -24,7 +24,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import WelcomeScreen from "@/components/welcome-screen";
 
 // Email popup component
 const EmailPopup = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) => {
@@ -273,7 +272,6 @@ export default function EmailServerPrivate() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <WelcomeScreen />
       <Header />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[hsl(207,100%,40%)] to-blue-700 text-white py-20">
