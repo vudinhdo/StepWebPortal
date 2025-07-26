@@ -80,7 +80,10 @@ export default function MegaMenu() {
       name: 'Email',
       icon: EmailIcon,
       items: [
-        { name: 'Email Server', desc: 'Enterprise email', icon: Mail }
+        { name: 'Email server doanh nghiệp', desc: 'Enterprise email', icon: Mail },
+        { name: 'Google Workspace', desc: 'G Suite for business', icon: Chrome },
+        { name: 'Microsoft 365', desc: 'Office 365 & email', icon: Briefcase },
+        { name: 'Hybrid Email', desc: 'Giải pháp email lai', icon: MessageSquare }
       ]
     },
     {
@@ -209,7 +212,8 @@ export default function MegaMenu() {
                 {categories[4].items.map((item, index) => (
                   <li key={index}>
                     <a href={
-                      item.name === 'Email Server' ? '/Sản Phẩm & Dịch Vụ/Email' :
+                      item.name === 'Email server doanh nghiệp' ? '/Sản Phẩm & Dịch Vụ/Email' :
+                      item.name === 'Hybrid Email' ? '/Dịch vụ/Email' :
                       '#'
                     } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
