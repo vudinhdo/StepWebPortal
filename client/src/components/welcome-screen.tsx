@@ -19,6 +19,7 @@ import {
 
 interface WelcomeScreenProps {
   onComplete: (userInfo: UserInfo) => void;
+  onSkip: () => void;
 }
 
 interface UserInfo {
@@ -49,7 +50,7 @@ const interests = [
   { id: "domain", label: "Domain Management", color: "bg-yellow-100 text-yellow-800" }
 ];
 
-export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
+export default function WelcomeScreen({ onComplete, onSkip }: WelcomeScreenProps) {
   const [step, setStep] = useState(1);
   const [userInfo, setUserInfo] = useState<UserInfo>({
     name: "",
@@ -118,8 +119,17 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
         >
         <Card className="border-0 shadow-2xl">
           <CardContent className="p-8">
-            {/* Header */}
-            <div className="text-center mb-8">
+            {/* Header with Skip Button */}
+            <div className="relative text-center mb-8">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onSkip}
+                className="absolute top-0 right-0 text-gray-400 hover:text-gray-600 p-2"
+                title="Bỏ qua cá nhân hóa"
+              >
+                ✕
+              </Button>
               <motion.div
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -133,6 +143,9 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
                 </div>
                 <p className="text-gray-600">
                   Hãy để STEP tùy chỉnh trải nghiệm phù hợp với bạn
+                </p>
+                <p className="text-sm text-gray-500 mt-2">
+                  Hoặc bấm "✕" để bỏ qua
                 </p>
               </motion.div>
             </div>
