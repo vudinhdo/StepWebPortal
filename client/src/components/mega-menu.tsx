@@ -212,6 +212,7 @@ export default function MegaMenu() {
                 {categories[4].items.map((item, index) => (
                   <li key={index}>
                     <a href={
+                      item.name === 'Email server doanh nghiệp' ? '/Sản Phẩm & Dịch Vụ/Email' :
                       item.name === 'Hybrid Email' ? '/Dịch vụ/Email' :
                       '#'
                     } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">

@@ -266,6 +266,28 @@ The email popup system significantly enhances lead generation capabilities while
 - Mobile menu support with proper routing
 - Consistent STEP branding and call-to-action integration
 
+## Email Enterprise Landing Page (January 2025)
+
+### Corporate Email Solutions Focus
+- **URL Structure**: `/Sản Phẩm & Dịch Vụ/Email`  
+- **Target Audience**: Businesses needing corporate email solutions
+- **Service Offerings**: Email Server, Google Workspace, Microsoft 365, Hybrid Email, managed services
+- **Pricing Structure**: 3-tier packages from 200k-1M VNĐ/month targeting SMEs and IT professionals
+- **Lead Generation**: Comprehensive contact form with package selection and email popup after 15 seconds
+
+### Key Features
+- **Professional Hero Section**: Corporate email messaging with CTA to scroll to packages
+- **Benefit Highlights**: 4 core benefits (Professional/Custom, Security/Anti-spam, Flexible Integration, Easy Management)
+- **Package Comparison**: Basic/Advanced/Enterprise tiers with feature lists and pricing
+- **Social Proof**: Customer testimonials and company commitments (14-day trial, money-back guarantee)
+- **Advanced Forms**: Detailed contact form with package selection and mailbox count fields
+- **Email Popup**: 30% discount offer with e-book incentive, appears after 15 seconds with localStorage tracking
+
+### Navigation Integration
+- Added "Email server doanh nghiệp" link to mega menu pointing to `/Sản Phẩm & Dịch Vụ/Email`
+- Mobile menu support with proper enterprise email routing
+- Dual email page structure: comparison page at `/Dịch vụ/Email` and enterprise page at `/Sản Phẩm & Dịch Vụ/Email`
+
 ## Personalized User Experience System (January 2025)
 
 ### Welcome Screen Flow

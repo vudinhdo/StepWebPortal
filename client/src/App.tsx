@@ -21,6 +21,7 @@ import PerformanceBenchmark from "@/pages/performance-benchmark";
 // import AdminCMSComplete from "@/pages/admin-cms-complete";
 import CMSGuide from "@/pages/cms-guide";
 import EmailServices from "@/pages/email-services";
+import EmailEnterprise from "@/pages/email-enterprise";
 
 function Router() {
   return (
@@ -40,6 +41,7 @@ function Router() {
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME" component={HostingNVME} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting" component={HostingReseller} />
         <Route path="/Dịch vụ/Email" component={EmailServices} />
+        <Route path="/Sản Phẩm & Dịch Vụ/Email" component={EmailEnterprise} />
         <Route path="/cloud" component={Cloud} />
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route component={NotFound} />
