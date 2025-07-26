@@ -244,6 +244,27 @@ The performance benchmark system provides transparent, data-driven insights to h
 
 The email popup system significantly enhances lead generation capabilities while maintaining excellent user experience across all STEP service pages.
 
+## Email Services Landing Page (January 2025)
+
+### Comprehensive Email Service Comparison
+- **URL Structure**: `/Sản Phẩm & Dịch Vụ/Email`
+- **Target Audience**: Businesses comparing enterprise email solutions
+- **Service Comparison**: Mail Hybrid STEP vs Microsoft 365 vs Google Workspace
+- **Pricing Display**: Transparent pricing from 150k-550k VNĐ with detailed feature breakdown
+- **Recommendation Engine**: Smart highlighting of Mail Hybrid STEP as preferred Vietnamese solution
+
+### Key Features
+- **Interactive Comparison**: Side-by-side comparison table with advantages/disadvantages
+- **Visual Service Cards**: Professional cards with pricing, features, and CTA buttons  
+- **Vietnamese Focus**: Mail Hybrid STEP positioned for Vietnamese businesses with local servers
+- **Detailed Specifications**: Storage, users, support, and security feature comparisons
+- **Why Choose STEP**: Dedicated section highlighting local advantages and 24/7 Vietnamese support
+
+### Navigation Integration
+- Added to mega menu under Email category with "Hybrid Email" link
+- Mobile menu support with proper routing
+- Consistent STEP branding and call-to-action integration
+
 ## Personalized User Experience System (January 2025)
 
 ### Welcome Screen Flow
