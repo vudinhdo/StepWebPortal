@@ -247,7 +247,7 @@ The email popup system significantly enhances lead generation capabilities while
 ## Email Services Landing Page (January 2025)
 
 ### Comprehensive Email Service Comparison
-- **URL Structure**: `/Sản Phẩm & Dịch Vụ/Email`
+- **URL Structure**: `/Dịch vụ/Email`
 - **Target Audience**: Businesses comparing enterprise email solutions (1000+ mailboxes)
 - **Service Comparison**: Mail Hybrid STEP vs Microsoft 365 Basic vs Google Workspace Starter
 - **Pricing Display**: Competitive pricing 1$-6$ USD with detailed technical specifications

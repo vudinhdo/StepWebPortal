@@ -39,7 +39,7 @@ function Router() {
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel" component={HostingLaravel} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME" component={HostingNVME} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting" component={HostingReseller} />
-        <Route path="/Sản Phẩm & Dịch Vụ/Email" component={EmailServices} />
+        <Route path="/Dịch vụ/Email" component={EmailServices} />
         <Route path="/cloud" component={Cloud} />
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route component={NotFound} />

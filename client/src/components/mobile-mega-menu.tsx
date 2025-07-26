@@ -149,7 +149,7 @@ export default function MobileMegaMenu() {
                         category.id === 'hosting' && item.name === 'Hosting Laravel' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel' :
                         category.id === 'hosting' && item.name === 'Hosting NVME' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME' :
                         category.id === 'hosting' && item.name === 'Reseller Hosting' ? '/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting' :
-                        category.id === 'email' && item.name === 'Hybrid Email' ? '/Sản Phẩm & Dịch Vụ/Email' :
+                        category.id === 'email' && item.name === 'Hybrid Email' ? '/Dịch vụ/Email' :
                         category.id === 'hosting' ? '/hosting' : '#'
                       }
                       className="flex items-center py-1 text-sm text-gray-500 hover:text-[hsl(207,100%,40%)] transition-colors group"
