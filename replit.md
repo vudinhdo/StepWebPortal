@@ -441,6 +441,19 @@ The tooltip system significantly improves user understanding of complex features
 
 The blog system provides STEP with a comprehensive content management solution for sharing technical insights, company news, and industry trends with their audience.
 
+## Enhanced Blog Content (January 2025)
+
+### Docker Article Series
+- **Article 1**: "Docker Container: Hướng Dẫn Toàn Diện Cho Doanh Nghiệp 2025" - Featured article covering Docker fundamentals, enterprise benefits, and best practices
+- **Article 2**: "Docker Compose: Quản Lý Multi-Container Ứng Dụng Dễ Dàng" - DevOps-focused guide on orchestrating multi-container applications
+- **Article 3**: "Docker Security: Bảo Mật Container Trong Môi Trường Production" - Security-focused article covering container hardening and runtime protection
+
+### Blog Features Enhancement
+- **Category System**: Updated categories including Technology, DevOps, and Security sections
+- **Article Count Display**: Shows number of articles per category filter
+- **Featured Content**: Docker container article marked as featured for homepage display
+- **Professional Content**: All articles include practical examples, code snippets, and STEP service integration CTAs
+
 ## Performance Benchmark Visualization (January 2025)
 
 ### Interactive Performance Analytics

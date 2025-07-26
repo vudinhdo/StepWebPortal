@@ -12,13 +12,14 @@ import Footer from "@/components/footer";
 
 const categories = [
   "Tất cả",
-  "Tin tức công nghệ",
-  "Hướng dẫn kỹ thuật",
-  "Xu hướng Cloud",
-  "Bảo mật mạng",
-  "Phát triển web",
+  "Technology",
   "DevOps",
-  "AI & Machine Learning"
+  "Bảo mật mạng",
+  "Xu hướng Cloud",
+  "Phát triển web",
+  "AI & Machine Learning",
+  "Tin tức công nghệ",
+  "Hướng dẫn kỹ thuật"
 ];
 
 export default function Blog() {
@@ -40,7 +41,7 @@ export default function Blog() {
     return matchesCategory && matchesSearch;
   });
 
-  const formatDate = (dateString: string | null) => {
+  const formatDate = (dateString: string | Date | null) => {
     if (!dateString) return "";
     return format(new Date(dateString), "dd/MM/yyyy");
   };
