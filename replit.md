@@ -284,7 +284,7 @@ The email popup system significantly enhances lead generation capabilities while
 - **Email Popup**: 30% discount offer with e-book incentive, appears after 15 seconds with localStorage tracking
 
 ### Navigation Integration
-- Added "Email server doanh nghiệp" link to mega menu pointing to `/Sản Phẩm & Dịch Vụ/Email`
+- Added "Email server Riêng" link to mega menu pointing to `/Sản Phẩm & Dịch Vụ/Email`
 - Mobile menu support with proper enterprise email routing
 - Dual email page structure: comparison page at `/Dịch vụ/Email` and enterprise page at `/Sản Phẩm & Dịch Vụ/Email`
 

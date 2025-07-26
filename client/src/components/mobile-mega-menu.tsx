@@ -85,7 +85,7 @@ export default function MobileMegaMenu() {
       name: 'Email',
       icon: EmailIcon,
       items: [
-        { name: 'Email server doanh nghiệp', icon: Mail },
+        { name: 'Email server Riêng', icon: Mail },
         { name: 'Google Workspace', icon: Chrome },
         { name: 'Microsoft 365', icon: Briefcase },
         { name: 'Hybrid Email', icon: MessageSquare }
@@ -149,7 +149,7 @@ export default function MobileMegaMenu() {
                         category.id === 'hosting' && item.name === 'Hosting Laravel' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel' :
                         category.id === 'hosting' && item.name === 'Hosting NVME' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME' :
                         category.id === 'hosting' && item.name === 'Reseller Hosting' ? '/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting' :
-                        category.id === 'email' && item.name === 'Email server doanh nghiệp' ? '/Sản Phẩm & Dịch Vụ/Email' :
+                        category.id === 'email' && item.name === 'Email server Riêng' ? '/Sản Phẩm & Dịch Vụ/Email' :
                         category.id === 'email' && item.name === 'Hybrid Email' ? '/Dịch vụ/Email' :
                         category.id === 'hosting' ? '/hosting' : '#'
                       }
