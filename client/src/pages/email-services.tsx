@@ -42,100 +42,100 @@ const emailServices: EmailService[] = [
     name: "Mail Hybrid STEP",
     icon: Mail,
     price: "150.000 VNĐ/tháng",
-    description: "Giải pháp email hybrid tối ưu, kết hợp ưu điểm của cloud và on-premise",
+    description: "Giải pháp Email Server Lai kết hợp giữa Google Mail và hệ thống Mail server của STEP",
     features: [
-      "Email hosting tại Việt Nam",
-      "Tích hợp Microsoft Exchange",
-      "Backup tự động hàng ngày",
-      "Anti-spam & Anti-virus",
-      "Mobile sync (iOS/Android)",
-      "Webmail responsive",
-      "IMAP/POP3/SMTP",
-      "Hỗ trợ tiếng Việt"
+      "Tối ưu chi phí tốt nhất cho các doanh nghiệp nhỏ",
+      "Các Email quan trọng từ Leader",
+      "Email Google còn các phần sự còn lại",
+      "Dùng Mail hybrid của step để tối ưu chi phí",
+      "30GB dung lượng email",
+      "15GB GDrive free login bằng Mail cộng ty",
+      "Outlook (Desktop + Mobile)",
+      "Webmail/Outlook"
     ],
-    storage: "50GB/user",
-    users: "Không giới hạn",
-    support: "24/7 tại Việt Nam",
-    security: ["SSL/TLS", "Two-factor authentication", "Advanced threat protection"],
+    storage: "30GB email + 15GB Drive",
+    users: "Trên 1000 Mailbox",
+    support: "Outlook (Desktop + Mobile)",
+    security: ["Giao diện web mail khá sử dụng", "Giao diện outlook quen thuộc"],
     advantages: [
-      "Chi phí thấp nhất",
-      "Hỗ trợ tiếng Việt",
-      "Server tại Việt Nam (tốc độ cao)",
-      "Backup tự động",
-      "Không phụ thuộc nhà cung cấp nước ngoài"
+      "Chi phí tối ưu nhất (150k/tháng)",
+      "Kết hợp ưu điểm Google Mail và Mail server riêng",
+      "15GB GDrive miễn phí với login công ty",
+      "Giao diện Outlook quen thuộc",
+      "Phù hợp doanh nghiệp nhỏ"
     ],
     disadvantages: [
-      "Ít tính năng collaboration",
-      "Giao diện đơn giản hơn",
-      "Không có Office online"
+      "Không hỗ trợ Google Meet miễn phí",
+      "Không hỗ trợ Teams",
+      "Không hỗ trợ chat tích hợp"
     ],
     recommended: true
   },
   {
-    name: "Microsoft 365",
+    name: "Microsoft 365 Basic",
     icon: Globe,
-    price: "550.000 VNĐ/tháng",
-    description: "Bộ công cụ văn phòng toàn diện với email, Office apps và collaboration",
+    price: "3$ (~75.000 VNĐ/tháng)",
+    description: "Microsoft 365 (Office 365 cũ) là bộ công cụ đồng bộ đến từ máy do Microsoft phát triển và cung cấp",
     features: [
-      "Outlook email",
-      "Word, Excel, PowerPoint online",
+      "Outlook email chuyên nghiệp",
+      "50GB dung lượng email",
+      "1TB OneDrive cloud storage",
       "Microsoft Teams",
-      "OneDrive cloud storage",
-      "SharePoint",
-      "Advanced security",
-      "AI-powered features",
-      "Multi-platform support"
+      "Webmail/Outlook",
+      "Tích hợp đầy đủ Office suite",
+      "Lịch và liên hệ đồng bộ",
+      "Bảo mật doanh nghiệp"
     ],
-    storage: "1TB/user",
-    users: "1-300 users",
-    support: "24/7 global",
-    security: ["Advanced Threat Protection", "DLP", "Compliance center"],
+    storage: "50GB email + 1TB OneDrive", 
+    users: "1TB",
+    support: "Teams",
+    security: ["Microsoft 365 được xây dựng dựa trên phần mềm mà nhiều người dùng đã biết trong nhiều năm với Windows, bộ Office và cả Outlook"],
     advantages: [
-      "Bộ Office đầy đủ",
-      "Tích hợp Teams",
-      "AI features mạnh mẽ",
-      "Bảo mật enterprise",
-      "Cập nhật thường xuyên"
+      "Bộ Office đầy đủ tích hợp",
+      "1TB OneDrive storage lớn",
+      "Microsoft Teams cho collaboration",
+      "Tích hợp sâu với Windows",
+      "Bảo mật doanh nghiệp cao cấp"
     ],
     disadvantages: [
-      "Chi phí cao",
-      "Phức tạp cho SME",
-      "Phụ thuộc internet",
-      "Hỗ trợ tiếng Việt hạn chế"
+      "Chi phí cao hơn (3$/tháng)",
+      "Phụ thuộc vào hệ sinh thái Microsoft",
+      "Cần internet ổn định",
+      "Phức tạp với doanh nghiệp nhỏ"
     ],
     recommended: false
   },
   {
-    name: "Google Workspace",
+    name: "Google Workspace Starter",
     icon: Cloud,
-    price: "450.000 VNĐ/tháng",
-    description: "Giải pháp cloud-first với Gmail, Google Drive và G Suite applications",
+    price: "4-6$ (~100-150.000 VNĐ/tháng)",
+    description: "Google Workspace (G Suite cũ) là bộ dịch vụ điện toán đám mây do Google phát triển và cung cấp",
     features: [
-      "Gmail business",
-      "Google Drive",
+      "Gmail business chuyên nghiệp",
+      "30GB dung lượng email",
+      "30GB Google Drive",
+      "Google Meet video conference",
+      "Google Chat messaging",
       "Google Docs, Sheets, Slides",
-      "Google Meet",
-      "Calendar & Contacts",
-      "Admin console",
-      "Mobile device management",
-      "Third-party integrations"
+      "Calendar và Contacts",
+      "Admin console quản lý"
     ],
-    storage: "30GB/user",
-    users: "Không giới hạn",
-    support: "24/7 global",
-    security: ["2-step verification", "Single sign-on", "Endpoint management"],
+    storage: "30GB email + 30GB Drive",
+    users: "30GB (chung với Hộp thư)",
+    support: "Google Meet (policy nhà trẻ free google)",
+    security: ["Google Workspace có giao diện thường thuộc của Gmail", "Giao diện outlook quen thuộc"],
     advantages: [
-      "Giao diện thân thiện",
-      "Collaboration tốt",
-      "Tích hợp Google services",
-      "Reliable uptime",
-      "Mobile-friendly"
+      "Giao diện Gmail quen thuộc",
+      "Tích hợp Google services mạnh mẽ",
+      "Google Meet miễn phí chất lượng cao",
+      "Collaboration tools tuyệt vời",
+      "Reliable uptime cao"
     ],
     disadvantages: [
-      "Chi phí trung bình",
-      "Hạn chế offline",
-      "Privacy concerns",
-      "Ít tính năng enterprise"
+      "Chi phí trung bình cao (4-6$/tháng)",
+      "Dung lượng giới hạn (30GB)",
+      "Privacy concerns với Google",
+      "Phụ thuộc internet hoàn toàn"
     ],
     recommended: false
   }
@@ -236,9 +236,16 @@ export default function EmailServices() {
                           <h3 className="text-2xl font-bold text-gray-800 mb-2">
                             {service.name}
                           </h3>
-                          <p className="text-3xl font-bold text-[hsl(207,100%,40%)] mb-2">
-                            {service.price}
-                          </p>
+                          <div className="text-center mb-2">
+                            <p className="text-3xl font-bold text-[hsl(207,100%,40%)]">
+                              {service.name === 'Mail Hybrid STEP' ? '1$' : 
+                               service.name === 'Microsoft 365 Basic' ? '3$' : '4-6$'}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {service.name === 'Mail Hybrid STEP' ? '(cho 1000+ Mailbox)' : 
+                               service.name === 'Microsoft 365 Basic' ? '(~75.000 VNĐ/tháng)' : '(~100-150.000 VNĐ/tháng)'}
+                            </p>
+                          </div>
                           <p className="text-gray-600">
                             {service.description}
                           </p>
@@ -247,15 +254,15 @@ export default function EmailServices() {
                         <div className="space-y-4 mb-8">
                           <div className="flex items-center justify-between">
                             <span className="text-gray-600">Dung lượng:</span>
-                            <span className="font-semibold">{service.storage}</span>
+                            <span className="font-semibold text-sm">{service.storage}</span>
                           </div>
                           <div className="flex items-center justify-between">
-                            <span className="text-gray-600">Số users:</span>
-                            <span className="font-semibold">{service.users}</span>
+                            <span className="text-gray-600">Phạm vi:</span>
+                            <span className="font-semibold text-sm">{service.users}</span>
                           </div>
                           <div className="flex items-center justify-between">
-                            <span className="text-gray-600">Hỗ trợ:</span>
-                            <span className="font-semibold">{service.support}</span>
+                            <span className="text-gray-600">Họp video:</span>
+                            <span className="font-semibold text-sm">{service.support}</span>
                           </div>
                         </div>
 
@@ -297,77 +304,151 @@ export default function EmailServices() {
                     </h3>
                     
                     <div className="overflow-x-auto">
-                      <table className="w-full">
+                      <table className="w-full border-collapse">
                         <thead>
-                          <tr className="border-b">
-                            <th className="text-left py-4 px-4">Tiêu chí</th>
-                            {emailServices.map((service) => (
-                              <th key={service.name} className="text-center py-4 px-4 min-w-[200px]">
-                                {service.name}
-                              </th>
-                            ))}
+                          <tr className="bg-gray-50">
+                            <th className="text-left py-3 px-4 font-semibold border">TT</th>
+                            <th className="text-left py-3 px-4 font-semibold border">THÔNG SỐ KỸ THUẬT DỊCH VỤ</th>
+                            <th className="text-center py-3 px-4 font-semibold border bg-blue-50">MICROSOFT/OFFICE<br/>365 - BASIC</th>
+                            <th className="text-center py-3 px-4 font-semibold border bg-yellow-50">GOOGLE MAIL/Google<br/>Workspace Starter</th>
+                            <th className="text-center py-3 px-4 font-semibold border bg-green-50">MAIL HYBRID</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr className="border-b">
-                            <td className="py-4 px-4 font-semibold">Giá cả</td>
-                            {emailServices.map((service) => (
-                              <td key={service.name} className="py-4 px-4 text-center">
-                                <span className={`font-bold ${
-                                  service.recommended ? 'text-[hsl(207,100%,40%)]' : ''
-                                }`}>
-                                  {service.price}
-                                </span>
-                              </td>
-                            ))}
+                            <td className="py-3 px-4 text-center border">1</td>
+                            <td className="py-3 px-4 font-medium border">Giới thiệu</td>
+                            <td className="py-3 px-4 text-sm border bg-blue-50">Microsoft 365 (Office 365 cũ) là bộ công cụ đồng bộ đến từ máy do Microsoft phát triển và cung cấp</td>
+                            <td className="py-3 px-4 text-sm border bg-yellow-50">Google Workspace (G Suite cũ) là bộ dịch vụ điện toán đám mây do Google phát triển và cung cấp</td>
+                            <td className="py-3 px-4 text-sm border bg-green-50">Smail là dịch vụ Email Server Lai kết hợp giữa Google Mail và hệ thống Mail server Của Step<br/>- Là giải pháp Tối ưu chi phí tốt nhất cho các doanh nghiệp nhỏ từ Mailbox lon và chi phí sử dụng Email cao<br/>- Các Email quan trọng từ Leader trở lên vẫn gửi nguyên dụng Email Google còn các phần sự còn lại Dùng Mail hybrid của step để tối ưu chi phí</td>
                           </tr>
                           
                           <tr className="border-b">
-                            <td className="py-4 px-4 font-semibold">Ưu điểm</td>
-                            {emailServices.map((service) => (
-                              <td key={service.name} className="py-4 px-4">
-                                <ul className="text-sm space-y-1">
-                                  {service.advantages.map((advantage, idx) => (
-                                    <li key={idx} className="flex items-start">
-                                      <CheckCircle className="text-green-500 mr-1 mt-0.5 flex-shrink-0" size={12} />
-                                      {advantage}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </td>
-                            ))}
+                            <td className="py-3 px-4 text-center border">2</td>
+                            <td className="py-3 px-4 font-medium border">Chi phí</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50"><strong>3$</strong></td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50"><strong>4 - 6$ (6-8$)</strong></td>
+                            <td className="py-3 px-4 text-center border bg-green-50"><strong>1$ (cho số lượng trên 1000 Mailbox)</strong></td>
                           </tr>
-                          
+
                           <tr className="border-b">
-                            <td className="py-4 px-4 font-semibold">Nhược điểm</td>
-                            {emailServices.map((service) => (
-                              <td key={service.name} className="py-4 px-4">
-                                <ul className="text-sm space-y-1">
-                                  {service.disadvantages.map((disadvantage, idx) => (
-                                    <li key={idx} className="flex items-start">
-                                      <XCircle className="text-red-500 mr-1 mt-0.5 flex-shrink-0" size={12} />
-                                      {disadvantage}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </td>
-                            ))}
+                            <td className="py-3 px-4 text-center border">3</td>
+                            <td className="py-3 px-4 font-medium border">Bộ nhớ email</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">50Gb</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">30Gb</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">30Gb</td>
                           </tr>
-                          
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">4</td>
+                            <td className="py-3 px-4 font-medium border">Lưu trữ đám mây<br/>(Gdrive - OneDrive)</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">1T</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">30Gb (chung với Hộp thư)</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">15Gb (dùng Gdrive free login bằng Mail cộng ty) (policy nhà free google)</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">5</td>
+                            <td className="py-3 px-4 font-medium border">Lịch</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50"><a href="https://outlook.office.com/calendar" className="text-blue-600 hover:underline">outlook.office.com/calendar</a></td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50"><a href="https://calendar.google.com/calendar" className="text-blue-600 hover:underline">https://calendar.google.com/calendar</a></td>
+                            <td className="py-3 px-4 text-center border bg-green-50">Outlook (Desktop + Mobile)</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">6</td>
+                            <td className="py-3 px-4 font-medium border">Mail client</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">Webmail/Outlook</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">Webmail/Outlook</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">Webmail/Outlook</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">7</td>
+                            <td className="py-3 px-4 font-medium border">Họp video</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">Teams</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">Google meet</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">Google Meet (policy nhà trẻ free google)</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">8</td>
+                            <td className="py-3 px-4 font-medium border">Chat</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">Teams</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">Google chat</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">Telegram/slack/discord...</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">9</td>
+                            <td className="py-3 px-4 font-medium border">Thân thiện người dùng</td>
+                            <td className="py-3 px-4 text-sm border bg-blue-50">Microsoft 365 được xây dựng dựa trên phần mềm mà nhiều người dùng đã biết trong nhiều năm với Windows, bộ Office và cả Outlook.</td>
+                            <td className="py-3 px-4 text-sm border bg-yellow-50">Google Workspace có giao diện thương thuộc của Gmail</td>
+                            <td className="py-3 px-4 text-sm border bg-green-50">Giao diện web mail khá sử dụng<br/>Giao diện outlook quen thuộc</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">10</td>
+                            <td className="py-3 px-4 font-medium border">Tỷ lệ gửi mail vào inbox</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">Rất cao 9 điểm</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">Rất cao 8.5 điểm</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">Rất cao 8 điểm</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">11</td>
+                            <td className="py-3 px-4 font-medium border">Hỗ trợ kỹ thuật</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">Microsoft 365: 8/10</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">Workspace 7/10</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">7/10</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">12</td>
+                            <td className="py-3 px-4 font-medium border">Sở định</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">10/10</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">10/10</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">8/10</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">13</td>
+                            <td className="py-3 px-4 font-medium border">Lọc thư tiện</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">10/10</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">9/10</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">6/10</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">14</td>
+                            <td className="py-3 px-4 font-medium border">Duyệt email đa thiết bị</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">10/10</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">10/10</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">8/10</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">15</td>
+                            <td className="py-3 px-4 font-medium border">Tương thích với Microsoft Outlook</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">10/10</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">8/10</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">8/10</td>
+                          </tr>
+
+                          <tr className="border-b">
+                            <td className="py-3 px-4 text-center border">16</td>
+                            <td className="py-3 px-4 font-medium border">Khả năng phân loại email và làm sạch hộp thư đến</td>
+                            <td className="py-3 px-4 text-center border bg-blue-50">9/10</td>
+                            <td className="py-3 px-4 text-center border bg-yellow-50">9/10</td>
+                            <td className="py-3 px-4 text-center border bg-green-50">7/10</td>
+                          </tr>
+
                           <tr>
-                            <td className="py-4 px-4 font-semibold">Bảo mật</td>
-                            {emailServices.map((service) => (
-                              <td key={service.name} className="py-4 px-4">
-                                <ul className="text-sm space-y-1">
-                                  {service.security.map((security, idx) => (
-                                    <li key={idx} className="flex items-center">
-                                      <Shield className="text-blue-500 mr-1" size={12} />
-                                      {security}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </td>
-                            ))}
+                            <td className="py-3 px-4 text-center border">17</td>
+                            <td className="py-3 px-4 font-medium border">Quản lý và bảo mật</td>
+                            <td className="py-3 px-4 text-sm border bg-blue-50">Các công cụ có sẵn bao gồm quản lý thiết bị di động, quản lý mối đe dọa, lưu trữ và kiểm tra</td>
+                            <td className="py-3 px-4 text-sm border bg-yellow-50">Các công cụ có sẵn bao gồm quản lý thiết bị di động, SSO và cảnh báo bảo mật</td>
+                            <td className="py-3 px-4 text-sm border bg-green-50">dịch vụ Drive tương tự google</td>
                           </tr>
                         </tbody>
                       </table>

@@ -248,10 +248,11 @@ The email popup system significantly enhances lead generation capabilities while
 
 ### Comprehensive Email Service Comparison
 - **URL Structure**: `/Sản Phẩm & Dịch Vụ/Email`
-- **Target Audience**: Businesses comparing enterprise email solutions
-- **Service Comparison**: Mail Hybrid STEP vs Microsoft 365 vs Google Workspace
-- **Pricing Display**: Transparent pricing from 150k-550k VNĐ with detailed feature breakdown
-- **Recommendation Engine**: Smart highlighting of Mail Hybrid STEP as preferred Vietnamese solution
+- **Target Audience**: Businesses comparing enterprise email solutions (1000+ mailboxes)
+- **Service Comparison**: Mail Hybrid STEP vs Microsoft 365 Basic vs Google Workspace Starter
+- **Pricing Display**: Competitive pricing 1$-6$ USD with detailed technical specifications
+- **Recommendation Engine**: Mail Hybrid STEP positioned as cost-effective hybrid solution
+- **Detailed Comparison Table**: 17-point technical comparison including storage, features, ratings
 
 ### Key Features
 - **Interactive Comparison**: Side-by-side comparison table with advantages/disadvantages
