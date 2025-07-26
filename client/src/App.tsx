@@ -22,6 +22,7 @@ import PerformanceBenchmark from "@/pages/performance-benchmark";
 import CMSGuide from "@/pages/cms-guide";
 import EmailServices from "@/pages/email-services";
 import EmailEnterprise from "@/pages/email-enterprise";
+import EmailServerPrivate from "@/pages/email-server-private";
 
 function Router() {
   return (
@@ -42,6 +43,7 @@ function Router() {
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting" component={HostingReseller} />
         <Route path="/Dịch vụ/Email" component={EmailServices} />
         <Route path="/Sản Phẩm & Dịch Vụ/Email" component={EmailEnterprise} />
+        <Route path="/Sản Phẩm & Dịch Vụ/Email Server Riêng" component={EmailServerPrivate} />
         <Route path="/cloud" component={Cloud} />
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route component={NotFound} />

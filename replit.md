@@ -284,7 +284,26 @@ The email popup system significantly enhances lead generation capabilities while
 - **Email Popup**: 30% discount offer with e-book incentive, appears after 15 seconds with localStorage tracking
 
 ### Navigation Integration
-- Added "Email server Riêng" link to mega menu pointing to `/Sản Phẩm & Dịch Vụ/Email`
+- Added "Email server Riêng" link to mega menu pointing to `/Sản Phẩm & Dịch Vụ/Email Server Riêng`
+
+## Email Server Private Landing Page (January 2025)
+
+### Private Email Server Solutions Focus
+- **URL Structure**: `/Sản Phẩm & Dịch Vụ/Email Server Riêng`
+- **Target Audience**: Companies needing dedicated private email servers
+- **Service Focus**: Custom email servers with full control and security
+- **Pricing Structure**: 3-tier packages from 200k-1M VNĐ/month for startups to enterprises
+- **Lead Generation**: Detailed contact form with company info and user count estimation
+
+### Key Features
+- **Professional Hero Section**: Private email server messaging with custom domain benefits
+- **Benefit Highlights**: 4 core benefits (Professional Branding, Security & Data Control, Large Storage & Flexibility, Support & Integration)
+- **Package Comparison**: Basic/Advanced/Enterprise tiers with storage and security features
+- **Social Proof**: Customer testimonials and company commitments (30-day trial, money-back guarantee)
+- **Advanced Forms**: Detailed contact form with company name and user count fields
+- **Email Popup**: 20% discount offer with security e-book, appears after 15 seconds in top-right corner
+
+### Navigation Integration
 - Mobile menu support with proper enterprise email routing
 - Dual email page structure: comparison page at `/Dịch vụ/Email` and enterprise page at `/Sản Phẩm & Dịch Vụ/Email`
 

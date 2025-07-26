@@ -1,0 +1,31 @@
+Landing Page: Email Server Riêng
+Tiêu Đề Trang (Hero Section):
+Email Server Riêng – Giải Pháp Email Doanh Nghiệp An Toàn, Chuyên Nghiệp Và Linh Hoạt!
+(Mô tả ngắn: Dịch vụ Email Server dành riêng cho công ty bạn, với dung lượng lớn, bảo mật cao và tùy chỉnh đầy đủ. Lý tưởng cho doanh nghiệp cần email @tencongty.com để xây dựng thương hiệu, tránh gián đoạn và kiểm soát dữ liệu hoàn toàn. Bắt đầu ngay để nâng tầm giao tiếp kinh doanh!)
+Nút CTA Nổi Bật: "Khám Phá Gói Email Server Phù Hợp" (liên kết đến bảng gói dịch vụ dưới, khuyến khích click để cuộn trang và xem chi tiết, tăng tương tác ngay từ đầu).
+Lợi Ích Của Email Server Riêng Từ STEP
+•	Xây Dựng Thương Hiệu Chuyên Nghiệp: Sử dụng email tùy chỉnh @tencongty.vn, tăng uy tín với khách hàng và đối tác – phù hợp SMEs muốn tạo ấn tượng mạnh mẽ thay vì dùng Gmail/Yahoo miễn phí.
+•	Bảo Mật Và Kiểm Soát Dữ Liệu: Server riêng với firewall, anti-spam, encryption SSL/TLS, và backup hàng ngày – đảm bảo dữ liệu email an toàn, tuân thủ GDPR/Việt Nam data laws, tránh rò rỉ thông tin quan trọng.
+•	Dung Lượng Lớn & Linh Hoạt: Không giới hạn attachment, tích hợp với Outlook/Thunderbird, hỗ trợ di động – dễ quản lý cho đội ngũ lớn, với tùy chỉnh domain/subdomain.
+•	Hỗ Trợ & Tích Hợp: Tích hợp với Google Workspace/Microsoft 365 nếu cần hybrid, hỗ trợ 24/7 qua Zalo OA – giúp IT Manager thiết lập nhanh, không lo downtime.
+Bảng Gói Dịch Vụ Email Server Riêng (Ví Dụ)
+Gói Cơ Bản	Gói Nâng Cao	Gói Doanh Nghiệp
+5GB/user Anti-spam cơ bản Giá: Từ 200.000 VNĐ/tháng	20GB/user Encryption + Backup Giá: Từ 500.000 VNĐ/tháng	Không giới hạn/user Tích hợp hybrid + Priority Support Giá: Từ 1.000.000 VNĐ/tháng
+Phù hợp: Công ty nhỏ/startup	Phù hợp: SMEs với email hàng ngày	Phù hợp: Doanh nghiệp lớn cần tùy chỉnh cao
+(Chú thích: Bảng này khuyến khích khách hàng click "Chọn Gói & Thiết Lập Miễn Phí" bên dưới mỗi cột, dẫn đến form để lại thông tin, tạo cảm giác dễ dàng và giá trị để tăng click rate.)
+Tại Sao Chọn Email Server Riêng Từ STEP?
+•	Tùy Chỉnh & Tích Hợp: Server riêng giúp tùy chỉnh quy tắc email (e.g., auto-forward, filters), kết nối mượt mà với hệ thống CRM hoặc Cloud – lý tưởng cho công ty cần kiểm soát dữ liệu email hoàn toàn.
+•	Đánh Giá Từ Khách Hàng: "Email server riêng của STEP giúp công ty tôi an toàn và chuyên nghiệp hơn bao giờ hết!" – Anh G., CEO SMEs tại Hà Nội.
+•	Cam Kết: Thiết lập miễn phí, dùng thử 30 ngày, hoàn tiền nếu không hài lòng. Hạ tầng tại Việt Nam đảm bảo tốc độ nhanh, an toàn cho doanh nghiệp địa phương.
+CTA Chính (Form Để Lại Thông Tin):
+Sẵn Sàng Thiết Lập Email Server Riêng Cho Công Ty Bạn?
+Form: Tên, Email, Số Điện Thoại, Tên Công Ty (tùy chọn), Số User Dự Kiến, Nút "Gửi Yêu Cầu & Nhận Báo Giá Cá Nhân Hóa" (sync tự động vào HubSpot để nurture leads, sau đó sang Perfex cho sales follow-up).
+(Mục tiêu: Form đơn giản với ưu đãi "Nhận thiết lập miễn phí + giảm 20% tháng đầu!", khuyến khích để lại info chi tiết như tên công ty để tăng lead quality và cá nhân hóa tư vấn.)
+Popup Điền Email (Xuất Hiện Sau 15 Giây ở góc trên - phải màn hình )
+Popup Tiêu Đề: "Nhận Khuyến Mãi Đặc Biệt & Khuyến Nghị Bảo Mật Email Miễn Phí!"
+(Mô tả: Chỉ cần điền email để nhận mã giảm 20% cho Email Server đầu tiên, kèm e-book "Top 5 Mẹo Bảo Mật Email Doanh Nghiệp 2025" giúp tránh spam và mất dữ liệu. Thêm tên/số điện thoại để nhận tư vấn cá nhân hóa miễn phí – hành động ngay để email công ty bạn an toàn hơn!)
+Form Popup: Email (bắt buộc, field chính), Tên (tùy chọn), Số Điện Thoại (tùy chọn), Nút "Nhận Ngay & Đăng Ký" (sync vào HubSpot như lead riêng, khuyến khích để lại thêm info ngoài form chính bằng lời hứa giá trị như e-book bảo mật và ưu đãi thời hạn "Chỉ trong 24h!", tăng tỷ lệ subscribe 20-30% mà không ép buộc).
+(Chú thích: Popup thân thiện, dễ đóng, sử dụng tông xanh dương từ logo, mục tiêu kích thích click bằng ưu đãi cấp bách và nội dung hữu ích dành riêng cho doanh nghiệp cần email công ty, dẫn đến form chi tiết hơn nếu khách quan tâm thêm.)
+(Footer: Thông tin công ty STEP đầy đủ: Tên công ty CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP, số tài khoản 19132608991888 tại Techcombank – Chi nhánh Hoàng Quốc Việt – PGD Trần Thái Tông, số điện thoại 0985636289, mã số thuế 0108230633, địa chỉ Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội, văn phòng Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội, email info@step.com.vn, website https://step.com.vn/, Facebook https://www.facebook.com/profile.php?id=61564705138608, bản đồ https://maps.app.goo.gl/Tg8mLAs6qHtVpDUZ8, Zalo OA https://zalo.me/93171011934970677 với QR – để xây dựng lòng tin và khuyến khích liên hệ thêm.)
+Nội dung này được tối ưu với CTA mạnh mẽ (click khám phá gói, chọn gói, gửi form), ưu đãi hấp dẫn và popup giá trị để khuyến khích doanh nghiệp cần email công ty tương tác, click và để lại thông tin, phù hợp mục tiêu marketing.
+
