@@ -284,9 +284,35 @@ The email popup system significantly enhances lead generation capabilities while
 - **Email Popup**: 30% discount offer with e-book incentive, appears after 15 seconds with localStorage tracking
 
 ### Navigation Integration
-- Added "Email server doanh nghiệp" link to mega menu pointing to `/Sản Phẩm & Dịch Vụ/Email`
+- Added "Email Server" link to mega menu pointing to `/Sản Phẩm & Dịch Vụ/Email`
 - Mobile menu support with proper enterprise email routing
-- Dual email page structure: comparison page at `/Dịch vụ/Email` and enterprise page at `/Sản Phẩm & Dịch Vụ/Email`
+- Consolidated to single email page at `/Sản Phẩm & Dịch Vụ/Email` with comprehensive comparison content
+
+## Email Services Consolidation (January 2025)
+
+### Complete Email Page Integration
+- **URL Structure**: Single page at `/Sản Phẩm & Dịch Vụ/Email`
+- **Removed**: `/Dịch vụ/Email` page completely deleted
+- **Menu Update**: Changed "Email server doanh nghiệp" to "Email Server" for simplicity
+- **Comprehensive Content**: Combined enterprise landing page with detailed service comparison and hybrid pricing
+
+### Email Services Comparison Section
+- **17-Point Comparison Table**: Microsoft 365 vs Google Workspace vs Mail Hybrid STEP vs Mail Hosting
+- **Key Metrics**: Cost ($1 vs $3 vs $4-6), storage, features, reliability ratings, spam filtering
+- **Visual Highlights**: Mail Hybrid STEP advantages highlighted in green
+- **Why Choose STEP**: 3 main benefits (cost optimization, security, Vietnam infrastructure)
+
+### Hybrid Email Pricing Section
+- **Smail Hybrid Service**: 27,000 VND/month for 5GB with Outlook + webmail
+- **Discount Options**: 10% discount (24,000 VND) and annual pricing (288,000 VND)
+- **Additional Services**: Detailed pricing for forwarder, mailbox, storage, backup services
+- **Service Integration**: Explanation of Google/Mail Server hybrid approach for cost optimization
+
+### Updated Features
+- **Single Navigation Path**: Menu → "Sản Phẩm & Dịch Vụ" → "Email" → "Email Server"
+- **Complete Solution**: Enterprise landing + comparison table + detailed pricing all in one page
+- **Lead Generation**: Contact form with package selection + email popup with 30% discount
+- **Professional Design**: Consistent STEP branding with interactive comparison tables
 
 ## Personalized User Experience System (January 2025)
 

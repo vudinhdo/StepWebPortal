@@ -473,6 +473,375 @@ export default function EmailEnterprise() {
         </div>
       </section>
 
+      {/* Email Services Comparison Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              So Sánh Các Dịch Vụ Email Trên Thị Trường
+            </h2>
+            <p className="text-lg text-gray-600">
+              Bảng so sánh chi tiết giữa Mail Hybrid STEP, Microsoft 365 và Google Workspace
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-lg shadow-lg overflow-hidden"
+          >
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-[hsl(207,100%,40%)] text-white">
+                  <tr>
+                    <th className="px-4 py-3 text-left font-semibold">Thông Số Kỹ Thuật</th>
+                    <th className="px-4 py-3 text-center font-semibold">Microsoft 365 Basic</th>
+                    <th className="px-4 py-3 text-center font-semibold">Google Workspace Starter</th>
+                    <th className="px-4 py-3 text-center font-semibold">Mail Hybrid STEP</th>
+                    <th className="px-4 py-3 text-center font-semibold">Mail Hosting</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">Chi phí</td>
+                    <td className="px-4 py-3 text-center">$3</td>
+                    <td className="px-4 py-3 text-center">$4-6</td>
+                    <td className="px-4 py-3 text-center bg-green-50">
+                      <span className="font-bold text-green-600">$1</span>
+                      <div className="text-xs text-gray-500">(cho số lượng trên 1000 Mailbox)</div>
+                    </td>
+                    <td className="px-4 py-3 text-center">$0.5-0.8</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">Bộ nhớ email</td>
+                    <td className="px-4 py-3 text-center">50GB</td>
+                    <td className="px-4 py-3 text-center">30GB</td>
+                    <td className="px-4 py-3 text-center">30GB</td>
+                    <td className="px-4 py-3 text-center">5GB</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">Lưu trữ đám mây</td>
+                    <td className="px-4 py-3 text-center">1TB</td>
+                    <td className="px-4 py-3 text-center">30GB (chung với hộp thư)</td>
+                    <td className="px-4 py-3 text-center">15GB (Google Drive free)</td>
+                    <td className="px-4 py-3 text-center">No support</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">Mail client</td>
+                    <td className="px-4 py-3 text-center">Webmail / Outlook</td>
+                    <td className="px-4 py-3 text-center">Webmail / Outlook</td>
+                    <td className="px-4 py-3 text-center">Webmail / Outlook</td>
+                    <td className="px-4 py-3 text-center">No support</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">Họp video</td>
+                    <td className="px-4 py-3 text-center">Teams</td>
+                    <td className="px-4 py-3 text-center">Google Meet</td>
+                    <td className="px-4 py-3 text-center">Google Meet (free policy)</td>
+                    <td className="px-4 py-3 text-center">No support</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">Thân thiện người dùng</td>
+                    <td className="px-4 py-3 text-center">
+                      <div className="flex items-center justify-center">
+                        <Star className="text-yellow-400 fill-current w-4 h-4" />
+                        <span className="ml-1">9/10</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      <div className="flex items-center justify-center">
+                        <Star className="text-yellow-400 fill-current w-4 h-4" />
+                        <span className="ml-1">8.5/10</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      <div className="flex items-center justify-center">
+                        <Star className="text-yellow-400 fill-current w-4 h-4" />
+                        <span className="ml-1">8/10</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      <div className="flex items-center justify-center">
+                        <Star className="text-yellow-400 fill-current w-4 h-4" />
+                        <span className="ml-1">5/10</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">Tỷ lệ gửi mail vào inbox</td>
+                    <td className="px-4 py-3 text-center">Rất cao (9 điểm)</td>
+                    <td className="px-4 py-3 text-center">Rất cao (8.5 điểm)</td>
+                    <td className="px-4 py-3 text-center bg-green-50">
+                      <span className="font-semibold text-green-600">Rất cao (8 điểm)</span>
+                    </td>
+                    <td className="px-4 py-3 text-center">Trung bình (5 điểm)</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">Hỗ trợ kỹ thuật</td>
+                    <td className="px-4 py-3 text-center">8/10</td>
+                    <td className="px-4 py-3 text-center">7/10</td>
+                    <td className="px-4 py-3 text-center bg-green-50">
+                      <span className="font-semibold text-green-600">7/10</span>
+                    </td>
+                    <td className="px-4 py-3 text-center">Tùy nhà cung cấp</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">Sự ổn định</td>
+                    <td className="px-4 py-3 text-center">10/10</td>
+                    <td className="px-4 py-3 text-center">10/10</td>
+                    <td className="px-4 py-3 text-center bg-green-50">
+                      <span className="font-semibold text-green-600">8/10</span>
+                    </td>
+                    <td className="px-4 py-3 text-center">6/10</td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">Lọc thư rác</td>
+                    <td className="px-4 py-3 text-center">10/10</td>
+                    <td className="px-4 py-3 text-center">9/10</td>
+                    <td className="px-4 py-3 text-center bg-green-50">
+                      <span className="font-semibold text-green-600">8/10</span>
+                    </td>
+                    <td className="px-4 py-3 text-center">6/10</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mt-12 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-8"
+          >
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                Tại Sao Chọn Mail Hybrid STEP?
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6 mt-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Check className="text-white" size={32} />
+                  </div>
+                  <h4 className="font-semibold text-gray-800 mb-2">Tối Ưu Chi Phí</h4>
+                  <p className="text-gray-600 text-sm">
+                    Giải pháp lai kết hợp Google Mail và Mail Server của STEP, 
+                    tối ưu chi phí cho doanh nghiệp có lượng mailbox lớn
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="text-white" size={32} />
+                  </div>
+                  <h4 className="font-semibold text-gray-800 mb-2">Bảo Mật Cao</h4>
+                  <p className="text-gray-600 text-sm">
+                    Email quan trọng từ Leader trở lên vẫn dùng Google Email, 
+                    nhân viên khác dùng Mail Hybrid để tối ưu chi phí
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Globe className="text-white" size={32} />
+                  </div>
+                  <h4 className="font-semibold text-gray-800 mb-2">Hạ Tầng Việt Nam</h4>
+                  <p className="text-gray-600 text-sm">
+                    Server đặt tại Việt Nam, hỗ trợ 24/7 bằng tiếng Việt, 
+                    phù hợp với doanh nghiệp địa phương
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Hybrid Email Pricing Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              Bảng Giá Smail Hybrid
+            </h2>
+            <p className="text-lg text-gray-600">
+              Dịch vụ Email Server Lai kết hợp với giá cả hợp lý
+            </p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Main Service Pricing */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-8"
+            >
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Smail Hybrid - Dịch Vụ Chính</h3>
+              
+              <div className="bg-white rounded-lg p-6 shadow-lg mb-6">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-lg font-semibold text-gray-700">Dung lượng 5GB</span>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-[hsl(207,100%,40%)]">27.000 VNĐ</div>
+                    <div className="text-sm text-gray-500">/ tháng / user</div>
+                  </div>
+                </div>
+                
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span>Forwarder</span>
+                    <span className="font-medium">1</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Địa chỉ Email</span>
+                    <span className="font-medium">1</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Backup email</span>
+                    <span className="font-medium">7 ngày</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Data transfer</span>
+                    <span className="font-medium">Không giới hạn</span>
+                  </div>
+                </div>
+                
+                <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                  <p className="text-xs text-blue-700">
+                    <strong>Dịch vụ Mail thường:</strong> Outlook + web mail
+                  </p>
+                </div>
+              </div>
+
+              {/* Pricing Options */}
+              <div className="space-y-4">
+                <div className="bg-white rounded-lg p-4 shadow">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Cước phí 01 tháng</span>
+                    <span className="text-lg font-bold">27.000 VNĐ</span>
+                  </div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 shadow border-2 border-green-200">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-medium text-green-800">Discount 10%</span>
+                    <span className="text-lg font-bold text-green-600">24.000 VNĐ</span>
+                  </div>
+                  <div className="text-xs text-green-600">Cước phí 1 tháng sau discount</div>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4 shadow border-2 border-blue-200">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-medium text-blue-800">Cước phí 12 tháng</span>
+                    <span className="text-lg font-bold text-blue-600">288.000 VNĐ</span>
+                  </div>
+                  <div className="text-xs text-blue-600">Tiết kiệm 36.000 VNĐ/năm</div>
+                </div>
+              </div>
+
+              <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <p className="text-sm text-yellow-800 font-medium">
+                  💡 <strong>Bảng chỉ:</strong> Hai trăm lăm mười tám nghìn việt nam đồng
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Additional Services */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg p-8"
+            >
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Chi Tiết Dịch Vụ Bổ Sung</h3>
+              
+              <div className="space-y-4">
+                <div className="bg-white rounded-lg p-4 shadow">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium">Forwarder Email</div>
+                      <div className="text-sm text-gray-500">01 forwarder</div>
+                    </div>
+                    <span className="text-lg font-bold">5.000 VNĐ</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 shadow">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium">Địa chỉ Email</div>
+                      <div className="text-sm text-gray-500">01 mailbox</div>
+                    </div>
+                    <span className="text-lg font-bold">5.000 VNĐ</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 shadow">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium">Dung lượng Mailbox</div>
+                      <div className="text-sm text-gray-500">01 GB</div>
+                    </div>
+                    <span className="text-lg font-bold">1.000 VNĐ</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 shadow">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium">Mail Hybrid</div>
+                      <div className="text-sm text-gray-500">01 hybrid account</div>
+                    </div>
+                    <span className="text-lg font-bold">5.000 VNĐ</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 shadow">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium">Backup Mail</div>
+                      <div className="text-sm text-gray-500">Bandwidth (Mbps)</div>
+                    </div>
+                    <span className="text-lg font-bold">1.000 VNĐ</span>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 shadow">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium">Backup Cloud</div>
+                      <div className="text-sm text-gray-500">01 GB</div>
+                    </div>
+                    <span className="text-lg font-bold">1.000 VNĐ</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <p className="text-sm text-blue-800">
+                  <strong>Lưu ý:</strong> Dịch vụ tích hợp chạy song song dịch vụ Mail server Google / Mail server riêng
+                  nhanh tối ưu chi phí
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Form Section */}
       <section id="contact-form" className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
