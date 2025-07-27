@@ -24,127 +24,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import EmailPopup from "@/components/email-popup";
 
-// Email popup component
-const EmailPopup = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name || 'Email Server Subscriber',
-          email,
-          phone: phone || '',
-          company: '',
-          service: 'Email Server Riêng - Popup',
-          message: 'Đăng ký nhận khuyến mãi 20% Email Server và e-book bảo mật email'
-        })
-      });
-
-      if (response.ok) {
-        toast({
-          title: "Đăng ký thành công!",
-          description: "Bạn sẽ nhận được mã giảm giá 20% và e-book bảo mật email trong 5 phút.",
-        });
-        onClose();
-      }
-    } catch (error) {
-      toast({
-        title: "Lỗi",
-        description: "Có lỗi xảy ra, vui lòng thử lại.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  if (!isVisible) return null;
-
-  return (
-    <div className="fixed top-4 right-4 z-50">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9, x: 100 }}
-        animate={{ opacity: 1, scale: 1, x: 0 }}
-        exit={{ opacity: 0, scale: 0.9, x: 100 }}
-        className="bg-white rounded-lg shadow-2xl max-w-sm w-full p-6 relative border-2 border-[hsl(207,100%,40%)]"
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
-        >
-          <X size={20} />
-        </button>
-
-        <div className="text-center mb-4">
-          <div className="w-12 h-12 bg-gradient-to-r from-[hsl(207,100%,40%)] to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
-            <Mail className="text-white" size={24} />
-          </div>
-          <h3 className="text-lg font-bold text-gray-800 mb-2">
-            Nhận Khuyến Mãi Đặc Biệt & Khuyến Nghị Bảo Mật Email Miễn Phí!
-          </h3>
-          <p className="text-xs text-gray-600">
-            Chỉ cần điền email để nhận mã <strong className="text-[hsl(207,100%,40%)]">giảm 20%</strong> cho Email Server đầu tiên, 
-            kèm e-book <strong>"Top 5 Mẹo Bảo Mật Email Doanh Nghiệp 2025"</strong>
-          </p>
-          <div className="bg-red-50 text-red-600 text-xs font-semibold py-1 px-2 rounded-full inline-block mt-2">
-            ⏰ Chỉ trong 24h!
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div>
-            <Input
-              type="email"
-              placeholder="Email của bạn *"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full text-sm"
-            />
-          </div>
-          <div>
-            <Input
-              type="text"
-              placeholder="Tên (tùy chọn)"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full text-sm"
-            />
-          </div>
-          <div>
-            <Input
-              type="tel"
-              placeholder="Số điện thoại (tùy chọn)"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full text-sm"
-            />
-          </div>
-          <Button 
-            type="submit" 
-            className="w-full bg-gradient-to-r from-[hsl(207,100%,40%)] to-blue-600 hover:from-blue-600 hover:to-[hsl(207,100%,40%)] text-white font-semibold text-sm"
-          >
-            Nhận Ngay & Đăng Ký
-          </Button>
-        </form>
-
-        <p className="text-xs text-gray-500 text-center mt-3">
-          Chúng tôi cam kết bảo mật thông tin và không gửi spam
-        </p>
-      </motion.div>
-    </div>
-  );
-};
 
 export default function EmailServerPrivate() {
-  const [showPopup, setShowPopup] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -154,19 +38,6 @@ export default function EmailServerPrivate() {
     package: ''
   });
   const { toast } = useToast();
-
-  // Show popup after 15 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const hasSeenPopup = localStorage.getItem('emailServerPrivatePopupSeen');
-      if (!hasSeenPopup) {
-        setShowPopup(true);
-        localStorage.setItem('emailServerPrivatePopupSeen', 'true');
-      }
-    }, 15000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -603,7 +474,13 @@ export default function EmailServerPrivate() {
       </section>
 
       {/* Email Popup */}
-      <EmailPopup isVisible={showPopup} onClose={() => setShowPopup(false)} />
+      <EmailPopup 
+        discount="20%"
+        title="Email Server Riêng - Ưu Đãi Đặc Biệt!"
+        description="Nhận ngay mã giảm giá 20% cho Email Server riêng đầu tiên + E-book bảo mật email miễn phí!"
+        buttonText="Nhận Ưu Đãi Ngay"
+        storageKey="email-server-private-popup"
+      />
       
       <Footer />
     </div>
