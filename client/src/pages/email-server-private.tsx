@@ -15,7 +15,10 @@ import {
   Zap,
   HardDrive,
   Smartphone,
-  Building
+  Building,
+  Monitor,
+  Settings,
+  Headphones
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -213,6 +216,222 @@ export default function EmailServerPrivate() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Email Access Methods Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              Các Hình Thức Truy Cập Email
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Email server riêng của STEP hỗ trợ đầy đủ các phương thức truy cập email phổ biến, 
+              đảm bảo bạn có thể kiểm tra và quản lý email mọi lúc, mọi nơi
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Webmail Access */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <Globe className="text-white" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+                Webmail
+              </h3>
+              <p className="text-gray-600 mb-4 text-center">
+                Truy cập email qua trình duyệt web mọi lúc, mọi nơi
+              </p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Giao diện thân thiện, dễ sử dụng
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Truy cập từ bất kỳ thiết bị nào có internet
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Không cần cài đặt phần mềm
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Tích hợp calendar và contacts
+                </li>
+              </ul>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <p className="text-sm text-blue-800 font-medium">
+                  URL: webmail.yourdomain.com
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Outlook Desktop */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <Monitor className="text-white" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+                Outlook Desktop
+              </h3>
+              <p className="text-gray-600 mb-4 text-center">
+                Kết nối với Microsoft Outlook, Thunderbird và các email client khác
+              </p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Đồng bộ email offline
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Quản lý nhiều tài khoản email
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Tích hợp lịch và task management
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Hỗ trợ IMAP/POP3/SMTP
+                </li>
+              </ul>
+              <div className="bg-green-50 p-4 rounded-lg">
+                <p className="text-sm text-green-800 font-medium">
+                  Cấu hình tự động qua Autodiscover
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Mobile Access */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <Smartphone className="text-white" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+                Mobile App
+              </h3>
+              <p className="text-gray-600 mb-4 text-center">
+                Truy cập email trên điện thoại iOS và Android
+              </p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Ứng dụng native iOS/Android
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Push notifications tức thì
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Đồng bộ contacts và calendar
+                </li>
+                <li className="flex items-center text-sm">
+                  <Check className="text-green-500 mr-2 flex-shrink-0" size={16} />
+                  Bảo mật với Touch ID/Face ID
+                </li>
+              </ul>
+              <div className="bg-purple-50 p-4 rounded-lg">
+                <p className="text-sm text-purple-800 font-medium">
+                  Hỗ trợ Gmail, Outlook, Apple Mail
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Setup Instructions */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="mt-16 bg-white rounded-lg p-8 shadow-lg"
+          >
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+              Cài Đặt Dễ Dàng - Hỗ Trợ 24/7
+            </h3>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <Settings className="text-blue-600 mr-2" size={20} />
+                  Thiết Lập Tự Động
+                </h4>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span className="text-sm text-gray-600">
+                      Autodiscover cho Outlook và các email client
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span className="text-sm text-gray-600">
+                      Hướng dẫn step-by-step cho mobile setup
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span className="text-sm text-gray-600">
+                      Video tutorial chi tiết cho từng platform
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <Headphones className="text-blue-600 mr-2" size={20} />
+                  Hỗ Trợ Kỹ Thuật
+                </h4>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span className="text-sm text-gray-600">
+                      Hỗ trợ cài đặt miễn phí qua TeamViewer
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span className="text-sm text-gray-600">
+                      Hotline 24/7: 0985.636.289
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span className="text-sm text-gray-600">
+                      Live chat trên website và Zalo OA
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
