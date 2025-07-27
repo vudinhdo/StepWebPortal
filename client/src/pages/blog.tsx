@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import type { Article } from "@shared/schema";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { Link } from "wouter";
 
 const categories = [
   "Tất cả",
@@ -181,14 +182,16 @@ export default function Blog() {
                         <User className="h-4 w-4 mr-2" />
                         {article.author}
                       </div>
-                      <Button 
-                        variant="ghost" 
-                        size="sm"
-                        className="text-[hsl(207,100%,40%)] hover:text-[hsl(207,100%,35%)] hover:bg-blue-50 group"
-                      >
-                        Đọc thêm 
-                        <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                      </Button>
+                      <Link to={`/blog/${article.slug}`}>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          className="text-[hsl(207,100%,40%)] hover:text-[hsl(207,100%,35%)] hover:bg-blue-50 group"
+                        >
+                          Đọc thêm 
+                          <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
                     </div>
                     
                     {article.tags && article.tags.length > 0 && (
@@ -356,14 +359,16 @@ export default function Blog() {
                         <User className="h-4 w-4 mr-1" />
                         <span className="truncate">{article.author}</span>
                       </div>
-                      <Button 
-                        variant="ghost" 
-                        size="sm"
-                        className="text-[hsl(207,100%,40%)] hover:text-[hsl(207,100%,35%)] hover:bg-blue-50 p-0 group/btn"
-                      >
-                        Đọc thêm 
-                        <ArrowRight className="h-4 w-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
-                      </Button>
+                      <Link to={`/blog/${article.slug}`}>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          className="text-[hsl(207,100%,40%)] hover:text-[hsl(207,100%,35%)] hover:bg-blue-50 p-0 group/btn"
+                        >
+                          Đọc thêm 
+                          <ArrowRight className="h-4 w-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
                     </div>
                     
                     {article.tags && article.tags.length > 0 && (

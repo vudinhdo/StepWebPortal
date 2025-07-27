@@ -350,6 +350,10 @@ export class MemStorage implements IStorage {
     return this.articles.filter(a => a.category === category && a.isPublished);
   }
 
+  async getArticlesByCategory(category: string): Promise<Article[]> {
+    return this.articles.filter(a => a.category === category && a.isPublished);
+  }
+
   // Service methods
   async createService(service: InsertService): Promise<Service> {
     const newService: Service = {

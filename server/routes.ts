@@ -156,7 +156,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
         return;
       }
-      res.json({ success: true, contact });
+      res.json({ success: true });
     } catch (error) {
       res.status(500).json({ 
         success: false, 
@@ -327,6 +327,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return;
       }
       res.json(article);
+    } catch (error) {
+      res.status(500).json({ 
+        success: false, 
+        message: "Lỗi máy chủ nội bộ" 
+      });
+    }
+  });
+
+  // Get articles by category
+  app.get("/api/articles/category/:category", async (req, res) => {
+    try {
+      const category = req.params.category;
+      const articles = await storage.getArticlesByCategory(category);
+      res.json(articles);
     } catch (error) {
       res.status(500).json({ 
         success: false, 
