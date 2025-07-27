@@ -40,10 +40,10 @@ export default function EmailPopup({
     const hasShown = localStorage.getItem(storageKey);
     if (hasShown) return;
 
-    // Show popup after 15 seconds  
+    // Show popup after 5 seconds for testing (change to 15000 for production)
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 15000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, [storageKey]);
@@ -108,7 +108,7 @@ export default function EmailPopup({
             animate={{ opacity: 1, x: 0, y: 0 }}
             exit={{ opacity: 0, x: 100, y: -20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed top-20 right-4 z-50 w-80 max-w-[calc(100vw-2rem)]"
+            className="fixed top-4 right-4 z-50 w-80 max-w-[calc(100vw-2rem)] sm:top-6 sm:right-6"
           >
             <Card className="border-2 border-blue-200 shadow-2xl bg-gradient-to-br from-blue-50 to-white">
               <CardContent className="p-0">
