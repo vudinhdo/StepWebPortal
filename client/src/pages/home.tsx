@@ -127,7 +127,11 @@ export default function Home() {
         
         {/* Email Popup */}
         <EmailPopup 
-          onSubmit={handleEmailSubmit}
+          discount="30%"
+          title="STEP - Ưu Đãi Đặc Biệt!"
+          description="Nhận ngay mã giảm giá 30% cho tất cả dịch vụ hosting + Tips hosting miễn phí!"
+          buttonText="Nhận Ưu Đãi Ngay"
+          storageKey="homepage-popup"
         />
       </div>
   );

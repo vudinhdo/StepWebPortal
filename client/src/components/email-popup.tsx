@@ -21,6 +21,15 @@ export default function EmailPopup({
   buttonText,
   storageKey 
 }: EmailPopupProps) {
+  // Add development reset function (only in dev mode)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+      (window as any).resetEmailPopup = () => {
+        localStorage.removeItem(storageKey);
+        console.log('Email popup reset - refresh page to see popup in 15 seconds');
+      };
+    }
+  }, [storageKey]);
   const [isVisible, setIsVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,7 +40,7 @@ export default function EmailPopup({
     const hasShown = localStorage.getItem(storageKey);
     if (hasShown) return;
 
-    // Show popup after 15 seconds
+    // Show popup after 15 seconds  
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 15000);
@@ -153,6 +162,19 @@ export default function EmailPopup({
                   <p className="text-xs text-gray-500 mt-3 text-center">
                     Không spam. Chỉ gửi thông tin hữu ích về dịch vụ hosting.
                   </p>
+                  
+                  {/* Development reset button */}
+                  {process.env.NODE_ENV === 'development' && (
+                    <button
+                      onClick={() => {
+                        localStorage.removeItem(storageKey);
+                        window.location.reload();
+                      }}
+                      className="text-xs text-red-500 underline mt-2 block mx-auto"
+                    >
+                      [Dev] Reset Popup
+                    </button>
+                  )}
                 </div>
               </CardContent>
             </Card>
