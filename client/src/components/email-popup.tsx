@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 interface EmailPopupProps {
@@ -32,10 +31,10 @@ export default function EmailPopup({
     const hasShown = localStorage.getItem(storageKey);
     if (hasShown) return;
 
-    // Show popup after 10 seconds
+    // Show popup after 15 seconds
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 10000);
+    }, 15000);
 
     return () => clearTimeout(timer);
   }, [storageKey]);
@@ -57,8 +56,8 @@ export default function EmailPopup({
         body: JSON.stringify({
           name: "Email Subscriber",
           email: email,
-          service: "Email Server Riêng - Popup Discount",
-          message: `Quan tâm đến khuyến mãi ${discount} cho Email Server Riêng. Vui lòng liên hệ tư vấn chi tiết.`
+          service: "Email Discount Popup",
+          message: `Quan tâm đến khuyến mãi ${discount}. Vui lòng liên hệ tư vấn chi tiết.`
         })
       });
 
@@ -66,7 +65,7 @@ export default function EmailPopup({
 
       toast({
         title: "Đăng ký thành công!",
-        description: "Chúng tôi sẽ liên hệ với bạn trong 24h để tư vấn chi tiết về Email Server Riêng.",
+        description: "Chúng tôi sẽ liên hệ với bạn trong 24h để tư vấn chi tiết.",
       });
 
       handleClose();
@@ -152,7 +151,7 @@ export default function EmailPopup({
                   </form>
 
                   <p className="text-xs text-gray-500 mt-3 text-center">
-                    Không spam. Chỉ gửi thông tin hữu ích về Email Server.
+                    Không spam. Chỉ gửi thông tin hữu ích về dịch vụ hosting.
                   </p>
                 </div>
               </CardContent>

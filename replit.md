@@ -213,36 +213,36 @@ The system is now fully optimized for production use with excellent mobile perfo
 
 The performance benchmark system provides transparent, data-driven insights to help users make informed hosting decisions while significantly improving conversion rates through visual proof of service quality.
 
-## Email Capture Popup System (January 2025)
+## Personalization System (January 2025)
 
-### Intelligent Email Collection
-- **Smart Timing**: Popup appears after 15 seconds on all pages for lead capture
-- **One-Time Display**: Uses localStorage to show popup only once per user session
-- **Right-Side Positioning**: Non-intrusive placement on right side of screen
-- **Animated Interactions**: Smooth slide-in animations with Framer Motion
-- **Mobile Optimized**: Responsive design adapts to all screen sizes
+### Interactive User Personalization
+- **Smart Timing**: Personalization popup appears after 10 seconds for first-time visitors
+- **Multi-Step Onboarding**: 3-step process collecting name, role, and service interests
+- **Skip Functionality**: Users can skip personalization with clear X button or "Bỏ qua" option
+- **Progress Tracking**: Visual progress bar showing current step (1/3, 2/3, 3/3)
+- **Centered Modal**: Professional centered popup with backdrop blur effect
 
-### Service-Specific Targeting
-- **Home Page**: General 30% discount offer with hosting tips
-- **NVME Hosting**: 35% discount with backup test and performance focus
-- **Laravel Hosting**: 25% discount with Laravel security e-book
-- **WordPress Hosting**: 30% discount with free site migration offer
+### Personalization Steps
+- **Step 1 - Name Collection**: Friendly greeting asking for user's name with validation
+- **Step 2 - Role Selection**: 7 role options (CEO, CTO, IT Manager, Developer, SysAdmin, Business Owner, Other) with icons
+- **Step 3 - Interest Selection**: 8 service categories (Email Server, Cloud Hosting, WordPress, Laravel, NVME, Reseller, Domain, Backup)
+- **Smart Validation**: Each step requires completion before proceeding to next
 
-### Lead Generation Features
-- **Email Validation**: Required email field with proper validation
-- **Professional Design**: Gradient backgrounds with service-specific branding
-- **Clear Value Proposition**: Specific discount amounts and bonus materials
-- **Privacy Assurance**: Clear messaging about no spam policy
-- **Easy Dismissal**: One-click close with X button
+### User Experience Features
+- **LocalStorage Persistence**: Saves completion status and user profile data locally
+- **Toast Notifications**: Feedback for completion and skip actions
+- **Smooth Animations**: Step transitions with Framer Motion for professional feel
+- **Mobile Responsive**: Optimized for all screen sizes with scrollable content
+- **Accessibility**: Proper focus management and keyboard navigation
 
 ### Technical Implementation
-- **LocalStorage Persistence**: Prevents popup from showing multiple times
-- **Async Form Handling**: Smooth submission with loading states
-- **Error Handling**: Proper error messages for failed submissions
-- **Portal Rendering**: Uses React portals for proper z-index management
-- **Memory Efficient**: Automatic cleanup and event listener management
+- **Component Architecture**: Reusable PersonalizationPopup component with configurable storage key
+- **Profile Management**: Structured UserProfile interface with name, role, and interests array
+- **State Management**: React state handling for multi-step form progression
+- **Data Persistence**: JSON serialization of user profile to localStorage for future use
+- **Skip Protection**: Clear distinction between completed and skipped personalization
 
-The email popup system significantly enhances lead generation capabilities while maintaining excellent user experience across all STEP service pages.
+The personalization system creates a more engaging user experience while collecting valuable user insights for service recommendations, replacing the previous simple email capture popup with a comprehensive user profiling system.
 
 ## Email Services Landing Page (January 2025)
 

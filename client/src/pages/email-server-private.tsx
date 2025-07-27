@@ -24,7 +24,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import EmailPopup from "@/components/email-popup";
+import PersonalizationPopup from "@/components/personalization-popup";
 
 
 
@@ -473,13 +473,9 @@ export default function EmailServerPrivate() {
         </div>
       </section>
 
-      {/* Email Popup */}
-      <EmailPopup 
-        discount="20%"
-        title="Email Server Riêng - Ưu Đãi Đặc Biệt!"
-        description="Nhận ngay mã giảm giá 20% cho Email Server riêng đầu tiên + E-book bảo mật email miễn phí!"
-        buttonText="Nhận Ưu Đãi Ngay"
-        storageKey="email-server-private-popup"
+      {/* Personalization Popup */}
+      <PersonalizationPopup 
+        storageKey="email-server-private-personalization"
       />
       
       <Footer />
