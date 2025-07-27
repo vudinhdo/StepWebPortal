@@ -1,462 +1,457 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  LineChart, Line, AreaChart, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
+  BarChart, Bar, LineChart, Line, AreaChart, Area, RadarChart, 
+  PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
 } from "recharts";
-import { Clock, Zap, Server, Shield, TrendingUp, Award, CheckCircle, Target } from "lucide-react";
-import { PerformanceComparison } from "@/components/performance-comparison";
+import { 
+  Zap, Clock, Database, Shield, TrendingUp, Server, 
+  Cpu, HardDrive, Wifi, Activity, CheckCircle, ArrowRight 
+} from "lucide-react";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import ContactForm from "@/components/contact-form";
 
-// Sample performance data
+// Performance data for different hosting plans
 const responseTimeData = [
-  { name: 'HTML Load', Basic: 450, Advanced: 280, Pro: 180, Enterprise: 120 },
-  { name: 'Database Query', Basic: 320, Advanced: 180, Pro: 120, Enterprise: 80 },
-  { name: 'API Response', Basic: 280, Advanced: 150, Pro: 90, Enterprise: 60 },
-  { name: 'Image Loading', Basic: 1200, Advanced: 800, Pro: 500, Enterprise: 300 },
-  { name: 'CSS/JS Bundle', Basic: 850, Advanced: 550, Pro: 350, Enterprise: 200 }
+  { metric: "HTML Load", Basic: 850, Advanced: 420, Pro: 180, Enterprise: 95 },
+  { metric: "Database Query", Basic: 320, Advanced: 180, Pro: 85, Enterprise: 45 },
+  { metric: "API Response", Basic: 280, Advanced: 150, Pro: 75, Enterprise: 35 },
+  { metric: "Image Loading", Basic: 1200, Advanced: 650, Pro: 280, Enterprise: 140 },
+  { metric: "CSS/JS Load", Basic: 950, Advanced: 480, Pro: 220, Enterprise: 110 }
 ];
 
 const throughputData = [
-  { name: 'Concurrent Requests', Basic: 100, Advanced: 500, Pro: 1500, Enterprise: 5000 },
-  { name: 'Peak Capacity', Basic: 150, Advanced: 800, Pro: 2500, Enterprise: 8000 },
-  { name: 'Average Load', Basic: 80, Advanced: 400, Pro: 1200, Enterprise: 4000 },
-  { name: 'Burst Handling', Basic: 120, Advanced: 600, Pro: 1800, Enterprise: 6000 }
+  { metric: "Concurrent Requests", Basic: 500, Advanced: 2000, Pro: 8000, Enterprise: 20000 },
+  { metric: "Peak Capacity", Basic: 1000, Advanced: 4500, Pro: 15000, Enterprise: 35000 },
+  { metric: "Avg Requests/sec", Basic: 250, Advanced: 800, Pro: 2500, Enterprise: 6000 },
+  { metric: "Data Transfer", Basic: 10, Advanced: 50, Pro: 200, Enterprise: 500 }
 ];
 
 const resourceUsageData = [
-  { plan: 'Basic', CPU: 40, RAM: 35, 'Disk I/O': 30, Network: 25, Memory: 40 },
-  { plan: 'Advanced', CPU: 65, RAM: 70, 'Disk I/O': 75, Network: 80, Memory: 70 },
-  { plan: 'Pro', CPU: 85, RAM: 90, 'Disk I/O': 95, Network: 95, Memory: 90 },
-  { plan: 'Enterprise', CPU: 98, RAM: 98, 'Disk I/O': 99, Network: 99, Memory: 98 }
+  { plan: "Basic", CPU: 65, RAM: 70, Disk: 45, Network: 40, Memory: 60 },
+  { plan: "Advanced", CPU: 45, RAM: 50, Disk: 30, Network: 60, Memory: 40 },
+  { plan: "Pro", CPU: 25, RAM: 30, Disk: 20, Network: 80, Memory: 25 },
+  { plan: "Enterprise", CPU: 15, RAM: 20, Disk: 15, Network: 90, Memory: 18 }
 ];
 
 const uptimeData = [
-  { month: 'T7', Basic: 99.2, Advanced: 99.7, Pro: 99.9, Enterprise: 99.95 },
-  { month: 'T8', Basic: 99.1, Advanced: 99.8, Pro: 99.9, Enterprise: 99.96 },
-  { month: 'T9', Basic: 99.3, Advanced: 99.7, Pro: 99.95, Enterprise: 99.97 },
-  { month: 'T10', Basic: 99.0, Advanced: 99.6, Pro: 99.9, Enterprise: 99.95 },
-  { month: 'T11', Basic: 99.4, Advanced: 99.8, Pro: 99.95, Enterprise: 99.98 },
-  { month: 'T12', Basic: 99.2, Advanced: 99.7, Pro: 99.9, Enterprise: 99.96 }
+  { month: "Jan", Basic: 98.5, Advanced: 99.2, Pro: 99.8, Enterprise: 99.95 },
+  { month: "Feb", Basic: 98.2, Advanced: 99.1, Pro: 99.7, Enterprise: 99.97 },
+  { month: "Mar", Basic: 98.8, Advanced: 99.3, Pro: 99.9, Enterprise: 99.96 },
+  { month: "Apr", Basic: 98.4, Advanced: 99.0, Pro: 99.8, Enterprise: 99.98 },
+  { month: "May", Basic: 98.9, Advanced: 99.4, Pro: 99.9, Enterprise: 99.97 },
+  { month: "Jun", Basic: 98.6, Advanced: 99.2, Pro: 99.8, Enterprise: 99.95 }
 ];
 
 const securityData = [
-  { feature: 'DDoS Protection', Basic: 60, Advanced: 85, Pro: 95, Enterprise: 99 },
-  { feature: 'SSL Performance', Basic: 70, Advanced: 90, Pro: 95, Enterprise: 98 },
-  { feature: 'Malware Scanning', Basic: 50, Advanced: 80, Pro: 90, Enterprise: 95 },
-  { feature: 'Backup Speed', Basic: 40, Advanced: 70, Pro: 85, Enterprise: 95 },
-  { feature: 'Recovery Time', Basic: 45, Advanced: 75, Pro: 90, Enterprise: 98 }
+  { metric: "DDoS Protection", Basic: 70, Advanced: 85, Pro: 95, Enterprise: 99 },
+  { metric: "SSL Performance", Basic: 80, Advanced: 90, Pro: 97, Enterprise: 99 },
+  { metric: "Malware Scanning", Basic: 60, Advanced: 80, Pro: 95, Enterprise: 98 },
+  { metric: "Backup Speed", Basic: 40, Advanced: 70, Pro: 90, Enterprise: 95 },
+  { metric: "Recovery Time", Basic: 50, Advanced: 75, Pro: 90, Enterprise: 97 }
 ];
 
-const plans = [
-  {
-    name: 'Basic',
-    price: '200k',
-    color: '#8B5CF6',
-    description: 'Phù hợp cho website cá nhân và blog nhỏ'
+const planFeatures = {
+  Basic: {
+    price: "200K VNĐ/tháng",
+    color: "#8884d8",
+    features: ["1 CPU Core", "2GB RAM", "20GB SSD", "100GB Bandwidth", "Basic Support"],
+    bestFor: "Websites nhỏ, blog cá nhân"
   },
-  {
-    name: 'Advanced', 
-    price: '500k',
-    color: '#3B82F6',
-    description: 'Tối ưu cho doanh nghiệp vừa và e-commerce'
+  Advanced: {
+    price: "500K VNĐ/tháng", 
+    color: "#82ca9d",
+    features: ["2 CPU Cores", "4GB RAM", "50GB SSD", "500GB Bandwidth", "Priority Support"],
+    bestFor: "Doanh nghiệp vừa, e-commerce"
   },
-  {
-    name: 'Pro',
-    price: '1.2M',
-    color: '#10B981',
-    description: 'Hiệu năng cao cho ứng dụng enterprise'
+  Pro: {
+    price: "1.2M VNĐ/tháng",
+    color: "#ffc658", 
+    features: ["4 CPU Cores", "8GB RAM", "100GB SSD", "1TB Bandwidth", "24/7 Support"],
+    bestFor: "Ứng dụng cao tải, API services"
   },
-  {
-    name: 'Enterprise',
-    price: '2.5M',
-    color: '#F59E0B',
-    description: 'Giải pháp toàn diện cho tập đoàn'
+  Enterprise: {
+    price: "2.5M VNĐ/tháng",
+    color: "#ff7300",
+    features: ["8 CPU Cores", "16GB RAM", "200GB SSD", "Unlimited Bandwidth", "Dedicated Support"],
+    bestFor: "Enterprise applications, mission-critical"
   }
-];
+};
 
 export default function PerformanceBenchmark() {
-  const [selectedPlan, setSelectedPlan] = useState('Pro');
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [showContactForm, setShowContactForm] = useState(false);
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg">
-          <p className="font-medium">{label}</p>
-          {payload.map((entry: any, index: number) => (
-            <p key={index} style={{ color: entry.color }}>
-              {entry.dataKey}: {entry.value}{entry.dataKey.includes('Time') || entry.dataKey.includes('Response') ? 'ms' : entry.dataKey.includes('Uptime') ? '%' : ''}
-            </p>
-          ))}
-        </div>
-      );
+  const formatTooltip = (value: any, name: string) => {
+    if (name.includes("Time") || name.includes("Response")) {
+      return [`${value}ms`, name];
     }
-    return null;
+    if (name.includes("Uptime")) {
+      return [`${value}%`, name];
+    }
+    return [value, name];
   };
 
+  const PlanRecommendation = ({ plan }: { plan: string }) => (
+    <Card className="border-2 border-dashed border-blue-200 bg-blue-50/30">
+      <CardContent className="p-4">
+        <div className="flex items-center gap-3 mb-2">
+          <CheckCircle className="h-5 w-5 text-blue-600" />
+          <span className="font-semibold text-blue-800">Recommended: {plan}</span>
+        </div>
+        <p className="text-sm text-blue-700 mb-3">{planFeatures[plan as keyof typeof planFeatures].bestFor}</p>
+        <Button 
+          onClick={() => setShowContactForm(true)}
+          className="w-full bg-blue-600 hover:bg-blue-700"
+        >
+          Tư vấn gói {plan}
+          <ArrowRight className="h-4 w-4 ml-2" />
+        </Button>
+      </CardContent>
+    </Card>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <main className="pt-20">
-        {/* Hero Section */}
-        <section className="py-16 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center"
-            >
-              <div className="flex justify-center mb-6">
-                <div className="p-3 bg-white/20 rounded-full">
-                  <TrendingUp className="w-12 h-12" />
+      {/* Hero Section */}
+      <section className="pt-20 pb-16 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-4xl mx-auto">
+            <Badge className="bg-white/20 text-white border-white/30 mb-4">
+              Performance Analytics
+            </Badge>
+            <h1 className="text-4xl lg:text-6xl font-bold mb-6">
+              So Sánh Hiệu Suất
+              <span className="block text-blue-200">Hosting Plans</span>
+            </h1>
+            <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+              Dữ liệu thực tế từ hệ thống monitoring 24/7. So sánh chi tiết hiệu suất, 
+              tài nguyên và độ tin cậy của các gói hosting STEP.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+              {Object.entries(planFeatures).map(([plan, info]) => (
+                <div key={plan} className="text-center">
+                  <div className="text-2xl font-bold">{plan}</div>
+                  <div className="text-blue-200 text-sm">{info.price}</div>
                 </div>
-              </div>
-              <h1 className="text-5xl font-bold mb-6">
-                Performance Benchmark
-              </h1>
-              <p className="text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
-                So sánh hiệu năng chi tiết giữa các gói hosting STEP. 
-                Dữ liệu thực tế từ hệ thống monitoring 24/7.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Badge variant="secondary" className="px-4 py-2 text-lg">
-                  <Award className="w-5 h-5 mr-2" />
-                  99.9% Uptime
-                </Badge>
-                <Badge variant="secondary" className="px-4 py-2 text-lg">
-                  <Zap className="w-5 h-5 mr-2" />
-                  Sub-second Response
-                </Badge>
-                <Badge variant="secondary" className="px-4 py-2 text-lg">
-                  <Shield className="w-5 h-5 mr-2" />
-                  Enterprise Security
-                </Badge>
-              </div>
-            </motion.div>
+              ))}
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Performance Dashboard */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            {/* Plan Selector */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="mb-12"
-            >
-              <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">
-                Chọn gói hosting để xem chi tiết hiệu năng
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                {plans.map((plan) => (
-                  <motion.div
-                    key={plan.name}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Card 
-                      className={`cursor-pointer transition-all duration-300 ${
-                        selectedPlan === plan.name 
-                          ? 'ring-2 ring-blue-500 shadow-lg' 
-                          : 'hover:shadow-md'
-                      }`}
-                      onClick={() => setSelectedPlan(plan.name)}
-                    >
-                      <CardContent className="p-6 text-center">
-                        <div 
-                          className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
-                          style={{ backgroundColor: plan.color + '20' }}
-                        >
-                          <Server className="w-8 h-8" style={{ color: plan.color }} />
-                        </div>
-                        <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
-                        <p className="text-2xl font-bold mb-2" style={{ color: plan.color }}>
-                          {plan.price} VNĐ/tháng
-                        </p>
-                        <p className="text-sm text-gray-600">{plan.description}</p>
-                        {selectedPlan === plan.name && (
-                          <Badge className="mt-3 bg-blue-500">
-                            <CheckCircle className="w-4 h-4 mr-1" />
-                            Đang xem
-                          </Badge>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
+      {/* Performance Charts */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <Tabs defaultValue="response-time" className="w-full">
+            <div className="flex justify-center mb-8">
+              <TabsList className="grid w-full max-w-2xl grid-cols-5">
+                <TabsTrigger value="response-time" className="text-xs">Response Time</TabsTrigger>
+                <TabsTrigger value="throughput" className="text-xs">Throughput</TabsTrigger>
+                <TabsTrigger value="resources" className="text-xs">Resources</TabsTrigger>
+                <TabsTrigger value="uptime" className="text-xs">Uptime</TabsTrigger>
+                <TabsTrigger value="security" className="text-xs">Security</TabsTrigger>
+              </TabsList>
+            </div>
+
+            <TabsContent value="response-time" className="space-y-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Response Time Analysis</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  Thời gian phản hồi trung bình của các thành phần website. Số liệu thấp hơn = hiệu suất tốt hơn.
+                </p>
               </div>
-            </motion.div>
-
-            {/* Performance Metrics Tabs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <Tabs defaultValue="response-time" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-8">
-                  <TabsTrigger value="response-time" className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    Response Time
-                  </TabsTrigger>
-                  <TabsTrigger value="throughput" className="flex items-center gap-2">
-                    <Zap className="w-4 h-4" />
-                    Throughput
-                  </TabsTrigger>
-                  <TabsTrigger value="resources" className="flex items-center gap-2">
-                    <Server className="w-4 h-4" />
-                    Resource Usage
-                  </TabsTrigger>
-                  <TabsTrigger value="uptime" className="flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4" />
-                    Uptime
-                  </TabsTrigger>
-                  <TabsTrigger value="security" className="flex items-center gap-2">
-                    <Shield className="w-4 h-4" />
-                    Security & Backup
-                  </TabsTrigger>
-                </TabsList>
-
-                {/* Response Time Tab */}
-                <TabsContent value="response-time">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Clock className="w-6 h-6 text-blue-600" />
-                        Response Time Analysis (ms)
-                      </CardTitle>
-                      <p className="text-gray-600">
-                        Thời gian phản hồi trung bình cho các loại request khác nhau
-                      </p>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-96">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart data={responseTimeData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip content={<CustomTooltip />} />
-                            <Bar dataKey="Basic" fill="#8B5CF6" />
-                            <Bar dataKey="Advanced" fill="#3B82F6" />
-                            <Bar dataKey="Pro" fill="#10B981" />
-                            <Bar dataKey="Enterprise" fill="#F59E0B" />
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                {/* Throughput Tab */}
-                <TabsContent value="throughput">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Zap className="w-6 h-6 text-green-600" />
-                        Throughput Performance
-                      </CardTitle>
-                      <p className="text-gray-600">
-                        Khả năng xử lý đồng thời và throughput peak của từng gói
-                      </p>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-96">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <AreaChart data={throughputData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip content={<CustomTooltip />} />
-                            <Area type="monotone" dataKey="Basic" stackId="1" fill="#8B5CF6" />
-                            <Area type="monotone" dataKey="Advanced" stackId="1" fill="#3B82F6" />
-                            <Area type="monotone" dataKey="Pro" stackId="1" fill="#10B981" />
-                            <Area type="monotone" dataKey="Enterprise" stackId="1" fill="#F59E0B" />
-                          </AreaChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                {/* Resource Usage Tab */}
-                <TabsContent value="resources">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Server className="w-6 h-6 text-purple-600" />
-                        Resource Utilization
-                      </CardTitle>
-                      <p className="text-gray-600">
-                        Mức độ sử dụng tài nguyên hệ thống (%)
-                      </p>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-96">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <RadarChart data={resourceUsageData}>
-                            <PolarGrid />
-                            <PolarAngleAxis dataKey="plan" />
-                            <PolarRadiusAxis angle={90} domain={[0, 100]} />
-                            <Radar name="CPU" dataKey="CPU" stroke="#8B5CF6" fill="#8B5CF6" fillOpacity={0.1} />
-                            <Radar name="RAM" dataKey="RAM" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.1} />
-                            <Radar name="Disk I/O" dataKey="Disk I/O" stroke="#10B981" fill="#10B981" fillOpacity={0.1} />
-                            <Radar name="Network" dataKey="Network" stroke="#F59E0B" fill="#F59E0B" fillOpacity={0.1} />
-                            <Radar name="Memory" dataKey="Memory" stroke="#EF4444" fill="#EF4444" fillOpacity={0.1} />
-                            <Tooltip />
-                          </RadarChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                {/* Uptime Tab */}
-                <TabsContent value="uptime">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <TrendingUp className="w-6 h-6 text-indigo-600" />
-                        Uptime Tracking
-                      </CardTitle>
-                      <p className="text-gray-600">
-                        Thống kê uptime 6 tháng gần nhất (%)
-                      </p>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-96">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <LineChart data={uptimeData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="month" />
-                            <YAxis domain={[98.5, 100]} />
-                            <Tooltip content={<CustomTooltip />} />
-                            <Line type="monotone" dataKey="Basic" stroke="#8B5CF6" strokeWidth={3} />
-                            <Line type="monotone" dataKey="Advanced" stroke="#3B82F6" strokeWidth={3} />
-                            <Line type="monotone" dataKey="Pro" stroke="#10B981" strokeWidth={3} />
-                            <Line type="monotone" dataKey="Enterprise" stroke="#F59E0B" strokeWidth={3} />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                {/* Security Tab */}
-                <TabsContent value="security">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Shield className="w-6 h-6 text-red-600" />
-                        Security & Backup Performance
-                      </CardTitle>
-                      <p className="text-gray-600">
-                        Hiệu quả bảo mật và tốc độ backup/restore
-                      </p>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-96">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart data={securityData} layout="horizontal">
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis type="number" domain={[0, 100]} />
-                            <YAxis dataKey="feature" type="category" />
-                            <Tooltip content={<CustomTooltip />} />
-                            <Bar dataKey="Basic" fill="#8B5CF6" />
-                            <Bar dataKey="Advanced" fill="#3B82F6" />
-                            <Bar dataKey="Pro" fill="#10B981" />
-                            <Bar dataKey="Enterprise" fill="#F59E0B" />
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </Tabs>
-            </motion.div>
-
-            {/* Interactive Comparison Tool */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="mt-16"
-            >
+              
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-center text-2xl">
-                    Interactive Plan Comparison Tool
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-blue-600" />
+                    Response Time Comparison (milliseconds)
                   </CardTitle>
-                  <p className="text-center text-gray-600">
-                    Compare multiple hosting plans side by side with detailed metrics
-                  </p>
                 </CardHeader>
                 <CardContent>
-                  <PerformanceComparison 
-                    plans={['Basic', 'Advanced', 'Pro', 'Enterprise']}
-                    showRecommendation={true}
-                    onSelectPlan={(plan) => {
-                      setSelectedPlan(plan);
-                      // Scroll to contact form or show contact modal
-                    }}
-                  />
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarChart data={responseTimeData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="metric" />
+                      <YAxis />
+                      <Tooltip formatter={formatTooltip} />
+                      <Legend />
+                      <Bar dataKey="Basic" fill="#8884d8" />
+                      <Bar dataKey="Advanced" fill="#82ca9d" />
+                      <Bar dataKey="Pro" fill="#ffc658" />
+                      <Bar dataKey="Enterprise" fill="#ff7300" />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </CardContent>
               </Card>
-            </motion.div>
 
-            {/* Recommendation Engine */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="mt-16"
-            >
-              <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
-                <CardContent className="p-8">
-                  <div className="text-center">
-                    <Target className="w-16 h-16 mx-auto mb-4 text-blue-600" />
-                    <h3 className="text-2xl font-bold mb-4 text-gray-900">
-                      Gói {selectedPlan} được đề xuất cho bạn
-                    </h3>
-                    <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                      Dựa trên phân tích hiệu năng, gói {selectedPlan} phù hợp nhất với nhu cầu của bạn. 
-                      Liên hệ để được tư vấn chi tiết về cấu hình và migration.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <ContactForm 
-                        trigger={
-                          <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                            Liên hệ tư vấn {selectedPlan}
-                          </Button>
-                        }
-                        defaultService={`Hosting ${selectedPlan}`}
-                        defaultMessage={`Tôi quan tâm đến gói hosting ${selectedPlan} và muốn được tư vấn chi tiết về hiệu năng và migration.`}
-                      />
-                      <Button variant="outline" size="lg">
-                        So sánh chi tiết các gói
-                      </Button>
-                    </div>
-                  </div>
+              <PlanRecommendation plan="Pro" />
+            </TabsContent>
+
+            <TabsContent value="throughput" className="space-y-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Throughput Performance</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  Khả năng xử lý tải và lưu lượng truy cập đồng thời. Số liệu cao hơn = hiệu suất tốt hơn.
+                </p>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-green-600" />
+                    Throughput Metrics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarChart data={throughputData} layout="horizontal" margin={{ top: 20, right: 30, left: 100, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis type="number" />
+                      <YAxis dataKey="metric" type="category" />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="Basic" fill="#8884d8" />
+                      <Bar dataKey="Advanced" fill="#82ca9d" />
+                      <Bar dataKey="Pro" fill="#ffc658" />
+                      <Bar dataKey="Enterprise" fill="#ff7300" />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </CardContent>
               </Card>
-            </motion.div>
 
+              <PlanRecommendation plan="Advanced" />
+            </TabsContent>
+
+            <TabsContent value="resources" className="space-y-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Resource Usage Analysis</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  Mức độ sử dụng tài nguyên hệ thống. Số liệu thấp hơn = tối ưu hóa tốt hơn.
+                </p>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Server className="h-5 w-5 text-purple-600" />
+                    Resource Utilization Radar
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={500}>
+                    <RadarChart data={resourceUsageData}>
+                      <PolarGrid />
+                      <PolarAngleAxis dataKey="plan" />
+                      <PolarRadiusAxis angle={90} domain={[0, 100]} />
+                      <Radar name="CPU" dataKey="CPU" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                      <Radar name="RAM" dataKey="RAM" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+                      <Radar name="Disk I/O" dataKey="Disk" stroke="#ffc658" fill="#ffc658" fillOpacity={0.6} />
+                      <Radar name="Network" dataKey="Network" stroke="#ff7300" fill="#ff7300" fillOpacity={0.6} />
+                      <Radar name="Memory" dataKey="Memory" stroke="#8dd1e1" fill="#8dd1e1" fillOpacity={0.6} />
+                      <Legend />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <PlanRecommendation plan="Enterprise" />
+            </TabsContent>
+
+            <TabsContent value="uptime" className="space-y-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Uptime Tracking</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  Thống kê thời gian hoạt động 6 tháng gần nhất. Số liệu cao hơn = độ tin cậy tốt hơn.
+                </p>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-green-600" />
+                    6-Month Uptime History
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={400}>
+                    <AreaChart data={uptimeData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis domain={[97, 100]} />
+                      <Tooltip formatter={(value) => [`${value}%`, 'Uptime']} />
+                      <Legend />
+                      <Area type="monotone" dataKey="Basic" stackId="1" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                      <Area type="monotone" dataKey="Advanced" stackId="2" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+                      <Area type="monotone" dataKey="Pro" stackId="3" stroke="#ffc658" fill="#ffc658" fillOpacity={0.6} />
+                      <Area type="monotone" dataKey="Enterprise" stackId="4" stroke="#ff7300" fill="#ff7300" fillOpacity={0.6} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {Object.entries(planFeatures).map(([plan, info]) => (
+                  <Card key={plan} className="text-center">
+                    <CardContent className="p-4">
+                      <div className="text-2xl font-bold text-gray-900 mb-1">
+                        {uptimeData[uptimeData.length - 1][plan as keyof typeof uptimeData[0]]}%
+                      </div>
+                      <div className="text-sm text-gray-500 mb-2">{plan} Plan</div>
+                      <div className="text-xs text-gray-400">
+                        Downtime: {((100 - Number(uptimeData[uptimeData.length - 1][plan as keyof typeof uptimeData[0]])) * 7.2).toFixed(1)}h/month
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              <PlanRecommendation plan="Pro" />
+            </TabsContent>
+
+            <TabsContent value="security" className="space-y-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Security & Backup Performance</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  Điểm số bảo mật và hiệu suất backup/recovery. Số liệu cao hơn = bảo mật tốt hơn.
+                </p>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-red-600" />
+                    Security Performance Score
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={400}>
+                    <LineChart data={securityData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="metric" />
+                      <YAxis domain={[0, 100]} />
+                      <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
+                      <Legend />
+                      <Line type="monotone" dataKey="Basic" stroke="#8884d8" strokeWidth={3} />
+                      <Line type="monotone" dataKey="Advanced" stroke="#82ca9d" strokeWidth={3} />
+                      <Line type="monotone" dataKey="Pro" stroke="#ffc658" strokeWidth={3} />
+                      <Line type="monotone" dataKey="Enterprise" stroke="#ff7300" strokeWidth={3} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <PlanRecommendation plan="Enterprise" />
+            </TabsContent>
+          </Tabs>
+        </div>
+      </section>
+
+      {/* Plan Selection Interface */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Chọn Gói Hosting Phù Hợp</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Dựa trên dữ liệu hiệu suất thực tế để chọn gói hosting tối ưu cho dự án của bạn.
+            </p>
           </div>
-        </section>
-      </main>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {Object.entries(planFeatures).map(([plan, info]) => (
+              <Card 
+                key={plan} 
+                className={`cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                  selectedPlan === plan ? 'ring-2 ring-blue-500 shadow-lg' : ''
+                }`}
+                onClick={() => setSelectedPlan(selectedPlan === plan ? null : plan)}
+              >
+                <CardHeader className="text-center">
+                  <CardTitle className="text-xl">{plan}</CardTitle>
+                  <div className="text-2xl font-bold text-blue-600">{info.price}</div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 mb-4">
+                    {info.features.map((feature, index) => (
+                      <li key={index} className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="text-xs text-gray-500 mb-4">{info.bestFor}</div>
+                  <Button 
+                    className="w-full" 
+                    variant={selectedPlan === plan ? "default" : "outline"}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowContactForm(true);
+                    }}
+                  >
+                    {selectedPlan === plan ? "Đã chọn" : "Chọn gói này"}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Performance Summary */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Tóm Tắt Hiệu Suất</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              <div className="bg-white rounded-lg p-6 shadow-sm">
+                <Zap className="h-10 w-10 text-yellow-500 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Tốc Độ Vượt Trội</h3>
+                <p className="text-gray-600">Enterprise plan nhanh hơn Basic plan tới 8.9x trong response time</p>
+              </div>
+              
+              <div className="bg-white rounded-lg p-6 shadow-sm">
+                <Database className="h-10 w-10 text-blue-500 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Khả Năng Mở Rộng</h3>
+                <p className="text-gray-600">Hỗ trợ từ 500 đến 35,000 concurrent requests</p>
+              </div>
+              
+              <div className="bg-white rounded-lg p-6 shadow-sm">
+                <Shield className="h-10 w-10 text-green-500 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Độ Tin Cậy Cao</h3>
+                <p className="text-gray-600">Uptime lên đến 99.98% với Enterprise plan</p>
+              </div>
+            </div>
+
+            <Button 
+              size="lg" 
+              onClick={() => setShowContactForm(true)}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              Tư vấn miễn phí về hiệu suất hosting
+              <ArrowRight className="h-5 w-5 ml-2" />
+            </Button>
+          </div>
+        </div>
+      </section>
 
       <Footer />
+
+      {showContactForm && (
+        <ContactForm 
+          isOpen={showContactForm}
+          onClose={() => setShowContactForm(false)}
+          selectedService={selectedPlan ? `Hosting ${selectedPlan}` : "Performance Consultation"}
+        />
+      )}
     </div>
   );
 }
