@@ -38,6 +38,17 @@ const interests = [
 ];
 
 export default function PersonalizationPopup({ storageKey }: PersonalizationPopupProps) {
+  
+  // Add development reset function (only in dev mode)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).resetPersonalization = () => {
+        localStorage.removeItem(storageKey);
+        localStorage.removeItem("userProfile");
+        console.log('Personalization reset - refresh page to see popup');
+      };
+    }
+  }, [storageKey]);
   const [isVisible, setIsVisible] = useState(false);
   const [step, setStep] = useState(1);
   const [profile, setProfile] = useState<UserProfile>({
@@ -50,12 +61,14 @@ export default function PersonalizationPopup({ storageKey }: PersonalizationPopu
   useEffect(() => {
     // Check if personalization has been completed or skipped
     const hasCompleted = localStorage.getItem(storageKey);
+    console.log('Personalization check:', { storageKey, hasCompleted });
     if (hasCompleted) return;
 
-    // Show popup after 10 seconds
+    // Show popup after 3 seconds for testing
     const timer = setTimeout(() => {
+      console.log('Showing personalization popup');
       setIsVisible(true);
-    }, 10000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [storageKey]);
@@ -277,6 +290,19 @@ export default function PersonalizationPopup({ storageKey }: PersonalizationPopu
                   <p className="text-xs text-gray-500 mt-4 text-center">
                     Thông tin sẽ được lưu trữ cục bộ để cải thiện trải nghiệm của bạn
                   </p>
+                  
+                  {/* Development reset button */}
+                  {process.env.NODE_ENV === 'development' && (
+                    <button
+                      onClick={() => {
+                        localStorage.clear();
+                        window.location.reload();
+                      }}
+                      className="text-xs text-red-500 underline mt-2 block mx-auto"
+                    >
+                      [Dev] Reset & Reload
+                    </button>
+                  )}
                 </div>
               </CardContent>
             </Card>
