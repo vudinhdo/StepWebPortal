@@ -22,7 +22,11 @@ import {
   CheckCircle,
   Monitor,
   HardDrive,
-  Cpu
+  Cpu,
+  Globe,
+  BarChart,
+  Code,
+  Network
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -501,60 +505,187 @@ export default function CloudServer() {
             </p>
           </motion.div>
 
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Core Features */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Tính Năng Cốt Lõi</h3>
+              
+              <div className="space-y-4">
+                <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-blue-100 rounded-lg p-2">
+                      <Zap className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Triển Khai Nhanh Chóng</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        Setup server chỉ 5 phút với template tiếng Việt cho Ubuntu, CentOS, Windows. 
+                        Tích hợp AI/ML với GPU chuyên dụng NVIDIA Tesla, hỗ trợ TensorFlow, PyTorch.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-green-100 rounded-lg p-2">
+                      <Globe className="w-5 h-5 text-green-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Tích Hợp Địa Phương</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        Kết nối dễ dàng với API ngân hàng Việt (Vietcombank, Techcombank), ví điện tử (Momo, VNPay, ZaloPay), 
+                        và ERP như Odoo, SAP, Fast Accounting.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-purple-100 rounded-lg p-2">
+                      <Database className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Backup & Disaster Recovery</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        Backup tự động hàng ngày, snapshot theo lịch, khôi phục point-in-time. 
+                        Dữ liệu lưu trữ tại 3 data center Việt Nam tuân thủ PDPA và Circular 47.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-orange-100 rounded-lg p-2">
+                      <BarChart className="w-5 h-5 text-orange-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Monitoring & Analytics</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        Dashboard tiếng Việt realtime, cảnh báo qua SMS/email/Telegram. 
+                        Metrics chi tiết: CPU, RAM, Disk I/O, Network, Application Performance Monitoring (APM).
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Advanced Features */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Tính Năng Nâng Cao</h3>
+              
+              <div className="space-y-4">
+                <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-red-500 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-red-100 rounded-lg p-2">
+                      <Shield className="w-5 h-5 text-red-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Bảo Mật Đa Lớp</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        WAF (Web Application Firewall), DDoS Protection up to 10Gbps, 
+                        SSL/TLS certificate tự động gia hạn, VPN site-to-site, 2FA authentication.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-indigo-500 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-indigo-100 rounded-lg p-2">
+                      <Cloud className="w-5 h-5 text-indigo-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Auto Scaling & Load Balancer</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        Tự động scale theo tải, Load Balancer với health check, 
+                        Container orchestration với Kubernetes, Docker Swarm support.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-teal-500 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-teal-100 rounded-lg p-2">
+                      <Cpu className="w-5 h-5 text-teal-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Data Center Việt Nam</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        3 data center tại Hà Nội, TP.HCM, Đà Nẵng. Độ trễ &lt;5ms trong nước, 
+                        &lt;50ms tới Singapore. Tier 3+ certified, 99.99% uptime SLA.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-pink-500 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-pink-100 rounded-lg p-2">
+                      <Headphones className="w-5 h-5 text-pink-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Hỗ Trợ Chuyên Sâu</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        Support 24/7 bằng tiếng Việt qua chat, call, email. 
+                        Dedicated support engineer cho Enterprise, migration support miễn phí từ AWS/GCP.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Additional Features Grid */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true }}
-            className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200"
+            className="mt-12"
           >
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-lg font-semibold">Tính Năng</th>
-                    <th className="px-6 py-4 text-left text-lg font-semibold">Mô Tả</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">Triển Khai Nhanh</td>
-                    <td className="px-6 py-4 text-gray-600">
-                      Setup server chỉ 5 phút, template tiếng Việt cho OS phổ biến. Tích hợp AI/ML với GPU chuyên dụng.
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">Tích Hợp Địa Phương</td>
-                    <td className="px-6 py-4 text-gray-600">
-                      Kết nối dễ dàng với ngân hàng Việt, ví điện tử, và hệ thống ERP như Odoo, SAP.
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">Backup & Restore</td>
-                    <td className="px-6 py-4 text-gray-600">
-                      Tự động hàng ngày, khôi phục nhanh, dữ liệu lưu tại Việt Nam tuân thủ PDPA.
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">Monitoring Thân Thiện</td>
-                    <td className="px-6 py-4 text-gray-600">
-                      Dashboard tiếng Việt, cảnh báo qua SMS/email.
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">SSL Miễn Phí</td>
-                    <td className="px-6 py-4 text-gray-600">
-                      Chứng chỉ bảo mật Let's Encrypt cho HTTPS, tự động gia hạn.
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">Data Center Việt Nam</td>
-                    <td className="px-6 py-4 text-gray-600">
-                      Server tại Hà Nội & TP.HCM, độ trễ thấp cho người dùng Việt.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <h3 className="text-2xl font-bold text-gray-800 mb-8 text-center">Tính Năng Bổ Sung</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 text-center">
+                <div className="bg-blue-500 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <Settings className="w-6 h-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-gray-800 mb-2">API Management</h4>
+                <p className="text-gray-600 text-sm">RESTful API, GraphQL support, rate limiting, API versioning</p>
+              </div>
+              
+              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 text-center">
+                <div className="bg-green-500 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <Code className="w-6 h-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-gray-800 mb-2">DevOps Integration</h4>
+                <p className="text-gray-600 text-sm">CI/CD pipeline, GitLab/GitHub integration, automated testing</p>
+              </div>
+              
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 text-center">
+                <div className="bg-purple-500 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <Network className="w-6 h-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-gray-800 mb-2">Network Optimization</h4>
+                <p className="text-gray-600 text-sm">CDN integration, DNS management, IPv6 support</p>
+              </div>
             </div>
           </motion.div>
         </div>
