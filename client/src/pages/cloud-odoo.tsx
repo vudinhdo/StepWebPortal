@@ -546,6 +546,84 @@ export default function CloudOdoo() {
         </div>
       </section>
 
+      {/* Features Table Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              Tính Năng Nổi Bật Của Cloud Server Cho Odoo
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Khám phá các tính năng được tối ưu hóa đặc biệt để đảm bảo Odoo của bạn 
+              hoạt động ổn định và hiệu quả nhất.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200"
+          >
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-lg font-semibold">Tính Năng</th>
+                    <th className="px-6 py-4 text-left text-lg font-semibold">Mô Tả</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-gray-800">Cài Đặt Nhanh Chóng</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      Cài đặt Odoo chỉ trong 5 phút với template sẵn có. Hỗ trợ phiên bản Odoo 16, 17 và mới nhất.
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-gray-800">Tích Hợp Đầy Đủ</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      Kết nối dễ dàng với các module Odoo như CRM, ERP, E-commerce và Accounting.
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-gray-800">Backup & Restore</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      Backup tự động hàng ngày, khôi phục chỉ với một cú click.
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-gray-800">Monitoring 24/7</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      Giám sát hiệu suất thời gian thực qua dashboard thân thiện.
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-gray-800">SSL Miễn Phí</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      Chứng chỉ SSL Let's Encrypt để bảo mật kết nối HTTPS.
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-gray-800">Hỗ Trợ Đa Vùng</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      Server đặt tại Việt Nam, Singapore hoặc EU để giảm độ trễ.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Migration & Support Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -801,6 +879,96 @@ export default function CloudOdoo() {
               </Button>
             </form>
           </motion.div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              Câu Hỏi Thường Gặp (FAQ)
+            </h2>
+            <p className="text-lg text-gray-600">
+              Tìm hiểu thêm thông tin về dịch vụ Cloud Server cho Odoo của chúng tôi
+            </p>
+          </motion.div>
+
+          <div className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+            >
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                  Cloud Server có tương thích với tất cả phiên bản Odoo không?
+                </h3>
+                <p className="text-gray-600">
+                  Có, chúng tôi hỗ trợ từ Odoo 14 trở lên, bao gồm cả phiên bản Community và Enterprise.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+            >
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                  Làm thế nào để di chuyển Odoo hiện tại sang cloud?
+                </h3>
+                <p className="text-gray-600">
+                  Đội ngũ chúng tôi sẽ hỗ trợ miễn phí, đảm bảo không mất dữ liệu.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+            >
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                  Có cam kết uptime không?
+                </h3>
+                <p className="text-gray-600">
+                  Chúng tôi cam kết 99.99% uptime, với bồi thường nếu không đạt.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+            >
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                  Phương thức thanh toán nào được chấp nhận?
+                </h3>
+                <p className="text-gray-600">
+                  Chuyển khoản ngân hàng, thẻ tín dụng, hoặc ví điện tử như Momo/VNPay.
+                </p>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
