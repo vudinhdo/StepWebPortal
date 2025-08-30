@@ -306,6 +306,24 @@ export default function CloudServer() {
                   </div>
                   <div>
                     <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-blue-200">Disk Usage</span>
+                      <span className="text-sm font-medium">75GB / 200GB</span>
+                    </div>
+                    <div className="w-full bg-white/20 rounded-full h-2">
+                      <div className="bg-yellow-400 h-2 rounded-full transition-all duration-300" style={{ width: '37%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-blue-200">Bandwidth</span>
+                      <span className="text-sm font-medium">2.8TB / 10TB</span>
+                    </div>
+                    <div className="w-full bg-white/20 rounded-full h-2">
+                      <div className="bg-purple-400 h-2 rounded-full transition-all duration-300" style={{ width: '28%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
                       <span className="text-sm text-blue-200">Uptime</span>
                       <span className="text-sm font-medium">99.99%</span>
                     </div>
