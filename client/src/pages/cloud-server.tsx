@@ -203,56 +203,67 @@ export default function CloudServer() {
                 Thử Miễn Phí 14 Ngày - Không Cam Kết!
               </div>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
                 Cloud Server – Giải Pháp <span className="text-blue-300">Đám Mây Linh Hoạt, Tiết Kiệm</span> Và An Toàn
               </h1>
               
-              <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+              <p className="text-lg md:text-xl text-blue-100 mb-6 leading-relaxed">
                 Nâng Tầm Kinh Doanh Với Cloud Server – Được Thiết Kế Riêng Cho Thị Trường Việt Nam
               </p>
               
-              <div className="bg-blue-800/30 rounded-lg p-6 mb-8 border border-blue-600/30">
-                <p className="text-lg text-blue-100 leading-relaxed mb-4">
+              <div className="bg-blue-800/30 rounded-lg p-5 mb-6 border border-blue-600/30">
+                <p className="text-base text-blue-100 leading-relaxed mb-3">
                   <strong>Kính gửi các CEO, CTO và Developer thân mến,</strong>
                 </p>
-                <p className="text-lg text-blue-200 leading-relaxed">
-                  Trong bối cảnh chuyển đổi số tại Việt Nam đang bùng nổ, với nhu cầu cao về AI, tự động hóa và bảo mật dữ liệu, 
-                  Cloud Server của chúng tôi là giải pháp lý tưởng để bạn tối ưu hóa chi phí, tăng tốc độ triển khai và đảm bảo an toàn. 
-                  Chúng tôi hiểu rõ thị hiếu của doanh nghiệp Việt: giá cả phải chăng, hỗ trợ nhanh chóng bằng tiếng Việt, 
-                  data center đặt tại Việt Nam để đảm bảo độ trễ thấp.
+                <p className="text-base text-blue-200 leading-relaxed">
+                  Trong bối cảnh chuyển đổi số tại Việt Nam đang bùng nổ, Cloud Server của chúng tôi là giải pháp lý tưởng 
+                  để bạn tối ưu hóa chi phí, tăng tốc độ triển khai với data center tại Việt Nam.
                 </p>
               </div>
               
-              <p className="text-lg text-blue-200 mb-8 leading-relaxed">
-                Với kinh nghiệm phục vụ hàng ngàn doanh nghiệp Việt từ startup đến tập đoàn lớn (giống như Viettel Cloud hay Bizfly), 
-                chúng tôi mang đến cloud server mạnh mẽ, linh hoạt, giúp <span className="text-green-300 font-semibold">CEO tiết kiệm chi phí lên đến 50%</span>, 
-                <span className="text-cyan-300 font-semibold"> CTO xây dựng kiến trúc scalable</span>, và 
-                <span className="text-yellow-300 font-semibold"> DEV triển khai code nhanh chóng</span> mà không lo downtime.
-              </p>
+              <div className="mb-6">
+                <p className="text-base text-blue-200 leading-relaxed mb-4">
+                  Với kinh nghiệm phục vụ hàng ngàn doanh nghiệp Việt, chúng tôi giúp:
+                </p>
+                <div className="grid md:grid-cols-3 gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-300 rounded-full"></div>
+                    <span className="text-sm text-green-300 font-semibold">CEO tiết kiệm 50% chi phí</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-cyan-300 rounded-full"></div>
+                    <span className="text-sm text-cyan-300 font-semibold">CTO xây dựng kiến trúc scalable</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
+                    <span className="text-sm text-yellow-300 font-semibold">DEV triển khai nhanh chóng</span>
+                  </div>
+                </div>
+              </div>
               
-              <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-lg p-4 mb-8 border border-green-400/30">
-                <p className="text-lg text-white font-semibold">
-                  🇻🇳 Hỗ Trợ Đặc Biệt: 24/7 Qua Tiếng Việt, Tư Vấn 1-1 Cá Nhân Hóa Từ Chuyên Gia Việt Nam!
+              <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-lg p-4 mb-6 border border-green-400/30">
+                <p className="text-base text-white font-semibold">
+                  🇻🇳 Hỗ Trợ Đặc Biệt: 24/7 Qua Tiếng Việt, Tư Vấn 1-1 Cá Nhân Hóa!
                 </p>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   size="lg"
-                  className="bg-white text-blue-800 hover:bg-blue-50 font-semibold text-lg px-8 py-4"
+                  className="bg-white text-blue-800 hover:bg-blue-50 font-semibold px-6 py-3"
                   onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  <Cloud className="mr-2" size={20} />
-                  Đăng Ký Thử Miễn Phí 14 Ngày – Không Cam Kết
+                  <Cloud className="mr-2" size={18} />
+                  Đăng Ký Thử Miễn Phí
                 </Button>
                 <Button 
                   size="lg"
                   variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-blue-800 font-semibold text-lg px-8 py-4"
+                  className="border-white text-white hover:bg-white hover:text-blue-800 font-semibold px-6 py-3"
                   onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  <Package className="mr-2" size={20} />
-                  Xem Chi Tiết Giá – Ưu Đãi Đặc Biệt Cho Doanh Nghiệp Việt
+                  <Package className="mr-2" size={18} />
+                  Xem Báo Giá
                 </Button>
               </div>
             </motion.div>
@@ -263,28 +274,56 @@ export default function CloudServer() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative"
             >
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
                 <div className="flex items-center justify-between mb-6">
-                  <Server className="text-blue-300" size={48} />
-                  <div className="text-right">
-                    <div className="text-green-400 text-sm font-semibold">● Online</div>
-                    <div className="text-blue-200 text-sm">99.99% Uptime</div>
+                  <div className="flex items-center gap-3">
+                    <Server className="text-blue-300" size={32} />
+                    <h3 className="text-lg font-semibold">Server Status</h3>
+                  </div>
+                  <div className="flex items-center gap-2 text-green-300">
+                    <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium">Online</span>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-blue-200">CPU Usage</span>
-                    <span className="text-white font-semibold">45%</span>
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-blue-200">CPU Usage</span>
+                      <span className="text-sm font-medium">45%</span>
+                    </div>
+                    <div className="w-full bg-white/20 rounded-full h-2">
+                      <div className="bg-blue-400 h-2 rounded-full transition-all duration-300" style={{ width: '45%' }}></div>
+                    </div>
                   </div>
-                  <div className="w-full bg-blue-800/50 rounded-full h-2">
-                    <div className="bg-blue-300 h-2 rounded-full w-[45%]"></div>
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-blue-200">Memory</span>
+                      <span className="text-sm font-medium">6.2GB / 16GB</span>
+                    </div>
+                    <div className="w-full bg-white/20 rounded-full h-2">
+                      <div className="bg-green-400 h-2 rounded-full transition-all duration-300" style={{ width: '38%' }}></div>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-blue-200">Memory</span>
-                    <span className="text-white font-semibold">6.2GB / 16GB</span>
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-blue-200">Uptime</span>
+                      <span className="text-sm font-medium">99.99%</span>
+                    </div>
+                    <div className="w-full bg-white/20 rounded-full h-2">
+                      <div className="bg-green-400 h-2 rounded-full transition-all duration-300" style={{ width: '99%' }}></div>
+                    </div>
                   </div>
-                  <div className="w-full bg-blue-800/50 rounded-full h-2">
-                    <div className="bg-green-400 h-2 rounded-full w-[38%]"></div>
+                </div>
+                <div className="mt-6 pt-4 border-t border-white/20">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-blue-200 block">Data Center</span>
+                      <span className="font-medium">🇻🇳 Việt Nam</span>
+                    </div>
+                    <div>
+                      <span className="text-blue-200 block">Response Time</span>
+                      <span className="font-medium text-green-300">&lt;10ms</span>
+                    </div>
                   </div>
                 </div>
               </div>
