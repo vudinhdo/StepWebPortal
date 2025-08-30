@@ -1026,44 +1026,7 @@ export default function CloudServer() {
         </div>
       </section>
 
-      {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Sẵn Sàng Nâng Cấp Hạ Tầng Của Bạn?
-            </h2>
-            <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-              Đừng chờ đợi nữa! Đăng ký ngay hôm nay để trải nghiệm Cloud Server hiệu suất cao. 
-              Thử miễn phí 14 ngày mà không cam kết.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg"
-                className="bg-white text-blue-800 hover:bg-blue-50 font-semibold text-lg px-8 py-4"
-                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                <Cloud className="mr-2" size={20} />
-                Đăng Ký Thử Miễn Phí
-              </Button>
-              <Button 
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-blue-800 font-semibold text-lg px-8 py-4"
-                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                <Phone className="mr-2" size={20} />
-                Liên Hệ Tư Vấn
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+
       
       <Footer />
     </div>
