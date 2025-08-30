@@ -18,6 +18,7 @@ import HostingReseller from "@/pages/hosting-reseller";
 import HostingLaravel from "@/pages/hosting-laravel";
 import HostingNVME from "@/pages/hosting-nvme";
 import Cloud from "@/pages/cloud";
+import CloudOdoo from "@/pages/cloud-odoo";
 import PerformanceBenchmark from "@/pages/performance-benchmark";
 // import AdminCMSComplete from "@/pages/admin-cms-complete";
 import CMSGuide from "@/pages/cms-guide";
@@ -47,6 +48,7 @@ function Router() {
         <Route path="/Sản Phẩm & Dịch Vụ/Email" component={EmailEnterprise} />
         <Route path="/Sản Phẩm & Dịch Vụ/Email Server Riêng" component={EmailServerPrivate} />
         <Route path="/cloud" component={Cloud} />
+        <Route path="/Cloud/Cloud Odoo" component={CloudOdoo} />
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route component={NotFound} />
       </Switch>
