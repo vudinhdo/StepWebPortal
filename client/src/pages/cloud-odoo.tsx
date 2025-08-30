@@ -26,7 +26,8 @@ import {
   Phone,
   AlertTriangle,
   TrendingUp,
-  Lock
+  Lock,
+  CheckCircle
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,7 +64,7 @@ export default function CloudOdoo() {
     {
       icon: Shield,
       title: "Bảo Mật Cao Cấp",
-      description: "Tích hợp firewall, mã hóa dữ liệu và backup tự động hàng ngày để bảo vệ dữ liệu kinh doanh quan trọng của bạn."
+      description: "Tích hợp hệ thống bảo mật nhiều lớp bao gồm WAF (Web Application Firewall) và Firewall chuyên biệt, dành riêng để bảo vệ ứng dụng Odoo khỏi các mối đe dọa như tấn công DDoS, SQL injection và các lỗ hổng web phổ biến. Kết hợp với mã hóa dữ liệu và backup tự động hàng ngày để bảo vệ dữ liệu kinh doanh quan trọng của bạn."
     },
     {
       icon: Users,
@@ -543,6 +544,50 @@ export default function CloudOdoo() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Security Highlight Section */}
+      <section className="py-16 bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="flex items-start gap-6"
+          >
+            <div className="flex-shrink-0">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+                <Shield className="text-red-600" size={32} />
+              </div>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                🔒 Bảo Mật Cao Cấp - Bảo Vệ Tối Đa Cho Odoo
+              </h3>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                <strong>Tích hợp hệ thống bảo mật nhiều lớp</strong> bao gồm <span className="text-red-600 font-semibold">WAF (Web Application Firewall)</span> và 
+                <span className="text-red-600 font-semibold"> Firewall chuyên biệt</span>, dành riêng để bảo vệ ứng dụng Odoo khỏi các mối đe dọa như 
+                <span className="text-red-600 font-semibold"> tấn công DDoS, SQL injection và các lỗ hổng web phổ biến</span>. 
+                Kết hợp với <span className="text-blue-600 font-semibold">mã hóa dữ liệu và backup tự động hàng ngày</span> để bảo vệ dữ liệu kinh doanh quan trọng của bạn.
+              </p>
+              <div className="mt-6 grid md:grid-cols-3 gap-4">
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <CheckCircle className="text-green-500" size={16} />
+                  <span>WAF Protection</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <CheckCircle className="text-green-500" size={16} />
+                  <span>DDoS Mitigation</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <CheckCircle className="text-green-500" size={16} />
+                  <span>SQL Injection Protection</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
