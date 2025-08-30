@@ -22,7 +22,11 @@ import {
   Package,
   Gauge,
   ChevronRight,
-  Play
+  Play,
+  Phone,
+  AlertTriangle,
+  TrendingUp,
+  Lock
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,49 +51,62 @@ export default function CloudOdoo() {
 
   const benefits = [
     {
-      icon: Cloud,
-      title: "Cloud Hosting Tối Ưu Cho Odoo",
-      description: "Hạ tầng được tối ưu hóa đặc biệt cho Odoo với PostgreSQL hiệu suất cao, Redis cache và CDN toàn cầu."
+      icon: Zap,
+      title: "Tối Ưu Hóa Hiệu Suất",
+      description: "CPU mạnh mẽ, RAM cao cấp và SSD tốc độ cao đảm bảo Odoo tải trang chỉ trong giây lát, ngay cả với hàng nghìn giao dịch hàng ngày."
+    },
+    {
+      icon: TrendingUp,
+      title: "Mở Rộng Linh Hoạt",
+      description: "Tăng giảm tài nguyên chỉ với vài cú click – lý tưởng cho doanh nghiệp mùa vụ hoặc đang mở rộng."
     },
     {
       icon: Shield,
-      title: "Bảo Mật Doanh Nghiệp",
-      description: "SSL/TLS mã hóa, backup tự động hàng ngày, firewall WAF và monitoring 24/7 bảo vệ dữ liệu Odoo."
-    },
-    {
-      icon: Zap,
-      title: "Hiệu Suất Vượt Trội",
-      description: "SSD NVMe, RAM DDR4, CPU Intel Xeon mới nhất đảm bảo Odoo chạy mượt mà ngay cả với hàng nghìn users."
+      title: "Bảo Mật Cao Cấp",
+      description: "Tích hợp firewall, mã hóa dữ liệu và backup tự động hàng ngày để bảo vệ dữ liệu kinh doanh quan trọng của bạn."
     },
     {
       icon: Users,
-      title: "Hỗ Trợ Chuyên Gia Odoo",
-      description: "Đội ngũ kỹ thuật am hiểu sâu Odoo, hỗ trợ migration, customization và troubleshooting 24/7."
+      title: "Hỗ Trợ Chuyên Sâu",
+      description: "Đội ngũ chuyên gia Odoo sẵn sàng hỗ trợ cài đặt, tối ưu hóa và di chuyển dữ liệu miễn phí."
+    },
+    {
+      icon: AlertTriangle,
+      title: "Tiết Kiệm Chi Phí",
+      description: "Chỉ trả cho những gì bạn sử dụng, giảm tới 50% so với server vật lý truyền thống."
+    },
+    {
+      icon: Clock,
+      title: "Uptime 99.99%",
+      description: "Đảm bảo Odoo luôn sẵn sàng, không gián đoạn kinh doanh."
     }
   ];
 
   const packages = [
     {
-      name: "Odoo Starter",
-      price: "2.500.000 VNĐ/tháng",
-      suitable: "Phù hợp cho 5-20 users",
+      name: "Starter",
+      price: "500.000 VNĐ/tháng",
+      suitable: "Phù hợp startup nhỏ",
       popular: false,
+      specs: "2 vCPU, 4GB RAM, 50GB SSD",
       features: [
         "2 vCPU Intel Xeon",
         "4GB RAM DDR4",
         "50GB SSD NVMe",
-        "PostgreSQL 14 tối ưu",
-        "Backup tự động hàng ngày",
+        "PostgreSQL tối ưu",
+        "Backup tự động",
         "SSL miễn phí",
-        "Hỗ trợ 12/7",
-        "Migration Odoo miễn phí"
+        "Hỗ trợ 24/7",
+        "Migration miễn phí",
+        "Thử miễn phí 14 ngày"
       ]
     },
     {
-      name: "Odoo Business",
-      price: "4.500.000 VNĐ/tháng",
-      suitable: "Phù hợp cho 20-100 users",
+      name: "Business",
+      price: "1.200.000 VNĐ/tháng",
+      suitable: "Lý tưởng cho doanh nghiệp vừa",
       popular: true,
+      specs: "4 vCPU, 8GB RAM, 100GB SSD",
       features: [
         "4 vCPU Intel Xeon",
         "8GB RAM DDR4",
@@ -99,27 +116,30 @@ export default function CloudOdoo() {
         "CDN tích hợp",
         "Monitoring dashboard",
         "Hỗ trợ 24/7",
-        "Customization support",
-        "Load balancer"
+        "Load balancer",
+        "Migration miễn phí",
+        "Thử miễn phí 14 ngày"
       ]
     },
     {
-      name: "Odoo Enterprise",
-      price: "8.500.000 VNĐ/tháng",
-      suitable: "Phù hợp cho 100+ users",
+      name: "Enterprise",
+      price: "2.500.000 VNĐ/tháng",
+      suitable: "Dành cho tập đoàn lớn, hỗ trợ tùy chỉnh",
       popular: false,
+      specs: "8 vCPU, 16GB RAM, 200GB SSD",
       features: [
         "8 vCPU Intel Xeon",
         "16GB RAM DDR4",
         "200GB SSD NVMe",
-        "Master-Slave PostgreSQL",
-        "Redis Cluster",
+        "PostgreSQL + Redis Cluster",
         "Multi-region backup",
         "Advanced monitoring",
         "Dedicated support manager",
         "Custom development",
-        "High availability 99.9%",
-        "Disaster recovery"
+        "High availability 99.99%",
+        "Load balancer",
+        "Migration miễn phí",
+        "Thử miễn phí 14 ngày"
       ]
     }
   ];
@@ -207,27 +227,25 @@ export default function CloudOdoo() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center">
-                  <Cloud className="text-white" size={32} />
-                </div>
-                <div>
-                  <h1 className="text-4xl md:text-6xl font-bold mb-2">
-                    Cloud <span className="text-purple-300">Odoo</span>
-                  </h1>
-                  <p className="text-purple-200 text-lg">Powered by STEP</p>
-                </div>
-              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                Cloud Server Tối Ưu Cho Odoo –{" "}
+                <span className="text-purple-300">Giải Pháp Hoàn Hảo Cho Doanh Nghiệp Của Bạn</span>
+              </h1>
               
-              <h2 className="text-2xl md:text-3xl font-semibold mb-6 leading-tight">
-                Giải Pháp Cloud Hosting Chuyên Biệt Cho Odoo ERP
+              <h2 className="text-xl md:text-2xl font-semibold mb-6 text-purple-200">
+                Tăng Tốc Độ Kinh Doanh Với Cloud Server Chuyên Dụng Cho Odoo
               </h2>
               
-              <p className="text-lg text-purple-100 mb-8 leading-relaxed">
-                Hạ tầng cloud được tối ưu hóa đặc biệt cho Odoo với hiệu suất vượt trội, 
-                bảo mật cấp doanh nghiệp và hỗ trợ chuyên gia 24/7. Giúp doanh nghiệp 
-                triển khai Odoo nhanh chóng và vận hành ổn định.
+              <p className="text-lg text-purple-100 mb-6 leading-relaxed">
+                Bạn đang sử dụng Odoo để quản lý doanh nghiệp? Đừng để server truyền thống làm chậm lại quy trình của bạn! 
+                Cloud Server của chúng tôi được thiết kế đặc biệt để chạy Odoo mượt mà, an toàn và linh hoạt. 
+                Với hiệu suất cao, mở rộng dễ dàng và hỗ trợ 24/7, bạn có thể tập trung vào phát triển kinh doanh 
+                thay vì lo lắng về hạ tầng.
               </p>
+              
+              <div className="bg-yellow-400 text-purple-900 px-6 py-3 rounded-lg font-bold text-lg inline-block mb-8">
+                🎉 Bắt Đầu Ngay Hôm Nay – Thử Miễn Phí 14 Ngày!
+              </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
@@ -235,17 +253,17 @@ export default function CloudOdoo() {
                   className="bg-white text-purple-800 hover:bg-purple-50 font-semibold text-lg px-8 py-4"
                   onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  Tư Vấn Miễn Phí
-                  <ArrowRight className="ml-2" size={20} />
+                  <Cloud className="mr-2" size={20} />
+                  Đăng Ký Ngay
                 </Button>
                 <Button 
                   size="lg"
                   variant="outline"
                   className="border-white text-white hover:bg-white hover:text-purple-800 font-semibold text-lg px-8 py-4"
-                  onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  <Play className="mr-2" size={20} />
-                  Xem Demo
+                  <Phone className="mr-2" size={20} />
+                  Liên Hệ Tư Vấn
                 </Button>
               </div>
             </motion.div>
@@ -281,6 +299,94 @@ export default function CloudOdoo() {
         </div>
       </section>
 
+      {/* Why Cloud Server for Odoo Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              Tại Sao Doanh Nghiệp Cần Cloud Server Cho Odoo?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Odoo là nền tảng ERP mạnh mẽ, nhưng để khai thác tối đa, bạn cần một server đáng tin cậy. 
+              Server truyền thống thường gặp vấn đề như:
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <div className="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="text-red-600" size={32} />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Hiệu Suất Thấp</h3>
+              <p className="text-gray-600 text-sm">
+                Tốc độ chậm khi xử lý dữ liệu lớn hoặc nhiều người dùng đồng thời.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <div className="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <AlertTriangle className="text-red-600" size={32} />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Chi Phí Cao</h3>
+              <p className="text-gray-600 text-sm">
+                Phải đầu tư phần cứng đắt đỏ và bảo trì định kỳ.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <div className="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Lock className="text-red-600" size={32} />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Rủi Ro Bảo Mật</h3>
+              <p className="text-gray-600 text-sm">
+                Dễ bị tấn công nếu không có tường lửa chuyên dụng.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <div className="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Settings className="text-red-600" size={32} />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Khó Mở Rộng</h3>
+              <p className="text-gray-600 text-sm">
+                Không linh hoạt khi doanh nghiệp phát triển.
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="text-center">
+            <p className="text-lg text-gray-700 font-semibold">
+              Cloud Server của chúng tôi giải quyết tất cả những vấn đề này, giúp Odoo chạy 
+              <span className="text-purple-600"> nhanh hơn, an toàn hơn và tiết kiệm chi phí hơn.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Benefits Section */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -292,15 +398,15 @@ export default function CloudOdoo() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Tại Sao Chọn Cloud Odoo Từ STEP?
+              Lợi Ích Nổi Bật Khi Sử Dụng Cloud Server Của Chúng Tôi Cho Odoo
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-4xl mx-auto">
               Chúng tôi hiểu rõ yêu cầu đặc biệt của Odoo và đã tối ưu hóa hạ tầng cloud 
               để mang lại hiệu suất tốt nhất cho ứng dụng ERP quan trọng của bạn.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <motion.div
                 key={index}
@@ -377,11 +483,10 @@ export default function CloudOdoo() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Gói Cloud Odoo Phù Hợp Mọi Quy Mô
+              Gói Dịch Vụ Phù Hợp Với Mọi Doanh Nghiệp
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Từ startup đến doanh nghiệp lớn, chúng tôi có gói dịch vụ phù hợp 
-              với nhu cầu và ngân sách của mọi tổ chức.
+              Chọn gói phù hợp với quy mô của bạn - Tất cả gói đều bao gồm hỗ trợ 24/7 và thử miễn phí 14 ngày!
             </p>
           </motion.div>
 
@@ -406,9 +511,10 @@ export default function CloudOdoo() {
                 )}
 
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">{pkg.name}</h3>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">Gói {pkg.name}</h3>
                   <div className="text-3xl font-bold text-purple-600 mb-2">{pkg.price}</div>
-                  <p className="text-gray-600 text-sm">{pkg.suitable}</p>
+                  <p className="text-gray-600 text-sm font-medium">{pkg.specs}</p>
+                  <p className="text-gray-500 text-sm">{pkg.suitable}</p>
                 </div>
 
                 <ul className="space-y-3 mb-8">
@@ -694,6 +800,45 @@ export default function CloudOdoo() {
                 <ArrowRight className="ml-2" size={20} />
               </Button>
             </form>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-purple-900 via-purple-800 to-purple-700 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Sẵn Sàng Nâng Cấp Odoo Của Bạn?
+            </h2>
+            <p className="text-lg text-purple-100 mb-8 max-w-2xl mx-auto">
+              Đừng chờ đợi nữa! Đăng ký ngay hôm nay để trải nghiệm Cloud Server tối ưu cho Odoo. 
+              Thử miễn phí 14 ngày mà không cam kết.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg"
+                className="bg-white text-purple-800 hover:bg-purple-50 font-semibold text-lg px-8 py-4"
+                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <Cloud className="mr-2" size={20} />
+                Đăng Ký Thử Miễn Phí
+              </Button>
+              <Button 
+                size="lg"
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-purple-800 font-semibold text-lg px-8 py-4"
+                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <Phone className="mr-2" size={20} />
+                Liên Hệ Tư Vấn
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>
