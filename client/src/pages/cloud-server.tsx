@@ -34,58 +34,58 @@ import Footer from '@/components/footer';
 // Problems with traditional servers
 const problems = [
   {
-    icon: AlertTriangle,
-    title: "Hiệu Suất Không Ổn Định",
-    description: "Khó xử lý tải cao hoặc dữ liệu lớn."
+    icon: TrendingUp,
+    title: "Chi Phí Cao Và Không Linh Hoạt",
+    description: "Đầu tư phần cứng đắt đỏ, khó mở rộng khi doanh thu biến động (đặc biệt với doanh nghiệp mùa vụ)."
   },
   {
-    icon: TrendingUp,
-    title: "Chi Phí Cao",
-    description: "Đầu tư phần cứng lớn và chi phí bảo trì định kỳ."
+    icon: AlertTriangle,
+    title: "Độ Trễ Cao",
+    description: "Server nước ngoài làm chậm ứng dụng, ảnh hưởng đến trải nghiệm người dùng Việt."
   },
   {
     icon: Shield,
-    title: "Rủi Ro Bảo Mật",
-    description: "Dễ bị tấn công nếu thiếu lớp bảo vệ chuyên sâu."
+    title: "Bảo Mật Rủi Ro",
+    description: "Tăng nguy cơ tấn công mạng, không tuân thủ quy định dữ liệu Việt Nam."
   },
   {
     icon: Package,
-    title: "Khó Mở Rộng",
-    description: "Không linh hoạt khi nhu cầu thay đổi."
+    title: "Khó Triển Khai",
+    description: "DEV mất thời gian setup, CTO lo lắng về integration với hệ thống địa phương."
   }
 ];
 
 // Benefits of Cloud Server
 const benefits = [
   {
-    icon: Zap,
-    title: "Tối Ưu Hóa Hiệu Suất",
-    description: "CPU mạnh mẽ (bao gồm dòng CPU đặc biệt để tăng tốc ứng dụng), RAM cao cấp và SSD tốc độ cao đảm bảo xử lý nhanh chóng, ngay cả với hàng triệu yêu cầu hàng ngày."
+    icon: Package,
+    title: "Tiết Kiệm Chi Phí Cho CEO",
+    description: "Mô hình pay-as-you-go, giảm 50% chi phí so với server vật lý. Không phí ẩn, thanh toán qua ví điện tử Việt (Momo, VNPay) – lý tưởng cho doanh nghiệp vừa và nhỏ."
   },
   {
     icon: TrendingUp,
-    title: "Mở Rộng Linh Hoạt",
-    description: "Tăng giảm tài nguyên chỉ với vài cú click – lý tưởng cho doanh nghiệp phát triển nhanh hoặc có nhu cầu theo mùa."
+    title: "Scalability Và Kiến Trúc Mạnh Mẽ Cho CTO",
+    description: "Tăng giảm tài nguyên tức thì, hỗ trợ Kubernetes/Docker, tích hợp GPU cho AI (tương tự VNG Cloud). Data center Việt đảm bảo độ trễ thấp <10ms."
+  },
+  {
+    icon: Zap,
+    title: "Dễ Triển Khai Cho DEV",
+    description: "Template sẵn cho Ubuntu, CentOS, Windows; tích hợp API nhanh với Laravel, Node.js, WordPress. Monitoring realtime qua dashboard tiếng Việt."
   },
   {
     icon: Shield,
     title: "Bảo Mật Cao Cấp",
-    description: "Tích hợp hệ thống bảo mật nhiều lớp bao gồm WAF (Web Application Firewall) và Firewall chuyên biệt, bảo vệ khỏi DDoS, SQL injection và các mối đe dọa khác. Kết hợp mã hóa dữ liệu và backup tự động hàng ngày."
+    description: "Hệ thống nhiều lớp với WAF/Firewall, mã hóa dữ liệu theo tiêu chuẩn Việt Nam, chống DDoS. Backup tự động hàng ngày."
   },
   {
     icon: Headphones,
-    title: "Hỗ Trợ Chuyên Sâu",
-    description: "Đội ngũ chuyên gia hỗ trợ 24/7 qua chat, email hoặc gọi điện. Dịch vụ hỗ trợ 1-1 cá nhân hóa giúp tùy chỉnh giải pháp theo nhu cầu cụ thể của bạn."
-  },
-  {
-    icon: Package,
-    title: "Tiết Kiệm Chi Phí",
-    description: "Chỉ trả cho những gì bạn sử dụng, giảm tới 50% so với server vật lý, với mô hình pay-as-you-go giống AWS."
+    title: "Hỗ Trợ 24/7 Và 1-1",
+    description: "Đội ngũ chuyên gia Việt Nam sẵn sàng tư vấn qua chat, call hoặc email – không robot, chỉ hỗ trợ thực sự từ người thật!"
   },
   {
     icon: Gauge,
     title: "Uptime 99.99%",
-    description: "Đảm bảo hệ thống luôn sẵn sàng, không gián đoạn hoạt động kinh doanh."
+    description: "Đảm bảo kinh doanh không gián đoạn, với bồi thường nếu không đạt."
   }
 ];
 
@@ -95,53 +95,53 @@ const packages = [
     name: "Starter",
     price: "500.000 VNĐ/tháng",
     specs: "2 vCPU, 4GB RAM, 50GB SSD",
-    suitable: "Phù hợp cho developer cá nhân hoặc dự án nhỏ",
+    suitable: "Lý tưởng cho DEV cá nhân hoặc dự án nhỏ",
     popular: false,
     features: [
       "2 vCPU cores",
       "4GB RAM",
       "50GB SSD storage",
       "1TB bandwidth",
-      "Free SSL certificate",
-      "24/7 support",
-      "Free backup daily",
-      "Control panel access"
+      "SSL miễn phí",
+      "Hỗ trợ 24/7 tiếng Việt",
+      "Backup tự động hàng ngày",
+      "Dashboard tiếng Việt"
     ]
   },
   {
     name: "Business",
     price: "1.200.000 VNĐ/tháng",
     specs: "4 vCPU, 8GB RAM, 100GB SSD",
-    suitable: "Lý tưởng cho doanh nghiệp vừa, chạy ứng dụng web hoặc database",
+    suitable: "Hoàn hảo cho CTO doanh nghiệp vừa, tích hợp AI",
     popular: true,
     features: [
       "4 vCPU cores",
       "8GB RAM",
       "100GB SSD storage",
       "3TB bandwidth",
-      "Free SSL certificate",
-      "Priority 24/7 support",
-      "Automated backup",
-      "Advanced monitoring",
-      "Load balancer support"
+      "SSL miễn phí",
+      "Hỗ trợ ưu tiên 24/7",
+      "Backup tự động",
+      "Monitoring nâng cao",
+      "Tích hợp ví điện tử Việt"
     ]
   },
   {
     name: "Enterprise",
     price: "2.500.000 VNĐ/tháng",
     specs: "8 vCPU, 16GB RAM, 200GB SSD",
-    suitable: "Dành cho tổ chức lớn, hỗ trợ tùy chỉnh và tích hợp cao cấp",
+    suitable: "Dành cho CEO tập đoàn, tùy chỉnh cao cấp",
     popular: false,
     features: [
       "8 vCPU cores",
       "16GB RAM",
       "200GB SSD storage",
       "10TB bandwidth",
-      "Free SSL certificate",
-      "Dedicated support manager",
-      "Real-time backup",
-      "Advanced security features",
-      "Custom integrations",
+      "SSL miễn phí",
+      "Support manager chuyên riêng",
+      "Backup realtime",
+      "Bảo mật cao cấp",
+      "Tích hợp custom",
       "SLA guarantee"
     ]
   }
@@ -204,18 +204,37 @@ export default function CloudServer() {
               </div>
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Cloud Server – Giải Pháp <span className="text-blue-300">Đám Mây Linh Hoạt</span> Và Mạnh Mẽ
+                Cloud Server – Giải Pháp <span className="text-blue-300">Đám Mây Linh Hoạt, Tiết Kiệm</span> Và An Toàn
               </h1>
               
               <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
-                Nâng Tầm Kinh Doanh Với Cloud Server Chuyên Nghiệp
+                Nâng Tầm Kinh Doanh Với Cloud Server – Được Thiết Kế Riêng Cho Thị Trường Việt Nam
               </p>
               
+              <div className="bg-blue-800/30 rounded-lg p-6 mb-8 border border-blue-600/30">
+                <p className="text-lg text-blue-100 leading-relaxed mb-4">
+                  <strong>Kính gửi các CEO, CTO và Developer thân mến,</strong>
+                </p>
+                <p className="text-lg text-blue-200 leading-relaxed">
+                  Trong bối cảnh chuyển đổi số tại Việt Nam đang bùng nổ, với nhu cầu cao về AI, tự động hóa và bảo mật dữ liệu, 
+                  Cloud Server của chúng tôi là giải pháp lý tưởng để bạn tối ưu hóa chi phí, tăng tốc độ triển khai và đảm bảo an toàn. 
+                  Chúng tôi hiểu rõ thị hiếu của doanh nghiệp Việt: giá cả phải chăng, hỗ trợ nhanh chóng bằng tiếng Việt, 
+                  data center đặt tại Việt Nam để đảm bảo độ trễ thấp.
+                </p>
+              </div>
+              
               <p className="text-lg text-blue-200 mb-8 leading-relaxed">
-                Bạn đang tìm kiếm giải pháp đám mây đáng tin cậy để chạy ứng dụng, lưu trữ dữ liệu hoặc phát triển dự án? 
-                Cloud Server của chúng tôi mang đến hiệu suất vượt trội, linh hoạt cao và bảo mật tối ưu, tương tự như 
-                các nhà cung cấp hàng đầu như AWS, Google Cloud, Viettel Cloud hay Bizfly.
+                Với kinh nghiệm phục vụ hàng ngàn doanh nghiệp Việt từ startup đến tập đoàn lớn (giống như Viettel Cloud hay Bizfly), 
+                chúng tôi mang đến cloud server mạnh mẽ, linh hoạt, giúp <span className="text-green-300 font-semibold">CEO tiết kiệm chi phí lên đến 50%</span>, 
+                <span className="text-cyan-300 font-semibold"> CTO xây dựng kiến trúc scalable</span>, và 
+                <span className="text-yellow-300 font-semibold"> DEV triển khai code nhanh chóng</span> mà không lo downtime.
               </p>
+              
+              <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-lg p-4 mb-8 border border-green-400/30">
+                <p className="text-lg text-white font-semibold">
+                  🇻🇳 Hỗ Trợ Đặc Biệt: 24/7 Qua Tiếng Việt, Tư Vấn 1-1 Cá Nhân Hóa Từ Chuyên Gia Việt Nam!
+                </p>
+              </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
@@ -224,7 +243,7 @@ export default function CloudServer() {
                   onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   <Cloud className="mr-2" size={20} />
-                  Đăng Ký Ngay
+                  Đăng Ký Thử Miễn Phí 14 Ngày – Không Cam Kết
                 </Button>
                 <Button 
                   size="lg"
@@ -233,7 +252,7 @@ export default function CloudServer() {
                   onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   <Package className="mr-2" size={20} />
-                  Xem Chi Tiết Giá
+                  Xem Chi Tiết Giá – Ưu Đãi Đặc Biệt Cho Doanh Nghiệp Việt
                 </Button>
               </div>
             </motion.div>
@@ -285,11 +304,11 @@ export default function CloudServer() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Tại Sao Doanh Nghiệp Nên Chọn Cloud Server?
+              Tại Sao Cloud Server Là Lựa Chọn Hàng Đầu Cho CEO, CTO Và DEV Tại Việt Nam?
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Trong thời đại số, hạ tầng đám mây là yếu tố then chốt để doanh nghiệp cạnh tranh. 
-              Server truyền thống thường gặp hạn chế như:
+              Theo các báo cáo từ Gartner và xu hướng tại Việt Nam, thị trường cloud đang tăng trưởng mạnh mẽ nhờ nhu cầu chuyển đổi số và AI. 
+              Tuy nhiên, nhiều doanh nghiệp Việt gặp thách thức với server truyền thống:
             </p>
           </motion.div>
 
@@ -320,9 +339,8 @@ export default function CloudServer() {
             className="text-center mt-12"
           >
             <p className="text-lg text-gray-700 max-w-4xl mx-auto">
-              <strong>Cloud Server của chúng tôi giải quyết tất cả</strong>, mang đến giải pháp đám mây toàn diện, 
-              dễ dàng tích hợp với các ứng dụng như web hosting, database, AI/ML, và hơn thế nữa – 
-              giống như AWS hay Google Cloud nhưng với <span className="text-blue-600 font-semibold">chi phí hợp lý hơn cho thị trường Việt Nam</span>.
+              <strong>Cloud Server của chúng tôi giải quyết tất cả</strong>: Data center tại Việt Nam (Hà Nội, TP.HCM), 
+              giá cạnh tranh chỉ từ 500.000 VNĐ/tháng, tích hợp AI/ML dễ dàng, và hỗ trợ 24/7 để bạn tập trung vào kinh doanh thay vì IT.
             </p>
           </motion.div>
         </div>
@@ -339,7 +357,7 @@ export default function CloudServer() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Lợi Ích Nổi Bật Khi Sử Dụng Cloud Server Của Chúng Tôi
+              Lợi Ích Nổi Bật – Phù Hợp Với Thị Hiếu Việt Nam
             </h2>
           </motion.div>
 
@@ -419,11 +437,10 @@ export default function CloudServer() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Tính Năng Nổi Bật Của Cloud Server
+              Tính Năng Nổi Bật – Thiết Kế Cho Người Việt
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Khám phá các tính năng được tối ưu hóa đặc biệt để đảm bảo Cloud Server của bạn 
-              hoạt động ổn định và hiệu quả nhất.
+              Các tính năng được tối ưu hóa riêng cho thị trường Việt Nam, từ ngôn ngữ đến tích hợp địa phương.
             </p>
           </motion.div>
 
@@ -444,39 +461,39 @@ export default function CloudServer() {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">Cài Đặt Nhanh Chóng</td>
+                    <td className="px-6 py-4 font-semibold text-gray-800">Triển Khai Nhanh</td>
                     <td className="px-6 py-4 text-gray-600">
-                      Triển khai server chỉ trong vài phút với template sẵn có cho các OS phổ biến như Ubuntu, CentOS, Windows.
+                      Setup server chỉ 5 phút, template tiếng Việt cho OS phổ biến. Tích hợp AI/ML với GPU chuyên dụng.
                     </td>
                   </tr>
                   <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">Tích Hợp Đầy Đủ</td>
+                    <td className="px-6 py-4 font-semibold text-gray-800">Tích Hợp Địa Phương</td>
                     <td className="px-6 py-4 text-gray-600">
-                      Hỗ trợ dễ dàng kết nối với các dịch vụ như database (MySQL, PostgreSQL), container (Docker, Kubernetes) và API.
+                      Kết nối dễ dàng với ngân hàng Việt, ví điện tử, và hệ thống ERP như Odoo, SAP.
                     </td>
                   </tr>
                   <tr className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 font-semibold text-gray-800">Backup & Restore</td>
                     <td className="px-6 py-4 text-gray-600">
-                      Backup tự động hàng ngày, khôi phục nhanh chóng chỉ với một cú click.
+                      Tự động hàng ngày, khôi phục nhanh, dữ liệu lưu tại Việt Nam tuân thủ PDPA.
                     </td>
                   </tr>
                   <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">Monitoring 24/7</td>
+                    <td className="px-6 py-4 font-semibold text-gray-800">Monitoring Thân Thiện</td>
                     <td className="px-6 py-4 text-gray-600">
-                      Giám sát hiệu suất thời gian thực qua dashboard thân thiện với user.
+                      Dashboard tiếng Việt, cảnh báo qua SMS/email.
                     </td>
                   </tr>
                   <tr className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 font-semibold text-gray-800">SSL Miễn Phí</td>
                     <td className="px-6 py-4 text-gray-600">
-                      Chứng chỉ SSL Let's Encrypt để bảo mật kết nối HTTPS.
+                      Chứng chỉ bảo mật Let's Encrypt cho HTTPS, tự động gia hạn.
                     </td>
                   </tr>
                   <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-800">Hỗ Trợ Đa Vùng</td>
+                    <td className="px-6 py-4 font-semibold text-gray-800">Data Center Việt Nam</td>
                     <td className="px-6 py-4 text-gray-600">
-                      Server đặt tại Việt Nam, Singapore hoặc EU để giảm độ trễ tối đa.
+                      Server tại Hà Nội & TP.HCM, độ trễ thấp cho người dùng Việt.
                     </td>
                   </tr>
                 </tbody>
@@ -497,11 +514,11 @@ export default function CloudServer() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Gói Dịch Vụ Phù Hợp Với Mọi Quy Mô
+              Gói Dịch Vụ – Giá Việt Nam, Chất Lượng Quốc Tế
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Chọn gói phù hợp với nhu cầu của bạn, từ startup đến doanh nghiệp lớn - 
-              Tất cả gói đều bao gồm hỗ trợ 24/7 và thử miễn phí 14 ngày!
+              Phù hợp mọi quy mô, từ startup đến doanh nghiệp lớn - 
+              Tất cả gói: Hỗ trợ 24/7, 1-1 tiếng Việt, thử miễn phí 14 ngày!
             </p>
           </motion.div>
 
@@ -678,10 +695,10 @@ export default function CloudServer() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Câu Hỏi Thường Gặp (FAQ)
+              Câu Hỏi Thường Gặp (FAQ) – Dành Cho CEO/CTO/DEV Việt
             </h2>
             <p className="text-lg text-gray-600">
-              Tìm hiểu thêm thông tin về dịch vụ Cloud Server của chúng tôi
+              Giải đáp các thắc mắc phổ biến từ doanh nghiệp Việt Nam
             </p>
           </motion.div>
 
@@ -695,10 +712,10 @@ export default function CloudServer() {
             >
               <div className="p-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                  Cloud Server có tương thích với các nền tảng phổ biến không?
+                  Cloud Server có tuân thủ quy định dữ liệu Việt Nam không?
                 </h3>
                 <p className="text-gray-600">
-                  Có, hỗ trợ đầy đủ cho Linux, Windows, Docker, Kubernetes và các ứng dụng như WordPress, Laravel, Node.js.
+                  Có, data lưu tại Việt Nam, mã hóa theo tiêu chuẩn cao nhất.
                 </p>
               </div>
             </motion.div>
@@ -712,10 +729,10 @@ export default function CloudServer() {
             >
               <div className="p-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                  Làm thế nào để di chuyển dữ liệu từ nhà cung cấp khác?
+                  Làm thế nào để migrate từ nhà cung cấp khác (như AWS)?
                 </h3>
                 <p className="text-gray-600">
-                  Đội ngũ hỗ trợ 1-1 sẽ giúp bạn miễn phí, đảm bảo không mất dữ liệu.
+                  Hỗ trợ 1-1 miễn phí từ đội ngũ Việt, không mất dữ liệu.
                 </p>
               </div>
             </motion.div>
@@ -729,10 +746,10 @@ export default function CloudServer() {
             >
               <div className="p-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                  Có cam kết uptime không?
+                  Có tích hợp AI/ML không?
                 </h3>
                 <p className="text-gray-600">
-                  Chúng tôi cam kết 99.99% uptime, với bồi thường nếu không đạt.
+                  Có, GPU chuyên dụng cho training model, giá rẻ hơn thị trường.
                 </p>
               </div>
             </motion.div>
@@ -746,12 +763,100 @@ export default function CloudServer() {
             >
               <div className="p-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                  Phương thức thanh toán nào được chấp nhận?
+                  Thanh toán thế nào?
                 </h3>
                 <p className="text-gray-600">
-                  Chuyển khoản ngân hàng, thẻ tín dụng, hoặc ví điện tử như Momo/VNPay.
+                  Linh hoạt: Chuyển khoản, thẻ tín dụng, ví điện tử Việt.
                 </p>
               </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              Khách Hàng Việt Nói Gì?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Hãy nghe chia sẻ từ các CEO, CTO và DEV đã thành công với Cloud Server của chúng tôi
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg shadow-lg p-8"
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                  A
+                </div>
+                <div className="ml-4">
+                  <h4 className="font-semibold text-gray-800">Anh Nguyễn Văn A</h4>
+                  <p className="text-sm text-gray-600">CEO Công ty TechVN (Hà Nội)</p>
+                </div>
+              </div>
+              <p className="text-gray-700 italic">
+                "Là CEO startup, tôi tiết kiệm được hàng chục triệu nhờ cloud này. 
+                Hỗ trợ 1-1 nhanh chóng, giúp chúng tôi scale lên gấp đôi doanh thu!"
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg shadow-lg p-8"
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                  B
+                </div>
+                <div className="ml-4">
+                  <h4 className="font-semibold text-gray-800">Chị Trần Thị B</h4>
+                  <p className="text-sm text-gray-600">CTO Doanh nghiệp Fintech (TP.HCM)</p>
+                </div>
+              </div>
+              <p className="text-gray-700 italic">
+                "CTO như tôi đánh giá cao kiến trúc bảo mật và tích hợp AI. 
+                Data center Việt giúp độ trễ thấp, lý tưởng cho app mobile Việt Nam."
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg shadow-lg p-8"
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                  C
+                </div>
+                <div className="ml-4">
+                  <h4 className="font-semibold text-gray-800">Anh Lê Văn C</h4>
+                  <p className="text-sm text-gray-600">Lead Developer Công ty E-commerce</p>
+                </div>
+              </div>
+              <p className="text-gray-700 italic">
+                "DEV team chúng tôi triển khai code chỉ trong giờ, dashboard tiếng Việt siêu tiện. 
+                Không còn lo server crash nữa!"
+              </p>
             </motion.div>
           </div>
         </div>
@@ -768,10 +873,11 @@ export default function CloudServer() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Tư Vấn Cloud Server Miễn Phí
+              Sẵn Sàng Chuyển Đổi Số Với Cloud Server Việt Nam?
             </h2>
             <p className="text-lg text-gray-600">
-              Để lại thông tin để nhận tư vấn chi tiết và báo giá tối ưu cho doanh nghiệp
+              Các CEO, CTO, DEV thân mến, đừng bỏ lỡ cơ hội tối ưu hóa kinh doanh với giải pháp cloud phù hợp nhất cho thị trường Việt. 
+              Đăng ký ngay để nhận tư vấn 1-1 miễn phí và thử 14 ngày!
             </p>
           </motion.div>
 
