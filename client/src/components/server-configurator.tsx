@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
+import QuoteBuilder from './quote-builder';
 
 // Pricing configuration based on the attached image
 const componentPricing = {
@@ -154,6 +155,9 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
           Tùy chỉnh cấu hình server theo nhu cầu, hỗ trợ nhiều server với cấu hình khác nhau
         </p>
       </div>
+
+      {/* Quote Builder */}
+      <QuoteBuilder />
 
       {/* Server List */}
       <div className="space-y-6">
