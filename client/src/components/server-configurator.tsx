@@ -374,32 +374,285 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         </div>
       </div>
 
-      {/* Cost Breakdown */}
+      {/* Cost Breakdown with Drag-and-Drop Configuration */}
       <div className="bg-white rounded-lg shadow-md border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <h3 className="text-xl font-semibold flex items-center gap-2">
             <Calculator className="w-5 h-5" />
-            Chi Tiết Báo Giá
+            Chi Tiết Báo Giá - Kéo Thả Cấu Hình
           </h3>
+          <p className="text-sm text-gray-600 mt-2">Kéo thả các thành phần để tùy chỉnh cấu hình server của bạn</p>
         </div>
         <div className="p-6">
-          <div className="space-y-4">
-            {servers.map((server) => (
-              <div key={server.id} className="border-l-4 border-blue-400 pl-4">
-                <h4 className="font-semibold text-gray-800">{server.name}</h4>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-sm text-gray-600 mt-2">
-                  <div>CPU: {server.cpu} Core</div>
-                  <div>RAM: {server.ram} GB</div>
-                  <div>SSD: {server.ssd} GB</div>
-                  <div>IP: {server.ipAddress}</div>
-                  <div>Bandwidth: {server.bandwidth} Mbps</div>
-                  <div>GPU: {server.gpu > 0 ? `${server.gpu} RTX A5000` : 'Không'}</div>
+          <div className="space-y-6">
+            {servers.map((server, serverIndex) => (
+              <div key={server.id} className="border-2 border-dashed border-blue-300 rounded-lg p-4 bg-blue-50">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-bold text-lg text-gray-800 flex items-center gap-2">
+                    <Server className="w-5 h-5 text-blue-600" />
+                    {server.name}
+                  </h4>
+                  <span className="text-xl font-bold text-blue-600">
+                    {formatCurrency(calculateServerCost(server))}/tháng
+                  </span>
                 </div>
-                <p className="text-right font-semibold text-blue-600 mt-2">
-                  {formatCurrency(calculateServerCost(server))}/tháng
-                </p>
+                
+                {/* Draggable Configuration Components */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                  {/* CPU Component */}
+                  <motion.div
+                    drag
+                    dragSnapToOrigin
+                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                    className="bg-white rounded-lg p-3 border border-blue-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Cpu className="w-4 h-4 text-blue-500" />
+                      <span className="font-semibold text-sm">CPU</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{server.cpu} Core</p>
+                    <p className="text-xs text-green-600 font-medium">
+                      {formatCurrency(server.cpu * componentPricing.cpu.basePrice)}
+                    </p>
+                  </motion.div>
+
+                  {/* RAM Component */}
+                  <motion.div
+                    drag
+                    dragSnapToOrigin
+                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                    className="bg-white rounded-lg p-3 border border-green-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <HardDrive className="w-4 h-4 text-green-500" />
+                      <span className="font-semibold text-sm">RAM</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{server.ram} GB</p>
+                    <p className="text-xs text-green-600 font-medium">
+                      {formatCurrency(server.ram * componentPricing.ram.basePrice)}
+                    </p>
+                  </motion.div>
+
+                  {/* SSD Component */}
+                  <motion.div
+                    drag
+                    dragSnapToOrigin
+                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                    className="bg-white rounded-lg p-3 border border-purple-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <HardDrive className="w-4 h-4 text-purple-500" />
+                      <span className="font-semibold text-sm">SSD</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{server.ssd} GB</p>
+                    <p className="text-xs text-green-600 font-medium">
+                      {formatCurrency(server.ssd * componentPricing.ssd.basePrice)}
+                    </p>
+                  </motion.div>
+
+                  {/* IP Component */}
+                  <motion.div
+                    drag
+                    dragSnapToOrigin
+                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                    className="bg-white rounded-lg p-3 border border-orange-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Globe className="w-4 h-4 text-orange-500" />
+                      <span className="font-semibold text-sm">IP Tĩnh</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{server.ipAddress} IP</p>
+                    <p className="text-xs text-green-600 font-medium">
+                      {formatCurrency(server.ipAddress * componentPricing.ipAddress.basePrice)}
+                    </p>
+                  </motion.div>
+
+                  {/* Bandwidth Component */}
+                  <motion.div
+                    drag
+                    dragSnapToOrigin
+                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                    className="bg-white rounded-lg p-3 border border-cyan-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Network className="w-4 h-4 text-cyan-500" />
+                      <span className="font-semibold text-sm">Băng Thông</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{server.bandwidth} Mbps</p>
+                    <p className="text-xs text-green-600 font-medium">
+                      {formatCurrency((server.bandwidth / 100) * componentPricing.bandwidth.basePrice)}
+                    </p>
+                  </motion.div>
+
+                  {/* GPU Component */}
+                  {server.gpu > 0 && (
+                    <motion.div
+                      drag
+                      dragSnapToOrigin
+                      whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                      className="bg-white rounded-lg p-3 border border-yellow-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <Zap className="w-4 h-4 text-yellow-500" />
+                        <span className="font-semibold text-sm">GPU</span>
+                      </div>
+                      <p className="text-sm text-gray-600">{server.gpu} RTX A5000</p>
+                      <p className="text-xs text-green-600 font-medium">
+                        {formatCurrency(server.gpu * componentPricing.gpu.basePrice)}
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Additional Services Details */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-md border border-blue-200">
+        <div className="p-6 border-b border-blue-200 bg-blue-100 rounded-t-lg">
+          <h3 className="text-xl font-semibold flex items-center gap-2 text-blue-800">
+            <Server className="w-6 h-6" />
+            Chi Tiết Dịch Vụ Bổ Sung
+          </h3>
+          <p className="text-sm text-blue-600 mt-2">Các dịch vụ đi kèm miễn phí và có tính phí</p>
+        </div>
+        <div className="p-6">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Free Services */}
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold text-green-700 flex items-center gap-2">
+                <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+                Dịch Vụ Miễn Phí Đi Kèm
+              </h4>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                  <div>
+                    <h5 className="font-medium text-gray-800">Backup Tự Động Hàng Ngày</h5>
+                    <p className="text-sm text-gray-600">Sao lưu dữ liệu tự động 24/7, khôi phục nhanh chóng</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                  <div>
+                    <h5 className="font-medium text-gray-800">SSL Certificate Miễn Phí</h5>
+                    <p className="text-sm text-gray-600">Chứng chỉ SSL Let's Encrypt tự động gia hạn</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                  <div>
+                    <h5 className="font-medium text-gray-800">Monitoring & Alert</h5>
+                    <p className="text-sm text-gray-600">Giám sát server 24/7, cảnh báo qua email/SMS</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                  <div>
+                    <h5 className="font-medium text-gray-800">Firewall & DDoS Protection</h5>
+                    <p className="text-sm text-gray-600">Bảo vệ chống tấn công DDoS lên đến 10Gbps</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                  <div>
+                    <h5 className="font-medium text-gray-800">Hỗ Trợ Kỹ Thuật 24/7</h5>
+                    <p className="text-sm text-gray-600">Team kỹ thuật Việt Nam hỗ trợ không giới hạn</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Paid Services */}
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold text-blue-700 flex items-center gap-2">
+                <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
+                Dịch Vụ Bổ Sung (Có Phí)
+              </h4>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h5 className="font-medium text-gray-800">Server Management</h5>
+                        <p className="text-sm text-gray-600">Quản lý server toàn diện, cài đặt phần mềm</p>
+                      </div>
+                      <span className="text-sm font-semibold text-blue-600">500K VND/tháng</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h5 className="font-medium text-gray-800">Database Optimization</h5>
+                        <p className="text-sm text-gray-600">Tối ưu hóa MySQL, PostgreSQL, MongoDB</p>
+                      </div>
+                      <span className="text-sm font-semibold text-blue-600">300K VND/lần</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h5 className="font-medium text-gray-800">Migration Service</h5>
+                        <p className="text-sm text-gray-600">Chuyển đổi website/dữ liệu từ hosting khác</p>
+                      </div>
+                      <span className="text-sm font-semibold text-blue-600">1M VND/site</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h5 className="font-medium text-gray-800">Load Balancer</h5>
+                        <p className="text-sm text-gray-600">Cân bằng tải cho traffic cao</p>
+                      </div>
+                      <span className="text-sm font-semibold text-blue-600">2M VND/tháng</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h5 className="font-medium text-gray-800">AI/ML Support</h5>
+                        <p className="text-sm text-gray-600">Tư vấn setup TensorFlow, PyTorch, CUDA</p>
+                      </div>
+                      <span className="text-sm font-semibold text-blue-600">1.5M VND/tháng</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Service Level Agreement */}
+          <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h4 className="font-semibold text-yellow-800 mb-2">📋 Cam Kết Dịch Vụ (SLA)</h4>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                <span className="text-yellow-700">Uptime: 99.9%</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                <span className="text-yellow-700">Response Time: &lt; 5 phút</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                <span className="text-yellow-700">Hoàn tiền 100% nếu không đạt SLA</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
