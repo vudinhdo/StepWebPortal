@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 
 // Pricing configuration based on the attached image
 const componentPricing = {
@@ -36,6 +37,7 @@ interface ServerConfig {
   ipAddress: number;
   bandwidth: number;
   gpu: number;
+  os: string;
 }
 
 interface ServerConfiguratorProps {
@@ -47,12 +49,13 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     {
       id: '1',
       name: 'Web Server',
-      cpu: 2,
-      ram: 4,
-      ssd: 100,
+      cpu: 4,
+      ram: 6,
+      ssd: 10,
       ipAddress: 1,
-      bandwidth: 1000,
-      gpu: 0
+      bandwidth: 0,
+      gpu: 0,
+      os: 'CentOS 7'
     }
   ]);
 
@@ -60,12 +63,13 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     const newServer: ServerConfig = {
       id: Date.now().toString(),
       name: `Server ${servers.length + 1}`,
-      cpu: 1,
-      ram: 1,
-      ssd: 50,
+      cpu: 4,
+      ram: 6,
+      ssd: 10,
       ipAddress: 1,
-      bandwidth: 500,
-      gpu: 0
+      bandwidth: 0,
+      gpu: 0,
+      os: 'CentOS 7'
     };
     setServers([...servers, newServer]);
   };
@@ -97,7 +101,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     const ramCost = server.ram * componentPricing.ram.basePrice;
     const ssdCost = server.ssd * componentPricing.ssd.basePrice;
     const ipCost = server.ipAddress * componentPricing.ipAddress.basePrice;
-    const bandwidthCost = (server.bandwidth / 100) * componentPricing.bandwidth.basePrice;
+    const bandwidthCost = server.bandwidth * componentPricing.bandwidth.basePrice;
     const gpuCost = server.gpu * componentPricing.gpu.basePrice;
     
     return cpuCost + ramCost + ssdCost + ipCost + bandwidthCost + gpuCost;
@@ -200,143 +204,185 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                 </div>
                 
                 <div className="p-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* CPU Configuration */}
-                    <div className="space-y-3">
+                  <div className="space-y-8">
+                    {/* CPU Slider Configuration */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Cpu className="w-5 h-5 text-blue-500" />
+                          <label className="font-semibold text-gray-700">CPU</label>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                            {server.cpu}
+                          </span>
+                          <span className="text-right text-gray-500 text-sm min-w-[60px]">24</span>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <Slider
+                          value={[server.cpu]}
+                          onValueChange={(value) => updateServer(server.id, 'cpu', value[0])}
+                          max={24}
+                          min={0}
+                          step={1}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-xs text-gray-400 mt-1">
+                          <span>0</span>
+                          <span>6</span>
+                          <span>12</span>
+                          <span>18</span>
+                          <span>24</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* RAM Slider Configuration */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <HardDrive className="w-5 h-5 text-green-500" />
+                          <label className="font-semibold text-gray-700">RAM</label>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                            {server.ram}
+                          </span>
+                          <span className="text-right text-gray-500 text-sm min-w-[60px]">48</span>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <Slider
+                          value={[server.ram]}
+                          onValueChange={(value) => updateServer(server.id, 'ram', value[0])}
+                          max={48}
+                          min={0}
+                          step={1}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-xs text-gray-400 mt-1">
+                          <span>0</span>
+                          <span>12</span>
+                          <span>24</span>
+                          <span>36</span>
+                          <span>48</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* SSD Slider Configuration */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <HardDrive className="w-5 h-5 text-purple-500" />
+                          <label className="font-semibold text-gray-700">+{server.ssd}GB SSD</label>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+                            {server.ssd}
+                          </span>
+                          <span className="text-right text-gray-500 text-sm min-w-[60px]">100</span>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <Slider
+                          value={[server.ssd]}
+                          onValueChange={(value) => updateServer(server.id, 'ssd', value[0])}
+                          max={100}
+                          min={0}
+                          step={5}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-xs text-gray-400 mt-1">
+                          <span>0</span>
+                          <span>25</span>
+                          <span>50</span>
+                          <span>75</span>
+                          <span>100</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* OS Selection */}
+                    <div className="space-y-4">
                       <div className="flex items-center gap-2">
-                        <Cpu className="w-5 h-5 text-blue-500" />
-                        <label className="font-semibold text-gray-700">CPU</label>
+                        <Server className="w-5 h-5 text-gray-500" />
+                        <label className="font-semibold text-gray-700">OS</label>
                       </div>
                       <Select
-                        value={server.cpu.toString()}
-                        onValueChange={(value) => updateServer(server.id, 'cpu', parseInt(value))}
+                        value={server.os}
+                        onValueChange={(value) => updateServer(server.id, 'os', value)}
                       >
-                        <SelectTrigger>
+                        <SelectTrigger className="w-full">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {Array.from({ length: 32 }, (_, i) => i + 1).map(num => (
-                            <SelectItem key={num} value={num.toString()}>
-                              {num} Core - {formatCurrency(num * componentPricing.cpu.basePrice)}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="CentOS 7">CentOS 7</SelectItem>
+                          <SelectItem value="CentOS 8">CentOS 8</SelectItem>
+                          <SelectItem value="Ubuntu 20.04">Ubuntu 20.04</SelectItem>
+                          <SelectItem value="Ubuntu 22.04">Ubuntu 22.04</SelectItem>
+                          <SelectItem value="Windows Server 2019">Windows Server 2019</SelectItem>
+                          <SelectItem value="Windows Server 2022">Windows Server 2022</SelectItem>
+                          <SelectItem value="Debian 11">Debian 11</SelectItem>
+                          <SelectItem value="Debian 12">Debian 12</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
-                    {/* RAM Configuration */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <HardDrive className="w-5 h-5 text-green-500" />
-                        <label className="font-semibold text-gray-700">RAM</label>
+                    {/* Bandwidth Slider Configuration */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Network className="w-5 h-5 text-cyan-500" />
+                          <label className="font-semibold text-gray-700">BỔ SUNG BĂNG THÔNG</label>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span className="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-sm font-medium">
+                            {server.bandwidth}
+                          </span>
+                          <span className="text-right text-gray-500 text-sm min-w-[60px]">10</span>
+                        </div>
                       </div>
-                      <Select
-                        value={server.ram.toString()}
-                        onValueChange={(value) => updateServer(server.id, 'ram', parseInt(value))}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {[1, 2, 4, 8, 16, 32, 64, 128, 256, 512].map(gb => (
-                            <SelectItem key={gb} value={gb.toString()}>
-                              {gb} GB - {formatCurrency(gb * componentPricing.ram.basePrice)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <div className="relative">
+                        <Slider
+                          value={[server.bandwidth]}
+                          onValueChange={(value) => updateServer(server.id, 'bandwidth', value[0])}
+                          max={10}
+                          min={0}
+                          step={1}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-xs text-gray-400 mt-1">
+                          <span>0</span>
+                          <span>2</span>
+                          <span>4</span>
+                          <span>6</span>
+                          <span>8</span>
+                          <span>10</span>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* SSD Configuration */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <HardDrive className="w-5 h-5 text-purple-500" />
-                        <label className="font-semibold text-gray-700">SSD</label>
+                    {/* Real-time Cost Display */}
+                    <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-blue-200">
+                      <div className="flex justify-between items-center">
+                        <div className="space-y-1">
+                          <h4 className="font-semibold text-gray-800">Tổng Chi Phí Tháng</h4>
+                          <div className="text-sm text-gray-600 space-y-1">
+                            <div>CPU: {server.cpu} Core × {formatCurrency(componentPricing.cpu.basePrice)} = {formatCurrency(server.cpu * componentPricing.cpu.basePrice)}</div>
+                            <div>RAM: {server.ram} GB × {formatCurrency(componentPricing.ram.basePrice)} = {formatCurrency(server.ram * componentPricing.ram.basePrice)}</div>
+                            <div>SSD: +{server.ssd} GB × {formatCurrency(componentPricing.ssd.basePrice)} = {formatCurrency(server.ssd * componentPricing.ssd.basePrice)}</div>
+                            <div>Bandwidth: +{server.bandwidth} Mbps × {formatCurrency(componentPricing.bandwidth.basePrice)} = {formatCurrency(server.bandwidth * componentPricing.bandwidth.basePrice)}</div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-2xl font-bold text-blue-600">
+                            {formatCurrency(calculateServerCost(server))}
+                          </div>
+                          <div className="text-sm text-gray-500">VND/tháng</div>
+                        </div>
                       </div>
-                      <Select
-                        value={server.ssd.toString()}
-                        onValueChange={(value) => updateServer(server.id, 'ssd', parseInt(value))}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {[50, 100, 200, 500, 1000, 2000, 5000, 10000].map(gb => (
-                            <SelectItem key={gb} value={gb.toString()}>
-                              {gb} GB - {formatCurrency(gb * componentPricing.ssd.basePrice)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* IP Address Configuration */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <Globe className="w-5 h-5 text-orange-500" />
-                        <label className="font-semibold text-gray-700">IP Tĩnh</label>
-                      </div>
-                      <Select
-                        value={server.ipAddress.toString()}
-                        onValueChange={(value) => updateServer(server.id, 'ipAddress', parseInt(value))}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (
-                            <SelectItem key={num} value={num.toString()}>
-                              {num} IP - {formatCurrency(num * componentPricing.ipAddress.basePrice)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Bandwidth Configuration */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <Network className="w-5 h-5 text-cyan-500" />
-                        <label className="font-semibold text-gray-700">Băng Thông</label>
-                      </div>
-                      <Select
-                        value={server.bandwidth.toString()}
-                        onValueChange={(value) => updateServer(server.id, 'bandwidth', parseInt(value))}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {[100, 200, 500, 1000, 2000, 5000, 10000].map(mbps => (
-                            <SelectItem key={mbps} value={mbps.toString()}>
-                              {mbps} Mbps - {formatCurrency((mbps / 100) * componentPricing.bandwidth.basePrice)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* GPU Configuration */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <Zap className="w-5 h-5 text-yellow-500" />
-                        <label className="font-semibold text-gray-700">GPU (Optional)</label>
-                      </div>
-                      <Select
-                        value={server.gpu.toString()}
-                        onValueChange={(value) => updateServer(server.id, 'gpu', parseInt(value))}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Array.from({ length: 9 }, (_, i) => i).map(num => (
-                            <SelectItem key={num} value={num.toString()}>
-                              {num === 0 ? 'Không cần GPU' : `${num} RTX A5000 - ${formatCurrency(num * componentPricing.gpu.basePrice)}`}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
                     </div>
                   </div>
                 </div>
@@ -480,7 +526,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                     </div>
                     <p className="text-sm text-gray-600">{server.bandwidth} Mbps</p>
                     <p className="text-xs text-green-600 font-medium">
-                      {formatCurrency((server.bandwidth / 100) * componentPricing.bandwidth.basePrice)}
+                      {formatCurrency(server.bandwidth * componentPricing.bandwidth.basePrice)}
                     </p>
                   </motion.div>
 
