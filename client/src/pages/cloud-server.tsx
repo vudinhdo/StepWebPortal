@@ -34,6 +34,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import ServerConfigurator from '@/components/server-configurator';
 
 // Problems with traditional servers
 const problems = [
@@ -960,6 +961,11 @@ export default function CloudServer() {
             </motion.div>
           </div>
         </div>
+      </section>
+
+      {/* Server Configurator Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <ServerConfigurator />
       </section>
 
       {/* Testimonials Section */}
