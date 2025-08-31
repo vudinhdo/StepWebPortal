@@ -145,13 +145,25 @@ export default function MobileMegaMenu() {
                     <a
                       key={index}
                       href={
+                        // Cloud links
+                        category.id === 'cloud' && item.name === 'Cloud Server' ? '/Cloud/Cloud Server' :
+                        category.id === 'cloud' && item.name === 'Cloud Odoo' ? '/Cloud/Cloud Odoo' :
+                        category.id === 'cloud' && item.name === 'Cloud GPU' ? '/Cloud/Cloud GPU' :
+                        category.id === 'cloud' && item.name === 'Cloud AMD' ? '/Cloud/Cloud AMD' :
+                        // Hosting links
                         category.id === 'hosting' && item.name === 'Hosting WordPress' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress' :
                         category.id === 'hosting' && item.name === 'Hosting Laravel' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel' :
                         category.id === 'hosting' && item.name === 'Hosting NVME' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME' :
                         category.id === 'hosting' && item.name === 'Reseller Hosting' ? '/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting' :
+                        // Email links
                         category.id === 'email' && item.name === 'Email server Riêng' ? '/Sản Phẩm & Dịch Vụ/Email Server Riêng' :
                         category.id === 'email' && item.name === 'Hybrid Email' ? '/Dịch vụ/Email' :
-                        category.id === 'hosting' ? '/hosting' : '#'
+                        category.id === 'email' && item.name === 'Google Workspace' ? '/Dịch vụ/Email' :
+                        category.id === 'email' && item.name === 'Microsoft 365' ? '/Dịch vụ/Email' :
+                        // Domain links
+                        category.id === 'domain' ? '/Sản Phẩm & Dịch Vụ/Domain' :
+                        // Default fallback
+                        '#'
                       }
                       className="flex items-center py-1 text-sm text-gray-500 hover:text-[hsl(207,100%,40%)] transition-colors group"
                     >
