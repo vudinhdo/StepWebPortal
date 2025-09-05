@@ -19,10 +19,12 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import CloudContactForm from "../components/cloud-contact-form";
 import CloudPopup from "../components/cloud-popup";
+import QuoteBuilder from "../components/quote-builder";
 
 export default function CloudPage() {
   const [showContactForm, setShowContactForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showQuoteBuilder, setShowQuoteBuilder] = useState(false);
 
   // Show popup after 10 seconds or 50% scroll
   React.useEffect(() => {
@@ -318,6 +320,48 @@ export default function CloudPage() {
                 </Card>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* Quote Builder Section */}
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Tạo Biên Bản Báo Giá Tùy Chỉnh
+              </h2>
+              <p className="text-xl text-gray-600 mb-8">
+                Cấu hình server theo nhu cầu của bạn và nhận báo giá chi tiết ngay lập tức
+              </p>
+              
+              {!showQuoteBuilder && (
+                <Button 
+                  onClick={() => setShowQuoteBuilder(true)}
+                  className="bg-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,35%)] text-white text-lg px-8 py-4"
+                >
+                  Tạo Báo Giá Ngay
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              )}
+            </div>
+
+            {showQuoteBuilder && (
+              <div className="bg-white rounded-lg shadow-lg p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-bold text-gray-800">
+                    Trình Báo Giá Tùy Chỉnh
+                  </h3>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowQuoteBuilder(false)}
+                    className="text-gray-600 hover:text-gray-800"
+                  >
+                    Ẩn
+                  </Button>
+                </div>
+                <QuoteBuilder />
+              </div>
+            )}
           </div>
         </section>
 
