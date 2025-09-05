@@ -18,7 +18,7 @@ const componentPricing = {
   cpu: { basePrice: 60000 },
   ram: { basePrice: 60000 },
   ssd: { basePrice: 3000 },
-  bandwidth: { basePrice: 200000 },
+  bandwidth: { basePrice: 50000 }, // Giá cho mỗi GB băng thông
   gpu: { basePrice: 6000000 },
   cloudGpuA: { basePrice: 460000 }
 };
@@ -36,47 +36,27 @@ interface QuoteConfig {
 }
 
 const productTemplates = {
-  'CLOUD GPU A': {
+  'CLOUD': {
     cpu: 2,
     ram: 4,
     ssd: 50,
-    gpu: 'NON',
-    os: 'Centos 7',
-    bandwidth: 0,
-    basePrice: 460000,
-    description: 'Cloud VPS GPU'
-  },
-  'WEB SERVER': {
-    cpu: 4,
-    ram: 8,
-    ssd: 100,
-    gpu: 'NON',
+    gpu: 'RTX A5000',
     os: 'Ubuntu 20.04',
-    bandwidth: 0,
-    basePrice: 800000,
-    description: 'Optimized Web Server'
-  },
-  'DATABASE SERVER': {
-    cpu: 8,
-    ram: 16,
-    ssd: 200,
-    gpu: 'NON',
-    os: 'CentOS 7',
-    bandwidth: 0,
-    basePrice: 1500000,
-    description: 'High Performance Database'
+    bandwidth: 1,
+    basePrice: 460000,
+    description: 'Cloud Server với GPU'
   }
 };
 
 export default function QuoteBuilder() {
-  const [selectedProduct, setSelectedProduct] = useState('CLOUD GPU A');
+  const [selectedProduct, setSelectedProduct] = useState('CLOUD');
   const [config, setConfig] = useState<QuoteConfig>({
-    productType: 'CLOUD GPU A',
+    productType: 'CLOUD',
     cpu: 1,
     ram: 1,
     ssd: 1,
-    gpu: 'NON',
-    os: 'Centos 7',
+    gpu: 'RTX A5000',
+    os: 'Ubuntu 20.04',
     bandwidth: 1,
     hostname: 'servername.example.com',
     rootPassword: ''
@@ -285,10 +265,10 @@ export default function QuoteBuilder() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="NON">NON</SelectItem>
                   <SelectItem value="RTX A5000">RTX A5000</SelectItem>
                   <SelectItem value="RTX 4090">RTX 4090</SelectItem>
                   <SelectItem value="Tesla V100">Tesla V100</SelectItem>
+                  <SelectItem value="RTX A6000">RTX A6000</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -304,8 +284,6 @@ export default function QuoteBuilder() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Centos 7">Centos 7</SelectItem>
-                  <SelectItem value="CentOS 8">CentOS 8</SelectItem>
                   <SelectItem value="Ubuntu 20.04">Ubuntu 20.04</SelectItem>
                   <SelectItem value="Ubuntu 22.04">Ubuntu 22.04</SelectItem>
                   <SelectItem value="Windows Server 2019">Windows Server 2019</SelectItem>
@@ -317,7 +295,7 @@ export default function QuoteBuilder() {
             {/* Bandwidth Slider */}
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <label className="text-sm font-medium text-gray-700">BỔ SUNG BĂNG THÔNG</label>
+                <label className="text-sm font-medium text-gray-700">BĂNG THÔNG (GB/tháng)</label>
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-sm font-medium">
                     {config.bandwidth}
@@ -334,12 +312,12 @@ export default function QuoteBuilder() {
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-400">
-                <span>1</span>
-                <span>2</span>
-                <span>4</span>
-                <span>6</span>
-                <span>8</span>
-                <span>10</span>
+                <span>1GB</span>
+                <span>2GB</span>
+                <span>4GB</span>
+                <span>6GB</span>
+                <span>8GB</span>
+                <span>10GB</span>
               </div>
             </div>
           </div>
@@ -388,7 +366,7 @@ export default function QuoteBuilder() {
                   <span>{formatCurrency(0)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» BỔ SUNG BĂNG THÔNG: {config.bandwidth}</span>
+                  <span>» Băng thông: {config.bandwidth} GB/tháng</span>
                   <span>{formatCurrency(costs.bandwidthCost)}</span>
                 </div>
               </div>
