@@ -72,12 +72,12 @@ export default function QuoteBuilder() {
   const [selectedProduct, setSelectedProduct] = useState('CLOUD GPU A');
   const [config, setConfig] = useState<QuoteConfig>({
     productType: 'CLOUD GPU A',
-    cpu: 0,
-    ram: 0,
-    ssd: 0,
+    cpu: 1,
+    ram: 1,
+    ssd: 1,
     gpu: 'NON',
     os: 'Centos 7',
-    bandwidth: 0,
+    bandwidth: 1,
     hostname: 'servername.example.com',
     rootPassword: ''
   });
@@ -205,12 +205,12 @@ export default function QuoteBuilder() {
                 value={[config.cpu]}
                 onValueChange={(value) => updateConfig('cpu', value[0])}
                 max={24}
-                min={0}
+                min={1}
                 step={1}
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-400">
-                <span>0</span>
+                <span>1</span>
                 <span>6</span>
                 <span>12</span>
                 <span>18</span>
@@ -233,12 +233,12 @@ export default function QuoteBuilder() {
                 value={[config.ram]}
                 onValueChange={(value) => updateConfig('ram', value[0])}
                 max={48}
-                min={0}
+                min={1}
                 step={1}
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-400">
-                <span>0</span>
+                <span>1</span>
                 <span>12</span>
                 <span>24</span>
                 <span>36</span>
@@ -261,12 +261,12 @@ export default function QuoteBuilder() {
                 value={[config.ssd]}
                 onValueChange={(value) => updateConfig('ssd', value[0])}
                 max={100}
-                min={0}
-                step={5}
+                min={1}
+                step={1}
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-400">
-                <span>0</span>
+                <span>1</span>
                 <span>25</span>
                 <span>50</span>
                 <span>75</span>
@@ -329,12 +329,12 @@ export default function QuoteBuilder() {
                 value={[config.bandwidth]}
                 onValueChange={(value) => updateConfig('bandwidth', value[0])}
                 max={10}
-                min={0}
+                min={1}
                 step={1}
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-400">
-                <span>0</span>
+                <span>1</span>
                 <span>2</span>
                 <span>4</span>
                 <span>6</span>
