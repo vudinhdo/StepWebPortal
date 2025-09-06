@@ -13,20 +13,54 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 
-// Pricing configuration for hosting
+// Pricing packages for hosting
+const hostingPackages = {
+  'Cơ Bản': {
+    price: 299000,
+    storage: 10,
+    bandwidth: 100,
+    domains: 1,
+    ssl: false,
+    backup: false,
+    features: ['SSD Storage', 'PHP 8.x Support', 'MySQL Database', '99.9% Uptime'],
+    description: 'Phù hợp cho website cá nhân và doanh nghiệp nhỏ',
+    popular: false
+  },
+  'Nâng Cao': {
+    price: 599000,
+    storage: 50,
+    bandwidth: 500,
+    domains: 5,
+    ssl: true,
+    backup: true,
+    features: ['NVME SSD Storage', 'Advanced PHP', 'Premium Support', 'CDN miễn phí', 'Daily Backup'],
+    description: 'Tối ưu cho doanh nghiệp vừa với lưu lượng cao',
+    popular: true
+  },
+  'Pro': {
+    price: 1299000,
+    storage: 200,
+    bandwidth: 2000,
+    domains: 20,
+    ssl: true,
+    backup: true,
+    features: ['NVME SSD Storage', 'Dedicated Resources', 'Priority Support', 'Advanced Security', 'Auto Scaling'],
+    description: 'Giải pháp chuyên nghiệp cho doanh nghiệp lớn',
+    popular: false
+  }
+};
+
+// Additional pricing for customization
 const hostingPricing = {
-  wordpress: { basePrice: 150000 },
-  laravel: { basePrice: 200000 },
-  nvme: { basePrice: 300000 },
-  reseller: { basePrice: 500000 },
-  storage: { basePrice: 10000 }, // per GB
-  bandwidth: { basePrice: 50000 }, // per GB
+  storage: { basePrice: 15000 }, // per GB
+  bandwidth: { basePrice: 8000 }, // per GB
   domain: { basePrice: 50000 }, // additional domains
-  ssl: { basePrice: 100000 }, // SSL certificate
-  backup: { basePrice: 80000 } // daily backup
+  ssl: { basePrice: 150000 }, // SSL certificate
+  backup: { basePrice: 100000 } // daily backup
 };
 
 interface HostingConfig {
+  selectedPackage: string;
   hostingType: string;
   storage: number;
   bandwidth: number;
@@ -70,12 +104,13 @@ const hostingTypes = {
 export default function HostingQuoteCalculator() {
   const [selectedHosting, setSelectedHosting] = useState('WordPress Hosting');
   const [config, setConfig] = useState<HostingConfig>({
+    selectedPackage: 'Nâng Cao',
     hostingType: 'WordPress Hosting',
-    storage: 10,
-    bandwidth: 100,
-    domains: 1,
-    ssl: false,
-    backup: false,
+    storage: 50,
+    bandwidth: 500,
+    domains: 5,
+    ssl: true,
+    backup: true,
     period: 'monthly'
   });
 
@@ -84,18 +119,18 @@ export default function HostingQuoteCalculator() {
   };
 
   const calculateCost = () => {
-    const hostingType = hostingTypes[selectedHosting as keyof typeof hostingTypes];
-    const baseCost = hostingType.basePrice;
+    const selectedPkg = hostingPackages[config.selectedPackage as keyof typeof hostingPackages];
+    const baseCost = selectedPkg.price;
     
-    const additionalStorage = Math.max(0, config.storage - hostingType.baseStorage);
-    const additionalBandwidth = Math.max(0, config.bandwidth - hostingType.baseBandwidth);
-    const additionalDomains = Math.max(0, config.domains - hostingType.baseDomains);
+    const additionalStorage = Math.max(0, config.storage - selectedPkg.storage);
+    const additionalBandwidth = Math.max(0, config.bandwidth - selectedPkg.bandwidth);
+    const additionalDomains = Math.max(0, config.domains - selectedPkg.domains);
     
     const storageCost = additionalStorage * hostingPricing.storage.basePrice;
     const bandwidthCost = additionalBandwidth * hostingPricing.bandwidth.basePrice;
     const domainCost = additionalDomains * hostingPricing.domain.basePrice;
-    const sslCost = config.ssl ? hostingPricing.ssl.basePrice : 0;
-    const backupCost = config.backup ? hostingPricing.backup.basePrice : 0;
+    const sslCost = (config.ssl && !selectedPkg.ssl) ? hostingPricing.ssl.basePrice : 0;
+    const backupCost = (config.backup && !selectedPkg.backup) ? hostingPricing.backup.basePrice : 0;
     
     const subtotal = baseCost + storageCost + bandwidthCost + domainCost + sslCost + backupCost;
     const vat = subtotal * 0.08;
@@ -118,43 +153,81 @@ export default function HostingQuoteCalculator() {
   return (
     <div className="max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Column - Hosting Type Selection */}
+        {/* Left Column - Package Selection */}
         <div className="space-y-6">
           <div>
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Chọn Loại Hosting</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Chọn Gói Hosting</h3>
           </div>
 
-          {/* Hosting Type Cards */}
+          {/* Package Cards */}
           <div className="space-y-4">
-            {Object.entries(hostingTypes).map(([key, type]) => (
+            {Object.entries(hostingPackages).map(([key, pkg]) => (
               <motion.div
                 key={key}
                 whileHover={{ scale: 1.02 }}
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  selectedHosting === key 
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all relative ${
+                  config.selectedPackage === key 
                     ? 'border-blue-500 bg-blue-50' 
                     : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
                 onClick={() => {
-                  setSelectedHosting(key);
                   setConfig(prev => ({ 
                     ...prev, 
-                    hostingType: key,
-                    storage: type.baseStorage,
-                    bandwidth: type.baseBandwidth,
-                    domains: type.baseDomains
+                    selectedPackage: key,
+                    storage: pkg.storage,
+                    bandwidth: pkg.bandwidth,
+                    domains: pkg.domains,
+                    ssl: pkg.ssl,
+                    backup: pkg.backup
                   }));
                 }}
               >
-                <h4 className="font-semibold text-gray-800">{key}</h4>
-                <div className="text-sm text-gray-600 mt-1 space-y-1">
-                  <div>Storage: {type.baseStorage} GB</div>
-                  <div>Bandwidth: {type.baseBandwidth} GB/tháng</div>
-                  <div>Domains: {type.baseDomains}</div>
+                {pkg.popular && (
+                  <div className="absolute -top-2 left-4 bg-orange-500 text-white px-2 py-1 text-xs rounded-full">
+                    Phổ biến nhất
+                  </div>
+                )}
+                <h4 className="font-semibold text-gray-800 flex items-center justify-between">
+                  {key}
+                  <span className="text-blue-600 font-bold">
+                    {new Intl.NumberFormat('vi-VN').format(pkg.price)} VND/tháng
+                  </span>
+                </h4>
+                <p className="text-sm text-gray-600 mt-1 italic">{pkg.description}</p>
+                <div className="text-sm text-gray-600 mt-2 space-y-1">
+                  <div>• Storage: {pkg.storage} GB</div>
+                  <div>• Bandwidth: {pkg.bandwidth} GB/tháng</div>
+                  <div>• Domains: {pkg.domains}</div>
+                  <div>• SSL: {pkg.ssl ? 'Có' : 'Không'}</div>
+                  <div>• Backup: {pkg.backup ? 'Có' : 'Không'}</div>
                 </div>
-                <p className="text-xs text-gray-500 mt-2 italic">{type.description}</p>
+                <div className="mt-3">
+                  <div className="text-xs text-gray-500 mb-1">Tính năng:</div>
+                  <div className="flex flex-wrap gap-1">
+                    {pkg.features.map((feature, idx) => (
+                      <span key={idx} className="inline-block bg-gray-100 text-xs px-2 py-1 rounded">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </motion.div>
             ))}
+          </div>
+
+          {/* Hosting Type Selection */}
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-gray-700">Loại Hosting</label>
+            <Select value={selectedHosting} onValueChange={setSelectedHosting}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.keys(hostingTypes).map(type => (
+                  <SelectItem key={type} value={type}>{type}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Payment Period */}
@@ -191,8 +264,8 @@ export default function HostingQuoteCalculator() {
               <Slider
                 value={[config.storage]}
                 onValueChange={(value) => updateConfig('storage', value[0])}
-                max={100}
-                min={hostingTypes[selectedHosting as keyof typeof hostingTypes].baseStorage}
+                max={500}
+                min={hostingPackages[config.selectedPackage as keyof typeof hostingPackages].storage}
                 step={5}
                 className="w-full"
               />
@@ -211,8 +284,8 @@ export default function HostingQuoteCalculator() {
               <Slider
                 value={[config.bandwidth]}
                 onValueChange={(value) => updateConfig('bandwidth', value[0])}
-                max={1000}
-                min={hostingTypes[selectedHosting as keyof typeof hostingTypes].baseBandwidth}
+                max={5000}
+                min={hostingPackages[config.selectedPackage as keyof typeof hostingPackages].bandwidth}
                 step={50}
                 className="w-full"
               />
@@ -231,8 +304,8 @@ export default function HostingQuoteCalculator() {
               <Slider
                 value={[config.domains]}
                 onValueChange={(value) => updateConfig('domains', value[0])}
-                max={20}
-                min={hostingTypes[selectedHosting as keyof typeof hostingTypes].baseDomains}
+                max={50}
+                min={hostingPackages[config.selectedPackage as keyof typeof hostingPackages].domains}
                 step={1}
                 className="w-full"
               />
@@ -276,9 +349,9 @@ export default function HostingQuoteCalculator() {
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <div className="space-y-3">
               <div className="border-b border-gray-200 pb-3">
-                <h4 className="font-semibold text-gray-800">{selectedHosting}</h4>
+                <h4 className="font-semibold text-gray-800">Gói {config.selectedPackage}</h4>
                 <p className="text-sm text-gray-600 italic">
-                  {hostingTypes[selectedHosting as keyof typeof hostingTypes].description}
+                  {hostingPackages[config.selectedPackage as keyof typeof hostingPackages].description}
                 </p>
                 <div className="text-right">
                   <span className="font-semibold text-blue-600">
@@ -290,23 +363,23 @@ export default function HostingQuoteCalculator() {
               {/* Configuration Details */}
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span>» Dung lượng thêm: {Math.max(0, config.storage - hostingTypes[selectedHosting as keyof typeof hostingTypes].baseStorage)} GB</span>
+                  <span>» Dung lượng thêm: {Math.max(0, config.storage - hostingPackages[config.selectedPackage as keyof typeof hostingPackages].storage)} GB</span>
                   <span>{formatCurrency(costs.storageCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» Băng thông thêm: {Math.max(0, config.bandwidth - hostingTypes[selectedHosting as keyof typeof hostingTypes].baseBandwidth)} GB</span>
+                  <span>» Băng thông thêm: {Math.max(0, config.bandwidth - hostingPackages[config.selectedPackage as keyof typeof hostingPackages].bandwidth)} GB</span>
                   <span>{formatCurrency(costs.bandwidthCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» Tên miền thêm: {Math.max(0, config.domains - hostingTypes[selectedHosting as keyof typeof hostingTypes].baseDomains)}</span>
+                  <span>» Tên miền thêm: {Math.max(0, config.domains - hostingPackages[config.selectedPackage as keyof typeof hostingPackages].domains)}</span>
                   <span>{formatCurrency(costs.domainCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» SSL Certificate</span>
+                  <span>» SSL Certificate thêm</span>
                   <span>{formatCurrency(costs.sslCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» Daily Backup</span>
+                  <span>» Daily Backup thêm</span>
                   <span>{formatCurrency(costs.backupCost)}</span>
                 </div>
               </div>
