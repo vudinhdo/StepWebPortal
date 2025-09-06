@@ -46,6 +46,12 @@ export default function Header() {
               Blog
             </a>
             <a 
+              href="/bao-gia" 
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+            >
+              Báo Giá
+            </a>
+            <a 
               href="#contact" 
               className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
             >
@@ -112,6 +118,13 @@ export default function Header() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Blog
+                  </a>
+                  <a 
+                    href="/bao-gia" 
+                    className="block py-3 text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Báo Giá
                   </a>
                   <a 
                     href="/performance-benchmark" 

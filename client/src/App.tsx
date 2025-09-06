@@ -26,6 +26,7 @@ import CMSGuide from "@/pages/cms-guide";
 import EmailServices from "@/pages/email-services";
 import EmailEnterprise from "@/pages/email-enterprise";
 import EmailServerPrivate from "@/pages/email-server-private";
+import Quote from "@/pages/quote";
 
 function Router() {
   return (
@@ -52,6 +53,7 @@ function Router() {
         <Route path="/Cloud/Cloud Odoo" component={CloudOdoo} />
         <Route path="/Cloud/Cloud Server" component={CloudServer} />
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
+        <Route path="/bao-gia" component={Quote} />
         <Route component={NotFound} />
       </Switch>
     </PageTransition>
