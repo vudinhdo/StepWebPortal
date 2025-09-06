@@ -13,17 +13,53 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 
-// Pricing configuration
+// Cloud packages with predefined pricing
+const cloudPackages = {
+  'Cơ Bản': {
+    price: 899000,
+    cpu: 2,
+    ram: 4,
+    ssd: 50,
+    bandwidth: 500,
+    gpu: 'Shared GPU',
+    features: ['2 CPU Cores', '4GB RAM', '50GB SSD', '500GB Bandwidth', 'Shared GPU'],
+    description: 'Phù hợp cho ứng dụng web đơn giản',
+    popular: false
+  },
+  'Chuyên Nghiệp': {
+    price: 1899000,
+    cpu: 4,
+    ram: 8,
+    ssd: 100,
+    bandwidth: 1000,
+    gpu: 'RTX A2000',
+    features: ['4 CPU Cores', '8GB RAM', '100GB SSD', '1TB Bandwidth', 'RTX A2000 GPU'],
+    description: 'Tối ưu cho AI/ML và ứng dụng đòi hỏi GPU',
+    popular: true
+  },
+  'Enterprise': {
+    price: 3999000,
+    cpu: 8,
+    ram: 32,
+    ssd: 500,
+    bandwidth: 5000,
+    gpu: 'RTX A5000',
+    features: ['8 CPU Cores', '32GB RAM', '500GB SSD', '5TB Bandwidth', 'RTX A5000 GPU'],
+    description: 'Giải pháp toàn diện cho doanh nghiệp lớn',
+    popular: false
+  }
+};
+
+// Pricing for additional resources
 const componentPricing = {
-  cpu: { basePrice: 60000 },
-  ram: { basePrice: 60000 },
-  ssd: { basePrice: 3000 },
-  bandwidth: { basePrice: 50000 }, // Giá cho mỗi GB băng thông
-  gpu: { basePrice: 6000000 },
-  cloudGpuA: { basePrice: 460000 }
+  cpu: { basePrice: 100000 },
+  ram: { basePrice: 80000 },
+  ssd: { basePrice: 5000 },
+  bandwidth: { basePrice: 8000 }
 };
 
 interface QuoteConfig {
+  selectedPackage: string;
   productType: string;
   cpu: number;
   ram: number;
@@ -33,33 +69,23 @@ interface QuoteConfig {
   bandwidth: number;
   hostname: string;
   rootPassword: string;
+  period: string;
 }
 
-const productTemplates = {
-  'CLOUD': {
-    cpu: 2,
-    ram: 4,
-    ssd: 50,
-    gpu: 'RTX A5000',
-    os: 'Ubuntu 20.04',
-    bandwidth: 1,
-    basePrice: 460000,
-    description: 'Cloud Server với GPU'
-  }
-};
 
 export default function QuoteBuilder() {
-  const [selectedProduct, setSelectedProduct] = useState('CLOUD');
   const [config, setConfig] = useState<QuoteConfig>({
+    selectedPackage: 'Chuyên Nghiệp',
     productType: 'CLOUD',
-    cpu: 1,
-    ram: 1,
-    ssd: 1,
-    gpu: 'RTX A5000',
+    cpu: 4,
+    ram: 8,
+    ssd: 100,
+    gpu: 'RTX A2000',
     os: 'Ubuntu 20.04',
-    bandwidth: 1,
+    bandwidth: 1000,
     hostname: 'servername.example.com',
-    rootPassword: ''
+    rootPassword: '',
+    period: 'monthly'
   });
 
   const updateConfig = (field: keyof QuoteConfig, value: string | number) => {
@@ -67,19 +93,26 @@ export default function QuoteBuilder() {
   };
 
   const calculateCost = () => {
-    const template = productTemplates[selectedProduct as keyof typeof productTemplates];
-    const baseCost = template.basePrice;
+    const selectedPkg = cloudPackages[config.selectedPackage as keyof typeof cloudPackages];
+    const baseCost = selectedPkg.price;
     
-    const cpuCost = config.cpu * componentPricing.cpu.basePrice;
-    const ramCost = config.ram * componentPricing.ram.basePrice;
-    const ssdCost = config.ssd * componentPricing.ssd.basePrice;
-    const bandwidthCost = config.bandwidth * componentPricing.bandwidth.basePrice;
+    const additionalCpu = Math.max(0, config.cpu - selectedPkg.cpu);
+    const additionalRam = Math.max(0, config.ram - selectedPkg.ram);
+    const additionalSsd = Math.max(0, config.ssd - selectedPkg.ssd);
+    const additionalBandwidth = Math.max(0, config.bandwidth - selectedPkg.bandwidth);
+    
+    const cpuCost = additionalCpu * componentPricing.cpu.basePrice;
+    const ramCost = additionalRam * componentPricing.ram.basePrice;
+    const ssdCost = additionalSsd * componentPricing.ssd.basePrice;
+    const bandwidthCost = additionalBandwidth * componentPricing.bandwidth.basePrice;
     
     const subtotal = baseCost + cpuCost + ramCost + ssdCost + bandwidthCost;
     const vat = subtotal * 0.08;
     const total = subtotal + vat;
     
-    return { baseCost, cpuCost, ramCost, ssdCost, bandwidthCost, subtotal, vat, total };
+    const multiplier = config.period === 'yearly' ? 10 : config.period === 'quarterly' ? 2.5 : 1;
+    
+    return { baseCost, cpuCost, ramCost, ssdCost, bandwidthCost, subtotal, vat, total: total * multiplier, multiplier };
   };
 
   const formatCurrency = (amount: number) => {
@@ -91,34 +124,64 @@ export default function QuoteBuilder() {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Column - Product Selection */}
+        {/* Left Column - Package Selection */}
         <div className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Tùy chọn đơn hàng</h2>
-            <p className="text-gray-600 text-sm">Tùy chỉnh các lựa chọn của bạn trước khi thanh toán.</p>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Chọn Gói Cloud</h2>
+            <p className="text-gray-600 text-sm">Chọn gói phù hợp với nhu cầu của bạn.</p>
           </div>
 
-          {/* Product Cards */}
+          {/* Package Cards */}
           <div className="space-y-4">
-            {Object.entries(productTemplates).map(([key, template]) => (
+            {Object.entries(cloudPackages).map(([key, pkg]) => (
               <motion.div
                 key={key}
                 whileHover={{ scale: 1.02 }}
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  selectedProduct === key 
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all relative ${
+                  config.selectedPackage === key 
                     ? 'border-blue-500 bg-blue-50' 
                     : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
                 onClick={() => {
-                  setSelectedProduct(key);
-                  setConfig(prev => ({ ...prev, productType: key }));
+                  setConfig(prev => ({ 
+                    ...prev, 
+                    selectedPackage: key,
+                    cpu: pkg.cpu,
+                    ram: pkg.ram,
+                    ssd: pkg.ssd,
+                    bandwidth: pkg.bandwidth,
+                    gpu: pkg.gpu
+                  }));
                 }}
               >
-                <h3 className="font-semibold text-gray-800">{key}</h3>
-                <div className="text-sm text-gray-600 mt-1 space-y-1">
-                  <div>CPU: {template.cpu} CORE</div>
-                  <div>RAM: {template.ram} GB</div>
-                  <div>DISK: {template.ssd}GB</div>
+                {pkg.popular && (
+                  <div className="absolute -top-2 left-4 bg-orange-500 text-white px-2 py-1 text-xs rounded-full">
+                    Phổ biến nhất
+                  </div>
+                )}
+                <h3 className="font-semibold text-gray-800 flex items-center justify-between">
+                  {key}
+                  <span className="text-blue-600 font-bold">
+                    {new Intl.NumberFormat('vi-VN').format(pkg.price)} VND/tháng
+                  </span>
+                </h3>
+                <p className="text-sm text-gray-600 mt-1 italic">{pkg.description}</p>
+                <div className="text-sm text-gray-600 mt-2 space-y-1">
+                  <div>• CPU: {pkg.cpu} CORE</div>
+                  <div>• RAM: {pkg.ram} GB</div>
+                  <div>• SSD: {pkg.ssd} GB</div>
+                  <div>• Bandwidth: {pkg.bandwidth} GB</div>
+                  <div>• GPU: {pkg.gpu}</div>
+                </div>
+                <div className="mt-3">
+                  <div className="text-xs text-gray-500 mb-1">Tính năng:</div>
+                  <div className="flex flex-wrap gap-1">
+                    {pkg.features.map((feature, idx) => (
+                      <span key={idx} className="inline-block bg-gray-100 text-xs px-2 py-1 rounded">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -126,15 +189,15 @@ export default function QuoteBuilder() {
 
           {/* Payment Period */}
           <div className="space-y-3">
-            <label className="text-sm font-medium text-gray-700">Chọn chu kỳ thanh toán</label>
-            <Select defaultValue="monthly">
+            <label className="text-sm font-medium text-gray-700">Chu kỳ thanh toán</label>
+            <Select value={config.period} onValueChange={(value) => updateConfig('period', value)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="monthly">{formatCurrency(costs.total)} Hàng tháng</SelectItem>
-                <SelectItem value="quarterly">{formatCurrency(costs.total * 3)} Hàng quý</SelectItem>
-                <SelectItem value="yearly">{formatCurrency(costs.total * 12)} Hàng năm</SelectItem>
+                <SelectItem value="monthly">Hàng tháng</SelectItem>
+                <SelectItem value="quarterly">Hàng quý (Giảm 10%)</SelectItem>
+                <SelectItem value="yearly">Hàng năm (Giảm 15%)</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -184,8 +247,8 @@ export default function QuoteBuilder() {
               <Slider
                 value={[config.cpu]}
                 onValueChange={(value) => updateConfig('cpu', value[0])}
-                max={24}
-                min={1}
+                max={64}
+                min={cloudPackages[config.selectedPackage as keyof typeof cloudPackages].cpu}
                 step={1}
                 className="w-full"
               />
@@ -212,9 +275,9 @@ export default function QuoteBuilder() {
               <Slider
                 value={[config.ram]}
                 onValueChange={(value) => updateConfig('ram', value[0])}
-                max={48}
-                min={1}
-                step={1}
+                max={256}
+                min={cloudPackages[config.selectedPackage as keyof typeof cloudPackages].ram}
+                step={2}
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-400">
@@ -240,9 +303,9 @@ export default function QuoteBuilder() {
               <Slider
                 value={[config.ssd]}
                 onValueChange={(value) => updateConfig('ssd', value[0])}
-                max={100}
-                min={1}
-                step={1}
+                max={2000}
+                min={cloudPackages[config.selectedPackage as keyof typeof cloudPackages].ssd}
+                step={10}
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-400">
@@ -298,27 +361,18 @@ export default function QuoteBuilder() {
                 <label className="text-sm font-medium text-gray-700">BĂNG THÔNG (GB/tháng)</label>
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-sm font-medium">
-                    {config.bandwidth}
+                    {config.bandwidth} GB
                   </span>
-                  <span className="text-gray-500 text-sm">10</span>
                 </div>
               </div>
               <Slider
                 value={[config.bandwidth]}
                 onValueChange={(value) => updateConfig('bandwidth', value[0])}
-                max={10}
-                min={1}
-                step={1}
+                max={10000}
+                min={cloudPackages[config.selectedPackage as keyof typeof cloudPackages].bandwidth}
+                step={100}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-gray-400">
-                <span>1GB</span>
-                <span>2GB</span>
-                <span>4GB</span>
-                <span>6GB</span>
-                <span>8GB</span>
-                <span>10GB</span>
-              </div>
             </div>
           </div>
         </div>
@@ -332,13 +386,13 @@ export default function QuoteBuilder() {
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <div className="space-y-3">
               <div className="border-b border-gray-200 pb-3">
-                <h4 className="font-semibold text-gray-800">{selectedProduct}</h4>
+                <h4 className="font-semibold text-gray-800">Gói {config.selectedPackage}</h4>
                 <p className="text-sm text-gray-600 italic">
-                  {productTemplates[selectedProduct as keyof typeof productTemplates].description}
+                  {cloudPackages[config.selectedPackage as keyof typeof cloudPackages].description}
                 </p>
                 <div className="text-right">
                   <span className="font-semibold text-blue-600">
-                    {formatCurrency(productTemplates[selectedProduct as keyof typeof productTemplates].basePrice)}
+                    {formatCurrency(costs.baseCost)}
                   </span>
                 </div>
               </div>
@@ -346,44 +400,46 @@ export default function QuoteBuilder() {
               {/* Configuration Details */}
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span>» CPU: {config.cpu}</span>
+                  <span>» CPU thêm: {Math.max(0, config.cpu - cloudPackages[config.selectedPackage as keyof typeof cloudPackages].cpu)}</span>
                   <span>{formatCurrency(costs.cpuCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» RAM: {config.ram}</span>
+                  <span>» RAM thêm: {Math.max(0, config.ram - cloudPackages[config.selectedPackage as keyof typeof cloudPackages].ram)} GB</span>
                   <span>{formatCurrency(costs.ramCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» +10GB SSD: {config.ssd}</span>
+                  <span>» SSD thêm: {Math.max(0, config.ssd - cloudPackages[config.selectedPackage as keyof typeof cloudPackages].ssd)} GB</span>
                   <span>{formatCurrency(costs.ssdCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» Loại GPU: {config.gpu}</span>
-                  <span>{formatCurrency(0)}</span>
+                  <span>» Băng thông thêm: {Math.max(0, config.bandwidth - cloudPackages[config.selectedPackage as keyof typeof cloudPackages].bandwidth)} GB</span>
+                  <span>{formatCurrency(costs.bandwidthCost)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>» GPU: {config.gpu}</span>
+                  <span>Bao gồm</span>
                 </div>
                 <div className="flex justify-between">
                   <span>» OS: {config.os}</span>
-                  <span>{formatCurrency(0)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>» Băng thông: {config.bandwidth} GB/tháng</span>
-                  <span>{formatCurrency(costs.bandwidthCost)}</span>
+                  <span>Miễn phí</span>
                 </div>
               </div>
 
               <div className="border-t border-gray-200 pt-3 space-y-2">
                 <div className="flex justify-between">
-                  <span>Phí khởi tạo:</span>
-                  <span>{formatCurrency(0)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Hàng tháng:</span>
+                  <span>Tổng phí tháng:</span>
                   <span>{formatCurrency(costs.subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>VAT @ 8.00%:</span>
                   <span>{formatCurrency(costs.vat)}</span>
                 </div>
+                {costs.multiplier && costs.multiplier > 1 && (
+                  <div className="flex justify-between text-green-600">
+                    <span>Giảm giá chu kỳ:</span>
+                    <span>-{formatCurrency((costs.total / costs.multiplier) * (costs.multiplier - 1))}</span>
+                  </div>
+                )}
               </div>
 
               <div className="border-t-2 border-gray-300 pt-3">
