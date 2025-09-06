@@ -13,7 +13,47 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 
-// Pricing configuration for domain services
+// Domain packages with predefined pricing
+const domainPackages = {
+  'Cơ Bản': {
+    price: 499000,
+    domains: 1,
+    years: 1,
+    privacy: false,
+    protection: false,
+    premiumDNS: false,
+    ssl: false,
+    features: ['1 Tên miền .com', 'DNS Management', 'Email Forwarding', 'Basic Support'],
+    description: 'Gói đơn giản cho cá nhân',
+    popular: false
+  },
+  'Chuyên Nghiệp': {
+    price: 1299000,
+    domains: 3,
+    years: 1,
+    privacy: true,
+    protection: true,
+    premiumDNS: true,
+    ssl: false,
+    features: ['3 Tên miền', 'Domain Privacy', 'Protection', 'Premium DNS', 'Priority Support'],
+    description: 'Phù hợp cho doanh nghiệp nhỏ',
+    popular: true
+  },
+  'Enterprise': {
+    price: 2999000,
+    domains: 10,
+    years: 1,
+    privacy: true,
+    protection: true,
+    premiumDNS: true,
+    ssl: true,
+    features: ['10 Tên miền', 'Full Privacy & Protection', 'Premium DNS', 'SSL Certificate', 'Dedicated Support'],
+    description: 'Giải pháp toàn diện cho doanh nghiệp',
+    popular: false
+  }
+};
+
+// Base domain pricing by extension
 const domainPricing = {
   '.com': { registration: 350000, renewal: 350000, transfer: 350000 },
   '.net': { registration: 400000, renewal: 400000, transfer: 400000 },
@@ -25,11 +65,12 @@ const domainPricing = {
   '.net.vn': { registration: 400000, renewal: 400000, transfer: 400000 },
   privacy: { basePrice: 200000 }, // per domain per year
   protection: { basePrice: 300000 }, // per domain per year
-  dns: { basePrice: 100000 }, // premium DNS per year
-  ssl: { basePrice: 500000 } // SSL certificate per year
+  dns: { basePrice: 150000 }, // premium DNS per year
+  ssl: { basePrice: 800000 } // SSL certificate per year
 };
 
 interface DomainConfig {
+  selectedPackage: string;
   serviceType: string;
   domains: string[];
   extension: string;
@@ -57,13 +98,14 @@ const serviceTypes = {
 
 export default function DomainQuoteCalculator() {
   const [config, setConfig] = useState<DomainConfig>({
+    selectedPackage: 'Chuyên Nghiệp',
     serviceType: 'Đăng Ký Mới',
     domains: [''],
     extension: '.com',
     years: 1,
-    privacy: false,
-    protection: false,
-    premiumDNS: false,
+    privacy: true,
+    protection: true,
+    premiumDNS: true,
     ssl: false
   });
 
@@ -86,24 +128,31 @@ export default function DomainQuoteCalculator() {
   };
 
   const calculateCost = () => {
+    const selectedPkg = domainPackages[config.selectedPackage as keyof typeof domainPackages];
     const validDomains = config.domains.filter(d => d.trim());
-    const domainCount = Math.max(1, validDomains.length);
+    const domainCount = Math.max(selectedPkg.domains, validDomains.length);
     
+    // Base package cost
+    let baseCost = selectedPkg.price * config.years;
+    
+    // Additional domains cost
+    const additionalDomains = Math.max(0, domainCount - selectedPkg.domains);
     const serviceType = serviceTypes[config.serviceType as keyof typeof serviceTypes];
     const extensionPricing = domainPricing[config.extension as keyof typeof domainPricing];
+    const additionalDomainCost = additionalDomains * extensionPricing[serviceType.priceKey as keyof typeof extensionPricing] * config.years;
     
-    const baseCost = extensionPricing[serviceType.priceKey as keyof typeof extensionPricing] * domainCount * config.years;
-    const privacyCost = config.privacy ? domainPricing.privacy.basePrice * domainCount * config.years : 0;
-    const protectionCost = config.protection ? domainPricing.protection.basePrice * domainCount * config.years : 0;
-    const dnsCost = config.premiumDNS ? domainPricing.dns.basePrice * domainCount * config.years : 0;
-    const sslCost = config.ssl ? domainPricing.ssl.basePrice * domainCount * config.years : 0;
+    // Additional services cost (only if not included in package)
+    const privacyCost = (config.privacy && !selectedPkg.privacy) ? domainPricing.privacy.basePrice * domainCount * config.years : 0;
+    const protectionCost = (config.protection && !selectedPkg.protection) ? domainPricing.protection.basePrice * domainCount * config.years : 0;
+    const dnsCost = (config.premiumDNS && !selectedPkg.premiumDNS) ? domainPricing.dns.basePrice * domainCount * config.years : 0;
+    const sslCost = (config.ssl && !selectedPkg.ssl) ? domainPricing.ssl.basePrice * domainCount * config.years : 0;
     
-    const subtotal = baseCost + privacyCost + protectionCost + dnsCost + sslCost;
+    const subtotal = baseCost + additionalDomainCost + privacyCost + protectionCost + dnsCost + sslCost;
     const vat = subtotal * 0.08;
     const total = subtotal + vat;
     
     return { 
-      domainCount, baseCost, privacyCost, protectionCost, dnsCost, sslCost,
+      domainCount, baseCost, additionalDomainCost, privacyCost, protectionCost, dnsCost, sslCost,
       subtotal, vat, total 
     };
   };
@@ -119,29 +168,81 @@ export default function DomainQuoteCalculator() {
   return (
     <div className="max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Column - Service Type & Domain Input */}
+        {/* Left Column - Package Selection */}
         <div className="space-y-6">
           <div>
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Loại Dịch Vụ</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Chọn Gói Domain</h3>
           </div>
 
-          {/* Service Type Cards */}
+          {/* Package Cards */}
           <div className="space-y-4">
-            {Object.entries(serviceTypes).map(([key, type]) => (
+            {Object.entries(domainPackages).map(([key, pkg]) => (
               <motion.div
                 key={key}
                 whileHover={{ scale: 1.02 }}
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  config.serviceType === key 
+                className={`p-4 border-2 rounded-lg cursor-pointer transition-all relative ${
+                  config.selectedPackage === key 
                     ? 'border-orange-500 bg-orange-50' 
                     : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
-                onClick={() => updateConfig('serviceType', key)}
+                onClick={() => {
+                  setConfig(prev => ({ 
+                    ...prev, 
+                    selectedPackage: key,
+                    years: pkg.years,
+                    privacy: pkg.privacy,
+                    protection: pkg.protection,
+                    premiumDNS: pkg.premiumDNS,
+                    ssl: pkg.ssl
+                  }));
+                }}
               >
-                <h4 className="font-semibold text-gray-800">{key}</h4>
-                <p className="text-sm text-gray-600 mt-1">{type.description}</p>
+                {pkg.popular && (
+                  <div className="absolute -top-2 left-4 bg-orange-500 text-white px-2 py-1 text-xs rounded-full">
+                    Phổ biến nhất
+                  </div>
+                )}
+                <h4 className="font-semibold text-gray-800 flex items-center justify-between">
+                  {key}
+                  <span className="text-orange-600 font-bold">
+                    {new Intl.NumberFormat('vi-VN').format(pkg.price)} VND/năm
+                  </span>
+                </h4>
+                <p className="text-sm text-gray-600 mt-1 italic">{pkg.description}</p>
+                <div className="text-sm text-gray-600 mt-2 space-y-1">
+                  <div>• Domains: {pkg.domains}</div>
+                  <div>• Privacy: {pkg.privacy ? 'Có' : 'Không'}</div>
+                  <div>• Protection: {pkg.protection ? 'Có' : 'Không'}</div>
+                  <div>• Premium DNS: {pkg.premiumDNS ? 'Có' : 'Không'}</div>
+                  <div>• SSL: {pkg.ssl ? 'Có' : 'Không'}</div>
+                </div>
+                <div className="mt-3">
+                  <div className="text-xs text-gray-500 mb-1">Tính năng:</div>
+                  <div className="flex flex-wrap gap-1">
+                    {pkg.features.map((feature, idx) => (
+                      <span key={idx} className="inline-block bg-gray-100 text-xs px-2 py-1 rounded">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </motion.div>
             ))}
+          </div>
+
+          {/* Service Type Selection */}
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-gray-700">Loại Dịch Vụ</label>
+            <Select value={config.serviceType} onValueChange={(value) => updateConfig('serviceType', value)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(serviceTypes).map(([key, type]) => (
+                  <SelectItem key={key} value={key}>{key}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Domain Input */}
@@ -229,7 +330,7 @@ export default function DomainQuoteCalculator() {
                 value={[config.years]}
                 onValueChange={(value) => updateConfig('years', value[0])}
                 max={10}
-                min={1}
+                min={domainPackages[config.selectedPackage as keyof typeof domainPackages].years}
                 step={1}
                 className="w-full"
               />
@@ -343,9 +444,9 @@ export default function DomainQuoteCalculator() {
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <div className="space-y-3">
               <div className="border-b border-gray-200 pb-3">
-                <h4 className="font-semibold text-gray-800">{config.serviceType}</h4>
+                <h4 className="font-semibold text-gray-800">Gói {config.selectedPackage}</h4>
                 <p className="text-sm text-gray-600 italic">
-                  {serviceTypes[config.serviceType as keyof typeof serviceTypes].description}
+                  {domainPackages[config.selectedPackage as keyof typeof domainPackages].description}
                 </p>
                 <div className="text-right">
                   <span className="font-semibold text-orange-600">
@@ -365,19 +466,23 @@ export default function DomainQuoteCalculator() {
                   <span>{formatCurrency(costs.baseCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» Domain Privacy</span>
+                  <span>» Tên miền thêm</span>
+                  <span>{formatCurrency(costs.additionalDomainCost)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>» Domain Privacy thêm</span>
                   <span>{formatCurrency(costs.privacyCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» Domain Protection</span>
+                  <span>» Domain Protection thêm</span>
                   <span>{formatCurrency(costs.protectionCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» Premium DNS</span>
+                  <span>» Premium DNS thêm</span>
                   <span>{formatCurrency(costs.dnsCost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>» SSL Certificate</span>
+                  <span>» SSL Certificate thêm</span>
                   <span>{formatCurrency(costs.sslCost)}</span>
                 </div>
               </div>
