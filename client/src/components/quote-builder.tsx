@@ -137,7 +137,7 @@ export default function QuoteBuilder() {
               <motion.div
                 key={key}
                 whileHover={{ scale: 1.02 }}
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all relative ${
+                className={`p-3 border-2 rounded-lg cursor-pointer transition-all relative ${
                   config.selectedPackage === key 
                     ? 'border-blue-500 bg-blue-50' 
                     : 'border-gray-200 bg-white hover:border-gray-300'
@@ -165,24 +165,6 @@ export default function QuoteBuilder() {
                     {new Intl.NumberFormat('vi-VN').format(pkg.price)} VND/tháng
                   </span>
                 </h3>
-                <p className="text-sm text-gray-600 mt-1 italic">{pkg.description}</p>
-                <div className="text-sm text-gray-600 mt-2 space-y-1">
-                  <div>• CPU: {pkg.cpu} CORE</div>
-                  <div>• RAM: {pkg.ram} GB</div>
-                  <div>• SSD: {pkg.ssd} GB</div>
-                  <div>• Bandwidth: {pkg.bandwidth} GB</div>
-                  <div>• GPU: {pkg.gpu}</div>
-                </div>
-                <div className="mt-3">
-                  <div className="text-xs text-gray-500 mb-1">Tính năng:</div>
-                  <div className="flex flex-wrap gap-1">
-                    {pkg.features.map((feature, idx) => (
-                      <span key={idx} className="inline-block bg-gray-100 text-xs px-2 py-1 rounded">
-                        {feature}
-                      </span>
-                    ))}
-                  </div>
-                </div>
               </motion.div>
             ))}
           </div>
