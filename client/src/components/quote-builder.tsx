@@ -67,8 +67,6 @@ interface QuoteConfig {
   gpu: string;
   os: string;
   bandwidth: number;
-  hostname: string;
-  rootPassword: string;
   period: string;
 }
 
@@ -83,8 +81,6 @@ export default function QuoteBuilder() {
     gpu: 'RTX A2000',
     os: 'Ubuntu 20.04',
     bandwidth: 1000,
-    hostname: 'servername.example.com',
-    rootPassword: '',
     period: 'monthly'
   });
 
@@ -190,28 +186,6 @@ export default function QuoteBuilder() {
           <div className="bg-white p-6 rounded-lg border border-gray-200">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Cấu Hình Server</h3>
             
-            {/* Server Details */}
-            <div className="space-y-4 mb-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">Hostname</label>
-                  <Input
-                    value={config.hostname}
-                    onChange={(e) => updateConfig('hostname', e.target.value)}
-                    className="text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">Root Password</label>
-                  <Input
-                    type="password"
-                    value={config.rootPassword}
-                    onChange={(e) => updateConfig('rootPassword', e.target.value)}
-                    className="text-sm"
-                  />
-                </div>
-              </div>
-            </div>
 
             <h4 className="text-md font-semibold text-gray-800 mb-4 text-center">Tùy Chọn Cấu Hình</h4>
             

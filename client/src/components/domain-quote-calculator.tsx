@@ -79,6 +79,7 @@ interface DomainConfig {
   protection: boolean;
   premiumDNS: boolean;
   ssl: boolean;
+  period: string;
 }
 
 const serviceTypes = {
@@ -106,7 +107,8 @@ export default function DomainQuoteCalculator() {
     privacy: true,
     protection: true,
     premiumDNS: true,
-    ssl: false
+    ssl: false,
+    period: 'monthly'
   });
 
   const [domainInput, setDomainInput] = useState('');
@@ -151,9 +153,11 @@ export default function DomainQuoteCalculator() {
     const vat = subtotal * 0.08;
     const total = subtotal + vat;
     
+    const multiplier = config.period === 'yearly' ? 10 : config.period === 'quarterly' ? 2.5 : 1;
+    
     return { 
       domainCount, baseCost, additionalDomainCost, privacyCost, protectionCost, dnsCost, sslCost,
-      subtotal, vat, total 
+      subtotal, vat, total: total * multiplier, multiplier 
     };
   };
 
@@ -308,6 +312,21 @@ export default function DomainQuoteCalculator() {
                 </Button>
               ))}
             </div>
+          </div>
+
+          {/* Payment Period */}
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-gray-700">Chu kỳ thanh toán</label>
+            <Select value={config.period} onValueChange={(value) => updateConfig('period', value)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="monthly">Hàng tháng</SelectItem>
+                <SelectItem value="quarterly">Hàng quý (Giảm 10%)</SelectItem>
+                <SelectItem value="yearly">Hàng năm (Giảm 15%)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
