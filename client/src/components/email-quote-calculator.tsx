@@ -163,24 +163,6 @@ export default function EmailQuoteCalculator() {
                     {new Intl.NumberFormat('vi-VN').format(pkg.price)} VND/tháng
                   </span>
                 </h4>
-                <p className="text-sm text-gray-600 mt-1 italic">{pkg.description}</p>
-                <div className="text-sm text-gray-600 mt-2 space-y-1">
-                  <div>• Users: {pkg.users}</div>
-                  <div>• Storage: {pkg.storagePerUser}GB/user</div>
-                  <div>• Domains: {pkg.customDomains}</div>
-                  <div>• Backup: {pkg.backup ? 'Có' : 'Không'}</div>
-                  <div>• Anti-spam: {pkg.antispam ? 'Có' : 'Không'}</div>
-                </div>
-                <div className="mt-3">
-                  <div className="text-xs text-gray-500 mb-1">Tính năng:</div>
-                  <div className="flex flex-wrap gap-1">
-                    {pkg.features.map((feature, idx) => (
-                      <span key={idx} className="inline-block bg-gray-100 text-xs px-2 py-1 rounded">
-                        {feature}
-                      </span>
-                    ))}
-                  </div>
-                </div>
               </motion.div>
             ))}
           </div>
