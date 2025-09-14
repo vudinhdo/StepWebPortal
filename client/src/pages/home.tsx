@@ -7,12 +7,8 @@ import Testimonials from "@/components/testimonials";
 import Resources from "@/components/resources";
 import TooltipShowcase from "@/components/tooltip-showcase";
 import Footer from "@/components/footer";
-import WelcomeScreen from "@/components/welcome-screen";
 import PersonalizedContent from "@/components/personalized-content";
 import PersonalizationSettings from "@/components/personalization-settings";
-import EmailPopup from "@/components/email-popup";
-import { InlineEditor } from "@/components/inline-editor";
-import { AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 
 interface UserInfo {
@@ -23,63 +19,29 @@ interface UserInfo {
 }
 
 export default function Home() {
-  const [showWelcome, setShowWelcome] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isPersonalized, setIsPersonalized] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user has already completed welcome screen
+    // Check if user has already completed personalization
     const savedUserInfo = localStorage.getItem('stepUserInfo');
-    const welcomeShown = localStorage.getItem('stepWelcomeShown');
     
-    if (savedUserInfo && welcomeShown) {
+    if (savedUserInfo) {
       setUserInfo(JSON.parse(savedUserInfo));
       setIsPersonalized(true);
-    } else if (!welcomeShown) {
-      // Show welcome screen for first-time visitors
-      const timer = setTimeout(() => {
-        setShowWelcome(true);
-      }, 2000); // Show after 2 seconds for testing
-      
-      return () => clearTimeout(timer);
     }
   }, []);
 
-  const handleWelcomeComplete = (info: UserInfo) => {
-    setUserInfo(info);
-    setShowWelcome(false);
-    setIsPersonalized(true);
-    localStorage.setItem('stepWelcomeShown', 'true');
-    localStorage.setItem('stepUserInfo', JSON.stringify(info));
-    
-    // Note: onboarding removed for now
-  };
-
-  const handleSkipPersonalization = () => {
-    console.log('Skip personalization called');
-    setShowWelcome(false);
-    localStorage.setItem('stepWelcomeShown', 'true');
-    toast({
-      title: "Đã bỏ qua cá nhân hóa",
-      description: "Bạn có thể bật lại bất cứ lúc nào",
-    });
-  };
 
   const handleResetPersonalization = () => {
     localStorage.removeItem('stepUserInfo');
-    localStorage.removeItem('stepWelcomeShown');
     setUserInfo(null);
     setIsPersonalized(false);
-    setShowWelcome(true);
-  };
-
-  const handleEditPersonalization = () => {
-    setShowWelcome(true);
-  };
-
-  const handleEmailSubmit = async (email: string) => {
-    console.log('Email submitted:', email);
+    toast({
+      title: "Đã xóa cá nhân hóa",
+      description: "Dữ liệu cá nhân hóa đã được xóa",
+    });
   };
 
 
@@ -110,29 +72,10 @@ export default function Home() {
         {isPersonalized && userInfo && (
           <PersonalizationSettings 
             userInfo={userInfo}
-            onEdit={handleEditPersonalization}
             onReset={handleResetPersonalization}
           />
         )}
         
-        {/* Welcome Screen */}
-        <AnimatePresence>
-          {showWelcome && (
-            <WelcomeScreen
-              onComplete={handleWelcomeComplete}
-              onSkip={handleSkipPersonalization}
-            />
-          )}
-        </AnimatePresence>
-        
-        {/* Email Popup */}
-        <EmailPopup 
-          discount="30%"
-          title="STEP - Ưu Đãi Đặc Biệt!"
-          description="Nhận ngay mã giảm giá 30% cho tất cả dịch vụ hosting + Tips hosting miễn phí!"
-          buttonText="Nhận Ưu Đãi Ngay"
-          storageKey="homepage-popup"
-        />
       </div>
   );
 }

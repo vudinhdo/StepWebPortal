@@ -6,9 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Settings, 
   User, 
-  RefreshCw, 
-  Trash2,
-  Edit3,
+  RefreshCw,
   Building2,
   Star
 } from "lucide-react";
@@ -23,7 +21,6 @@ interface UserInfo {
 interface PersonalizationSettingsProps {
   userInfo: UserInfo;
   onReset: () => void;
-  onEdit: () => void;
 }
 
 const roleLabels = {
@@ -47,7 +44,7 @@ const interestLabels = {
   "domain": "Domain Management"
 };
 
-export default function PersonalizationSettings({ userInfo, onReset, onEdit }: PersonalizationSettingsProps) {
+export default function PersonalizationSettings({ userInfo, onReset }: PersonalizationSettingsProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -123,16 +120,6 @@ export default function PersonalizationSettings({ userInfo, onReset, onEdit }: P
                   </div>
 
                   <div className="space-y-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={onEdit}
-                      className="w-full text-xs"
-                    >
-                      <Edit3 size={12} className="mr-1" />
-                      Chỉnh sửa
-                    </Button>
-                    
                     <Button
                       variant="outline"
                       size="sm"
