@@ -26,6 +26,7 @@ import CMSGuide from "@/pages/cms-guide";
 import EmailServices from "@/pages/email-services";
 import EmailEnterprise from "@/pages/email-enterprise";
 import EmailServerPrivate from "@/pages/email-server-private";
+import GoogleWorkspace from "@/pages/google-workspace";
 import Quote from "@/pages/quote";
 
 function Router() {
@@ -49,6 +50,7 @@ function Router() {
         <Route path="/Dịch vụ/Email" component={EmailServices} />
         <Route path="/Sản Phẩm & Dịch Vụ/Email" component={EmailEnterprise} />
         <Route path="/Sản Phẩm & Dịch Vụ/Email Server Riêng" component={EmailServerPrivate} />
+        <Route path="/Sản Phẩm & Dịch Vụ/Google Workspace" component={GoogleWorkspace} />
         <Route path="/cloud" component={Cloud} />
         <Route path="/Cloud/Cloud Odoo" component={CloudOdoo} />
         <Route path="/Cloud/Cloud Server" component={CloudServer} />

@@ -260,51 +260,6 @@ export default function EmailServerPrivate() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Tính Năng Email Server Riêng
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Những tính năng vượt trội đi kèm với dịch vụ Email Server riêng của STEP
-            </p>
-          </motion.div>
-
-          <div className="max-w-2xl mx-auto">
-            {/* Excluded Features */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-lg p-8 shadow-lg"
-            >
-              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                Dịch Vụ Tính Phí Thêm
-              </h3>
-              <ul className="space-y-4">
-                <li className="flex items-center text-sm">
-                  <X className="text-red-500 mr-3 flex-shrink-0" size={20} />
-                  <span className="font-medium text-gray-600">Free gói bảo mật SSL khi đăng ký từ 1 năm</span>
-                </li>
-                <li className="flex items-center text-sm">
-                  <X className="text-red-500 mr-3 flex-shrink-0" size={20} />
-                  <span className="font-medium text-gray-600">Giảm 60% hoặc tặng 16 tháng</span>
-                </li>
-              </ul>
-              
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* Email Access Methods Section */}
       <section className="py-20 bg-gray-50">
