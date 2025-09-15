@@ -29,6 +29,17 @@
   --step-light-blue: hsl(195, 100%, 50%);
   --step-gray: hsl(210, 17%, 96%);
   --step-dark-gray: hsl(210, 11%, 45%);
+  
+  /* Typography System */
+  --fs-h1: clamp(2.25rem, 2.5vw + 1rem, 3.5rem);
+  --fs-h2: clamp(1.875rem, 1.8vw + 0.9rem, 2.75rem);
+  --fs-h3: clamp(1.5rem, 1.2vw + 0.7rem, 2rem);
+  --fs-lead: clamp(1.125rem, 1vw + 0.5rem, 1.375rem);
+  --fs-body: 1rem;
+  --fs-small: 0.9375rem;
+  --lh-heading: 1.15;
+  --lh-lead: 1.6;
+  --lh-body: 1.75;
 }
 
 .dark {
@@ -62,6 +73,8 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
     /* Performance optimizations */
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -101,6 +114,79 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+@layer components {
+  /* Typography System Components */
+  .h1 {
+    font-size: var(--fs-h1);
+    font-weight: 800;
+    line-height: var(--lh-heading);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  
+  .h2 {
+    font-size: var(--fs-h2);
+    font-weight: 800;
+    line-height: var(--lh-heading);
+    text-wrap: balance;
+  }
+  
+  .h3 {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    line-height: var(--lh-heading);
+    text-wrap: balance;
+  }
+  
+  .lead {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--muted-foreground);
+  }
+  
+  .body {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+  
+  .small {
+    font-size: var(--fs-small);
+    line-height: 1.6;
+  }
+  
+  .prose-constraint {
+    max-width: 72ch;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  
+  .nowrap {
+    white-space: nowrap;
+  }
+  
+  .section {
+    padding-block: 4rem;
+  }
+  
+  .section-sm {
+    padding-block: 3rem;
+  }
+  
+  .stack {
+    display: block;
+  }
+  
+  .stack > * + * {
+    margin-top: 1rem;
   }
 }
 
