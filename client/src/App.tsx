@@ -27,6 +27,7 @@ import EmailServices from "@/pages/email-services";
 import EmailEnterprise from "@/pages/email-enterprise";
 import EmailServerPrivate from "@/pages/email-server-private";
 import GoogleWorkspace from "@/pages/google-workspace";
+import Microsoft365 from "@/pages/microsoft-365";
 import Quote from "@/pages/quote";
 
 function Router() {
@@ -51,6 +52,7 @@ function Router() {
         <Route path="/Sản Phẩm & Dịch Vụ/Email" component={EmailEnterprise} />
         <Route path="/Sản Phẩm & Dịch Vụ/Email Server Riêng" component={EmailServerPrivate} />
         <Route path="/Sản Phẩm & Dịch Vụ/Google Workspace" component={GoogleWorkspace} />
+        <Route path="/Sản Phẩm & Dịch Vụ/Microsoft 365" component={Microsoft365} />
         <Route path="/cloud" component={Cloud} />
         <Route path="/Cloud/Cloud Odoo" component={CloudOdoo} />
         <Route path="/Cloud/Cloud Server" component={CloudServer} />
