@@ -161,7 +161,7 @@ export default function Domain() {
       <section className="pt-20 pb-16 bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="h1 text-gray-900 mb-6">
               Dịch vụ <span className="text-[hsl(207,100%,40%)]">Tên miền</span> chuyên nghiệp
             </h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
@@ -172,7 +172,7 @@ export default function Domain() {
             {/* Domain Search */}
             <div className="max-w-2xl mx-auto mb-12">
               <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Kiểm tra tên miền khả dụng</h3>
+                <h3 className="h3 text-gray-900 mb-4">Kiểm tra tên miền khả dụng</h3>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -215,7 +215,7 @@ export default function Domain() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-3xl lg:text-4xl font-bold text-[hsl(207,100%,40%)] mb-2">
+                  <div className="h3 text-[hsl(207,100%,40%)] mb-2">
                     {stat.value}
                   </div>
                   <div className="text-gray-600">{stat.label}</div>
@@ -230,7 +230,7 @@ export default function Domain() {
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="h2 text-gray-900 mb-4">
               Dịch vụ tên miền toàn diện
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -268,7 +268,7 @@ export default function Domain() {
                       </li>
                     ))}
                   </ul>
-                  <Button variant="ghost" className="mt-6 text-[hsl(207,100%,40%)] hover:text-[hsl(207,100%,35%)]">
+                  <Button variant="ghost" className="mt-6 whitespace-nowrap text-[hsl(207,100%,40%)] hover:text-[hsl(207,100%,35%)]">
                     Tìm hiểu thêm <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardContent>
@@ -282,7 +282,7 @@ export default function Domain() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Bảng giá dịch vụ</h2>
+            <h2 className="h2 text-gray-900 mb-4">Bảng giá dịch vụ</h2>
             <p className="text-xl text-gray-600">Chọn gói dịch vụ phù hợp với nhu cầu của bạn</p>
           </div>
 
@@ -297,7 +297,7 @@ export default function Domain() {
                 <CardHeader className="text-center pb-4">
                   <CardTitle className="text-xl text-gray-900 mb-2">{plan.name}</CardTitle>
                   <div className="mb-4">
-                    <span className="text-3xl font-bold text-gray-900">{plan.price}</span>
+                    <span className="h3 text-gray-900">{plan.price}</span>
                     {plan.price !== "Liên hệ" && plan.price !== "0" && <span className="text-gray-600">đ</span>}
                     <span className="text-gray-600 ml-1">/{plan.period}</span>
                   </div>
@@ -312,7 +312,7 @@ export default function Domain() {
                     ))}
                   </ul>
                   <Button 
-                    className={`w-full ${plan.popular 
+                    className={`w-full whitespace-nowrap ${plan.popular 
                       ? 'bg-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,35%)] text-white' 
                       : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
                     }`}
@@ -331,7 +331,7 @@ export default function Domain() {
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Khách hàng nói gì về chúng tôi</h2>
+            <h2 className="h2 text-gray-900 mb-4">Khách hàng nói gì về chúng tôi</h2>
             <p className="text-xl text-gray-600">Được tin tưởng bởi hàng nghìn doanh nghiệp</p>
           </div>
 
