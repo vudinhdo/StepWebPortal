@@ -236,21 +236,21 @@ export default function Microsoft365() {
               <div className="flex flex-col md:flex-row items-center justify-center text-center md:text-left">
                 <Building className="mb-2 md:mb-0 md:mr-4 text-yellow-300 flex-shrink-0" size={32} />
                 <div>
-                  <div className="text-lg font-bold">10,000+ Doanh nghiệp</div>
+                  <div className="text-lg font-bold" data-testid="text-stats-businesses">10,000+ Doanh nghiệp</div>
                   <div className="text-sm text-blue-200">Tin dùng STEP</div>
                 </div>
               </div>
               <div className="flex flex-col md:flex-row items-center justify-center text-center md:text-left">
                 <Shield className="mb-2 md:mb-0 md:mr-4 text-yellow-300 flex-shrink-0" size={32} />
                 <div>
-                  <div className="text-lg font-bold">99.9% Uptime</div>
+                  <div className="text-lg font-bold" data-testid="text-stats-uptime">99.9% Uptime</div>
                   <div className="text-sm text-blue-200">SLA đảm bảo</div>
                 </div>
               </div>
               <div className="flex flex-col md:flex-row items-center justify-center text-center md:text-left">
                 <Users className="mb-2 md:mb-0 md:mr-4 text-yellow-300 flex-shrink-0" size={32} />
                 <div>
-                  <div className="text-lg font-bold">24/7 Support</div>
+                  <div className="text-lg font-bold" data-testid="text-stats-support">24/7 Support</div>
                   <div className="text-sm text-blue-200">Hỗ trợ tiếng Việt</div>
                 </div>
               </div>
