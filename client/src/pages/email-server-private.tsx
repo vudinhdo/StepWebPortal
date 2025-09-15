@@ -179,8 +179,7 @@ export default function EmailServerPrivate() {
               <Button 
                 onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                 size="lg" 
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-[hsl(207,100%,40%)] font-semibold text-lg px-8 py-4"
+                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[hsl(207,100%,40%)] font-semibold text-lg px-8 py-4"
               >
                 Tư Vấn Miễn Phí
               </Button>
@@ -279,55 +278,12 @@ export default function EmailServerPrivate() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Included Features */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-lg p-8 shadow-lg"
-            >
-              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                Tính Năng Bao Gồm
-              </h3>
-              <ul className="space-y-4">
-                <li className="flex items-center text-sm">
-                  <Check className="text-green-500 mr-3 flex-shrink-0" size={20} />
-                  <span className="font-medium">Tỷ lệ gửi mail vào inbox: <span className="text-green-600">99%</span></span>
-                </li>
-                <li className="flex items-center text-sm">
-                  <Check className="text-green-500 mr-3 flex-shrink-0" size={20} />
-                  <span className="font-medium">Dung lượng lưu trữ: <span className="text-green-600">120GB</span></span>
-                </li>
-                <li className="flex items-center text-sm">
-                  <Check className="text-green-500 mr-3 flex-shrink-0" size={20} />
-                  <span className="font-medium">Địa chỉ email: <span className="text-green-600">Không giới hạn</span></span>
-                </li>
-                <li className="flex items-center text-sm">
-                  <Check className="text-green-500 mr-3 flex-shrink-0" size={20} />
-                  <span className="font-medium">Email forwarder: <span className="text-green-600">Không giới hạn</span></span>
-                </li>
-                <li className="flex items-center text-sm">
-                  <Check className="text-green-500 mr-3 flex-shrink-0" size={20} />
-                  <span className="font-medium">Danh sách email: <span className="text-green-600">Không giới hạn</span></span>
-                </li>
-                <li className="flex items-center text-sm">
-                  <Check className="text-green-500 mr-3 flex-shrink-0" size={20} />
-                  <span className="font-medium">Tên miền email: <span className="text-green-600">Không giới hạn</span></span>
-                </li>
-                <li className="flex items-center text-sm">
-                  <Check className="text-green-500 mr-3 flex-shrink-0" size={20} />
-                  <span className="font-medium">Địa chỉ IP riêng: <span className="text-green-600">1</span></span>
-                </li>
-              </ul>
-            </motion.div>
-
+          <div className="max-w-2xl mx-auto">
             {/* Excluded Features */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
               className="bg-white rounded-lg p-8 shadow-lg"
             >
