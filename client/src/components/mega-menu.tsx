@@ -219,7 +219,7 @@ export default function MegaMenu() {
                       item.name === 'Email server Riêng' ? '/Sản Phẩm & Dịch Vụ/Email Server Riêng' :
                       item.name === 'Google Workspace' ? '/Sản Phẩm & Dịch Vụ/Google Workspace' :
                       item.name === 'Microsoft 365' ? '/Sản Phẩm & Dịch Vụ/Microsoft 365' :
-                      item.name === 'Hybrid Email' ? '/Dịch vụ/Email' :
+                      item.name === 'Hybrid Email' ? '/Sản Phẩm & Dịch Vụ/Hybrid Email' :
                       '#'
                     } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
