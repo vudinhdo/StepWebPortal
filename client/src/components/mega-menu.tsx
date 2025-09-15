@@ -218,6 +218,7 @@ export default function MegaMenu() {
                     <a href={
                       item.name === 'Email server Riêng' ? '/Sản Phẩm & Dịch Vụ/Email Server Riêng' :
                       item.name === 'Google Workspace' ? '/Sản Phẩm & Dịch Vụ/Google Workspace' :
+                      item.name === 'Microsoft 365' ? '/Sản Phẩm & Dịch Vụ/Microsoft 365' :
                       item.name === 'Hybrid Email' ? '/Dịch vụ/Email' :
                       '#'
                     } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
