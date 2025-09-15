@@ -223,12 +223,12 @@ export default function Microsoft365() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="h1 mb-6">
               <span className="text-white">Microsoft 365</span>
               <br />
               <span className="text-yellow-300">Giải Pháp Văn Phòng Toàn Diện</span>
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl mb-10 text-blue-100 max-w-3xl mx-auto leading-relaxed">
+            <p className="lead mb-10 text-blue-100 prose-constraint mx-auto">
               Office, Teams, Exchange, SharePoint - Tất cả trong một. Tăng năng suất làm việc với bộ công cụ Microsoft đầy đủ và bảo mật cao.
             </p>
             
@@ -260,7 +260,7 @@ export default function Microsoft365() {
               <Button 
                 onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
                 size="lg" 
-                className="bg-white text-blue-600 hover:bg-gray-100 font-semibold text-lg px-8 py-4"
+                className="bg-white text-blue-600 hover:bg-gray-100 font-semibold text-lg px-8 py-4 nowrap"
                 data-testid="button-pricing"
               >
                 Xem Bảng Giá
@@ -269,7 +269,7 @@ export default function Microsoft365() {
               <Button 
                 onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                 size="lg" 
-                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold text-lg px-8 py-4"
+                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold text-lg px-8 py-4 nowrap"
                 data-testid="button-contact"
               >
                 Tư Vấn Miễn Phí
@@ -289,10 +289,10 @@ export default function Microsoft365() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Bảng Giá Microsoft 365 2025
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-4">
+            <p className="lead prose-constraint mx-auto mb-4">
               Chọn gói phù hợp với quy mô doanh nghiệp. Giá đã bao gồm VAT và giảm 17% năm đầu.
             </p>
             <div className="inline-flex items-center bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
@@ -323,9 +323,9 @@ export default function Microsoft365() {
                 )}
 
                 <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{pkg.name}</h3>
+                  <h3 className="h3 text-gray-800 mb-2">{pkg.name}</h3>
                   <div className="mb-2">
-                    <div className="text-2xl font-bold text-blue-600">{pkg.price}</div>
+                    <div className="h3 text-blue-600">{pkg.price}</div>
                     {pkg.originalPrice && (
                       <div className="text-sm text-gray-500 line-through">{pkg.originalPrice}</div>
                     )}
@@ -358,7 +358,7 @@ export default function Microsoft365() {
                     pkg.popular 
                       ? 'bg-blue-600 hover:bg-blue-700' 
                       : 'bg-blue-500 hover:bg-blue-600'
-                  } text-white font-semibold`}
+                  } text-white font-semibold nowrap`}
                   data-testid={`button-select-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
                 >
                   Chọn Gói Này
@@ -379,10 +379,10 @@ export default function Microsoft365() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Tính Năng Chính Microsoft 365
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Bộ ứng dụng văn phòng hoàn chỉnh với cloud services và collaboration tools
             </p>
           </motion.div>
@@ -401,7 +401,7 @@ export default function Microsoft365() {
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4 mx-auto">
                   <feature.icon className="text-white" size={32} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3 text-center">
+                <h3 className="h3 text-gray-800 mb-3 text-center">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600 text-sm leading-relaxed text-center">
@@ -423,10 +423,10 @@ export default function Microsoft365() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Tại Sao Chọn Microsoft 365 Từ STEP?
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Không chỉ cung cấp license, STEP còn đồng hành cùng doanh nghiệp trong việc triển khai và tối ưu hóa
             </p>
           </motion.div>
@@ -445,7 +445,7 @@ export default function Microsoft365() {
                 <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4 mx-auto">
                   <benefit.icon className="text-white" size={40} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">
+                <h3 className="h3 text-gray-800 mb-3">
                   {benefit.title}
                 </h3>
                 <p className="text-gray-600 text-sm leading-relaxed">
@@ -467,10 +467,10 @@ export default function Microsoft365() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Bảng So Sánh Tính Năng Microsoft Teams
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               So sánh chi tiết các tính năng Teams trong từng gói Microsoft 365
             </p>
           </motion.div>
@@ -646,7 +646,7 @@ export default function Microsoft365() {
             viewport={{ once: true }}
             className="mt-12 bg-blue-50 rounded-lg p-8"
           >
-            <h3 className="text-2xl font-bold text-blue-800 mb-4 text-center">
+            <h3 className="h3 text-blue-800 mb-4 text-center">
               💡 Khuyến Nghị Teams Package
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
@@ -679,10 +679,10 @@ export default function Microsoft365() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Migration & Hỗ Trợ Chuyên Nghiệp
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               STEP hỗ trợ migration từ Google Workspace/Exchange và training nhân viên hoàn toàn miễn phí
             </p>
           </motion.div>
@@ -694,7 +694,7 @@ export default function Microsoft365() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">
+              <h3 className="h3 text-gray-800 mb-6">
                 Chuyển Đổi Không Gián Đoạn
               </h3>
               <ul className="space-y-4">
@@ -736,7 +736,7 @@ export default function Microsoft365() {
               viewport={{ once: true }}
               className="bg-white rounded-lg p-8 shadow-lg"
             >
-              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+              <h3 className="h3 text-gray-800 mb-4 text-center">
                 Quy Trình Triển Khai
               </h3>
               <div className="space-y-4">
@@ -777,10 +777,10 @@ export default function Microsoft365() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Nhận Tư Vấn Microsoft 365 Miễn Phí
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Chúng tôi sẽ liên hệ trong 24h để tư vấn gói phù hợp và hỗ trợ migration hoàn toàn miễn phí
             </p>
           </motion.div>
