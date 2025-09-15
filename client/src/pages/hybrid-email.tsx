@@ -232,11 +232,11 @@ export default function HybridEmail() {
             >
               <div className="flex items-center justify-center mb-6">
                 <Workflow className="text-yellow-300 mr-4" size={56} />
-                <h1 className="text-4xl md:text-6xl font-bold">
+                <h1 className="h1">
                   Hybrid Email
                 </h1>
               </div>
-              <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed">
+              <p className="lead prose-constraint mx-auto mb-8">
                 Giải pháp email lai tối ưu cho doanh nghiệp - Kết hợp sức mạnh của Gmail và Mail Server riêng với chi phí hợp lý
               </p>
             
@@ -267,7 +267,7 @@ export default function HybridEmail() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
-                className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 text-lg font-semibold"
+                className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 text-lg font-semibold nowrap"
                 data-testid="button-contact-sales"
                 onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
               >
@@ -277,7 +277,7 @@ export default function HybridEmail() {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 text-lg font-semibold transition-all duration-300"
+                className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 text-lg font-semibold transition-all duration-300 nowrap"
                 data-testid="button-view-pricing"
                 onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
               >
@@ -298,10 +298,10 @@ export default function HybridEmail() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Tính Năng Nổi Bật Hybrid Email
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Kết hợp hoàn hảo giữa công nghệ cloud và on-premise để mang lại trải nghiệm email tối ưu
             </p>
           </motion.div>
@@ -320,7 +320,7 @@ export default function HybridEmail() {
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mb-6">
                   <feature.icon className="text-white" size={32} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-4">
+                <h3 className="h3 text-gray-800 mb-4">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -342,10 +342,10 @@ export default function HybridEmail() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Hybrid Email Là Gì?
             </h2>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            <p className="lead prose-constraint mx-auto">
               Hybrid Email là giải pháp email lai kết hợp ưu điểm của cả Cloud Email (Gmail, Outlook) và Mail Server riêng (On-premise). 
               Hệ thống này cho phép doanh nghiệp tối ưu hóa chi phí while maintaining enterprise-grade security và control.
             </p>
@@ -360,7 +360,7 @@ export default function HybridEmail() {
               className="space-y-6"
             >
               <div className="bg-blue-50 p-6 rounded-lg">
-                <h3 className="text-xl font-bold text-blue-800 mb-3 flex items-center">
+                <h3 className="h3 text-blue-800 mb-3 flex items-center">
                   <Cloud className="mr-3" size={24} />
                   Cloud Email Component
                 </h3>
@@ -381,7 +381,7 @@ export default function HybridEmail() {
               </div>
 
               <div className="bg-purple-50 p-6 rounded-lg">
-                <h3 className="text-xl font-bold text-purple-800 mb-3 flex items-center">
+                <h3 className="h3 text-purple-800 mb-3 flex items-center">
                   <Server className="mr-3" size={24} />
                   Mail Server Component
                 </h3>
@@ -409,7 +409,7 @@ export default function HybridEmail() {
               viewport={{ once: true }}
               className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-8 rounded-lg"
             >
-              <h3 className="text-2xl font-bold mb-6 flex items-center">
+              <h3 className="h3 mb-6 flex items-center">
                 <Workflow className="mr-3" size={32} />
                 Kiến Trúc Hybrid
               </h3>
@@ -448,10 +448,10 @@ export default function HybridEmail() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Các Trường Hợp Doanh Nghiệp Nên Sử Dụng Hybrid Email
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Hybrid Email phù hợp với nhiều scenarios khác nhau của doanh nghiệp hiện đại
             </p>
           </motion.div>
@@ -467,7 +467,7 @@ export default function HybridEmail() {
               <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mb-4">
                 <Building className="text-white" size={32} />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">
+              <h3 className="h3 text-gray-800 mb-3">
                 SME & Startup (10-100 nhân viên)
               </h3>
               <p className="text-gray-600 text-sm mb-4">
@@ -499,7 +499,7 @@ export default function HybridEmail() {
               <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4">
                 <Shield className="text-white" size={32} />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">
+              <h3 className="h3 text-gray-800 mb-3">
                 Doanh nghiệp có yêu cầu bảo mật cao
               </h3>
               <p className="text-gray-600 text-sm mb-4">
@@ -531,7 +531,7 @@ export default function HybridEmail() {
               <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
                 <Zap className="text-white" size={32} />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">
+              <h3 className="h3 text-gray-800 mb-3">
                 Công ty đang dùng Gmail cá nhân
               </h3>
               <p className="text-gray-600 text-sm mb-4">
@@ -563,7 +563,7 @@ export default function HybridEmail() {
               <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-4">
                 <Globe className="text-white" size={32} />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">
+              <h3 className="h3 text-gray-800 mb-3">
                 Doanh nghiệp có chi nhánh đa quốc gia
               </h3>
               <p className="text-gray-600 text-sm mb-4">
@@ -595,7 +595,7 @@ export default function HybridEmail() {
               <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center mb-4">
                 <HardDrive className="text-white" size={32} />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">
+              <h3 className="h3 text-gray-800 mb-3">
                 Công ty từ Exchange Server on-premise
               </h3>
               <p className="text-gray-600 text-sm mb-4">
@@ -627,7 +627,7 @@ export default function HybridEmail() {
               <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-teal-600 rounded-full flex items-center justify-center mb-4">
                 <Users className="text-white" size={32} />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">
+              <h3 className="h3 text-gray-800 mb-3">
                 Doanh nghiệp có team IT hạn chế
               </h3>
               <p className="text-gray-600 text-sm mb-4">
@@ -657,7 +657,7 @@ export default function HybridEmail() {
             viewport={{ once: true }}
             className="mt-12 bg-blue-50 rounded-lg p-8 text-center"
           >
-            <h3 className="text-2xl font-bold text-blue-800 mb-4">
+            <h3 className="h3 text-blue-800 mb-4">
               💡 Không Chắc Hybrid Email Có Phù Hợp?
             </h3>
             <p className="text-gray-700 mb-6">
@@ -684,10 +684,10 @@ export default function HybridEmail() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Gói Hybrid Email Dành Cho Doanh Nghiệp
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Lựa chọn gói phù hợp với quy mô và nhu cầu của doanh nghiệp bạn
             </p>
           </motion.div>
@@ -715,9 +715,9 @@ export default function HybridEmail() {
                 )}
 
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">{pkg.name}</h3>
+                  <h3 className="h3 text-gray-800 mb-2">{pkg.name}</h3>
                   <div className="mb-4">
-                    <div className="text-3xl font-bold text-blue-600" data-testid={`price-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                    <div className="h3 text-blue-600" data-testid={`price-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}>
                       {pkg.price}
                     </div>
                     {pkg.originalPrice !== "Liên hệ tư vấn" && (
@@ -773,10 +773,10 @@ export default function HybridEmail() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Tại Sao Chọn Hybrid Email Từ STEP?
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Không chỉ cung cấp dịch vụ, STEP còn đồng hành cùng doanh nghiệp trong việc tối ưu hóa hệ thống email
             </p>
           </motion.div>
@@ -795,7 +795,7 @@ export default function HybridEmail() {
                 <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4 mx-auto">
                   <benefit.icon className="text-white" size={40} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">
+                <h3 className="h3 text-gray-800 mb-3">
                   {benefit.title}
                 </h3>
                 <p className="text-gray-600 text-sm leading-relaxed">
@@ -817,10 +817,10 @@ export default function HybridEmail() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Migration & Hỗ Trợ Chuyên Nghiệp
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               STEP hỗ trợ migration từ mọi hệ thống email và training nhân viên hoàn toàn miễn phí
             </p>
           </motion.div>
@@ -832,7 +832,7 @@ export default function HybridEmail() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">
+              <h3 className="h3 text-gray-800 mb-6">
                 Chuyển Đổi Không Gián Đoạn
               </h3>
               <ul className="space-y-4">
@@ -874,7 +874,7 @@ export default function HybridEmail() {
               viewport={{ once: true }}
               className="bg-white rounded-lg p-8 shadow-lg border border-gray-100"
             >
-              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+              <h3 className="h3 text-gray-800 mb-4 text-center">
                 Quy Trình Triển Khai
               </h3>
               <div className="space-y-4">
@@ -915,10 +915,10 @@ export default function HybridEmail() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Nhận Tư Vấn Hybrid Email Miễn Phí
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Chúng tôi sẽ liên hệ trong 24h để tư vấn gói phù hợp và hỗ trợ migration hoàn toàn miễn phí
             </p>
           </motion.div>
@@ -1033,7 +1033,7 @@ export default function HybridEmail() {
 
               <Button 
                 type="submit" 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold nowrap"
                 data-testid="button-submit-contact"
               >
                 Gửi yêu cầu tư vấn
