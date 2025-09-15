@@ -223,33 +223,34 @@ export default function Microsoft365() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Microsoft 365 
-              <span className="block text-yellow-300">Giải Pháp Văn Phòng Toàn Diện</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              <span className="text-white">Microsoft 365</span>
+              <br />
+              <span className="text-yellow-300">Giải Pháp Văn Phòng Toàn Diện</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100">
+            <p className="text-lg md:text-xl lg:text-2xl mb-10 text-blue-100 max-w-3xl mx-auto leading-relaxed">
               Office, Teams, Exchange, SharePoint - Tất cả trong một. Tăng năng suất làm việc với bộ công cụ Microsoft đầy đủ và bảo mật cao.
             </p>
             
-            <div className="grid md:grid-cols-3 gap-6 mb-10">
-              <div className="flex items-center justify-center">
-                <Building className="mr-3 text-yellow-300" size={24} />
-                <div className="text-left">
-                  <div className="font-semibold">10,000+ Doanh nghiệp</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-4xl mx-auto">
+              <div className="flex flex-col md:flex-row items-center justify-center text-center md:text-left">
+                <Building className="mb-2 md:mb-0 md:mr-4 text-yellow-300 flex-shrink-0" size={32} />
+                <div>
+                  <div className="text-lg font-bold">10,000+ Doanh nghiệp</div>
                   <div className="text-sm text-blue-200">Tin dùng STEP</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center">
-                <Shield className="mr-3 text-yellow-300" size={24} />
-                <div className="text-left">
-                  <div className="font-semibold">99.9% Uptime</div>
+              <div className="flex flex-col md:flex-row items-center justify-center text-center md:text-left">
+                <Shield className="mb-2 md:mb-0 md:mr-4 text-yellow-300 flex-shrink-0" size={32} />
+                <div>
+                  <div className="text-lg font-bold">99.9% Uptime</div>
                   <div className="text-sm text-blue-200">SLA đảm bảo</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center">
-                <Users className="mr-3 text-yellow-300" size={24} />
-                <div className="text-left">
-                  <div className="font-semibold">24/7 Support</div>
+              <div className="flex flex-col md:flex-row items-center justify-center text-center md:text-left">
+                <Users className="mb-2 md:mb-0 md:mr-4 text-yellow-300 flex-shrink-0" size={32} />
+                <div>
+                  <div className="text-lg font-bold">24/7 Support</div>
                   <div className="text-sm text-blue-200">Hỗ trợ tiếng Việt</div>
                 </div>
               </div>
