@@ -17,7 +17,8 @@ import {
   HardDrive,
   Zap,
   Building,
-  Globe
+  Globe,
+  X
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -428,6 +429,317 @@ export default function GoogleWorkspace() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Business Size Comparison Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              Gói Google Workspace Phù Hợp Quy Mô/Yêu Cầu Doanh Nghiệp
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Lựa chọn gói dịch vụ phù hợp với quy mô và nhu cầu cụ thể của doanh nghiệp
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="overflow-x-auto"
+          >
+            <table className="w-full bg-white rounded-lg shadow-lg overflow-hidden">
+              <thead className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+                <tr>
+                  <th className="px-6 py-4 text-left font-semibold">Quy Mô Doanh Nghiệp</th>
+                  <th className="px-6 py-4 text-left font-semibold">Số Lượng Nhân Viên</th>
+                  <th className="px-6 py-4 text-left font-semibold">Gói Khuyến Nghị</th>
+                  <th className="px-6 py-4 text-left font-semibold">Lý Do Lựa Chọn</th>
+                  <th className="px-6 py-4 text-left font-semibold">Giá/User/Tháng</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800">Startup/SME</td>
+                  <td className="px-6 py-4 text-gray-600">1-10 nhân viên</td>
+                  <td className="px-6 py-4">
+                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                      Business Starter
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">
+                    <ul className="text-sm space-y-1">
+                      <li>• Chi phí thấp, phù hợp khởi nghiệp</li>
+                      <li>• Đầy đủ tính năng cơ bản</li>
+                      <li>• 30GB storage/user</li>
+                    </ul>
+                  </td>
+                  <td className="px-6 py-4 font-bold text-blue-600">139,000 VNĐ</td>
+                </tr>
+                <tr className="border-b border-gray-100 bg-blue-50">
+                  <td className="px-6 py-4 font-medium text-gray-800">Doanh nghiệp vừa</td>
+                  <td className="px-6 py-4 text-gray-600">11-100 nhân viên</td>
+                  <td className="px-6 py-4">
+                    <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                      Business Standard
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">
+                    <ul className="text-sm space-y-1">
+                      <li>• 2TB storage/user</li>
+                      <li>• Meeting recording</li>
+                      <li>• Shared drives</li>
+                      <li>• Tỷ lệ giá/tính năng tốt nhất</li>
+                    </ul>
+                  </td>
+                  <td className="px-6 py-4 font-bold text-green-600">259,000 VNĐ</td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800">Doanh nghiệp lớn</td>
+                  <td className="px-6 py-4 text-gray-600">101-300 nhân viên</td>
+                  <td className="px-6 py-4">
+                    <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                      Business Plus
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">
+                    <ul className="text-sm space-y-1">
+                      <li>• 5TB storage/user</li>
+                      <li>• Advanced security</li>
+                      <li>• Attendance tracking</li>
+                      <li>• Enhanced admin controls</li>
+                    </ul>
+                  </td>
+                  <td className="px-6 py-4 font-bold text-purple-600">462,000 VNĐ</td>
+                </tr>
+                <tr className="bg-gray-50">
+                  <td className="px-6 py-4 font-medium text-gray-800">Tập đoàn/Enterprise</td>
+                  <td className="px-6 py-4 text-gray-600">300+ nhân viên</td>
+                  <td className="px-6 py-4">
+                    <span className="bg-gray-800 text-white px-3 py-1 rounded-full text-sm font-medium">
+                      Enterprise
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">
+                    <ul className="text-sm space-y-1">
+                      <li>• Unlimited storage</li>
+                      <li>• Advanced security & DLP</li>
+                      <li>• Enterprise support</li>
+                      <li>• Custom integrations</li>
+                    </ul>
+                  </td>
+                  <td className="px-6 py-4 font-bold text-gray-800">Liên hệ</td>
+                </tr>
+              </tbody>
+            </table>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Feature Comparison Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              Bảng So Sánh Tính Năng Chi Tiết
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              So sánh chi tiết các tính năng của từng gói Google Workspace
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="overflow-x-auto"
+          >
+            <table className="w-full bg-white rounded-lg shadow-lg overflow-hidden">
+              <thead className="bg-gradient-to-r from-gray-800 to-gray-900 text-white">
+                <tr>
+                  <th className="px-6 py-4 text-left font-semibold w-1/4">Tính Năng</th>
+                  <th className="px-6 py-4 text-center font-semibold">Business Starter</th>
+                  <th className="px-6 py-4 text-center font-semibold">Business Standard</th>
+                  <th className="px-6 py-4 text-center font-semibold">Business Plus</th>
+                  <th className="px-6 py-4 text-center font-semibold">Enterprise</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Gmail Professional</td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Google Drive Storage</td>
+                  <td className="px-6 py-4 text-center text-sm">30GB/user</td>
+                  <td className="px-6 py-4 text-center text-sm">2TB/user</td>
+                  <td className="px-6 py-4 text-center text-sm">5TB/user</td>
+                  <td className="px-6 py-4 text-center text-sm">Unlimited</td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Google Meet (Video Conferencing)</td>
+                  <td className="px-6 py-4 text-center text-sm">100 participants</td>
+                  <td className="px-6 py-4 text-center text-sm">150 participants</td>
+                  <td className="px-6 py-4 text-center text-sm">500 participants</td>
+                  <td className="px-6 py-4 text-center text-sm">500 participants</td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Meeting Recording</td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Shared Drives</td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Advanced Security</td>
+                  <td className="px-6 py-4 text-center text-sm">Basic</td>
+                  <td className="px-6 py-4 text-center text-sm">Standard</td>
+                  <td className="px-6 py-4 text-center text-sm">Enhanced</td>
+                  <td className="px-6 py-4 text-center text-sm">Enterprise-grade</td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Data Loss Prevention (DLP)</td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Advanced Admin Controls</td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Cloud Search</td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Attendance Tracking</td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">24/7 Phone Support</td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Custom Integrations</td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <X className="text-red-500 mx-auto" size={20} />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <Check className="text-green-500 mx-auto" size={20} />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </motion.div>
         </div>
       </section>
 
