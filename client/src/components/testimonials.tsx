@@ -11,10 +11,10 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold text-[hsl(207,100%,40%)] mb-4">
+          <h2 className="h2 text-[hsl(207,100%,40%)] mb-4">
             Các doanh nghiệp hàng đầu tin dùng STEP
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="lead">
             Hàng ngàn SMEs đã tối ưu hóa hạ tầng với chúng tôi
           </p>
         </motion.div>

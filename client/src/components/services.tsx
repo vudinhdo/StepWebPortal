@@ -151,10 +151,10 @@ export default function Services() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-[hsl(207,100%,40%)] mb-4">
+          <h2 className="h2 text-[hsl(207,100%,40%)] mb-4">
             Giải pháp CNTT toàn diện từ STEP
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="lead prose-constraint mx-auto">
             Tối ưu hóa hạ tầng công nghệ cho doanh nghiệp của bạn
           </p>
         </motion.div>
@@ -213,15 +213,15 @@ export default function Services() {
                       <service.icon className="text-white h-6 w-6" />
                     </motion.div>
                   )}
-                  <h3 className="text-lg sm:text-xl font-semibold text-[hsl(207,100%,40%)] mb-4">
+                  <h3 className="h3 text-[hsl(207,100%,40%)] mb-4">
                     {service.title}
                   </h3>
-                  <p className="text-gray-600 mb-4 text-sm sm:text-base leading-relaxed flex-grow">
+                  <p className="body text-gray-600 mb-4 flex-grow">
                     {service.description}
                   </p>
                   <motion.a 
                     href={service.href} 
-                    className="text-[hsl(207,100%,40%)] hover:text-[hsl(207,100%,35%)] font-semibold text-sm sm:text-base inline-flex items-center group"
+                    className="text-[hsl(207,100%,40%)] hover:text-[hsl(207,100%,35%)] font-semibold body inline-flex items-center group nowrap"
                     whileHover={{ x: 5 }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   >
@@ -249,7 +249,7 @@ export default function Services() {
           className="mt-12 sm:mt-16 bg-[hsl(210,17%,96%)] rounded-2xl p-6 sm:p-8"
         >
           <div className="text-center mb-6 sm:mb-8">
-            <h3 className="text-xl sm:text-2xl font-bold text-[hsl(207,100%,40%)] mb-4">
+            <h3 className="h3 text-[hsl(207,100%,40%)] mb-4">
               Dịch vụ chuyên nghiệp
             </h3>
             <p className="text-gray-600 text-sm sm:text-base">

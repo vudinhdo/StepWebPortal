@@ -30,10 +30,10 @@ export default function Statistics() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold text-[hsl(207,100%,40%)] mb-4">
+          <h2 className="h2 text-[hsl(207,100%,40%)] mb-4">
             Tại sao chọn STEP?
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="lead">
             Đối tác tin cậy cho hạ tầng CNTT của bạn
           </p>
         </motion.div>
@@ -75,7 +75,7 @@ export default function Statistics() {
                   stiffness: 200,
                   damping: 10
                 }}
-                className="text-4xl font-bold text-[hsl(207,100%,40%)] mb-2"
+                className="h1 text-[hsl(207,100%,40%)] mb-2"
               >
                 {stat.number}
               </motion.div>

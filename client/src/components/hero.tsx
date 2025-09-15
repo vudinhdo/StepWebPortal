@@ -17,7 +17,7 @@ export default function Hero() {
             elementId="main-title"
             defaultContent="Kết nối, bảo vệ và xây dựng hạ tầng CNTT toàn diện với STEP"
             tag="h1"
-            className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-[hsl(207,100%,40%)] mb-6 leading-tight"
+            className="h1 text-[hsl(207,100%,40%)] mb-6"
           />
           <InlineEditor
             page="home"
@@ -25,7 +25,7 @@ export default function Hero() {
             elementId="subtitle"
             defaultContent="Cung cấp giải pháp cloud, hosting, máy chủ và dịch vụ IT đáng tin cậy, giúp doanh nghiệp của bạn phát triển nhanh chóng và an toàn hơn. Hơn 100 dịch vụ dành cho SMEs và chuyên gia IT."
             tag="p"
-            className="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed"
+            className="lead mb-8 prose-constraint mx-auto"
           />
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -39,7 +39,7 @@ export default function Hero() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               <Button 
-                className="step-gradient text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:shadow-lg transition-all h-12 sm:h-14 step-pulse-animation button-hover"
+                className="step-gradient text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:shadow-lg transition-all h-12 sm:h-14 step-pulse-animation button-hover nowrap"
                 onClick={() => setShowContactForm(true)}
                 data-onboarding="hero-cta-button"
               >
@@ -53,7 +53,7 @@ export default function Hero() {
             >
               <Button 
                 variant="outline" 
-                className="border-[hsl(207,100%,40%)] text-[hsl(207,100%,40%)] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[hsl(207,100%,40%)] hover:text-white transition-all h-12 sm:h-14 button-hover"
+                className="border-[hsl(207,100%,40%)] text-[hsl(207,100%,40%)] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[hsl(207,100%,40%)] hover:text-white transition-all h-12 sm:h-14 button-hover nowrap"
                 onClick={() => setShowContactForm(true)}
               >
                 Liên hệ chuyên gia

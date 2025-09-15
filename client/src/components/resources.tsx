@@ -12,10 +12,10 @@ export default function Resources() {
     <section id="resources" className="py-20 bg-[hsl(210,17%,96%)]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-[hsl(207,100%,40%)] mb-4">
+          <h2 className="h2 text-[hsl(207,100%,40%)] mb-4">
             Tài nguyên hữu ích
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="lead">
             Cập nhật kiến thức công nghệ và xu hướng IT
           </p>
         </div>
