@@ -277,7 +277,7 @@ export default function HybridEmail() {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 text-lg font-semibold"
+                className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 text-lg font-semibold transition-all duration-300"
                 data-testid="button-view-pricing"
                 onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
               >
@@ -329,6 +329,348 @@ export default function HybridEmail() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* What is Hybrid Email Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              Hybrid Email Là Gì?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              Hybrid Email là giải pháp email lai kết hợp ưu điểm của cả Cloud Email (Gmail, Outlook) và Mail Server riêng (On-premise). 
+              Hệ thống này cho phép doanh nghiệp tối ưu hóa chi phí while maintaining enterprise-grade security và control.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <div className="bg-blue-50 p-6 rounded-lg">
+                <h3 className="text-xl font-bold text-blue-800 mb-3 flex items-center">
+                  <Cloud className="mr-3" size={24} />
+                  Cloud Email Component
+                </h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span>Gmail interface quen thuộc cho user experience</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span>Google Drive tích hợp với tài khoản công ty</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span>99.9% uptime reliability từ Google infrastructure</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-purple-50 p-6 rounded-lg">
+                <h3 className="text-xl font-bold text-purple-800 mb-3 flex items-center">
+                  <Server className="mr-3" size={24} />
+                  Mail Server Component
+                </h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span>Full control và data residency tại Việt Nam</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span>Custom policy và compliance requirements</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-2 mt-1 flex-shrink-0" size={16} />
+                    <span>Enterprise security với advanced filtering</span>
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-8 rounded-lg"
+            >
+              <h3 className="text-2xl font-bold mb-6 flex items-center">
+                <Workflow className="mr-3" size={32} />
+                Kiến Trúc Hybrid
+              </h3>
+              <div className="space-y-4">
+                <div className="bg-white/10 p-4 rounded-lg">
+                  <h4 className="font-semibold mb-2">🔄 Smart Routing</h4>
+                  <p className="text-sm text-blue-100">
+                    Email tự động được route qua Gmail cho UX tối ưu hoặc Mail Server riêng cho bảo mật cao
+                  </p>
+                </div>
+                <div className="bg-white/10 p-4 rounded-lg">
+                  <h4 className="font-semibold mb-2">💰 Cost Optimization</h4>
+                  <p className="text-sm text-blue-100">
+                    Tiết kiệm 40-60% chi phí so với Google Workspace hoặc Microsoft 365 full license
+                  </p>
+                </div>
+                <div className="bg-white/10 p-4 rounded-lg">
+                  <h4 className="font-semibold mb-2">🛡️ Best of Both Worlds</h4>
+                  <p className="text-sm text-blue-100">
+                    Kết hợp convenience của cloud với security và control của on-premise
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Use Cases Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+              Các Trường Hợp Doanh Nghiệp Nên Sử Dụng Hybrid Email
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Hybrid Email phù hợp với nhiều scenarios khác nhau của doanh nghiệp hiện đại
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mb-4">
+                <Building className="text-white" size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">
+                SME & Startup (10-100 nhân viên)
+              </h3>
+              <p className="text-gray-600 text-sm mb-4">
+                Cần email chuyên nghiệp nhưng ngân sách hạn chế, muốn tối ưu chi phí mà vẫn đảm bảo tính năng cần thiết.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Tiết kiệm 40-60% so với Google Workspace</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Dễ sử dụng với giao diện Gmail</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Hỗ trợ setup và migration miễn phí</span>
+                </li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4">
+                <Shield className="text-white" size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">
+                Doanh nghiệp có yêu cầu bảo mật cao
+              </h3>
+              <p className="text-gray-600 text-sm mb-4">
+                Ngành tài chính, y tế, luật, cần data residency tại VN và compliance với quy định trong nước.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Data residency hoàn toàn tại Việt Nam</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Custom security policy theo yêu cầu</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Audit log và compliance reporting</span>
+                </li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
+                <Zap className="text-white" size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">
+                Công ty đang dùng Gmail cá nhân
+              </h3>
+              <p className="text-gray-600 text-sm mb-4">
+                Muốn upgrade lên email doanh nghiệp nhưng giữ nguyên user experience quen thuộc của Gmail.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size="14" />
+                  <span>Migration dễ dàng từ Gmail cá nhân</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Giữ nguyên giao diện và workflow</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Email @yourcompany.com chuyên nghiệp</span>
+                </li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-4">
+                <Globe className="text-white" size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">
+                Doanh nghiệp có chi nhánh đa quốc gia
+              </h3>
+              <p className="text-gray-600 text-sm mb-4">
+                Cần hệ thống email thống nhất nhưng tuân thủ pháp luật địa phương và tối ưu performance theo region.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Multi-region deployment</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Unified management console</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Local compliance per country</span>
+                </li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+              className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center mb-4">
+                <HardDrive className="text-white" size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">
+                Công ty từ Exchange Server on-premise
+              </h3>
+              <p className="text-gray-600 text-sm mb-4">
+                Muốn modernize hệ thống email cũ nhưng không muốn mất hoàn toàn control và phụ thuộc 100% vào cloud.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Migration từ Exchange Server</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Giữ một phần control và customization</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Giảm infrastructure maintenance cost</span>
+                </li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-teal-600 rounded-full flex items-center justify-center mb-4">
+                <Users className="text-white" size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">
+                Doanh nghiệp có team IT hạn chế
+              </h3>
+              <p className="text-gray-600 text-sm mb-4">
+                Cần giải pháp email enterprise nhưng không có đủ nhân lực để maintain hệ thống phức tạp.
+              </p>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Managed service với 24/7 support</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Automatic updates và maintenance</span>
+                </li>
+                <li className="flex items-start">
+                  <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
+                  <span>Training và knowledge transfer</span>
+                </li>
+              </ul>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            viewport={{ once: true }}
+            className="mt-12 bg-blue-50 rounded-lg p-8 text-center"
+          >
+            <h3 className="text-2xl font-bold text-blue-800 mb-4">
+              💡 Không Chắc Hybrid Email Có Phù Hợp?
+            </h3>
+            <p className="text-gray-700 mb-6">
+              Liên hệ với chuyên gia STEP để được tư vấn miễn phí và đánh giá hệ thống hiện tại của bạn
+            </p>
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+              onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Tư vấn miễn phí ngay
+              <ArrowRight className="ml-2" size={20} />
+            </Button>
+          </motion.div>
         </div>
       </section>
 
