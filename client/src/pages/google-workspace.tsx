@@ -284,7 +284,7 @@ export default function GoogleWorkspace() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className={`bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all relative ${
+                className={`bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all relative flex flex-col h-full ${
                   pkg.popular ? 'ring-2 ring-blue-500 scale-105' : ''
                 } ${pkg.enterprise ? 'bg-gradient-to-br from-gray-50 to-gray-100' : ''}`}
                 data-testid={`package-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
@@ -315,7 +315,7 @@ export default function GoogleWorkspace() {
                   </div>
                 </div>
 
-                <ul className="space-y-2 mb-6">
+                <ul className="space-y-2 mb-6 flex-grow">
                   {pkg.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start text-sm">
                       <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
@@ -329,7 +329,7 @@ export default function GoogleWorkspace() {
                     setFormData(prev => ({ ...prev, package: pkg.name }));
                     document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className={`w-full ${
+                  className={`w-full mt-auto ${
                     pkg.popular 
                       ? 'bg-blue-600 hover:bg-blue-700' 
                       : pkg.enterprise 
