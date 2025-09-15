@@ -222,13 +222,13 @@ export default function GoogleWorkspace() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="h1 mb-6">
               Google Workspace
             </h1>
-            <p className="text-xl md:text-2xl mb-6 opacity-90 max-w-3xl mx-auto">
+            <p className="lead mb-6 opacity-90 prose-constraint mx-auto">
               Giải Pháp Cộng Tác Và Năng Suất Doanh Nghiệp Hàng Đầu Thế Giới
             </p>
-            <p className="text-lg mb-10 max-w-4xl mx-auto opacity-80 leading-relaxed">
+            <p className="body mb-10 prose-constraint mx-auto opacity-80">
               Gmail chuyên nghiệp, Google Meet, Drive, Docs và AI Gemini trong một nền tảng thống nhất. 
               Được tin dùng bởi hơn 3 tỷ người dùng với 99.9% uptime và bảo mật enterprise-grade.
             </p>
@@ -236,7 +236,7 @@ export default function GoogleWorkspace() {
               <Button 
                 onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
                 size="lg" 
-                className="bg-white text-blue-600 hover:bg-gray-100 font-semibold text-lg px-8 py-4"
+                className="bg-white text-blue-600 hover:bg-gray-100 font-semibold text-lg px-8 py-4 nowrap"
                 data-testid="button-pricing"
               >
                 Xem Bảng Giá
@@ -245,7 +245,7 @@ export default function GoogleWorkspace() {
               <Button 
                 onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                 size="lg" 
-                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold text-lg px-8 py-4"
+                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold text-lg px-8 py-4 nowrap"
                 data-testid="button-contact"
               >
                 Tư Vấn Miễn Phí
@@ -265,10 +265,10 @@ export default function GoogleWorkspace() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Bảng Giá Google Workspace 2025
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-4">
+            <p className="lead prose-constraint mx-auto mb-4">
               Chọn gói phù hợp với quy mô doanh nghiệp. Giá đã bao gồm VAT và giảm 20% năm đầu.
             </p>
             <div className="inline-flex items-center bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
@@ -299,9 +299,9 @@ export default function GoogleWorkspace() {
                 )}
 
                 <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{pkg.name}</h3>
+                  <h3 className="h3 text-gray-800 mb-2">{pkg.name}</h3>
                   <div className="mb-2">
-                    <div className="text-2xl font-bold text-blue-600">{pkg.price}</div>
+                    <div className="h3 text-blue-600">{pkg.price}</div>
                     {pkg.originalPrice && (
                       <div className="text-sm text-gray-500 line-through">{pkg.originalPrice}</div>
                     )}
@@ -336,7 +336,7 @@ export default function GoogleWorkspace() {
                       : pkg.enterprise 
                         ? 'bg-gray-700 hover:bg-gray-800'
                         : 'bg-blue-500 hover:bg-blue-600'
-                  } text-white font-semibold`}
+                  } text-white font-semibold nowrap`}
                   data-testid={`button-select-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
                 >
                   {pkg.enterprise ? 'Liên Hệ Báo Giá' : 'Chọn Gói Này'}
@@ -357,10 +357,10 @@ export default function GoogleWorkspace() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Tính Năng Chính Google Workspace
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Bộ công cụ cộng tác và năng suất hoàn chỉnh cho doanh nghiệp hiện đại
             </p>
           </motion.div>
@@ -379,7 +379,7 @@ export default function GoogleWorkspace() {
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4 mx-auto">
                   <feature.icon className="text-white" size={32} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3 text-center">
+                <h3 className="h3 text-gray-800 mb-3 text-center">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600 text-sm leading-relaxed text-center">
@@ -401,7 +401,7 @@ export default function GoogleWorkspace() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Tại Sao Chọn Google Workspace Từ STEP?
             </h2>
           </motion.div>
@@ -420,7 +420,7 @@ export default function GoogleWorkspace() {
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4 mx-auto">
                   <benefit.icon className="text-white" size={32} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">
+                <h3 className="h3 text-gray-800 mb-3">
                   {benefit.title}
                 </h3>
                 <p className="text-gray-600 text-sm leading-relaxed">
@@ -442,10 +442,10 @@ export default function GoogleWorkspace() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Gói Google Workspace Phù Hợp Quy Mô/Yêu Cầu Doanh Nghiệp
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Lựa chọn gói dịch vụ phù hợp với quy mô và nhu cầu cụ thể của doanh nghiệp
             </p>
           </motion.div>
@@ -555,10 +555,10 @@ export default function GoogleWorkspace() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Bảng So Sánh Tính Năng Chi Tiết
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               So sánh chi tiết các tính năng của từng gói Google Workspace
             </p>
           </motion.div>
@@ -753,10 +753,10 @@ export default function GoogleWorkspace() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Chuyển Đổi & Hỗ Trợ Toàn Diện
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               STEP hỗ trợ chuyển đổi từ Exchange/Office 365 và đào tạo nhân viên hoàn toàn miễn phí
             </p>
           </motion.div>
@@ -768,7 +768,7 @@ export default function GoogleWorkspace() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">
+              <h3 className="h3 text-gray-800 mb-6">
                 Migration Không Gián Đoạn
               </h3>
               <ul className="space-y-4">
@@ -810,7 +810,7 @@ export default function GoogleWorkspace() {
               viewport={{ once: true }}
               className="bg-white rounded-lg p-8 shadow-lg"
             >
-              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+              <h3 className="h3 text-gray-800 mb-4 text-center">
                 Quy Trình Triển Khai
               </h3>
               <div className="space-y-4">
@@ -851,10 +851,10 @@ export default function GoogleWorkspace() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="h2 text-gray-800 mb-6">
               Nhận Tư Vấn Google Workspace Miễn Phí
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="lead prose-constraint mx-auto">
               Chúng tôi sẽ liên hệ trong 24h để tư vấn gói phù hợp và hỗ trợ migration hoàn toàn miễn phí
             </p>
           </motion.div>
