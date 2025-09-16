@@ -236,7 +236,7 @@ export default function HybridEmail() {
                   Hybrid Email
                 </h1>
               </div>
-              <p className="lead prose-constraint mx-auto mb-8">
+              <p className="lead prose-constraint mx-auto mb-8 text-white">
                 Giải pháp email lai tối ưu cho doanh nghiệp - Kết hợp sức mạnh của Gmail và Mail Server riêng với chi phí hợp lý
               </p>
             
@@ -276,8 +276,7 @@ export default function HybridEmail() {
               </Button>
               <Button 
                 size="lg" 
-                variant="outline" 
-                className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 text-lg font-semibold transition-all duration-300 nowrap"
+                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 text-lg font-semibold transition-all duration-300 nowrap"
                 data-testid="button-view-pricing"
                 onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
               >
