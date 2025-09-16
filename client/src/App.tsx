@@ -30,6 +30,7 @@ import GoogleWorkspace from "@/pages/google-workspace";
 import Microsoft365 from "@/pages/microsoft-365";
 import HybridEmail from "@/pages/hybrid-email";
 import Quote from "@/pages/quote";
+import DedicatedServer from "@/pages/dedicated-server";
 
 function Router() {
   return (
@@ -43,7 +44,6 @@ function Router() {
         <Route path="/Admin_CMS" component={AdminCMS} />
         <Route path="/admin-cms-complete" component={AdminCMS} />
         <Route path="/huong-dan-cms" component={CMSGuide} />
-        <Route path="/domain" component={Domain} />
         <Route path="/hosting" component={Hosting} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress" component={HostingWordPress} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel" component={HostingLaravel} />
@@ -55,6 +55,8 @@ function Router() {
         <Route path="/Sản Phẩm & Dịch Vụ/Google Workspace" component={GoogleWorkspace} />
         <Route path="/Sản Phẩm & Dịch Vụ/Microsoft 365" component={Microsoft365} />
         <Route path="/Sản Phẩm & Dịch Vụ/Hybrid Email" component={HybridEmail} />
+        <Route path="/Dịch vụ/Tên miền" component={Domain} />
+        <Route path="/Sản Phẩm & Dịch Vụ/Dedicated Server" component={DedicatedServer} />
         <Route path="/cloud" component={Cloud} />
         <Route path="/Cloud/Cloud Odoo" component={CloudOdoo} />
         <Route path="/Cloud/Cloud Server" component={CloudServer} />
