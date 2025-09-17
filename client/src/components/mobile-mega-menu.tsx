@@ -155,11 +155,15 @@ export default function MobileMegaMenu() {
                         category.id === 'hosting' && item.name === 'Hosting Laravel' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel' :
                         category.id === 'hosting' && item.name === 'Hosting NVME' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME' :
                         category.id === 'hosting' && item.name === 'Reseller Hosting' ? '/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting' :
+                        // Server links
+                        category.id === 'server' && item.name === 'Thuê máy chủ vật lý' ? '/Sản Phẩm & Dịch Vụ/Dedicated Server' :
                         // Email links
                         category.id === 'email' && item.name === 'Email server Riêng' ? '/Sản Phẩm & Dịch Vụ/Email Server Riêng' :
                         category.id === 'email' && item.name === 'Hybrid Email' ? '/Dịch vụ/Email' :
                         category.id === 'email' && item.name === 'Google Workspace' ? '/Dịch vụ/Email' :
                         category.id === 'email' && item.name === 'Microsoft 365' ? '/Dịch vụ/Email' :
+                        // Software links
+                        category.id === 'software' && item.name === 'Microsoft' ? '/Sản Phẩm & Dịch Vụ/Microsoft' :
                         // Domain links
                         category.id === 'domain' ? '/Sản Phẩm & Dịch Vụ/Domain' :
                         // Default fallback

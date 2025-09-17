@@ -197,7 +197,10 @@ export default function MegaMenu() {
               <ul className="space-y-3">
                 {categories[3].items.map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                    <a href={
+                      item.name === 'Thuê máy chủ vật lý' ? '/Sản Phẩm & Dịch Vụ/Dedicated Server' :
+                      '#'
+                    } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
                       <div>
                         <div className="font-medium">{item.name}</div>
@@ -236,7 +239,10 @@ export default function MegaMenu() {
               <ul className="space-y-3">
                 {categories[5].items.map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                    <a href={
+                      item.name === 'Microsoft' ? '/Sản Phẩm & Dịch Vụ/Microsoft' :
+                      '#'
+                    } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
                       <div>
                         <div className="font-medium">{item.name}</div>
