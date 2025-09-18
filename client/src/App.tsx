@@ -20,6 +20,7 @@ import HostingNVME from "@/pages/hosting-nvme";
 import Cloud from "@/pages/cloud";
 import CloudOdoo from "@/pages/cloud-odoo";
 import CloudServer from "@/pages/cloud-server";
+import GCP from "@/pages/gcp";
 import PerformanceBenchmark from "@/pages/performance-benchmark";
 // import AdminCMSComplete from "@/pages/admin-cms-complete";
 import CMSGuide from "@/pages/cms-guide";
@@ -62,6 +63,8 @@ function Router() {
         <Route path="/cloud" component={Cloud} />
         <Route path="/Cloud/Cloud Odoo" component={CloudOdoo} />
         <Route path="/Cloud/Cloud Server" component={CloudServer} />
+        <Route path="/gcp" component={GCP} />
+        <Route path="/google-cloud-platform" component={GCP} />
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route path="/bao-gia" component={Quote} />
         <Route component={NotFound} />
