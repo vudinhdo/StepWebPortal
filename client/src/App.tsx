@@ -21,6 +21,7 @@ import Cloud from "@/pages/cloud";
 import CloudOdoo from "@/pages/cloud-odoo";
 import CloudServer from "@/pages/cloud-server";
 import GCP from "@/pages/gcp";
+import VMware from "@/pages/vmware";
 import PerformanceBenchmark from "@/pages/performance-benchmark";
 // import AdminCMSComplete from "@/pages/admin-cms-complete";
 import CMSGuide from "@/pages/cms-guide";
@@ -65,6 +66,8 @@ function Router() {
         <Route path="/Cloud/Cloud Server" component={CloudServer} />
         <Route path="/gcp" component={GCP} />
         <Route path="/google-cloud-platform" component={GCP} />
+        <Route path="/dich-vu/phan-mem/vmware" component={VMware} />
+        <Route path="/vmware" component={VMware} />
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route path="/bao-gia" component={Quote} />
         <Route component={NotFound} />
