@@ -314,37 +314,170 @@ export default function ServersOverview() {
           </div>
         </section>
 
-        {/* Final CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+        {/* FAQ Section */}
+        <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <Lock className="h-16 w-16 mx-auto mb-8 opacity-90" />
-              <h2 className="text-4xl font-bold mb-6">
-                Sẵn Sàng Xây Dựng Hạ Tầng Số Mạnh Mẽ?
-              </h2>
-              <p className="text-xl mb-8 opacity-90 leading-relaxed">
-                Liên hệ với chúng tôi ngay để bắt đầu xây dựng hạ tầng số mạnh mẽ 
-                cho doanh nghiệp của bạn.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg" 
-                  className="bg-white text-primary hover:bg-gray-100 px-8 py-4 text-lg"
-                  data-testid="button-contact-now"
-                >
-                  <Phone className="mr-2 h-5 w-5" />
-                  Liên Hệ Ngay
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg"
-                  data-testid="button-view-pricing"
-                >
-                  Xem Bảng Giá
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-foreground mb-4">
+                  Câu Hỏi Thường Gặp
+                </h2>
+                <p className="text-xl text-muted-foreground">
+                  Những câu hỏi phổ biến về dịch vụ máy chủ của chúng tôi
+                </p>
               </div>
+              
+              <Accordion type="single" collapsible className="space-y-4">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="text-left text-lg font-semibold hover:text-primary">
+                    Máy chủ là gì và tại sao doanh nghiệp cần máy chủ?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                    Máy chủ là hệ thống máy tính chuyên dụng để lưu trữ, xử lý và cung cấp dữ liệu, ứng dụng 
+                    cho nhiều người dùng cùng lúc. Doanh nghiệp cần máy chủ để đảm bảo dữ liệu an toàn, 
+                    hiệu suất ổn định và khả năng truy cập 24/7 cho nhân viên và khách hàng.
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-2">
+                  <AccordionTrigger className="text-left text-lg font-semibold hover:text-primary">
+                    Khi nào nên sử dụng máy chủ vật lý thay vì máy chủ ảo?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                    Nên chọn máy chủ vật lý khi: doanh nghiệp có ứng dụng đòi hỏi hiệu suất cao, cần 
+                    toàn quyền kiểm soát phần cứng, xử lý dữ liệu nhạy cảm hoặc có lưu lượng truy cập 
+                    ổn định lớn. Máy chủ ảo phù hợp hơn cho startup và doanh nghiệp vừa nhỏ với nhu cầu linh hoạt.
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-3">
+                  <AccordionTrigger className="text-left text-lg font-semibold hover:text-primary">
+                    Chi phí dịch vụ máy chủ được tính như thế nào?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                    Chi phí phụ thuộc vào loại máy chủ, cấu hình (CPU, RAM, ổ cứng), băng thông và các 
+                    dịch vụ bổ sung. Máy chủ vật lý tính theo tháng, VPS linh hoạt theo gói, còn máy chủ 
+                    đám mây có thể tính theo giờ sử dụng. Chúng tôi có gói ưu đãi cho khách hàng dài hạn.
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-4">
+                  <AccordionTrigger className="text-left text-lg font-semibold hover:text-primary">
+                    STEP cung cấp những hỗ trợ gì sau khi triển khai máy chủ?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                    Chúng tôi cung cấp hỗ trợ 24/7 qua hotline, email và chat. Bao gồm: giám sát hệ thống, 
+                    sao lưu dữ liệu, bảo trì định kỳ, cập nhật bảo mật, khắc phục sự cố và tư vấn kỹ thuật. 
+                    Đội ngũ kỹ thuật sẵn sàng hỗ trợ setup và migration từ hệ thống cũ.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact CTA Section */}
+        <section className="py-20 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <MessageSquare className="h-16 w-16 mx-auto mb-6 text-primary" />
+                <h2 className="text-4xl font-bold text-foreground mb-4">
+                  Sẵn Sàng Bắt Đầu?
+                </h2>
+                <p className="text-xl text-muted-foreground leading-relaxed">
+                  Để lại thông tin, chúng tôi sẽ tư vấn giải pháp tối ưu nhất cho bạn.
+                </p>
+              </div>
+              
+              <Card className="p-8">
+                <form className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="text-foreground font-medium">
+                        Họ và tên *
+                      </Label>
+                      <Input
+                        id="name"
+                        placeholder="Nhập họ và tên của bạn"
+                        className="w-full"
+                        data-testid="input-name"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="company" className="text-foreground font-medium">
+                        Tên công ty
+                      </Label>
+                      <Input
+                        id="company"
+                        placeholder="Tên công ty/tổ chức"
+                        className="w-full"
+                        data-testid="input-company"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="phone" className="text-foreground font-medium">
+                        Số điện thoại *
+                      </Label>
+                      <Input
+                        id="phone"
+                        placeholder="0123 456 789"
+                        className="w-full"
+                        data-testid="input-phone"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-foreground font-medium">
+                        Email *
+                      </Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="your.email@company.com"
+                        className="w-full"
+                        data-testid="input-email"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-foreground font-medium">
+                      Nhu cầu cụ thể
+                    </Label>
+                    <Textarea
+                      id="message"
+                      placeholder="Mô tả chi tiết nhu cầu về máy chủ của bạn..."
+                      className="w-full min-h-[120px]"
+                      data-testid="textarea-message"
+                    />
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                    <Button 
+                      size="lg" 
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg"
+                      data-testid="button-submit-contact"
+                    >
+                      <Mail className="mr-2 h-5 w-5" />
+                      Gửi Yêu Cầu Tư Vấn
+                    </Button>
+                    <Button 
+                      size="lg" 
+                      variant="outline"
+                      className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 text-lg"
+                      data-testid="button-call-direct"
+                    >
+                      <Phone className="mr-2 h-5 w-5" />
+                      Gọi Trực Tiếp: 1900 6680
+                    </Button>
+                  </div>
+                </form>
+              </Card>
             </div>
           </div>
         </section>
