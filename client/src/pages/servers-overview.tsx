@@ -11,10 +11,23 @@ import {
   Zap,
   Settings,
   TrendingUp,
-  Lock
+  Lock,
+  Search,
+  Users,
+  Award,
+  Star,
+  Plus,
+  Minus,
+  Mail,
+  User,
+  MessageSquare
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
@@ -30,24 +43,24 @@ export default function ServersOverview() {
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
                 Giải Pháp Máy Chủ 
-                <span className="text-primary"> Tối Ưu</span>
+                <span className="text-primary"> Toàn Diện</span>
                 <br />
                 cho Mọi Doanh Nghiệp
               </h1>
               
               <p className="text-xl text-muted-foreground mb-10 leading-relaxed max-w-3xl mx-auto">
-                Khám phá các lựa chọn máy chủ mạnh mẽ và đáng tin cậy. Từ máy chủ vật lý, ảo hóa đến đám mây, 
-                chúng tôi có giải pháp phù hợp với mọi quy mô và nhu cầu kinh doanh của bạn.
+                Khám phá các lựa chọn máy chủ mạnh mẽ và đáng tin cậy. Chúng tôi cung cấp giải pháp phù hợp với mọi quy mô 
+                và nhu cầu kinh doanh, từ máy chủ vật lý, ảo hóa đến đám mây.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
                   size="lg" 
                   className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg"
-                  data-testid="button-learn-more"
+                  data-testid="button-explore-solutions"
                 >
-                  Tìm Hiểu Thêm
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  Khám Phá Giải Pháp
+                  <Search className="ml-2 h-5 w-5" />
                 </Button>
                 <Button 
                   size="lg" 
@@ -69,7 +82,7 @@ export default function ServersOverview() {
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-16">
                 <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Lựa Chọn Máy Chủ Phù Hợp với Nhu Cầu Của Bạn
+                  Lựa Chọn Máy Chủ Phù Hợp với Nhu Cầu
                 </h2>
                 <p className="text-xl text-muted-foreground">
                   So sánh và tìm giải pháp máy chủ tốt nhất cho doanh nghiệp của bạn
@@ -193,26 +206,36 @@ export default function ServersOverview() {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-20 bg-muted/30">
+        <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-16">
                 <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Tại Sao Chọn Dịch Vụ Máy Chủ Của Chúng Tôi?
+                  Lợi Ích Khi Sử Dụng Dịch Vụ Máy Chủ Của Chúng Tôi
                 </h2>
                 <p className="text-xl text-muted-foreground">
-                  Những lợi ích vượt trội khi sử dụng dịch vụ của STEP
+                  Những lợi ích nổi bật khi bạn chọn STEP làm đối tác công nghệ
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div className="text-center">
+                  <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6 mx-auto">
+                    <Zap className="h-8 w-8 text-orange-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Hiệu Suất Tối Đa</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    SSD NVMe, CPU Intel Xeon và băng thông không giới hạn đảm bảo tốc độ tối ưu
+                  </p>
+                </div>
+
+                <div className="text-center">
                   <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6 mx-auto">
                     <Shield className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Bảo Mật Tối Ưu</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Bảo Mật Tuyệt Đối</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    DDoS protection, firewall tích hợp và SSL miễn phí cho mọi máy chủ
+                    DDoS protection, firewall tích hợp, SSL miễn phí và monitoring 24/7
                   </p>
                 </div>
 
@@ -222,17 +245,7 @@ export default function ServersOverview() {
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-3">Hỗ Trợ 24/7</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Đội ngũ kỹ thuật chuyên nghiệp hỗ trợ tiếng Việt 24/7/365
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6 mx-auto">
-                    <Zap className="h-8 w-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Hiệu Suất Cao</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    SSD NVMe, CPU Intel Xeon và băng thông không giới hạn
+                    Đội ngũ kỹ thuật chuyên nghiệp hỗ trợ tiếng Việt mọi lúc, mọi nơi
                   </p>
                 </div>
 
@@ -240,11 +253,62 @@ export default function ServersOverview() {
                   <div className="flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6 mx-auto">
                     <TrendingUp className="h-8 w-8 text-blue-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Mở Rộng Dễ Dàng</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Khả Năng Mở Rộng</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Nâng cấp tài nguyên trong vài phút không downtime
+                    Nâng cấp tài nguyên linh hoạt trong vài phút, không downtime
                   </p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose STEP Section */}
+        <section className="py-20 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-foreground mb-4">
+                  Tại Sao Lại Chọn STEP?
+                </h2>
+                <p className="text-xl text-muted-foreground">
+                  Những lý do khiến hàng nghìn doanh nghiệp tin tựa STEP
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <Card className="p-8 text-center hover:shadow-lg transition-shadow">
+                  <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6 mx-auto">
+                    <Award className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-4">15+ Năm Kinh Nghiệm</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Với hơn 15 năm trong lĩnh vực IT, chúng tôi hiểu rõ nhu cầu và thách thức 
+                    của doanh nghiệp Việt Nam.
+                  </p>
+                </Card>
+
+                <Card className="p-8 text-center hover:shadow-lg transition-shadow">
+                  <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-6 mx-auto">
+                    <Users className="h-8 w-8 text-green-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-4">5000+ Khách Hàng</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Phục vụ thành công hơn 5000 khách hàng từ doanh nghiệp nhỏ đến 
+                    tập đoàn lớn trên toàn quốc.
+                  </p>
+                </Card>
+
+                <Card className="p-8 text-center hover:shadow-lg transition-shadow">
+                  <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6 mx-auto">
+                    <Star className="h-8 w-8 text-orange-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-4">99.9% Uptime</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Cam kết uptime 99.9% với hạ tầng hiện đại, datacenter chuẩn quốc tế 
+                    và giải pháp dự phòng toàn diện.
+                  </p>
+                </Card>
               </div>
             </div>
           </div>
