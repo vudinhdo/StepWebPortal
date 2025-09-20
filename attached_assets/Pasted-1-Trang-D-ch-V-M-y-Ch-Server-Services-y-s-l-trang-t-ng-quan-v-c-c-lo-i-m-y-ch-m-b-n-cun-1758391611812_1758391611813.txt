@@ -1,0 +1,58 @@
+1. Trang Dịch Vụ Máy Chủ (Server Services)
+Đây sẽ là trang tổng quan về các loại máy chủ mà bạn cung cấp.
+"Hãy tạo một trang web tĩnh (static page) chuyên về các dịch vụ máy chủ. Chỉ tạo nội dung chính giữa trang, không tạo menu và footer. Giao diện cần sạch sẽ, hiện đại và tập trung vào thông tin. Sử dụng màu sắc tương thích với website của bạn.
+Nội dung chính cần có:
+Liên kết với danh mục > máy chủ >  Dịch Vụ Máy Chủ
+Tiêu đề lớn: 'Dịch Vụ Máy Chủ Chuyên Nghiệp'.
+Giới thiệu tổng quan: Một đoạn văn ngắn gọn về tầm quan trọng của máy chủ và các giải pháp bạn cung cấp.
+Các loại máy chủ: Liệt kê các loại máy chủ bạn có, sử dụng các biểu tượng và mô tả ngắn gọn cho từng loại:
+Máy chủ vật lý (Dedicated Servers): Tối ưu hóa hiệu suất cho các ứng dụng nặng.
+Máy chủ ảo (VPS): Linh hoạt, tiết kiệm chi phí cho các dự án vừa và nhỏ.
+Máy chủ đám mây (Cloud Servers): Khả năng mở rộng cao, đáng tin cậy.
+Bảng tính năng so sánh: Một bảng so sánh các tính năng chính của các loại máy chủ, ví dụ: hiệu suất, giá cả, khả năng mở rộng, mức độ kiểm soát.
+Phần liên hệ: Một đoạn văn kêu gọi hành động (call-to-action) như 'Liên hệ ngay để được tư vấn giải pháp phù hợp'."
+
+2. Trang Thiết Bị Mạng (Networking Equipment)
+Trang này sẽ tập trung vào các thiết bị phần cứng mạng mà bạn phân phối hoặc cho thuê.
+"Hãy tạo một trang web tĩnh (static page) giới thiệu các thiết bị mạng. Chỉ tạo nội dung chính giữa trang, không tạo menu và footer. Giao diện cần khoa học, đáng tin cậy và tập trung vào sản phẩm.
+Nội dung chính cần có:
+Liên kết với danh mục > máy chủ >  Thiết Bị Mạng
+Tiêu đề lớn: 'Thiết Bị Mạng Cao Cấp cho Doanh Nghiệp'.
+Giới thiệu tổng quan: Một đoạn văn ngắn về tầm quan trọng của hạ tầng mạng và các sản phẩm bạn cung cấp.
+Các loại thiết bị: Liệt kê các loại thiết bị mạng chính, sử dụng hình ảnh và mô tả chi tiết:
+Router và Switch: Giới thiệu các dòng router và switch từ các thương hiệu lớn như Cisco, Juniper, đảm bảo hiệu suất và bảo mật.
+Tường lửa (Firewall): Giải thích tầm quan trọng của tường lửa trong việc bảo vệ dữ liệu.
+Cáp mạng và phụ kiện: Liệt kê các loại cáp và phụ kiện đi kèm.
+Phần đối tác: Một dòng nhỏ giới thiệu các thương hiệu đối tác của bạn.
+Hướng dẫn chọn lựa: Một bảng hoặc danh sách hướng dẫn khách hàng lựa chọn thiết bị phù hợp với quy mô doanh nghiệp của họ."
+
+3. Trang Cho Thuê Máy Chủ (Dedicated Server Rental)
+Đây là trang chi tiết cho dịch vụ cho thuê máy chủ, nơi bạn cần trình bày rõ ràng các gói dịch vụ và giá cả.
+"Hãy tạo một trang web tĩnh (static page) chi tiết về dịch vụ cho thuê máy chủ riêng. Chỉ tạo nội dung chính giữa trang, không tạo menu và footer. Giao diện cần tối giản, chuyên nghiệp và dễ dàng so sánh.
+Nội dung chính cần có:
+Liên kết với danh mục > máy chủ >  Cho Thuê Máy Chủ
+Tiêu đề lớn: 'Dịch Vụ Cho Thuê Máy Chủ Riêng (Dedicated Server)'
+Giới thiệu dịch vụ: Một đoạn văn ngắn về lợi ích của việc thuê máy chủ riêng.
+Bảng giá chi tiết (Pricing Table): Đây là phần quan trọng nhất. Tạo một bảng giá với 3-4 gói dịch vụ, mỗi gói bao gồm:
+Tên gói (ví dụ: Gói Cơ bản, Nâng cao, Doanh nghiệp).
+Các thông số kỹ thuật chi tiết: CPU, RAM, Ổ cứng (SSD/HDD), Băng thông, IP tĩnh.
+Giá hàng tháng.
+Một nút kêu gọi hành động 'Đăng ký ngay'.
+Ưu điểm nổi bật: Liệt kê các ưu điểm của dịch vụ như: hỗ trợ 24/7, uptime 99.9%, bảo mật cao, vị trí datacenter.
+FAQ (Câu hỏi thường gặp): Các câu hỏi về việc cài đặt, quản lý và gia hạn dịch vụ."
+
+4. Trang Dịch Vụ Chỗ Đặt Máy Chủ (Colocation Services)
+Trang này dành cho dịch vụ cho thuê không gian trong trung tâm dữ liệu.
+"Hãy tạo một trang web tĩnh (static page) giới thiệu dịch vụ chỗ đặt máy chủ (Colocation). Chỉ tạo nội dung chính giữa trang, không tạo menu và footer. Giao diện cần uy tín, đáng tin cậy và tập trung vào cơ sở hạ tầng.
+Nội dung chính cần có:
+Liên kết với danh mục > máy chủ >  Chỗ Đặt Máy Chủ
+Tiêu đề lớn: 'Dịch Vụ Chỗ Đặt Máy Chủ (Colocation) Chuyên Nghiệp'.
+Giới thiệu dịch vụ: Giải thích dịch vụ colocation là gì và tại sao doanh nghiệp nên sử dụng.
+Cơ sở vật chất: Mô tả chi tiết về trung tâm dữ liệu của bạn:
+Tiêu chuẩn Datacenter: Chứng nhận TIER (nếu có).
+Hệ thống điện: Nguồn điện dự phòng, máy phát điện.
+Hệ thống làm mát: Điều hòa chính xác, kiểm soát nhiệt độ và độ ẩm.
+Hệ thống an ninh: Giám sát 24/7, ra vào bằng thẻ, camera.
+Các gói dịch vụ: Liệt kê các gói colocation, ví dụ: chỗ đặt 1/4 rack, 1/2 rack, full rack.
+Ưu điểm dịch vụ: Nêu bật các lợi ích như tiết kiệm chi phí vận hành, bảo mật cao và đường truyền tốc độ cao.
+Liên hệ: Nút hoặc form liên hệ để yêu cầu báo giá."
