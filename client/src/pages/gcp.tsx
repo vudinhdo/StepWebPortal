@@ -136,50 +136,96 @@ export default function GCPPage() {
       <main className="pt-16">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-white py-24">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-5xl mx-auto">
-              <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
-                <span className="text-[hsl(207,100%,40%)]">Sức mạnh</span>{" "}
-                <span className="text-gray-800">Điện toán Đám mây</span>{" "}
-                <span className="text-[hsl(32,95%,55%)]">của Google</span>
-              </h1>
-              
-              <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed max-w-4xl mx-auto">
-                Khám phá giải pháp cloud computing hàng đầu thế giới từ Google. 
-                Compute Engine, Cloud Storage, BigQuery và Kubernetes Engine - 
-                sức mạnh công nghệ để doanh nghiệp Việt Nam bứt phá.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button 
-                  className="bg-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,35%)] text-white text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                  data-testid="button-explore-services"
-                >
-                  Khám Phá Dịch Vụ GCP
-                  <ArrowRight className="ml-3 h-6 w-6" />
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="border-2 border-[hsl(32,95%,55%)] text-[hsl(32,95%,55%)] hover:bg-[hsl(32,95%,55%)] hover:text-white text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                  data-testid="button-free-consultation"
-                >
-                  Tư Vấn Miễn Phí
-                </Button>
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+              {/* Left Column - Content */}
+              <div className="">
+                {/* Badge */}
+                <div className="inline-flex items-center bg-[hsl(207,100%,40%)] text-white px-4 py-2 rounded-lg text-sm font-medium mb-6">
+                  <Cloud className="mr-2 h-5 w-5" />
+                  Google Cloud Platform
+                </div>
+                
+                <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                  <span className="text-[hsl(207,100%,40%)]">Sức mạnh Điện toán Đám mây</span>{" "}
+                  <span className="text-gray-800">– Nâng Tầm</span>{" "}
+                  <span className="text-[hsl(32,95%,55%)]">AI & Machine Learning</span>{" "}
+                  <span className="text-gray-800">Của Bạn Chỉ Trong Phút Chốc!</span>
+                </h1>
+                
+                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                  Google Cloud Platform với BigQuery xử lý petabyte data, AI Platform training models nhanh gấp 10 lần, 
+                  và auto-scaling global infrastructure. Dành riêng cho doanh nghiệp SMEs cần breakthrough công nghệ!
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                  <Button 
+                    className="bg-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,35%)] text-white text-lg px-8 py-4"
+                    data-testid="button-explore-services"
+                  >
+                    Kiểm Tra Cloud Phù Hợp
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="border-2 border-[hsl(32,95%,55%)] text-[hsl(32,95%,55%)] hover:bg-[hsl(32,95%,55%)] hover:text-white text-lg px-8 py-4"
+                    data-testid="button-free-consultation"
+                  >
+                    Tư Vấn Miễn Phí
+                  </Button>
+                </div>
+                
+                <div className="flex items-center text-green-600">
+                  <CheckCircle className="h-5 w-5 mr-2" />
+                  <span className="text-sm font-medium">Nhận $300 credit miễn phí để trải nghiệm ngay hôm nay!</span>
+                </div>
               </div>
               
-              <div className="flex items-center justify-center mt-12 space-x-8 text-lg text-gray-600">
-                <div className="flex items-center">
-                  <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
-                  Dùng thử $300 credit
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
-                  Hỗ trợ 24/7
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
-                  SLA 99.95%
-                </div>
+              {/* Right Column - Performance Metrics Card */}
+              <div className="lg:flex justify-center">
+                <Card className="bg-white shadow-2xl rounded-2xl p-6 w-full max-w-sm border-0">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex space-x-2">
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-bold text-gray-800 mb-6">Google Cloud Performance</h3>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-600">AI/ML Processing</span>
+                        <span className="text-sm font-bold text-[hsl(207,100%,40%)]">&lt; 1s</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-gradient-to-r from-[hsl(207,100%,40%)] to-[hsl(207,100%,50%)] h-2 rounded-full" style={{width: "95%"}}></div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-600">Global Availability</span>
+                        <span className="text-sm font-bold text-green-600">99.95%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full" style={{width: "99%"}}></div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-600">Auto-scaling Speed</span>
+                        <span className="text-sm font-bold text-[hsl(32,95%,55%)]">A+</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-gradient-to-r from-[hsl(32,95%,55%)] to-orange-500 h-2 rounded-full" style={{width: "98%"}}></div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
               </div>
             </div>
           </div>

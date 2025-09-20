@@ -18,9 +18,11 @@ import {
   Zap,
   Building,
   Globe,
-  X
+  X,
+  CheckCircle
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
@@ -214,68 +216,112 @@ export default function Microsoft365() {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center max-w-4xl mx-auto"
-          >
-            <h1 className="h1 mb-6">
-              <span className="text-white">Microsoft 365</span>
-              <br />
-              <span className="text-yellow-300">Giải Pháp Văn Phòng Toàn Diện</span>
-            </h1>
-            <p className="lead mb-10 text-blue-100 prose-constraint mx-auto">
-              Office, Teams, Exchange, SharePoint - Tất cả trong một. Tăng năng suất làm việc với bộ công cụ Microsoft đầy đủ và bảo mật cao.
-            </p>
+      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 py-24">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+            {/* Left Column - Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-white"
+            >
+              {/* Badge */}
+              <div className="inline-flex items-center bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium mb-6">
+                <Building className="mr-2 h-5 w-5" />
+                Microsoft 365
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                <span className="text-white">Microsoft 365</span>{" "}
+                <span className="text-yellow-300">Giải Pháp Văn Phòng Toàn Diện</span>{" "}
+                <span className="text-white">– Tăng</span>{" "}
+                <span className="text-yellow-300">300% Năng Suất</span>{" "}
+                <span className="text-white">Làm Việc!</span>
+              </h1>
+              
+              <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+                Office 365 với real-time collaboration, Teams cho hội nghị không giới hạn, 
+                và AI Copilot tự động tạo content. Perfect cho doanh nghiệp cần productivity breakthrough!
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <Button 
+                  onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-4"
+                  data-testid="button-pricing"
+                >
+                  Kiểm Tra Giá Phù Hợp
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button 
+                  onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+                  variant="outline"
+                  className="border-2 border-white text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-4"
+                  data-testid="button-contact"
+                >
+                  Tư Vấn Miễn Phí
+                </Button>
+              </div>
+              
+              <div className="flex items-center text-green-300">
+                <CheckCircle className="h-5 w-5 mr-2" />
+                <span className="text-sm font-medium">Giảm 17% cho khách hàng đăng ký năm đầu!</span>
+              </div>
+            </motion.div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-4xl mx-auto">
-              <div className="flex flex-col md:flex-row items-center justify-center text-center md:text-left">
-                <Building className="mb-2 md:mb-0 md:mr-4 text-yellow-300 flex-shrink-0" size={32} />
-                <div>
-                  <div className="text-lg font-bold" data-testid="text-stats-businesses">10,000+ Doanh nghiệp</div>
-                  <div className="text-sm text-blue-200">Tin dùng STEP</div>
+            {/* Right Column - Productivity Metrics Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="lg:flex justify-center"
+            >
+              <Card className="bg-white shadow-2xl rounded-2xl p-6 w-full max-w-sm border-0">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex space-x-2">
+                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col md:flex-row items-center justify-center text-center md:text-left">
-                <Shield className="mb-2 md:mb-0 md:mr-4 text-yellow-300 flex-shrink-0" size={32} />
-                <div>
-                  <div className="text-lg font-bold" data-testid="text-stats-uptime">99.9% Uptime</div>
-                  <div className="text-sm text-blue-200">SLA đảm bảo</div>
+                
+                <h3 className="text-lg font-bold text-gray-800 mb-6">Microsoft 365 Productivity</h3>
+                
+                <div className="space-y-6">
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-medium text-gray-600">Collaboration Efficiency</span>
+                      <span className="text-sm font-bold text-blue-600">300%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full" style={{width: "100%"}}></div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-medium text-gray-600">Security Compliance</span>
+                      <span className="text-sm font-bold text-green-600">99.9%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full" style={{width: "99%"}}></div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-medium text-gray-600">Integration Score</span>
+                      <span className="text-sm font-bold text-yellow-600">A+</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full" style={{width: "97%"}}></div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col md:flex-row items-center justify-center text-center md:text-left">
-                <Users className="mb-2 md:mb-0 md:mr-4 text-yellow-300 flex-shrink-0" size={32} />
-                <div>
-                  <div className="text-lg font-bold" data-testid="text-stats-support">24/7 Support</div>
-                  <div className="text-sm text-blue-200">Hỗ trợ tiếng Việt</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
-                size="lg" 
-                className="bg-white text-blue-600 hover:bg-gray-100 font-semibold text-lg px-8 py-4 nowrap"
-                data-testid="button-pricing"
-              >
-                Xem Bảng Giá
-                <ArrowRight className="ml-2" size={20} />
-              </Button>
-              <Button 
-                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
-                size="lg" 
-                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold text-lg px-8 py-4 nowrap"
-                data-testid="button-contact"
-              >
-                Tư Vấn Miễn Phí
-              </Button>
-            </div>
-          </motion.div>
+              </Card>
+            </motion.div>
+          </div>
         </div>
       </section>
 

@@ -157,51 +157,97 @@ export default function VMwarePage() {
     <main>
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-gray-50 via-slate-50 to-blue-50 py-24">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-6xl mx-auto">
-              <h1 className="text-5xl md:text-7xl font-bold text-gray-800 mb-8 leading-tight">
-                <span className="text-gray-700">Tương lai của</span>{" "}
-                <span className="text-blue-600">Điện toán Đám mây</span>{" "}
-                <span className="text-gray-700">và</span>{" "}
-                <span className="text-blue-600">Ảo hóa</span>
-              </h1>
-              
-              <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed max-w-4xl mx-auto">
-                Khám phá giải pháp ảo hóa và cloud computing enterprise-grade từ VMware. 
-                Từ datacenter virtualization đến modern application platform - 
-                công nghệ đáng tin cậy cho doanh nghiệp Việt Nam.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button 
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                  data-testid="button-explore-solutions"
-                >
-                  Khám Phá Giải Pháp VMware
-                  <ArrowRight className="ml-3 h-6 w-6" />
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="border-2 border-gray-600 text-gray-600 hover:bg-gray-600 hover:text-white text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                  data-testid="button-contact-specialist"
-                >
-                  Liên Hệ Chuyên Gia
-                </Button>
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+              {/* Left Column - Content */}
+              <div className="">
+                {/* Badge */}
+                <div className="inline-flex items-center bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium mb-6">
+                  <Server className="mr-2 h-5 w-5" />
+                  VMware Enterprise
+                </div>
+                
+                <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+                  <span className="text-gray-700">Tương lai của</span>{" "}
+                  <span className="text-blue-600">Điện toán Đám mây và Ảo hóa</span>{" "}
+                  <span className="text-gray-700">– Đảm Bảo</span>{" "}
+                  <span className="text-blue-600">99.99% Uptime</span>{" "}
+                  <span className="text-gray-700">Và Bảo Mật Tối Ơu!</span>
+                </h1>
+                
+                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                  VMware vSphere với high availability clustering, NSX micro-segmentation bảo vệ khỏi cyber threats, 
+                  và Tanzu platform cho modern apps. Dành cho enterprise cần độ tin cậy mission-critical!
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                  <Button 
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4"
+                    data-testid="button-explore-solutions"
+                  >
+                    Thăm Dò VMware Phù Hợp
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="border-2 border-gray-600 text-gray-600 hover:bg-gray-600 hover:text-white text-lg px-8 py-4"
+                    data-testid="button-contact-specialist"
+                  >
+                    Liên Hệ Chuyên Gia
+                  </Button>
+                </div>
+                
+                <div className="flex items-center text-green-600">
+                  <CheckCircle className="h-5 w-5 mr-2" />
+                  <span className="text-sm font-medium">Tin cậy bởi 500K+ organizations toàn cầu!</span>
+                </div>
               </div>
               
-              <div className="flex items-center justify-center mt-12 space-x-8 text-lg text-gray-600">
-                <div className="flex items-center">
-                  <CheckCircle className="h-6 w-6 text-green-600 mr-3" />
-                  Trusted by 500K+ organizations
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="h-6 w-6 text-green-600 mr-3" />
-                  99.9% uptime SLA
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="h-6 w-6 text-green-600 mr-3" />
-                  24/7 enterprise support
-                </div>
+              {/* Right Column - Enterprise Metrics Card */}
+              <div className="lg:flex justify-center">
+                <Card className="bg-white shadow-2xl rounded-2xl p-6 w-full max-w-sm border-0">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex space-x-2">
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-bold text-gray-800 mb-6">VMware Enterprise Reliability</h3>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-600">Virtualization Efficiency</span>
+                        <span className="text-sm font-bold text-blue-600">95%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full" style={{width: "95%"}}></div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-600">System Uptime</span>
+                        <span className="text-sm font-bold text-green-600">99.99%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full" style={{width: "99%"}}></div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-600">Security Score</span>
+                        <span className="text-sm font-bold text-gray-700">A+</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-gradient-to-r from-gray-600 to-gray-700 h-2 rounded-full" style={{width: "98%"}}></div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
               </div>
             </div>
           </div>
