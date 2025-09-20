@@ -26,7 +26,8 @@ import {
   Chrome,
   CloudDownload,
   Brain,
-  Lock
+  Lock,
+  Server
 } from "lucide-react";
 
 export default function MegaMenu() {
@@ -193,8 +194,21 @@ export default function MegaMenu() {
                 ))}
               </ul>
               
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">{categories[3].name}</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                <a href="/may-chu" className="hover:text-[hsl(207,100%,40%)] transition-colors">
+                  {categories[3].name}
+                </a>
+              </h3>
               <ul className="space-y-3">
+                <li>
+                  <a href="/may-chu" className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
+                    <Server className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
+                    <div>
+                      <div className="font-medium">Tổng quan máy chủ</div>
+                      <div className="text-xs text-gray-500">Giải pháp máy chủ toàn diện</div>
+                    </div>
+                  </a>
+                </li>
                 {categories[3].items.map((item, index) => (
                   <li key={index}>
                     <a href={

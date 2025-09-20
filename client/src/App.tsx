@@ -35,6 +35,7 @@ import Quote from "@/pages/quote";
 import DedicatedServer from "@/pages/dedicated-server";
 import MicrosoftServices from "@/pages/microsoft-services";
 import ServerServices from "@/pages/server-services";
+import ServersOverview from "@/pages/servers-overview";
 
 function Router() {
   return (
@@ -70,6 +71,7 @@ function Router() {
         <Route path="/dich-vu/phan-mem/vmware" component={VMware} />
         <Route path="/vmware" component={VMware} />
         <Route path="/danh-muc/may-chu/dich-vu-may-chu" component={ServerServices} />
+        <Route path="/may-chu" component={ServersOverview} />
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route path="/bao-gia" component={Quote} />
         <Route component={NotFound} />
