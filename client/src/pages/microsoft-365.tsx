@@ -1,501 +1,390 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { 
   Mail, 
   Shield, 
   Video, 
-  Calendar, 
-  FileText, 
-  Users, 
-  Check, 
+  CheckCircle, 
+  ArrowRight, 
+  Globe, 
+  Clock,
+  Users,
   Star,
-  ArrowRight,
-  Cloud,
-  Smartphone,
-  Brain,
-  MessageSquare,
-  HardDrive,
-  Zap,
-  Building,
-  Globe,
   X,
-  CheckCircle
-} from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+  Database,
+  TrendingUp,
+  Lock,
+  Calendar,
+  FileText,
+  Zap,
+  Settings,
+  Monitor,
+  Brain,
+  Cloud,
+  Building
+} from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import PersonalizationPopup from "@/components/personalization-popup";
+import ContactForm from "@/components/contact-form";
+import PerformanceBenchmark from "@/components/performance-benchmark";
+import EmailPopup from "@/components/email-popup";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Microsoft365() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    userCount: '',
-    package: ''
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupData, setPopupData] = useState({
+    email: "",
+    name: "",
+    phone: ""
   });
-  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    projectDescription: "",
+    package: ""
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          company: formData.company,
-          service: `Microsoft 365 - ${formData.package}`,
-          message: `Tên công ty: ${formData.company}\nSố user dự kiến: ${formData.userCount}\nGói quan tâm: ${formData.package}\nYêu cầu thiết lập Microsoft 365 và tư vấn chuyển đổi từ hệ thống hiện tại`
-        })
-      });
-
-      if (response.ok) {
-        toast({
-          title: "Gửi yêu cầu thành công!",
-          description: "Chúng tôi sẽ liên hệ với bạn trong 24h để tư vấn và báo giá Microsoft 365.",
-        });
-        setFormData({ name: '', email: '', phone: '', company: '', userCount: '', package: '' });
-      }
-    } catch (error) {
-      toast({
-        title: "Lỗi",
-        description: "Có lỗi xảy ra, vui lòng thử lại.",
-        variant: "destructive",
-      });
-    }
+  const handleEmailSubmit = async (email: string) => {
+    console.log('Email submitted for Microsoft 365:', email);
+    // Integration with email service would go here
+    await new Promise(resolve => setTimeout(resolve, 1000));
   };
 
-  const packages = [
-    {
-      name: "Microsoft 365 Business Basic",
-      price: "129.000 VNĐ/user/tháng",
-      originalPrice: "155.000 VNĐ/user/tháng",
-      storage: "1TB OneDrive",
-      meetingCapacity: "300 participants",
-      features: [
-        "Outlook web và mobile",
-        "Microsoft Teams",
-        "SharePoint và OneDrive 1TB",
-        "Word, Excel, PowerPoint web",
-        "Exchange Online 50GB",
-        "Bảo mật cơ bản",
-        "Hỗ trợ web và chat"
-      ],
-      suitable: "Công ty nhỏ 1-10 nhân viên",
-      color: "blue",
-      discount: "17% off năm đầu"
-    },
-    {
-      name: "Microsoft 365 Business Standard", 
-      price: "259.000 VNĐ/user/tháng",
-      originalPrice: "310.000 VNĐ/user/tháng",
-      storage: "1TB OneDrive",
-      meetingCapacity: "300 participants",
-      features: [
-        "Tất cả tính năng Business Basic",
-        "Office desktop apps đầy đủ",
-        "Outlook desktop",
-        "Access và Publisher (PC)",
-        "Attendee registration & reporting",
-        "Webinar hosting 1000 người",
-        "Customer scheduling app"
-      ],
-      suitable: "SME 10-50 nhân viên",
-      color: "green", 
-      popular: true,
-      discount: "17% off năm đầu"
-    },
-    {
-      name: "Microsoft 365 Business Premium",
-      price: "449.000 VNĐ/user/tháng", 
-      originalPrice: "540.000 VNĐ/user/tháng",
-      storage: "1TB OneDrive",
-      meetingCapacity: "300 participants",
-      features: [
-        "Tất cả tính năng Business Standard",
-        "Advanced security features",
-        "Intune device management", 
-        "Azure Information Protection",
-        "Advanced Threat Protection",
-        "Azure AD Premium P1",
-        "Windows Autopilot deployment"
-      ],
-      suitable: "Doanh nghiệp 50-300 nhân viên",
-      color: "purple",
-      discount: "17% off năm đầu"
-    },
-    {
-      name: "Microsoft 365 Apps",
-      price: "219.000 VNĐ/user/tháng",
-      originalPrice: "263.000 VNĐ/user/tháng", 
-      storage: "1TB OneDrive",
-      meetingCapacity: "N/A",
-      features: [
-        "Office desktop apps đầy đủ",
-        "Word, Excel, PowerPoint, Outlook",
-        "OneDrive 1TB storage",
-        "Teams Basic (60 phút/meeting)",
-        "Outlook customer manager",
-        "No Exchange Online",
-        "Chỉ có Office apps"
-      ],
-      suitable: "Doanh nghiệp chỉ cần Office",
-      color: "orange",
-      discount: "17% off năm đầu"
-    }
-  ];
+  // Show popup after 10 seconds or 50% scroll
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 10000);
 
-  const features = [
-    {
-      icon: Mail,
-      title: "Outlook Professional",
-      description: "Email @yourcompany.com với Focused Inbox, scheduling assistant và 50GB mailbox."
-    },
-    {
-      icon: Video,
-      title: "Microsoft Teams",
-      description: "Chat, video calls, file sharing và collaboration workspace tích hợp với Office."
-    },
-    {
-      icon: FileText,
-      title: "Office 365 Apps",
-      description: "Word, Excel, PowerPoint desktop & web với real-time collaboration và AutoSave."
-    },
-    {
-      icon: Cloud,
-      title: "OneDrive & SharePoint",
-      description: "1TB cloud storage cá nhân và team sites với advanced sharing controls."
-    },
-    {
-      icon: Calendar,
-      title: "Calendar & Booking",
-      description: "Shared calendars, meeting rooms, booking pages và scheduling assistant."
-    },
-    {
-      icon: Brain,
-      title: "AI Copilot",
-      description: "AI assistant trong Word, Excel, PowerPoint giúp tạo content và phân tích dữ liệu."
-    }
-  ];
+    const handleScroll = () => {
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      if (scrollPercent >= 50) {
+        setShowPopup(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const benefits = [
     {
+      icon: Video,
+      title: "Teams & Real-time Collaboration",
+      description: "Microsoft Teams với unlimited chat, video meeting 300 người và real-time co-authoring trong Office apps – lý tưởng cho distributed teams cần productivity breakthrough và seamless communication experience mọi lúc mọi nơi."
+    },
+    {
+      icon: Brain,
+      title: "AI Copilot Tích Hợp Sâu", 
+      description: "Copilot AI trong Word, Excel, PowerPoint và Outlook tự động generate content, analyze data và optimize workflows – boost productivity 300% với intelligent assistance cho mọi business tasks mà không cần training phức tạp."
+    },
+    {
       icon: Shield,
-      title: "Bảo Mật Enterprise",
-      description: "Advanced Threat Protection, DLP, Azure AD và compliance với GDPR, ISO 27001."
+      title: "Enterprise Security & Compliance",
+      description: "Advanced Threat Protection, Data Loss Prevention và Azure AD Premium với conditional access policies – bảo vệ company data theo standards GDPR, ISO 27001 và enterprise-grade security cho sensitive information."
     },
     {
-      icon: Smartphone,
-      title: "Làm Việc Mọi Nơi",
-      description: "Office mobile apps, offline sync và Intune device management cho BYOD."
-    },
-    {
-      icon: Users,
-      title: "Quản Lý Tập Trung",
-      description: "Microsoft 365 admin center, user management, license assignment và usage reports."
-    },
-    {
-      icon: Zap,
-      title: "Tích Hợp Liền Mạch",
-      description: "Tích hợp với Windows, Azure, Power Platform và hàng ngàn third-party apps."
+      icon: Cloud,
+      title: "Anywhere Access & Mobile-First",
+      description: "Office mobile apps với offline sync, browser-based access và device management qua Intune – cho phép work from anywhere với consistent experience và full productivity trên mọi device BYOD."
     }
   ];
 
+  const microsoftAdvantages = [
+    {
+      icon: Mail,
+      title: "Outlook Professional Email",
+      description: "Email @yourcompany.com với 50GB mailbox, Focused Inbox AI filtering và scheduling assistant. Advanced calendar features với room booking và meeting insights để optimize communication flow."
+    },
+    {
+      icon: FileText,
+      title: "Office Apps Suite Đầy Đủ",
+      description: "Word, Excel, PowerPoint desktop & web với latest features, real-time collaboration và AutoSave. Version history và comment threading cho efficient document workflows trong teams."
+    },
+    {
+      icon: Video,
+      title: "Microsoft Teams Enterprise",
+      description: "Unlimited chat, video meetings 300 users, screen sharing và breakout rooms. Integration với Office apps cho seamless collaboration và webinar hosting capabilities cho external events."
+    },
+    {
+      icon: Database,
+      title: "OneDrive & SharePoint Storage",
+      description: "1TB personal storage + unlimited SharePoint team sites với advanced sharing controls, version control và enterprise-grade backup. Perfect cho document management và file collaboration."
+    },
+    {
+      icon: Calendar,
+      title: "Scheduling & Booking System",
+      description: "Advanced calendar với scheduling assistant, meeting rooms booking và Bookings app cho customer appointments. Shared calendars và availability tracking cho team coordination."
+    },
+    {
+      icon: Settings,
+      title: "Admin & Deployment Tools",
+      description: "Microsoft 365 admin center với user management, license assignment và usage analytics. Intune device management và Windows Autopilot cho streamlined device setup."
+    }
+  ];
+
+  const packages = [
+    {
+      name: "Business Basic",
+      price: "129.000 VNĐ/user/tháng",
+      storage: "Web apps + 1TB OneDrive",
+      features: "Teams + SharePoint + Exchange",
+      suitable: "Công ty nhỏ 1-10 nhân viên",
+      color: "blue",
+      specs: [
+        "Outlook web và mobile",
+        "Microsoft Teams unlimited",
+        "Word, Excel, PowerPoint web",
+        "OneDrive 1TB storage",
+        "SharePoint team sites",
+        "Exchange Online 50GB"
+      ]
+    },
+    {
+      name: "Business Standard",
+      price: "259.000 VNĐ/user/tháng", 
+      storage: "Desktop apps + 1TB OneDrive",
+      features: "Full Office + Teams + Webinars",
+      suitable: "SME 10-50 nhân viên",
+      color: "green",
+      popular: true,
+      specs: [
+        "All từ gói Basic",
+        "Office desktop apps đầy đủ", 
+        "Outlook desktop client",
+        "Teams webinar hosting",
+        "Customer scheduling app",
+        "Attendee registration tools"
+      ]
+    },
+    {
+      name: "Business Premium",
+      price: "449.000 VNĐ/user/tháng",
+      storage: "Advanced security + compliance", 
+      features: "Enterprise security + device mgmt",
+      suitable: "Doanh nghiệp 50-300 nhân viên",
+      color: "purple",
+      specs: [
+        "All từ gói Standard",
+        "Advanced Threat Protection",
+        "Intune device management",
+        "Azure Information Protection",
+        "Azure AD Premium P1",
+        "Windows Autopilot"
+      ]
+    }
+  ];
+
+  const testimonial = {
+    text: "Microsoft 365 đã tăng 300% productivity của team chúng tôi nhờ real-time collaboration và AI Copilot!",
+    author: "Anh L., CTO tại FPT Software"
+  };
+
+  const techFeatures = [
+    { name: "Teams", icon: Video },
+    { name: "Outlook", icon: Mail },
+    { name: "OneDrive", icon: Cloud },
+    { name: "Office Apps", icon: FileText },
+    { name: "SharePoint", icon: Database },
+    { name: "Copilot AI", icon: Brain }
+  ];
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Main form data:', formData);
+    // Handle form submission
+    setShowContactForm(false);
+  };
+
+  const handlePopupSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Popup form data:', popupData);
+    setShowPopup(false);
+  };
+
   return (
     <div className="min-h-screen bg-white">
-      <PersonalizationPopup storageKey="microsoft-365-personalization" />
       <Header />
-      
+
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 py-24">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-            {/* Left Column - Content */}
+      <section className="relative bg-gradient-to-br from-slate-50 to-white py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="w-full h-full bg-gradient-to-br from-slate-50/50 to-transparent"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-white"
             >
-              {/* Badge */}
-              <div className="inline-flex items-center bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium mb-6">
-                <Building className="mr-2 h-5 w-5" />
-                Microsoft 365
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
+                  <Building className="text-white w-6 h-6" />
+                </div>
+                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                  Microsoft 365 Enterprise
+                </span>
               </div>
               
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                <span className="text-white">Microsoft 365</span>{" "}
-                <span className="text-yellow-300">Giải Pháp Văn Phòng Toàn Diện</span>{" "}
-                <span className="text-white">– Tăng</span>{" "}
-                <span className="text-yellow-300">300% Năng Suất</span>{" "}
-                <span className="text-white">Làm Việc!</span>
+              <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Microsoft 365 & Teams – 
+                <span className="text-blue-600"> Office Suite</span> 
+                Tăng 300% Productivity Cho Team!
               </h1>
               
-              <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-                Office 365 với real-time collaboration, Teams cho hội nghị không giới hạn, 
-                và AI Copilot tự động tạo content. Perfect cho doanh nghiệp cần productivity breakthrough!
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Giải pháp văn phòng toàn diện với Office apps, Teams collaboration và AI Copilot tích hợp. 
+                Dành riêng cho doanh nghiệp cần digital workplace với security enterprise-grade và anywhere access.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Button 
-                  onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-4"
-                  data-testid="button-pricing"
+                  size="lg"
+                  className="bg-blue-600 hover:bg-blue-700 px-8 py-4 text-lg font-semibold"
+                  onClick={() => {
+                    document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  data-testid="button-check-office-packages"
                 >
-                  Kiểm Tra Giá Phù Hợp
+                  Kiểm Tra Gói Office Phù Hợp
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
+                
                 <Button 
-                  onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                   variant="outline"
-                  className="border-2 border-white text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-4"
-                  data-testid="button-contact"
+                  size="lg"
+                  className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg"
+                  onClick={() => setShowContactForm(true)}
+                  data-testid="button-free-trial"
                 >
-                  Tư Vấn Miễn Phí
+                  Nhận 17% Giảm Giá Năm Đầu
                 </Button>
               </div>
               
-              <div className="flex items-center text-green-300">
-                <CheckCircle className="h-5 w-5 mr-2" />
-                <span className="text-sm font-medium">Giảm 17% cho khách hàng đăng ký năm đầu!</span>
+              <div className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                <span>Tin cậy bởi 345 triệu users worldwide!</span>
               </div>
             </motion.div>
-            
-            {/* Right Column - Productivity Metrics Card */}
+
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="lg:flex justify-center"
+              className="relative"
             >
-              <Card className="bg-white shadow-2xl rounded-2xl p-6 w-full max-w-sm border-0">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex space-x-2">
-                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  </div>
+              <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 text-green-400 font-mono text-sm">
+                <div className="flex items-center mb-6">
+                  <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-gray-400 ml-4">Microsoft 365 Admin</span>
                 </div>
                 
-                <h3 className="text-lg font-bold text-gray-800 mb-6">Microsoft 365 Productivity</h3>
-                
-                <div className="space-y-6">
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium text-gray-600">Collaboration Efficiency</span>
-                      <span className="text-sm font-bold text-blue-600">300%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full" style={{width: "100%"}}></div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium text-gray-600">Security Compliance</span>
-                      <span className="text-sm font-bold text-green-600">99.9%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full" style={{width: "99%"}}></div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium text-gray-600">Integration Score</span>
-                      <span className="text-sm font-bold text-yellow-600">A+</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full" style={{width: "97%"}}></div>
-                    </div>
-                  </div>
+                <div className="space-y-2">
+                  <div><span className="text-blue-400">$</span> New-MgUser -DisplayName "User"</div>
+                  <div><span className="text-blue-400">$</span> Set-MgUserLicense -UserId user</div>
+                  <div><span className="text-blue-400">$</span> New-Team -DisplayName "Project"</div>
+                  <div><span className="text-green-500">✓</span> Teams workspace ready!</div>
                 </div>
-              </Card>
+              </div>
+
+              {/* Tech Stack Icons */}
+              <div className="mt-8 grid grid-cols-3 gap-4">
+                {techFeatures.map((tech, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-lg p-4 text-center">
+                    <tech.icon className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                    <span className="text-sm font-medium text-gray-700">{tech.name}</span>
+                  </div>
+                ))}
+              </div>
             </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Packages Section */}
-      <section id="packages" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="h2 text-gray-800 mb-6">
-              Bảng Giá Microsoft 365 2025
-            </h2>
-            <p className="lead prose-constraint mx-auto mb-4">
-              Chọn gói phù hợp với quy mô doanh nghiệp. Giá đã bao gồm VAT và giảm 17% năm đầu.
-            </p>
-            <div className="inline-flex items-center bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
-              <Star className="mr-2" size={16} />
-              Khuyến mãi đặc biệt: Giảm 17% cho khách hàng đăng ký năm đầu
-            </div>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {packages.map((pkg, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className={`bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all relative flex flex-col h-full ${
-                  pkg.popular ? 'ring-2 ring-blue-500 scale-105' : ''
-                }`}
-                data-testid={`package-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
-              >
-                {pkg.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                      Phổ Biến Nhất
-                    </span>
-                  </div>
-                )}
-
-                <div className="text-center mb-6">
-                  <h3 className="h3 text-gray-800 mb-2">{pkg.name}</h3>
-                  <div className="mb-2">
-                    <div className="h3 text-blue-600">{pkg.price}</div>
-                    {pkg.originalPrice && (
-                      <div className="text-sm text-gray-500 line-through">{pkg.originalPrice}</div>
-                    )}
-                    {pkg.discount && (
-                      <div className="text-xs text-green-600 font-medium">{pkg.discount}</div>
-                    )}
-                  </div>
-                  <p className="text-gray-600 text-sm mb-2">{pkg.suitable}</p>
-                  <div className="flex justify-between text-xs text-gray-500">
-                    <span>💾 {pkg.storage}</span>
-                    <span>👥 {pkg.meetingCapacity}</span>
-                  </div>
-                </div>
-
-                <ul className="space-y-2 mb-6 flex-grow">
-                  {pkg.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start text-sm">
-                      <Check className="text-green-500 mr-2 mt-0.5 flex-shrink-0" size={14} />
-                      <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Button 
-                  onClick={() => {
-                    setFormData(prev => ({ ...prev, package: pkg.name }));
-                    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className={`w-full mt-auto ${
-                    pkg.popular 
-                      ? 'bg-blue-600 hover:bg-blue-700' 
-                      : 'bg-blue-500 hover:bg-blue-600'
-                  } text-white font-semibold nowrap`}
-                  data-testid={`button-select-${pkg.name.toLowerCase().replace(/\s+/g, '-')}`}
-                >
-                  Chọn Gói Này
-                </Button>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="h2 text-gray-800 mb-6">
-              Tính Năng Chính Microsoft 365
-            </h2>
-            <p className="lead prose-constraint mx-auto">
-              Bộ ứng dụng văn phòng hoàn chỉnh với cloud services và collaboration tools
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
-                data-testid={`feature-${feature.title.toLowerCase().replace(/\s+/g, '-')}`}
-              >
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4 mx-auto">
-                  <feature.icon className="text-white" size={32} />
-                </div>
-                <h3 className="h3 text-gray-800 mb-3 text-center">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed text-center">
-                  {feature.description}
-                </p>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>
 
       {/* Benefits Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="h2 text-gray-800 mb-6">
-              Tại Sao Chọn Microsoft 365 Từ STEP?
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tại Sao Chọn Microsoft 365?
             </h2>
-            <p className="lead prose-constraint mx-auto">
-              Không chỉ cung cấp license, STEP còn đồng hành cùng doanh nghiệp trong việc triển khai và tối ưu hóa
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Những ưu thế vượt trội của Microsoft 365 cho doanh nghiệp Việt Nam
             </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {benefits.map((benefit, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-                data-testid={`benefit-${benefit.title.toLowerCase().replace(/\s+/g, '-')}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100"
+                data-testid={`benefit-card-${index}`}
               >
-                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4 mx-auto">
-                  <benefit.icon className="text-white" size={40} />
+                <div className="flex items-start space-x-6">
+                  <div className="bg-blue-100 rounded-xl p-4 flex-shrink-0">
+                    <benefit.icon className="h-8 w-8 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {benefit.description}
+                    </p>
+                  </div>
                 </div>
-                <h3 className="h3 text-gray-800 mb-3">
-                  {benefit.title}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Microsoft 365 Advantages Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tính Năng Nổi Bật Microsoft 365
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Bộ ứng dụng văn phòng hoàn chỉnh với cloud services và AI
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {microsoftAdvantages.map((advantage, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                data-testid={`advantage-card-${index}`}
+              >
+                <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg p-3 w-fit mb-4">
+                  <advantage.icon className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                  {advantage.title}
                 </h3>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  {benefit.description}
+                  {advantage.description}
                 </p>
               </motion.div>
             ))}
@@ -503,454 +392,232 @@ export default function Microsoft365() {
         </div>
       </section>
 
-      {/* Teams Feature Comparison Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="h2 text-gray-800 mb-6">
-              Bảng So Sánh Tính Năng Microsoft Teams
+      {/* Pricing Packages Section */}
+      <section id="packages" className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Bảng Giá Microsoft 365 - 2025
             </h2>
-            <p className="lead prose-constraint mx-auto">
-              So sánh chi tiết các tính năng Teams trong từng gói Microsoft 365
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Chọn gói phù hợp với quy mô doanh nghiệp. Giảm 17% năm đầu!
             </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="overflow-x-auto"
-          >
-            <table className="w-full bg-white rounded-lg shadow-lg overflow-hidden">
-              <thead className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                <tr>
-                  <th className="px-6 py-4 text-left font-semibold w-1/4">Tính Năng Teams</th>
-                  <th className="px-6 py-4 text-center font-semibold">Business Basic</th>
-                  <th className="px-6 py-4 text-center font-semibold">Business Standard</th>
-                  <th className="px-6 py-4 text-center font-semibold">Business Premium</th>
-                  <th className="px-6 py-4 text-center font-semibold">Microsoft 365 Apps</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Chat & Messaging</td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Video Meetings</td>
-                  <td className="px-6 py-4 text-center text-sm">300 người, 24h</td>
-                  <td className="px-6 py-4 text-center text-sm">300 người, 24h</td>
-                  <td className="px-6 py-4 text-center text-sm">300 người, 24h</td>
-                  <td className="px-6 py-4 text-center text-sm">60 phút/meeting</td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Screen Sharing</td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">File Storage & Sharing</td>
-                  <td className="px-6 py-4 text-center text-sm">10GB/team</td>
-                  <td className="px-6 py-4 text-center text-sm">1TB/team</td>
-                  <td className="px-6 py-4 text-center text-sm">1TB/team</td>
-                  <td className="px-6 py-4 text-center text-sm">Limited</td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Meeting Recording</td>
-                  <td className="px-6 py-4 text-center">
-                    <X className="text-red-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <X className="text-red-500 mx-auto" size={20} />
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Webinar Hosting</td>
-                  <td className="px-6 py-4 text-center">
-                    <X className="text-red-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center text-sm">1,000 người</td>
-                  <td className="px-6 py-4 text-center text-sm">1,000 người</td>
-                  <td className="px-6 py-4 text-center">
-                    <X className="text-red-500 mx-auto" size={20} />
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Live Events</td>
-                  <td className="px-6 py-4 text-center">
-                    <X className="text-red-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center text-sm">10,000 viewers</td>
-                  <td className="px-6 py-4 text-center text-sm">10,000 viewers</td>
-                  <td className="px-6 py-4 text-center">
-                    <X className="text-red-500 mx-auto" size={20} />
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Custom Backgrounds</td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Breakout Rooms</td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <X className="text-red-500 mx-auto" size={20} />
-                  </td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Third-party App Integration</td>
-                  <td className="px-6 py-4 text-center text-sm">Limited</td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center text-sm">Limited</td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Advanced Security</td>
-                  <td className="px-6 py-4 text-center text-sm">Basic</td>
-                  <td className="px-6 py-4 text-center text-sm">Standard</td>
-                  <td className="px-6 py-4 text-center text-sm">Advanced</td>
-                  <td className="px-6 py-4 text-center text-sm">Basic</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 font-medium text-gray-800 bg-gray-50">Phone System Integration</td>
-                  <td className="px-6 py-4 text-center">
-                    <X className="text-red-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <X className="text-red-500 mx-auto" size={20} />
-                  </td>
-                  <td className="px-6 py-4 text-center text-sm">Add-on available</td>
-                  <td className="px-6 py-4 text-center">
-                    <X className="text-red-500 mx-auto" size={20} />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="mt-12 bg-blue-50 rounded-lg p-8"
-          >
-            <h3 className="h3 text-blue-800 mb-4 text-center">
-              💡 Khuyến Nghị Teams Package
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-lg p-6 shadow-md">
-                <h4 className="font-bold text-gray-800 mb-2">🚀 Startup & SME (1-50 người)</h4>
-                <p className="text-sm text-gray-600 mb-3">
-                  <strong>Business Standard</strong> - Tối ưu cho collaboration với meeting recording, webinar và file storage đầy đủ.
-                </p>
-                <div className="text-lg font-bold text-green-600">259.000 VNĐ/user/tháng</div>
-              </div>
-              <div className="bg-white rounded-lg p-6 shadow-md">
-                <h4 className="font-bold text-gray-800 mb-2">🏢 Enterprise (50+ người)</h4>
-                <p className="text-sm text-gray-600 mb-3">
-                  <strong>Business Premium</strong> - Advanced security, compliance và phone system integration cho doanh nghiệp lớn.
-                </p>
-                <div className="text-lg font-bold text-purple-600">449.000 VNĐ/user/tháng</div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Migration & Support Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="h2 text-gray-800 mb-6">
-              Migration & Hỗ Trợ Chuyên Nghiệp
-            </h2>
-            <p className="lead prose-constraint mx-auto">
-              STEP hỗ trợ migration từ Google Workspace/Exchange và training nhân viên hoàn toàn miễn phí
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="h3 text-gray-800 mb-6">
-                Chuyển Đổi Không Gián Đoạn
-              </h3>
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={20} />
-                  <div>
-                    <span className="font-medium text-gray-800">Migration từ Google Workspace/Exchange</span>
-                    <p className="text-sm text-gray-600 mt-1">Chuyển đổi email, calendar, contacts không mất dữ liệu</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative bg-white rounded-2xl shadow-xl border-2 ${
+                  pkg.popular 
+                    ? 'border-blue-600 transform scale-105' 
+                    : 'border-gray-200'
+                } p-8 hover:shadow-2xl transition-all`}
+                data-testid={`package-card-${index}`}
+              >
+                {pkg.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+                      Phổ biến nhất
+                    </span>
                   </div>
-                </li>
-                <li className="flex items-start">
-                  <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={20} />
-                  <div>
-                    <span className="font-medium text-gray-800">Thiết lập tenant và domain</span>
-                    <p className="text-sm text-gray-600 mt-1">Cấu hình Azure AD, DNS records và SSO integration</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={20} />
-                  <div>
-                    <span className="font-medium text-gray-800">Training toàn diện</span>
-                    <p className="text-sm text-gray-600 mt-1">Đào tạo sử dụng Office, Teams, SharePoint cho team</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={20} />
-                  <div>
-                    <span className="font-medium text-gray-800">Hỗ trợ 24/7</span>
-                    <p className="text-sm text-gray-600 mt-1">Hotline, remote support và technical consulting</p>
-                  </div>
-                </li>
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-lg p-8 shadow-lg"
-            >
-              <h3 className="h3 text-gray-800 mb-4 text-center">
-                Quy Trình Triển Khai
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">1</div>
-                  <span className="text-gray-700">Phân tích nhu cầu và tư vấn gói (1 ngày)</span>
+                )}
+                
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
+                  <div className="text-3xl font-bold text-blue-600 mb-2">{pkg.price}</div>
+                  <p className="text-gray-600 text-sm">{pkg.suitable}</p>
                 </div>
-                <div className="flex items-center">
-                  <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">2</div>
-                  <span className="text-gray-700">Thiết lập tenant và cấu hình (2-3 ngày)</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">3</div>
-                  <span className="text-gray-700">Migration dữ liệu và testing (3-5 ngày)</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">4</div>
-                  <span className="text-gray-700">Training nhân viên và go-live (1 tuần)</span>
-                </div>
-              </div>
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <p className="text-blue-800 font-medium text-center">
-                  ⚡ Toàn bộ quy trình chỉ từ 1-2 tuần
-                </p>
-              </div>
-            </motion.div>
+                
+                <ul className="space-y-3 mb-8">
+                  {pkg.specs.map((spec, specIndex) => (
+                    <li key={specIndex} className="flex items-start text-sm">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{spec}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <Button 
+                  className={`w-full py-3 text-base font-semibold ${
+                    pkg.popular
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                  }`}
+                  onClick={() => setShowContactForm(true)}
+                  data-testid={`button-choose-package-${index}`}
+                >
+                  Chọn Gói {pkg.name}
+                </Button>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Form */}
-      <section id="contact-form" className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="h2 text-gray-800 mb-6">
-              Nhận Tư Vấn Microsoft 365 Miễn Phí
+      {/* Performance Benchmark Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              So Sánh Hiệu Suất Microsoft 365
             </h2>
-            <p className="lead prose-constraint mx-auto">
-              Chúng tôi sẽ liên hệ trong 24h để tư vấn gói phù hợp và hỗ trợ migration hoàn toàn miễn phí
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Benchmarks thực tế cho productivity và collaboration
             </p>
-          </motion.div>
+          </div>
+          
+          <PerformanceBenchmark />
+        </div>
+      </section>
 
-          <motion.form
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            onSubmit={handleSubmit}
-            className="bg-gray-50 rounded-lg p-8 shadow-lg"
-          >
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Họ và tên *
-                </label>
-                <Input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  required
-                  className="w-full"
-                  data-testid="input-name"
-                />
+      {/* Testimonial Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-12">
+              <div className="flex justify-center mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-8 w-8 text-yellow-400 fill-current" />
+                ))}
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email *
-                </label>
-                <Input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  required
-                  className="w-full"
-                  data-testid="input-email"
-                />
+              
+              <blockquote className="text-2xl text-gray-900 font-medium mb-8 italic leading-relaxed">
+                "{testimonial.text}"
+              </blockquote>
+              
+              <div className="flex items-center justify-center space-x-4">
+                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div className="text-left">
+                  <div className="font-semibold text-gray-900">{testimonial.author}</div>
+                  <div className="text-gray-600 text-sm">Vietnam Technology Industry</div>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Số điện thoại *
-                </label>
-                <Input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  required
-                  className="w-full"
-                  data-testid="input-phone"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tên công ty *
-                </label>
-                <Input
-                  type="text"
-                  value={formData.company}
-                  onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
-                  required
-                  className="w-full"
-                  data-testid="input-company"
-                />
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Số lượng user dự kiến
-                </label>
-                <Select 
-                  value={formData.userCount} 
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, userCount: value }))}
-                >
-                  <SelectTrigger data-testid="select-user-count">
-                    <SelectValue placeholder="Chọn số lượng user" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1-10">1-10 users</SelectItem>
-                    <SelectItem value="11-50">11-50 users</SelectItem>
-                    <SelectItem value="51-100">51-100 users</SelectItem>
-                    <SelectItem value="101-300">101-300 users</SelectItem>
-                    <SelectItem value="300+">300+ users</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Gói quan tâm
-                </label>
-                <Select 
-                  value={formData.package} 
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, package: value }))}
-                >
-                  <SelectTrigger data-testid="select-package">
-                    <SelectValue placeholder="Chọn gói dịch vụ" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Microsoft 365 Business Basic">Business Basic</SelectItem>
-                    <SelectItem value="Microsoft 365 Business Standard">Business Standard</SelectItem>
-                    <SelectItem value="Microsoft 365 Business Premium">Business Premium</SelectItem>
-                    <SelectItem value="Microsoft 365 Apps">Microsoft 365 Apps</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            Sẵn Sàng Chuyển Đổi Số Với Microsoft 365?
+          </h2>
+          <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
+            Tham gia 345 triệu users toàn cầu. Nhận 17% giảm giá năm đầu + setup support miễn phí.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
-              type="submit" 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 text-lg"
-              data-testid="button-submit"
+              size="lg"
+              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-start-now"
             >
-              Gửi Yêu Cầu Tư Vấn Miễn Phí
+              Bắt Đầu Ngay
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-          </motion.form>
+            
+            <Button 
+              variant="outline"
+              size="lg"
+              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-contact-consultant"
+            >
+              Liên Hệ Tư Vấn
+            </Button>
+          </div>
         </div>
       </section>
 
       <Footer />
+
+      {/* Contact Form Modal */}
+      <ContactForm 
+        open={showContactForm} 
+        onOpenChange={setShowContactForm}
+      />
+
+      {/* Email Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl p-8 max-w-md w-full relative"
+          >
+            <button 
+              onClick={() => setShowPopup(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              data-testid="button-close-popup"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Building className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                💼 Ưu Đãi Microsoft 365!
+              </h3>
+              <p className="text-gray-600">
+                Nhận 17% giảm giá năm đầu + setup support miễn phí cho doanh nghiệp!
+              </p>
+            </div>
+            
+            <form onSubmit={handlePopupSubmit} className="space-y-4">
+              <Input
+                type="text"
+                placeholder="Họ tên *"
+                value={popupData.name}
+                onChange={(e) => setPopupData({...popupData, name: e.target.value})}
+                required
+                data-testid="input-popup-name"
+              />
+              <Input
+                type="email"
+                placeholder="Email *"
+                value={popupData.email}
+                onChange={(e) => setPopupData({...popupData, email: e.target.value})}
+                required
+                data-testid="input-popup-email"
+              />
+              <Input
+                type="tel"
+                placeholder="Số điện thoại *"
+                value={popupData.phone}
+                onChange={(e) => setPopupData({...popupData, phone: e.target.value})}
+                required
+                data-testid="input-popup-phone"
+              />
+              <Button 
+                type="submit" 
+                className="w-full bg-blue-600 hover:bg-blue-700"
+                data-testid="button-popup-submit"
+              >
+                Nhận Ưu Đãi Ngay
+              </Button>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Email Popup Component - for consistent experience */}
+      <EmailPopup
+        discount="17% Off"
+        title="💼 Ưu Đãi Microsoft 365!"
+        description="Đăng ký email để nhận 17% giảm giá năm đầu + setup support miễn phí cho Teams và Office!"
+        buttonText="Nhận Giảm Giá 17%"
+        storageKey="microsoft365_email_popup_shown"
+      />
     </div>
   );
 }

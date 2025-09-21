@@ -1,486 +1,621 @@
-import { useState } from "react";
-import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { 
-  Server, 
-  Database, 
-  BarChart3, 
-  Cpu, 
-  Zap, 
+  Cloud, 
   Shield, 
-  DollarSign, 
-  TrendingUp,
-  CheckCircle,
-  ArrowRight,
-  Star,
-  Cloud,
+  Server, 
+  CheckCircle, 
+  ArrowRight, 
+  Globe, 
+  Clock,
   Users,
-  Award,
-  Target
+  Star,
+  X,
+  Database,
+  TrendingUp,
+  Lock,
+  BarChart3,
+  Cpu,
+  Zap,
+  Settings,
+  Monitor,
+  Award
 } from "lucide-react";
-import Header from "../components/header";
-import Footer from "../components/footer";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import ContactForm from "@/components/contact-form";
+import PerformanceBenchmark from "@/components/performance-benchmark";
+import EmailPopup from "@/components/email-popup";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function GCPPage() {
   const [showContactForm, setShowContactForm] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupData, setPopupData] = useState({
+    email: "",
+    name: "",
+    phone: ""
+  });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    projectDescription: "",
+    package: ""
+  });
 
-  // Featured GCP Services
-  const gcpServices = [
+  const handleEmailSubmit = async (email: string) => {
+    console.log('Email submitted for GCP:', email);
+    // Integration with email service would go here
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  };
+
+  // Show popup after 10 seconds or 50% scroll
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 10000);
+
+    const handleScroll = () => {
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      if (scrollPercent >= 50) {
+        setShowPopup(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const benefits = [
     {
-      icon: <Server className="h-12 w-12 text-[hsl(207,100%,40%)]" />,
-      title: "Compute Engine",
-      description: "Máy ảo có hiệu suất cao với khả năng tùy chỉnh linh hoạt. Hỗ trợ nhiều hệ điều hành, tự động mở rộng theo nhu cầu và thanh toán theo sử dụng thực tế.",
-      features: ["Auto-scaling", "Load balancing", "Custom machine types", "Preemptible VMs"]
+      icon: BarChart3,
+      title: "BigQuery & AI/ML Mạnh Mẽ",
+      description: "Xử lý petabyte data trong giây lát với BigQuery, tích hợp sẵn TensorFlow và AutoML để phân tích dữ liệu thông minh – lý tưởng cho doanh nghiệp cần insights nhanh từ big data mà không cần đầu tư hạ tầng phức tạp."
     },
     {
-      icon: <Database className="h-12 w-12 text-[hsl(207,100%,40%)]" />,
-      title: "Cloud Storage",
-      description: "Lưu trữ dữ liệu an toàn với độ bền 99.999999999% (11 chín). Hỗ trợ nhiều lớp lưu trữ từ hot data đến cold archive với chi phí tối ưu.",
-      features: ["Multi-regional storage", "Lifecycle management", "Object versioning", "IAM security"]
+      icon: Zap,
+      title: "Auto-Scaling & Global Network", 
+      description: "Tự động mở rộng theo traffic với network backbone tốc độ cao của Google, load balancing thông minh và CDN global – giúp app của bạn phục vụ khách hàng toàn cầu với latency thấp nhất."
     },
     {
-      icon: <BarChart3 className="h-12 w-12 text-[hsl(207,100%,40%)]" />,
-      title: "BigQuery",
-      description: "Data warehouse serverless cho phân tích dữ liệu lớn với tốc độ petabyte/giây. Tích hợp ML và AI để khai thác insight từ dữ liệu doanh nghiệp.",
-      features: ["Serverless analytics", "Real-time insights", "Built-in ML", "Cost optimization"]
+      icon: Shield,
+      title: "Bảo Mật Zero Trust & BeyondCorp",
+      description: "Security-first design với Zero Trust architecture, IAM chi tiết và encryption mặc định cho mọi dữ liệu. Google bảo vệ infrastructure như chính hệ thống của họ – an toàn tối đa cho dữ liệu doanh nghiệp."
     },
     {
-      icon: <Cpu className="h-12 w-12 text-[hsl(207,100%,40%)]" />,
-      title: "Kubernetes Engine",
-      description: "Quản lý container tự động với Google Kubernetes Engine (GKE). Triển khai, quản lý và mở rộng ứng dụng container một cách dễ dàng và hiệu quả.",
-      features: ["Auto-upgrade", "Auto-repair", "Cluster autoscaling", "Workload identity"]
+      icon: Users,
+      title: "Tiết Kiệm Chi Phí & Pay-as-you-use",
+      description: "Giá cạnh tranh nhất thị trường với committed use discounts, sustained use discounts tự động và preemptible VMs – tiết kiệm 15-30% so với AWS/Azure mà vẫn đảm bảo performance cao."
     }
   ];
 
-  // GCP vs Competitors Comparison Data
-  const comparisonData = [
+  const gcpAdvantages = [
     {
-      metric: "Chi phí",
-      gcp: 85,
-      aws: 100,
-      azure: 95,
-      description: "GCP tiết kiệm 15% so với AWS"
+      icon: Database,
+      title: "Data Analytics Vượt Trội",
+      description: "BigQuery xử lý SQL queries trên petabyte data trong vài giây, Data Studio miễn phí cho visualization, và Looker cho business intelligence. Lý tưởng cho data-driven companies cần insights thời gian thực."
     },
     {
-      metric: "Hiệu suất",
-      gcp: 95,
-      aws: 85,
-      azure: 80,
-      description: "Nhanh hơn 12% nhờ network backbone"
+      icon: Cpu,
+      title: "Kubernetes & Container Native",
+      description: "Google Kubernetes Engine (GKE) với auto-pilot mode, container registry private và Cloud Run serverless. Deploy và scale microservices dễ dàng, phù hợp cho modern app architecture."
     },
     {
-      metric: "Bảo mật",
-      gcp: 98,
-      aws: 90,
-      azure: 88,
-      description: "Zero Trust và BeyondCorp security"
+      icon: Cloud,
+      title: "Multi-Cloud & Hybrid Support",
+      description: "Anthos cho hybrid/multi-cloud deployment, migrate VMs với Migrate for Compute Engine và consistent experience across clouds. Không bị vendor lock-in, linh hoạt tối đa."
     },
     {
-      metric: "AI/ML",
-      gcp: 95,
-      aws: 75,
-      azure: 70,
-      description: "TensorFlow và AutoML tích hợp sẵn"
+      icon: Monitor,
+      title: "DevOps & CI/CD Tích Hợp",
+      description: "Cloud Build cho CI/CD pipelines, Container Registry, Cloud Source Repositories và monitoring với Stackdriver. Streamline development workflow từ code đến production."
+    },
+    {
+      icon: TrendingUp,
+      title: "AI Platform & Machine Learning",
+      description: "Vertex AI cho MLOps, pre-trained APIs (Vision, Natural Language, Translation), và TPUs cho training nhanh. Dễ dàng tích hợp AI vào app mà không cần ML expertise sâu."
+    },
+    {
+      icon: Settings,
+      title: "Serverless & Managed Services",
+      description: "Cloud Functions, Cloud Run, App Engine cho serverless computing. Cloud SQL, Firestore, Cloud Storage fully managed – focus vào business logic thay vì infrastructure management."
     }
   ];
 
-  // Case Studies
-  const caseStudies = [
+  const packages = [
     {
-      company: "VinGroup",
-      industry: "Bất động sản & Retail",
-      logo: "🏢",
-      challenge: "Xử lý dữ liệu khách hàng từ hàng triệu giao dịch",
-      solution: "BigQuery + Cloud Storage + Compute Engine",
-      results: [
-        "Giảm 40% thời gian phân tích dữ liệu",
-        "Tăng 25% hiệu quả marketing nhờ AI insights",
-        "Tiết kiệm 30% chi phí IT infrastructure"
-      ],
-      testimonial: "GCP đã giúp chúng tôi xử lý dữ liệu nhanh hơn và đưa ra quyết định kinh doanh chính xác hơn."
+      name: "Gói Startup",
+      price: "2.000.000 VNĐ/tháng",
+      storage: "Compute Engine + Cloud Storage",
+      features: "2 vCPUs, 8GB RAM, 100GB SSD",
+      suitable: "Startup/SME với traffic vừa",
+      color: "blue",
+      specs: [
+        "2 vCPUs, 8GB RAM",
+        "100GB SSD Storage",
+        "Cloud Load Balancing",
+        "Cloud SQL Database",
+        "SSL Certificates",
+        "$300 Free Credits"
+      ]
     },
     {
-      company: "Tiki",
-      industry: "E-commerce",
-      logo: "🛒",
-      challenge: "Scale hệ thống trong các đợt sale lớn",
-      solution: "Kubernetes Engine + Load Balancer + Cloud SQL",
-      results: [
-        "Xử lý được 10x traffic trong ngày 11/11",
-        "Uptime 99.99% trong peak hours",
-        "Giảm 50% thời gian deploy ứng dụng mới"
-      ],
-      testimonial: "Kubernetes Engine giúp chúng tôi tự tin scale trong các sự kiện lớn mà không lo về downtime."
+      name: "Gói Business",
+      price: "5.000.000 VNĐ/tháng", 
+      storage: "BigQuery + Kubernetes Engine",
+      features: "4 vCPUs, 16GB RAM, Auto-scaling",
+      suitable: "Doanh nghiệp với data analytics",
+      color: "green",
+      popular: true,
+      specs: [
+        "All từ gói Startup",
+        "4 vCPUs, 16GB RAM", 
+        "BigQuery 1TB Processing",
+        "GKE Cluster",
+        "Cloud Functions",
+        "24/7 Premium Support"
+      ]
     },
     {
-      company: "FPT Software",
-      industry: "Công nghệ phần mềm",
-      logo: "💻",
-      challenge: "Phát triển AI solutions cho khách hàng quốc tế",
-      solution: "AI Platform + TPUs + Cloud Run",
-      results: [
-        "Rút ngắn 60% thời gian training ML models",
-        "Deploy AI services trong vài phút",
-        "Hỗ trợ 50+ dự án AI đồng thời"
-      ],
-      testimonial: "TPUs và AI Platform của Google giúp chúng tôi deliver AI solutions nhanh hơn bao giờ hết."
+      name: "Gói Enterprise",
+      price: "15.000.000 VNĐ/tháng",
+      storage: "Full AI/ML Platform + Multi-region", 
+      features: "Custom vCPUs, High Memory, TPUs",
+      suitable: "Large enterprise/AI companies",
+      color: "purple",
+      specs: [
+        "All từ gói Business",
+        "Custom Machine Types",
+        "Vertex AI Platform",
+        "TPU Access",
+        "Multi-region Deployment",
+        "Dedicated Account Manager"
+      ]
     }
   ];
+
+  const testimonial = {
+    text: "Google Cloud giúp chúng tôi scale từ 100K users lên 10M users mà không cần thay đổi kiến trúc!",
+    author: "Anh D., CTO tại Tiki"
+  };
+
+  const techFeatures = [
+    { name: "BigQuery", icon: BarChart3 },
+    { name: "Kubernetes", icon: Settings },
+    { name: "Cloud Functions", icon: Zap },
+    { name: "Vertex AI", icon: Monitor },
+    { name: "Cloud SQL", icon: Database },
+    { name: "Load Balancing", icon: Globe }
+  ];
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Main form data:', formData);
+    // Handle form submission
+    setShowContactForm(false);
+  };
+
+  const handlePopupSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Popup form data:', popupData);
+    setShowPopup(false);
+  };
 
   return (
-    <>
+    <div className="min-h-screen bg-white">
       <Header />
-      
-      <main className="pt-16">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-white py-24">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-              {/* Left Column - Content */}
-              <div className="">
-                {/* Badge */}
-                <div className="inline-flex items-center bg-[hsl(207,100%,40%)] text-white px-4 py-2 rounded-lg text-sm font-medium mb-6">
-                  <Cloud className="mr-2 h-5 w-5" />
+
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-slate-50 to-white py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="w-full h-full bg-gradient-to-br from-slate-50/50 to-transparent"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4">
+                  <Cloud className="text-white w-6 h-6" />
+                </div>
+                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
                   Google Cloud Platform
-                </div>
-                
-                <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                  <span className="text-[hsl(207,100%,40%)]">Sức mạnh Điện toán Đám mây</span>{" "}
-                  <span className="text-gray-800">– Nâng Tầm</span>{" "}
-                  <span className="text-[hsl(32,95%,55%)]">AI & Machine Learning</span>{" "}
-                  <span className="text-gray-800">Của Bạn Chỉ Trong Phút Chốc!</span>
-                </h1>
-                
-                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                  Google Cloud Platform với BigQuery xử lý petabyte data, AI Platform training models nhanh gấp 10 lần, 
-                  và auto-scaling global infrastructure. Dành riêng cho doanh nghiệp SMEs cần breakthrough công nghệ!
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <Button 
-                    className="bg-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,35%)] text-white text-lg px-8 py-4"
-                    data-testid="button-explore-services"
-                  >
-                    Kiểm Tra Cloud Phù Hợp
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="border-2 border-[hsl(32,95%,55%)] text-[hsl(32,95%,55%)] hover:bg-[hsl(32,95%,55%)] hover:text-white text-lg px-8 py-4"
-                    data-testid="button-free-consultation"
-                  >
-                    Tư Vấn Miễn Phí
-                  </Button>
-                </div>
-                
-                <div className="flex items-center text-green-600">
-                  <CheckCircle className="h-5 w-5 mr-2" />
-                  <span className="text-sm font-medium">Nhận $300 credit miễn phí để trải nghiệm ngay hôm nay!</span>
-                </div>
+                </span>
               </div>
               
-              {/* Right Column - Performance Metrics Card */}
-              <div className="lg:flex justify-center">
-                <Card className="bg-white shadow-2xl rounded-2xl p-6 w-full max-w-sm border-0">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex space-x-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    </div>
+              <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Google Cloud Platform – 
+                <span className="text-blue-500"> Sức Mạnh AI & Big Data</span> 
+                Nâng Tầm Doanh Nghiệp Của Bạn!
+              </h1>
+              
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Dịch vụ cloud toàn diện với BigQuery xử lý petabyte data, AI Platform training models nhanh gấp 10 lần, 
+                và auto-scaling global infrastructure. Dành riêng cho doanh nghiệp cần breakthrough công nghệ AI/ML và big data analytics.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <Button 
+                  size="lg"
+                  className="bg-blue-500 hover:bg-blue-600 px-8 py-4 text-lg font-semibold"
+                  onClick={() => {
+                    document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  data-testid="button-check-packages"
+                >
+                  Kiểm Tra Gói Cloud Phù Hợp
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-8 py-4 text-lg"
+                  onClick={() => setShowContactForm(true)}
+                  data-testid="button-free-trial"
+                >
+                  Nhận $300 Credits Miễn Phí
+                </Button>
+              </div>
+              
+              <div className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                <span>Trải nghiệm ngay BigQuery và Vertex AI với $300 credits!</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 text-green-400 font-mono text-sm">
+                <div className="flex items-center mb-6">
+                  <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-gray-400 ml-4">Google Cloud Console</span>
+                </div>
+                
+                <div className="space-y-2">
+                  <div><span className="text-blue-400">$</span> gcloud compute instances create</div>
+                  <div><span className="text-blue-400">$</span> bq query "SELECT * FROM dataset"</div>
+                  <div><span className="text-blue-400">$</span> kubectl apply -f deployment.yaml</div>
+                  <div><span className="text-green-500">✓</span> AI Platform training job started!</div>
+                </div>
+              </div>
+
+              {/* Tech Stack Icons */}
+              <div className="mt-8 grid grid-cols-3 gap-4">
+                {techFeatures.map((tech, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-lg p-4 text-center">
+                    <tech.icon className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                    <span className="text-sm font-medium text-gray-700">{tech.name}</span>
                   </div>
-                  
-                  <h3 className="text-lg font-bold text-gray-800 mb-6">Google Cloud Performance</h3>
-                  
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600">AI/ML Processing</span>
-                        <span className="text-sm font-bold text-[hsl(207,100%,40%)]">&lt; 1s</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div className="bg-gradient-to-r from-[hsl(207,100%,40%)] to-[hsl(207,100%,50%)] h-2 rounded-full" style={{width: "95%"}}></div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600">Global Availability</span>
-                        <span className="text-sm font-bold text-green-600">99.95%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full" style={{width: "99%"}}></div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600">Auto-scaling Speed</span>
-                        <span className="text-sm font-bold text-[hsl(32,95%,55%)]">A+</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div className="bg-gradient-to-r from-[hsl(32,95%,55%)] to-orange-500 h-2 rounded-full" style={{width: "98%"}}></div>
-                      </div>
-                    </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tại Sao Chọn Google Cloud Platform?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Những ưu thế vượt trội của GCP cho doanh nghiệp Việt Nam
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100"
+                data-testid={`benefit-card-${index}`}
+              >
+                <div className="flex items-start space-x-6">
+                  <div className="bg-blue-100 rounded-xl p-4 flex-shrink-0">
+                    <benefit.icon className="h-8 w-8 text-blue-600" />
                   </div>
-                </Card>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* GCP Advantages Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tính Năng Nổi Bật Của Google Cloud
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Bộ công cụ toàn diện để xây dựng, triển khai và mở rộng ứng dụng
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {gcpAdvantages.map((advantage, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                data-testid={`advantage-card-${index}`}
+              >
+                <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-3 w-fit mb-4">
+                  <advantage.icon className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                  {advantage.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {advantage.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Packages Section */}
+      <section id="packages" className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Gói Dịch Vụ Google Cloud
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Lựa chọn gói phù hợp với quy mô và nhu cầu của doanh nghiệp
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative bg-white rounded-2xl shadow-xl border-2 ${
+                  pkg.popular 
+                    ? 'border-blue-500 transform scale-105' 
+                    : 'border-gray-200'
+                } p-8 hover:shadow-2xl transition-all`}
+                data-testid={`package-card-${index}`}
+              >
+                {pkg.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium">
+                      Phổ biến nhất
+                    </span>
+                  </div>
+                )}
+                
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
+                  <div className="text-3xl font-bold text-blue-600 mb-2">{pkg.price}</div>
+                  <p className="text-gray-600 text-sm">{pkg.suitable}</p>
+                </div>
+                
+                <ul className="space-y-3 mb-8">
+                  {pkg.specs.map((spec, specIndex) => (
+                    <li key={specIndex} className="flex items-start text-sm">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{spec}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <Button 
+                  className={`w-full py-3 text-base font-semibold ${
+                    pkg.popular
+                      ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                  }`}
+                  onClick={() => setShowContactForm(true)}
+                  data-testid={`button-choose-package-${index}`}
+                >
+                  Chọn Gói {pkg.name}
+                </Button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Performance Benchmark Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              So Sánh Hiệu Suất Google Cloud
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Benchmarks thực tế cho các use cases phổ biến
+            </p>
+          </div>
+          
+          <PerformanceBenchmark />
+        </div>
+      </section>
+
+      {/* Testimonial Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-12">
+              <div className="flex justify-center mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-8 w-8 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              
+              <blockquote className="text-2xl text-gray-900 font-medium mb-8 italic leading-relaxed">
+                "{testimonial.text}"
+              </blockquote>
+              
+              <div className="flex items-center justify-center space-x-4">
+                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div className="text-left">
+                  <div className="font-semibold text-gray-900">{testimonial.author}</div>
+                  <div className="text-gray-600 text-sm">Vietnam Technology Leader</div>
+                </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Featured Services Section */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Các Dịch Vụ <span className="text-[hsl(207,100%,40%)]">Nổi Bật</span>
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Bộ công cụ cloud toàn diện từ Google để xây dựng, triển khai và mở rộng ứng dụng
-              </p>
-            </div>
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            Sẵn Sàng Khám Phá Google Cloud Platform?
+          </h2>
+          <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
+            Nhận $300 credits miễn phí để trải nghiệm BigQuery, Vertex AI và toàn bộ ecosystem Google Cloud.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg"
+              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-get-started"
+            >
+              Bắt Đầu Ngay
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-7xl mx-auto">
-              {gcpServices.map((service, index) => (
-                <Card key={index} className="hover:shadow-2xl transition-all duration-300 border-0 shadow-lg rounded-2xl overflow-hidden" data-testid={`card-service-${index}`}>
-                  <CardContent className="p-8">
-                    <div className="flex items-start space-x-6">
-                      <div className="bg-blue-50 rounded-2xl p-4 flex-shrink-0">
-                        {service.icon}
-                      </div>
-                      <div className="flex-grow">
-                        <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                          {service.title}
-                        </h3>
-                        <p className="text-gray-600 mb-6 leading-relaxed">
-                          {service.description}
-                        </p>
-                        <div className="grid grid-cols-2 gap-3">
-                          {service.features.map((feature, featureIndex) => (
-                            <div key={featureIndex} className="flex items-center text-sm text-gray-700">
-                              <CheckCircle className="h-4 w-4 text-[hsl(207,100%,40%)] mr-2 flex-shrink-0" />
-                              {feature}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <Button 
+              variant="outline"
+              size="lg"
+              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-contact-consultant"
+            >
+              Liên Hệ Tư Vấn
+            </Button>
           </div>
-        </section>
-
-        {/* Comparison Chart Section */}
-        <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                <span className="text-[hsl(207,100%,40%)]">So Sánh</span> GCP với Đối Thủ
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Tại sao Google Cloud Platform là lựa chọn tối ưu cho doanh nghiệp Việt Nam
-              </p>
-            </div>
-            
-            <div className="max-w-6xl mx-auto">
-              <Card className="rounded-2xl shadow-2xl border-0 overflow-hidden">
-                <CardContent className="p-0">
-                  <div className="bg-gradient-to-r from-[hsl(207,100%,40%)] to-[hsl(207,100%,50%)] text-white p-8">
-                    <h3 className="text-2xl font-bold text-center">Biểu Đồ So Sánh Chi Phí & Hiệu Suất</h3>
-                  </div>
-                  
-                  <div className="p-8">
-                    <div className="space-y-8">
-                      {comparisonData.map((data, index) => (
-                        <div key={index} className="space-y-4" data-testid={`comparison-metric-${index}`}>
-                          <div className="flex justify-between items-center">
-                            <h4 className="text-lg font-semibold text-gray-900">{data.metric}</h4>
-                            <p className="text-sm text-gray-600">{data.description}</p>
-                          </div>
-                          
-                          <div className="grid grid-cols-3 gap-4">
-                            {/* GCP */}
-                            <div className="space-y-2">
-                              <div className="flex justify-between">
-                                <span className="text-sm font-medium text-[hsl(207,100%,40%)]">Google Cloud</span>
-                                <span className="text-sm font-bold text-[hsl(207,100%,40%)]">{data.gcp}%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-3">
-                                <div 
-                                  className="bg-gradient-to-r from-[hsl(207,100%,40%)] to-[hsl(207,100%,50%)] h-3 rounded-full transition-all duration-1000"
-                                  style={{ width: `${data.gcp}%` }}
-                                ></div>
-                              </div>
-                            </div>
-                            
-                            {/* AWS */}
-                            <div className="space-y-2">
-                              <div className="flex justify-between">
-                                <span className="text-sm font-medium text-gray-600">AWS</span>
-                                <span className="text-sm font-bold text-gray-600">{data.aws}%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-3">
-                                <div 
-                                  className="bg-gray-400 h-3 rounded-full transition-all duration-1000"
-                                  style={{ width: `${data.aws}%` }}
-                                ></div>
-                              </div>
-                            </div>
-                            
-                            {/* Azure */}
-                            <div className="space-y-2">
-                              <div className="flex justify-between">
-                                <span className="text-sm font-medium text-gray-600">Azure</span>
-                                <span className="text-sm font-bold text-gray-600">{data.azure}%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-3">
-                                <div 
-                                  className="bg-gray-400 h-3 rounded-full transition-all duration-1000"
-                                  style={{ width: `${data.azure}%` }}
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <div className="mt-12 p-6 bg-blue-50 rounded-xl">
-                      <div className="flex items-center justify-center space-x-8 text-center">
-                        <div>
-                          <div className="text-3xl font-bold text-[hsl(207,100%,40%)]">15%</div>
-                          <div className="text-sm text-gray-600">Tiết kiệm chi phí</div>
-                        </div>
-                        <div>
-                          <div className="text-3xl font-bold text-[hsl(32,95%,55%)]">12%</div>
-                          <div className="text-sm text-gray-600">Nhanh hơn</div>
-                        </div>
-                        <div>
-                          <div className="text-3xl font-bold text-green-600">99.95%</div>
-                          <div className="text-sm text-gray-600">Uptime SLA</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Case Studies Section */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Câu Chuyện <span className="text-[hsl(32,95%,55%)]">Thành Công</span>
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Khám phá cách các doanh nghiệp hàng đầu Việt Nam đã thành công với Google Cloud Platform
-              </p>
-            </div>
-            
-            <div className="space-y-16 max-w-6xl mx-auto">
-              {caseStudies.map((study, index) => (
-                <Card key={index} className="rounded-3xl shadow-2xl border-0 overflow-hidden hover:shadow-3xl transition-all duration-500" data-testid={`case-study-${index}`}>
-                  <CardContent className="p-0">
-                    <div className="grid grid-cols-1 lg:grid-cols-2">
-                      {/* Left side - Company info */}
-                      <div className="p-10 bg-gradient-to-br from-blue-50 to-indigo-50">
-                        <div className="flex items-center space-x-4 mb-6">
-                          <div className="text-4xl">{study.logo}</div>
-                          <div>
-                            <h3 className="text-2xl font-bold text-gray-900">{study.company}</h3>
-                            <p className="text-gray-600">{study.industry}</p>
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-6">
-                          <div>
-                            <h4 className="font-semibold text-gray-900 mb-2">Thách thức:</h4>
-                            <p className="text-gray-700">{study.challenge}</p>
-                          </div>
-                          
-                          <div>
-                            <h4 className="font-semibold text-gray-900 mb-2">Giải pháp:</h4>
-                            <Badge className="bg-[hsl(207,100%,40%)] text-white px-3 py-1">
-                              {study.solution}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Right side - Results */}
-                      <div className="p-10">
-                        <h4 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                          <Award className="h-6 w-6 text-[hsl(32,95%,55%)] mr-2" />
-                          Kết quả đạt được:
-                        </h4>
-                        
-                        <ul className="space-y-4 mb-8">
-                          {study.results.map((result, resultIndex) => (
-                            <li key={resultIndex} className="flex items-start">
-                              <Target className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                              <span className="text-gray-700">{result}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        
-                        <div className="bg-gray-50 rounded-xl p-6">
-                          <div className="flex items-center mb-3">
-                            {[...Array(5)].map((_, i) => (
-                              <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                            ))}
-                          </div>
-                          <blockquote className="text-gray-700 italic">
-                            "{study.testimonial}"
-                          </blockquote>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-24 bg-gradient-to-r from-[hsl(207,100%,40%)] via-[hsl(207,100%,45%)] to-[hsl(32,95%,55%)] text-white">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">
-              Sẵn Sàng Chuyển Đổi Số Với Google Cloud?
-            </h2>
-            <p className="text-xl md:text-2xl mb-12 opacity-90 max-w-3xl mx-auto">
-              Nhận $300 credit miễn phí để trải nghiệm sức mạnh Google Cloud Platform. 
-              Đội ngũ chuyên gia sẽ hỗ trợ bạn 24/7.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button 
-                className="bg-white text-[hsl(207,100%,40%)] hover:bg-gray-100 text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
-                data-testid="button-start-trial"
-              >
-                Bắt Đầu Dùng Thử Ngay
-                <ArrowRight className="ml-3 h-6 w-6" />
-              </Button>
-              <Button 
-                variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-[hsl(207,100%,40%)] text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
-                data-testid="button-contact-expert"
-              >
-                Liên Hệ Chuyên Gia
-              </Button>
-            </div>
-          </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
       <Footer />
-    </>
+
+      {/* Contact Form Modal */}
+      <ContactForm 
+        open={showContactForm} 
+        onOpenChange={setShowContactForm}
+      />
+
+      {/* Email Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl p-8 max-w-md w-full relative"
+          >
+            <button 
+              onClick={() => setShowPopup(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              data-testid="button-close-popup"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Cloud className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                🚀 Ưu Đãi Google Cloud!
+              </h3>
+              <p className="text-gray-600">
+                Nhận $300 credits miễn phí + tư vấn setup BigQuery cho doanh nghiệp!
+              </p>
+            </div>
+            
+            <form onSubmit={handlePopupSubmit} className="space-y-4">
+              <Input
+                type="text"
+                placeholder="Họ tên *"
+                value={popupData.name}
+                onChange={(e) => setPopupData({...popupData, name: e.target.value})}
+                required
+                data-testid="input-popup-name"
+              />
+              <Input
+                type="email"
+                placeholder="Email *"
+                value={popupData.email}
+                onChange={(e) => setPopupData({...popupData, email: e.target.value})}
+                required
+                data-testid="input-popup-email"
+              />
+              <Input
+                type="tel"
+                placeholder="Số điện thoại *"
+                value={popupData.phone}
+                onChange={(e) => setPopupData({...popupData, phone: e.target.value})}
+                required
+                data-testid="input-popup-phone"
+              />
+              <Button 
+                type="submit" 
+                className="w-full bg-blue-500 hover:bg-blue-600"
+                data-testid="button-popup-submit"
+              >
+                Nhận Ưu Đãi Ngay
+              </Button>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Email Popup Component - for consistent experience */}
+      <EmailPopup
+        discount="$300 Credits"
+        title="🚀 Ưu Đãi Google Cloud Platform!"
+        description="Đăng ký email để nhận $300 credits miễn phí + setup consultation cho BigQuery và AI Platform!"
+        buttonText="Nhận Credits Miễn Phí"
+        storageKey="gcp_email_popup_shown"
+      />
+    </div>
   );
 }

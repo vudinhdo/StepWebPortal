@@ -1,489 +1,621 @@
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { 
   Server, 
-  Cloud, 
-  HardDrive,
-  Shield,
+  Shield, 
+  HardDrive, 
+  CheckCircle, 
+  ArrowRight, 
+  Globe, 
   Clock,
-  Headphones,
-  CheckCircle,
-  ArrowRight,
-  Phone,
-  Zap,
-  Settings,
+  Users,
+  Star,
+  X,
+  Database,
   TrendingUp,
   Lock,
-  Search,
-  Users,
+  Cloud,
+  Zap,
+  Settings,
+  Monitor,
   Award,
-  Star,
-  Plus,
-  Minus,
-  Mail,
-  User,
-  MessageSquare
-} from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+  Headphones
+} from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import ContactForm from "@/components/contact-form";
+import PerformanceBenchmark from "@/components/performance-benchmark";
+import EmailPopup from "@/components/email-popup";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function ServersOverview() {
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupData, setPopupData] = useState({
+    email: "",
+    name: "",
+    phone: ""
+  });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    projectDescription: "",
+    package: ""
+  });
+
+  const handleEmailSubmit = async (email: string) => {
+    console.log('Email submitted for Server services:', email);
+    // Integration with email service would go here
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  };
+
+  // Show popup after 10 seconds or 50% scroll
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 10000);
+
+    const handleScroll = () => {
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      if (scrollPercent >= 50) {
+        setShowPopup(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const benefits = [
+    {
+      icon: Server,
+      title: "Máy Chủ Vật Lý Cao Cấp",
+      description: "Intel Xeon processors, SSD NVMe ultra-fast và RAM ECC memory với 100% dedicated resources – lý tưởng cho enterprise applications cần maximum performance và isolated environment cho security và compliance tối đa."
+    },
+    {
+      icon: Cloud,
+      title: "Cloud & Virtualization Linh Hoạt", 
+      description: "Auto-scaling based trên real traffic, pay-as-you-use pricing và multi-region deployment với disaster recovery tự động – perfect cho modern applications cần elasticity và cost optimization."
+    },
+    {
+      icon: Shield,
+      title: "Enterprise Security & Compliance",
+      description: "DDoS protection layer 7, firewall hardware-based và 24/7 SOC monitoring với compliance GDPR, ISO 27001 – đảm bảo data protection và regulatory requirements cho enterprise."
+    },
+    {
+      icon: Headphones,
+      title: "Support 24/7 & SLA Guarantee",
+      description: "Vietnamese expert technicians, 15-minute response time và 99.9% uptime SLA với proactive monitoring – comprehensive support cho business-critical operations mọi lúc mọi nơi."
+    }
+  ];
+
+  const serverAdvantages = [
+    {
+      icon: HardDrive,
+      title: "SSD NVMe Ultra Performance",
+      description: "Latest generation NVMe SSD với read/write speeds lên đến 6GB/s, perfect cho database applications và high I/O workloads. Significantly faster than traditional SATA SSDs."
+    },
+    {
+      icon: Database,
+      title: "Dedicated Resource Guarantee",
+      description: "100% CPU, RAM và storage allocation không share với users khác. Predictable performance cho mission-critical applications với resource isolation hoàn toàn."
+    },
+    {
+      icon: Settings,
+      title: "Full Root Access & Control",
+      description: "Complete administrative access với custom software installation, kernel modifications và advanced configurations. Perfect cho developers và system administrators."
+    },
+    {
+      icon: Monitor,
+      title: "Real-time Monitoring",
+      description: "24/7 server monitoring với alerting system, performance graphs và automated failover. Proactive issue detection và instant notification qua multiple channels."
+    },
+    {
+      icon: Lock,
+      title: "Advanced Security Features",
+      description: "Multi-layer security với DDoS protection, intrusion detection và automated backup systems. Comprehensive security cho enterprise data protection."
+    },
+    {
+      icon: TrendingUp,
+      title: "Scalability & Migration",
+      description: "Easy vertical scaling với zero-downtime migrations và horizontal expansion options. Seamless growth path cho expanding businesses."
+    }
+  ];
+
+  const packages = [
+    {
+      name: "VPS Starter",
+      price: "500.000 VNĐ/tháng",
+      storage: "2 CPU, 4GB RAM, 50GB SSD",
+      features: "Cloud VPS với cPanel",
+      suitable: "Startup/Small business",
+      color: "blue",
+      specs: [
+        "2 vCPU Cores",
+        "4GB RAM DDR4",
+        "50GB SSD NVMe",
+        "Unlimited Bandwidth",
+        "cPanel/WHM Included",
+        "Free SSL Certificate"
+      ]
+    },
+    {
+      name: "VPS Business",
+      price: "1.200.000 VNĐ/tháng", 
+      storage: "4 CPU, 8GB RAM, 120GB SSD",
+      features: "Enhanced performance VPS",
+      suitable: "Growing businesses",
+      color: "green",
+      popular: true,
+      specs: [
+        "All từ gói Starter",
+        "4 vCPU Cores", 
+        "8GB RAM DDR4",
+        "120GB SSD NVMe",
+        "Priority Support",
+        "Advanced Monitoring"
+      ]
+    },
+    {
+      name: "Dedicated Server",
+      price: "8.500.000 VNĐ/tháng",
+      storage: "Intel Xeon, 32GB RAM", 
+      features: "Full physical server",
+      suitable: "Enterprise applications",
+      color: "purple",
+      specs: [
+        "Intel Xeon Processor",
+        "32GB RAM ECC",
+        "1TB SSD NVMe",
+        "10Gbps Network",
+        "Full Root Access",
+        "24/7 Expert Support"
+      ]
+    }
+  ];
+
+  const testimonial = {
+    text: "Máy chủ của STEP đã giúp website của chúng tôi đạt 99.9% uptime và tăng 40% performance!",
+    author: "Anh T., CTO tại Tiki"
+  };
+
+  const techFeatures = [
+    { name: "Intel Xeon", icon: Server },
+    { name: "SSD NVMe", icon: HardDrive },
+    { name: "DDoS Protection", icon: Shield },
+    { name: "24/7 Monitoring", icon: Monitor },
+    { name: "Cloud Backup", icon: Cloud },
+    { name: "Load Balancer", icon: Settings }
+  ];
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Main form data:', formData);
+    // Handle form submission
+    setShowContactForm(false);
+  };
+
+  const handlePopupSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Popup form data:', popupData);
+    setShowPopup(false);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <Header />
-      
-      <main>
-        {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary/5 to-primary/10">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-                Giải Pháp Máy Chủ 
-                <span className="text-primary"> Toàn Diện</span>
-                <br />
-                cho Mọi Doanh Nghiệp
+
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-slate-50 to-white py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="w-full h-full bg-gradient-to-br from-slate-50/50 to-transparent"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mr-4">
+                  <Server className="text-white w-6 h-6" />
+                </div>
+                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                  Enterprise Server Solutions
+                </span>
+              </div>
+              
+              <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Máy Chủ Enterprise – 
+                <span className="text-primary"> Dedicated Performance</span> 
+                Với 99.9% Uptime Guarantee!
               </h1>
               
-              <p className="text-xl text-muted-foreground mb-10 leading-relaxed max-w-3xl mx-auto">
-                Khám phá các lựa chọn máy chủ mạnh mẽ và đáng tin cậy. Chúng tôi cung cấp giải pháp phù hợp với mọi quy mô 
-                và nhu cầu kinh doanh, từ máy chủ vật lý, ảo hóa đến đám mây.
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Giải pháp máy chủ toàn diện từ VPS đến dedicated servers với Intel Xeon, SSD NVMe và enterprise security. 
+                Dành riêng cho doanh nghiệp cần infrastructure performance cao và reliability tối đa.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Button 
-                  size="lg" 
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg"
-                  data-testid="button-explore-solutions"
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 px-8 py-4 text-lg font-semibold"
+                  onClick={() => {
+                    document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  data-testid="button-check-server-packages"
                 >
-                  Khám Phá Giải Pháp
-                  <Search className="ml-2 h-5 w-5" />
+                  Kiểm Tra Gói Server Phù Hợp
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
+                
                 <Button 
-                  size="lg" 
                   variant="outline"
-                  className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 text-lg"
-                  data-testid="button-request-consultation"
+                  size="lg"
+                  className="border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 text-lg"
+                  onClick={() => setShowContactForm(true)}
+                  data-testid="button-request-quote"
                 >
-                  Yêu Cầu Tư Vấn
-                  <Phone className="ml-2 h-5 w-5" />
+                  Yêu Cầu Báo Giá
                 </Button>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Server Comparison Section */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Lựa Chọn Máy Chủ Phù Hợp với Nhu Cầu
-                </h2>
-                <p className="text-xl text-muted-foreground">
-                  So sánh và tìm giải pháp máy chủ tốt nhất cho doanh nghiệp của bạn
-                </p>
-              </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Physical Server */}
-                <Card className="p-8 hover:shadow-2xl transition-all duration-300 border-2 hover:border-primary/20 group">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6 mx-auto group-hover:bg-primary/20 transition-colors">
-                      <Server className="h-8 w-8 text-primary" />
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold text-foreground mb-4">
-                      Máy Chủ Vật Lý
-                    </h3>
-                    
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
-                      Hiệu suất cao nhất, toàn quyền kiểm soát, phù hợp cho ứng dụng lớn 
-                      và các hệ thống đòi hỏi tài nguyên mạnh mẽ.
-                    </p>
-                    
-                    <ul className="space-y-3 text-left">
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Tối đa hiệu suất với 100% tài nguyên
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Toàn quyền kiểm soát và tùy chỉnh
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Bảo mật tuyệt đối với isolation hoàn toàn
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Phù hợp cho ứng dụng mission-critical
-                      </li>
-                    </ul>
-                  </div>
-                </Card>
-
-                {/* VPS */}
-                <Card className="p-8 hover:shadow-2xl transition-all duration-300 border-2 hover:border-orange-500/20 group">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6 mx-auto group-hover:bg-orange-200 transition-colors">
-                      <HardDrive className="h-8 w-8 text-orange-600" />
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold text-foreground mb-4">
-                      Máy Chủ Ảo (VPS)
-                    </h3>
-                    
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
-                      Cân bằng hoàn hảo giữa hiệu suất và chi phí, dễ dàng nâng cấp 
-                      khi doanh nghiệp phát triển.
-                    </p>
-                    
-                    <ul className="space-y-3 text-left">
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Linh hoạt và tiết kiệm chi phí
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Dễ dàng nâng cấp tài nguyên
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Quản lý đơn giản với control panel
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Phù hợp cho dự án vừa và nhỏ
-                      </li>
-                    </ul>
-                  </div>
-                </Card>
-
-                {/* Cloud Server */}
-                <Card className="p-8 hover:shadow-2xl transition-all duration-300 border-2 hover:border-green-500/20 group">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-6 mx-auto group-hover:bg-green-200 transition-colors">
-                      <Cloud className="h-8 w-8 text-green-600" />
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold text-foreground mb-4">
-                      Máy Chủ Đám Mây
-                    </h3>
-                    
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
-                      Khả năng mở rộng vô hạn, auto-scaling và backup tự động 
-                      cho mọi quy mô doanh nghiệp.
-                    </p>
-                    
-                    <ul className="space-y-3 text-left">
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Khả năng mở rộng không giới hạn
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Auto-scaling theo nhu cầu thực tế
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Backup tự động và disaster recovery
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
-                        Thanh toán theo mức sử dụng
-                      </li>
-                    </ul>
-                  </div>
-                </Card>
+              <div className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                <span>Phục vụ 5000+ doanh nghiệp tại Việt Nam!</span>
               </div>
-            </div>
-          </div>
-        </section>
+            </motion.div>
 
-        {/* Benefits Section */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Lợi Ích Khi Sử Dụng Dịch Vụ Máy Chủ Của Chúng Tôi
-                </h2>
-                <p className="text-xl text-muted-foreground">
-                  Những lợi ích nổi bật khi bạn chọn STEP làm đối tác công nghệ
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6 mx-auto">
-                    <Zap className="h-8 w-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Hiệu Suất Tối Đa</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    SSD NVMe, CPU Intel Xeon và băng thông không giới hạn đảm bảo tốc độ tối ưu
-                  </p>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 text-green-400 font-mono text-sm">
+                <div className="flex items-center mb-6">
+                  <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-gray-400 ml-4">Server Management Console</span>
                 </div>
-
-                <div className="text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6 mx-auto">
-                    <Shield className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Bảo Mật Tuyệt Đối</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    DDoS protection, firewall tích hợp, SSL miễn phí và monitoring 24/7
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-6 mx-auto">
-                    <Headphones className="h-8 w-8 text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Hỗ Trợ 24/7</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Đội ngũ kỹ thuật chuyên nghiệp hỗ trợ tiếng Việt mọi lúc, mọi nơi
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6 mx-auto">
-                    <TrendingUp className="h-8 w-8 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Khả Năng Mở Rộng</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Nâng cấp tài nguyên linh hoạt trong vài phút, không downtime
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Why Choose STEP Section */}
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Tại Sao Lại Chọn STEP?
-                </h2>
-                <p className="text-xl text-muted-foreground">
-                  Những lý do khiến hàng nghìn doanh nghiệp tin tựa STEP
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <Card className="p-8 text-center hover:shadow-lg transition-shadow">
-                  <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6 mx-auto">
-                    <Award className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">15+ Năm Kinh Nghiệm</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Với hơn 15 năm trong lĩnh vực IT, chúng tôi hiểu rõ nhu cầu và thách thức 
-                    của doanh nghiệp Việt Nam.
-                  </p>
-                </Card>
-
-                <Card className="p-8 text-center hover:shadow-lg transition-shadow">
-                  <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-6 mx-auto">
-                    <Users className="h-8 w-8 text-green-600" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">5000+ Khách Hàng</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Phục vụ thành công hơn 5000 khách hàng từ doanh nghiệp nhỏ đến 
-                    tập đoàn lớn trên toàn quốc.
-                  </p>
-                </Card>
-
-                <Card className="p-8 text-center hover:shadow-lg transition-shadow">
-                  <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6 mx-auto">
-                    <Star className="h-8 w-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">99.9% Uptime</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Cam kết uptime 99.9% với hạ tầng hiện đại, datacenter chuẩn quốc tế 
-                    và giải pháp dự phòng toàn diện.
-                  </p>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Câu Hỏi Thường Gặp
-                </h2>
-                <p className="text-xl text-muted-foreground">
-                  Những câu hỏi phổ biến về dịch vụ máy chủ của chúng tôi
-                </p>
-              </div>
-              
-              <Accordion type="single" collapsible className="space-y-4">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger className="text-left text-lg font-semibold hover:text-primary">
-                    Máy chủ là gì và tại sao doanh nghiệp cần máy chủ?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    Máy chủ là hệ thống máy tính chuyên dụng để lưu trữ, xử lý và cung cấp dữ liệu, ứng dụng 
-                    cho nhiều người dùng cùng lúc. Doanh nghiệp cần máy chủ để đảm bảo dữ liệu an toàn, 
-                    hiệu suất ổn định và khả năng truy cập 24/7 cho nhân viên và khách hàng.
-                  </AccordionContent>
-                </AccordionItem>
                 
-                <AccordionItem value="item-2">
-                  <AccordionTrigger className="text-left text-lg font-semibold hover:text-primary">
-                    Khi nào nên sử dụng máy chủ vật lý thay vì máy chủ ảo?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    Nên chọn máy chủ vật lý khi: doanh nghiệp có ứng dụng đòi hỏi hiệu suất cao, cần 
-                    toàn quyền kiểm soát phần cứng, xử lý dữ liệu nhạy cảm hoặc có lưu lượng truy cập 
-                    ổn định lớn. Máy chủ ảo phù hợp hơn cho startup và doanh nghiệp vừa nhỏ với nhu cầu linh hoạt.
-                  </AccordionContent>
-                </AccordionItem>
-                
-                <AccordionItem value="item-3">
-                  <AccordionTrigger className="text-left text-lg font-semibold hover:text-primary">
-                    Chi phí dịch vụ máy chủ được tính như thế nào?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    Chi phí phụ thuộc vào loại máy chủ, cấu hình (CPU, RAM, ổ cứng), băng thông và các 
-                    dịch vụ bổ sung. Máy chủ vật lý tính theo tháng, VPS linh hoạt theo gói, còn máy chủ 
-                    đám mây có thể tính theo giờ sử dụng. Chúng tôi có gói ưu đãi cho khách hàng dài hạn.
-                  </AccordionContent>
-                </AccordionItem>
-                
-                <AccordionItem value="item-4">
-                  <AccordionTrigger className="text-left text-lg font-semibold hover:text-primary">
-                    STEP cung cấp những hỗ trợ gì sau khi triển khai máy chủ?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    Chúng tôi cung cấp hỗ trợ 24/7 qua hotline, email và chat. Bao gồm: giám sát hệ thống, 
-                    sao lưu dữ liệu, bảo trì định kỳ, cập nhật bảo mật, khắc phục sự cố và tư vấn kỹ thuật. 
-                    Đội ngũ kỹ thuật sẵn sàng hỗ trợ setup và migration từ hệ thống cũ.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-          </div>
-        </section>
+                <div className="space-y-2">
+                  <div><span className="text-blue-400">$</span> systemctl status nginx</div>
+                  <div><span className="text-blue-400">$</span> top -u apache</div>
+                  <div><span className="text-blue-400">$</span> df -h /var/www</div>
+                  <div><span className="text-green-500">✓</span> Server uptime: 99.9%!</div>
+                </div>
+              </div>
 
-        {/* Contact CTA Section */}
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <MessageSquare className="h-16 w-16 mx-auto mb-6 text-primary" />
-                <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Sẵn Sàng Bắt Đầu?
-                </h2>
-                <p className="text-xl text-muted-foreground leading-relaxed">
-                  Để lại thông tin, chúng tôi sẽ tư vấn giải pháp tối ưu nhất cho bạn.
+              {/* Tech Stack Icons */}
+              <div className="mt-8 grid grid-cols-3 gap-4">
+                {techFeatures.map((tech, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-lg p-4 text-center">
+                    <tech.icon className="h-8 w-8 text-primary mx-auto mb-2" />
+                    <span className="text-sm font-medium text-gray-700">{tech.name}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tại Sao Chọn Server Enterprise Của STEP?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Những ưu thế vượt trội của infrastructure enterprise-grade
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100"
+                data-testid={`benefit-card-${index}`}
+              >
+                <div className="flex items-start space-x-6">
+                  <div className="bg-primary/10 rounded-xl p-4 flex-shrink-0">
+                    <benefit.icon className="h-8 w-8 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Server Advantages Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-primary/5">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tính Năng Nổi Bật Server Enterprise
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Công nghệ tiên tiến và infrastructure hiện đại
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {serverAdvantages.map((advantage, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                data-testid={`advantage-card-${index}`}
+              >
+                <div className="bg-gradient-to-br from-primary to-primary/80 rounded-lg p-3 w-fit mb-4">
+                  <advantage.icon className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                  {advantage.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {advantage.description}
                 </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Packages Section */}
+      <section id="packages" className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Gói Dịch Vụ Máy Chủ Enterprise
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Lựa chọn server phù hợp với quy mô và performance requirements
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative bg-white rounded-2xl shadow-xl border-2 ${
+                  pkg.popular 
+                    ? 'border-primary transform scale-105' 
+                    : 'border-gray-200'
+                } p-8 hover:shadow-2xl transition-all`}
+                data-testid={`package-card-${index}`}
+              >
+                {pkg.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium">
+                      Phổ biến nhất
+                    </span>
+                  </div>
+                )}
+                
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
+                  <div className="text-3xl font-bold text-primary mb-2">{pkg.price}</div>
+                  <p className="text-gray-600 text-sm">{pkg.suitable}</p>
+                </div>
+                
+                <ul className="space-y-3 mb-8">
+                  {pkg.specs.map((spec, specIndex) => (
+                    <li key={specIndex} className="flex items-start text-sm">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{spec}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <Button 
+                  className={`w-full py-3 text-base font-semibold ${
+                    pkg.popular
+                      ? 'bg-primary hover:bg-primary/90 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                  }`}
+                  onClick={() => setShowContactForm(true)}
+                  data-testid={`button-choose-package-${index}`}
+                >
+                  Chọn Gói {pkg.name}
+                </Button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Performance Benchmark Section */}
+      <section className="py-20 bg-gradient-to-br from-primary/5 to-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              So Sánh Hiệu Suất Server Enterprise
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Benchmarks thực tế cho server performance và reliability
+            </p>
+          </div>
+          
+          <PerformanceBenchmark />
+        </div>
+      </section>
+
+      {/* Testimonial Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-gradient-to-br from-primary/5 to-gray-50 rounded-3xl p-12">
+              <div className="flex justify-center mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-8 w-8 text-yellow-400 fill-current" />
+                ))}
               </div>
               
-              <Card className="p-8">
-                <form className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="text-foreground font-medium">
-                        Họ và tên *
-                      </Label>
-                      <Input
-                        id="name"
-                        placeholder="Nhập họ và tên của bạn"
-                        className="w-full"
-                        data-testid="input-name"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="company" className="text-foreground font-medium">
-                        Tên công ty
-                      </Label>
-                      <Input
-                        id="company"
-                        placeholder="Tên công ty/tổ chức"
-                        className="w-full"
-                        data-testid="input-company"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="phone" className="text-foreground font-medium">
-                        Số điện thoại *
-                      </Label>
-                      <Input
-                        id="phone"
-                        placeholder="0123 456 789"
-                        className="w-full"
-                        data-testid="input-phone"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-foreground font-medium">
-                        Email *
-                      </Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="your.email@company.com"
-                        className="w-full"
-                        data-testid="input-email"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="message" className="text-foreground font-medium">
-                      Nhu cầu cụ thể
-                    </Label>
-                    <Textarea
-                      id="message"
-                      placeholder="Mô tả chi tiết nhu cầu về máy chủ của bạn..."
-                      className="w-full min-h-[120px]"
-                      data-testid="textarea-message"
-                    />
-                  </div>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                    <Button 
-                      size="lg" 
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg"
-                      data-testid="button-submit-contact"
-                    >
-                      <Mail className="mr-2 h-5 w-5" />
-                      Gửi Yêu Cầu Tư Vấn
-                    </Button>
-                    <Button 
-                      size="lg" 
-                      variant="outline"
-                      className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 text-lg"
-                      data-testid="button-call-direct"
-                    >
-                      <Phone className="mr-2 h-5 w-5" />
-                      Gọi Trực Tiếp: 1900 6680
-                    </Button>
-                  </div>
-                </form>
-              </Card>
+              <blockquote className="text-2xl text-gray-900 font-medium mb-8 italic leading-relaxed">
+                "{testimonial.text}"
+              </blockquote>
+              
+              <div className="flex items-center justify-center space-x-4">
+                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div className="text-left">
+                  <div className="font-semibold text-gray-900">{testimonial.author}</div>
+                  <div className="text-gray-600 text-sm">Vietnam E-commerce Industry</div>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
-      </main>
-      
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-primary to-primary/80 text-white">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            Sẵn Sàng Triển Khai Server Enterprise?
+          </h2>
+          <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
+            Tham gia 5000+ doanh nghiệp tin tưởng STEP. Nhận tư vấn miễn phí và setup support.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg"
+              className="bg-white text-primary hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-get-started"
+            >
+              Bắt Đầu Ngay
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            
+            <Button 
+              variant="outline"
+              size="lg"
+              className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-contact-expert"
+            >
+              Liên Hệ Chuyên Gia
+            </Button>
+          </div>
+        </div>
+      </section>
+
       <Footer />
+
+      {/* Contact Form Modal */}
+      <ContactForm 
+        open={showContactForm} 
+        onOpenChange={setShowContactForm}
+      />
+
+      {/* Email Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl p-8 max-w-md w-full relative"
+          >
+            <button 
+              onClick={() => setShowPopup(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              data-testid="button-close-popup"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Server className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                🖥️ Ưu Đãi Server Enterprise!
+              </h3>
+              <p className="text-gray-600">
+                Nhận tư vấn miễn phí + setup support cho server enterprise!
+              </p>
+            </div>
+            
+            <form onSubmit={handlePopupSubmit} className="space-y-4">
+              <Input
+                type="text"
+                placeholder="Họ tên *"
+                value={popupData.name}
+                onChange={(e) => setPopupData({...popupData, name: e.target.value})}
+                required
+                data-testid="input-popup-name"
+              />
+              <Input
+                type="email"
+                placeholder="Email *"
+                value={popupData.email}
+                onChange={(e) => setPopupData({...popupData, email: e.target.value})}
+                required
+                data-testid="input-popup-email"
+              />
+              <Input
+                type="tel"
+                placeholder="Số điện thoại *"
+                value={popupData.phone}
+                onChange={(e) => setPopupData({...popupData, phone: e.target.value})}
+                required
+                data-testid="input-popup-phone"
+              />
+              <Button 
+                type="submit" 
+                className="w-full bg-primary hover:bg-primary/90"
+                data-testid="button-popup-submit"
+              >
+                Nhận Tư Vấn Miễn Phí
+              </Button>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Email Popup Component - for consistent experience */}
+      <EmailPopup
+        discount="Free Consultation"
+        title="🖥️ Ưu Đãi Server Enterprise!"
+        description="Đăng ký email để nhận tư vấn miễn phí + setup support cho server enterprise!"
+        buttonText="Nhận Tư Vấn Miễn Phí"
+        storageKey="server_email_popup_shown"
+      />
     </div>
   );
 }

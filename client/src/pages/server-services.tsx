@@ -1,248 +1,621 @@
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { 
   Server, 
-  Cloud, 
-  HardDrive,
+  Shield, 
+  HardDrive, 
+  CheckCircle, 
+  ArrowRight, 
+  Globe, 
+  Clock,
+  Users,
+  Star,
+  X,
+  Database,
+  TrendingUp,
+  Lock,
+  Cloud,
   Zap,
-  Shield,
   Settings,
-  CheckCircle,
-  ArrowRight,
-  Phone
-} from 'lucide-react';
+  Monitor,
+  Award,
+  Headphones
+} from "lucide-react";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import ContactForm from "@/components/contact-form";
+import PerformanceBenchmark from "@/components/performance-benchmark";
+import EmailPopup from "@/components/email-popup";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function ServerServices() {
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupData, setPopupData] = useState({
+    email: "",
+    name: "",
+    phone: ""
+  });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    projectDescription: "",
+    package: ""
+  });
+
+  const handleEmailSubmit = async (email: string) => {
+    console.log('Email submitted for Server services:', email);
+    // Integration with email service would go here
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  };
+
+  // Show popup after 10 seconds or 50% scroll
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 10000);
+
+    const handleScroll = () => {
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      if (scrollPercent >= 50) {
+        setShowPopup(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const benefits = [
+    {
+      icon: Server,
+      title: "Server Management & Maintenance",
+      description: "Full server administration với proactive monitoring, security patches và performance optimization 24/7 – lý tưởng cho businesses cần focus on core operations mà không phải worry về technical infrastructure management."
+    },
+    {
+      icon: Cloud,
+      title: "Migration & Cloud Services", 
+      description: "Seamless migration từ on-premises đến cloud và vice versa với zero-downtime strategy và data integrity guarantee – perfect cho digital transformation initiatives và business continuity requirements."
+    },
+    {
+      icon: Shield,
+      title: "Security & Backup Solutions",
+      description: "Multi-layer security với automated backups, disaster recovery testing và compliance auditing theo standards GDPR, ISO 27001 – comprehensive protection cho enterprise data và business operations."
+    },
+    {
+      icon: Settings,
+      title: "Custom Solutions & Integration",
+      description: "Tailored server solutions với third-party integrations, custom configurations và scalability planning – designed specifically cho unique business requirements và growth strategies."
+    }
+  ];
+
+  const serviceAdvantages = [
+    {
+      icon: Monitor,
+      title: "24/7 Server Monitoring",
+      description: "Real-time performance tracking với automated alerting, proactive issue detection và immediate response protocols. Comprehensive dashboard cho system visibility."
+    },
+    {
+      icon: Database,
+      title: "Data Backup & Recovery",
+      description: "Automated daily backups với multiple retention policies, disaster recovery testing và rapid restoration capabilities. Guarantee data protection và business continuity."
+    },
+    {
+      icon: Settings,
+      title: "Server Configuration",
+      description: "Expert setup và optimization cho maximum performance, security hardening và custom application deployment. Tailored configurations cho specific business needs."
+    },
+    {
+      icon: Lock,
+      title: "Security Management",
+      description: "Advanced threat protection, vulnerability scanning và automated security updates. Regular security audits và compliance reporting cho enterprise standards."
+    },
+    {
+      icon: Zap,
+      title: "Performance Optimization",
+      description: "Server tuning để maximize efficiency, load balancing setup và resource allocation optimization. Continuous performance improvements và monitoring."
+    },
+    {
+      icon: Headphones,
+      title: "Expert Technical Support",
+      description: "Vietnamese-speaking engineers với enterprise-level expertise, rapid response times và proactive consultation services. Direct access to senior technical staff."
+    }
+  ];
+
+  const packages = [
+    {
+      name: "Server Basic",
+      price: "2.000.000 VNĐ/tháng",
+      storage: "Basic server management",
+      features: "Monitoring + Basic support",
+      suitable: "SME with 1-3 servers",
+      color: "blue",
+      specs: [
+        "24/7 Server monitoring",
+        "Basic security management",
+        "Monthly performance reports",
+        "Email/ticket support",
+        "Regular backup checks",
+        "OS updates included"
+      ]
+    },
+    {
+      name: "Server Professional",
+      price: "4.500.000 VNĐ/tháng", 
+      storage: "Advanced management + optimization",
+      features: "Full management + consultation",
+      suitable: "Growing enterprises",
+      color: "green",
+      popular: true,
+      specs: [
+        "All từ gói Basic",
+        "Performance optimization", 
+        "Advanced security setup",
+        "Priority phone support",
+        "Weekly consulting calls",
+        "Custom configurations"
+      ]
+    },
+    {
+      name: "Server Enterprise",
+      price: "8.000.000 VNĐ/tháng",
+      storage: "Full-service management", 
+      features: "Complete outsourced IT",
+      suitable: "Large enterprises",
+      color: "purple",
+      specs: [
+        "All từ gói Professional",
+        "Dedicated account manager",
+        "SLA guarantees",
+        "Custom integrations",
+        "Disaster recovery planning",
+        "Compliance reporting"
+      ]
+    }
+  ];
+
+  const testimonial = {
+    text: "Dịch vụ server management của STEP đã giảm 70% thời gian IT admin và tăng 99.9% uptime!",
+    author: "Anh D., IT Manager tại VNG Corporation"
+  };
+
+  const techFeatures = [
+    { name: "cPanel/WHM", icon: Settings },
+    { name: "CloudLinux", icon: Cloud },
+    { name: "SSD Storage", icon: HardDrive },
+    { name: "Load Balancer", icon: Monitor },
+    { name: "SSL Cert", icon: Lock },
+    { name: "24/7 Support", icon: Headphones }
+  ];
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Main form data:', formData);
+    // Handle form submission
+    setShowContactForm(false);
+  };
+
+  const handlePopupSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Popup form data:', popupData);
+    setShowPopup(false);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-6xl mx-auto">
-          {/* Breadcrumb */}
-          <nav className="flex items-center text-sm text-muted-foreground mb-8">
-            <span>Danh mục</span>
-            <span className="mx-2">›</span>
-            <span>Máy chủ</span>
-            <span className="mx-2">›</span>
-            <span className="text-foreground font-medium">Dịch Vụ Máy Chủ</span>
-          </nav>
+    <div className="min-h-screen bg-white">
+      <Header />
 
-          {/* Main Title */}
-          <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
-              Dịch Vụ Máy Chủ 
-              <span className="text-primary"> Chuyên Nghiệp</span>
-            </h1>
-            
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Giải pháp máy chủ toàn diện từ vật lý đến đám mây, đáp ứng mọi nhu cầu từ startup đến doanh nghiệp lớn. 
-              Với hạ tầng hiện đại và dịch vụ hỗ trợ 24/7, chúng tôi đảm bảo hiệu suất tối ưu và độ tin cậy cao cho hệ thống của bạn.
-            </p>
-          </div>
-
-          {/* Server Types */}
-          <div className="mb-20">
-            <h2 className="text-3xl font-bold text-foreground text-center mb-12">
-              Các Loại Máy Chủ
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Dedicated Servers */}
-              <Card className="p-8 hover:shadow-xl transition-shadow duration-300 border-border">
-                <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6 mx-auto">
-                  <Server className="h-8 w-8 text-primary" />
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-slate-50 to-white py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="w-full h-full bg-gradient-to-br from-slate-50/50 to-transparent"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mr-4">
+                  <Settings className="text-white w-6 h-6" />
                 </div>
-                <h3 className="text-2xl font-bold text-center mb-4">
-                  Máy chủ vật lý
-                  <div className="text-lg font-normal text-muted-foreground">(Dedicated Servers)</div>
-                </h3>
-                <p className="text-muted-foreground text-center leading-relaxed">
-                  Tối ưu hóa hiệu suất cho các ứng dụng nặng. Hoàn toàn kiểm soát tài nguyên, 
-                  bảo mật tuyệt đối và hiệu suất ổn định cho các hệ thống mission-critical.
-                </p>
-              </Card>
-
-              {/* VPS */}
-              <Card className="p-8 hover:shadow-xl transition-shadow duration-300 border-border">
-                <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6 mx-auto">
-                  <HardDrive className="h-8 w-8 text-orange-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-center mb-4">
-                  Máy chủ ảo
-                  <div className="text-lg font-normal text-muted-foreground">(VPS)</div>
-                </h3>
-                <p className="text-muted-foreground text-center leading-relaxed">
-                  Linh hoạt, tiết kiệm chi phí cho các dự án vừa và nhỏ. 
-                  Cung cấp sự cân bằng hoàn hảo giữa hiệu suất và giá cả, dễ dàng nâng cấp khi cần.
-                </p>
-              </Card>
-
-              {/* Cloud Servers */}
-              <Card className="p-8 hover:shadow-xl transition-shadow duration-300 border-border">
-                <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-6 mx-auto">
-                  <Cloud className="h-8 w-8 text-green-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-center mb-4">
-                  Máy chủ đám mây
-                  <div className="text-lg font-normal text-muted-foreground">(Cloud Servers)</div>
-                </h3>
-                <p className="text-muted-foreground text-center leading-relaxed">
-                  Khả năng mở rộng cao, đáng tin cậy. Auto-scaling, backup tự động 
-                  và khả năng phục hồi nhanh chóng, phù hợp cho mọi quy mô doanh nghiệp.
-                </p>
-              </Card>
-            </div>
-          </div>
-
-          {/* Feature Comparison Table */}
-          <div className="mb-20">
-            <h2 className="text-3xl font-bold text-foreground text-center mb-12">
-              Bảng So Sánh Tính Năng
-            </h2>
-            
-            <Card className="overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-border bg-muted/50">
-                      <th className="text-left p-6 font-semibold text-foreground">Tính năng</th>
-                      <th className="text-center p-6 font-semibold text-foreground">Máy chủ vật lý</th>
-                      <th className="text-center p-6 font-semibold text-foreground">Máy chủ ảo (VPS)</th>
-                      <th className="text-center p-6 font-semibold text-foreground">Máy chủ đám mây</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-border hover:bg-muted/25 transition-colors">
-                      <td className="p-6 font-medium text-foreground flex items-center">
-                        <Zap className="h-5 w-5 mr-3 text-primary" />
-                        Hiệu suất
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-green-600 font-semibold">Cao nhất</div>
-                        <div className="text-sm text-muted-foreground">100% tài nguyên</div>
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-orange-600 font-semibold">Trung bình</div>
-                        <div className="text-sm text-muted-foreground">Chia sẻ tài nguyên</div>
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-blue-600 font-semibold">Linh hoạt</div>
-                        <div className="text-sm text-muted-foreground">Auto-scaling</div>
-                      </td>
-                    </tr>
-                    
-                    <tr className="border-b border-border hover:bg-muted/25 transition-colors">
-                      <td className="p-6 font-medium text-foreground flex items-center">
-                        <Settings className="h-5 w-5 mr-3 text-primary" />
-                        Mức độ kiểm soát
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-green-600 font-semibold">Toàn quyền</div>
-                        <div className="text-sm text-muted-foreground">Root access</div>
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-green-600 font-semibold">Cao</div>
-                        <div className="text-sm text-muted-foreground">Admin access</div>
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-orange-600 font-semibold">Trung bình</div>
-                        <div className="text-sm text-muted-foreground">Managed service</div>
-                      </td>
-                    </tr>
-
-                    <tr className="border-b border-border hover:bg-muted/25 transition-colors">
-                      <td className="p-6 font-medium text-foreground flex items-center">
-                        <ArrowRight className="h-5 w-5 mr-3 text-primary" />
-                        Khả năng mở rộng
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-red-600 font-semibold">Hạn chế</div>
-                        <div className="text-sm text-muted-foreground">Hardware cố định</div>
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-orange-600 font-semibold">Trung bình</div>
-                        <div className="text-sm text-muted-foreground">Nâng cấp có hạn</div>
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-green-600 font-semibold">Rất cao</div>
-                        <div className="text-sm text-muted-foreground">Instant scaling</div>
-                      </td>
-                    </tr>
-
-                    <tr className="border-b border-border hover:bg-muted/25 transition-colors">
-                      <td className="p-6 font-medium text-foreground flex items-center">
-                        <Shield className="h-5 w-5 mr-3 text-primary" />
-                        Bảo mật
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-green-600 font-semibold">Tối ưu</div>
-                        <div className="text-sm text-muted-foreground">Isolation hoàn toàn</div>
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-orange-600 font-semibold">Tốt</div>
-                        <div className="text-sm text-muted-foreground">Virtual isolation</div>
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-green-600 font-semibold">Cao</div>
-                        <div className="text-sm text-muted-foreground">Enterprise security</div>
-                      </td>
-                    </tr>
-
-                    <tr className="hover:bg-muted/25 transition-colors">
-                      <td className="p-6 font-medium text-foreground flex items-center">
-                        <span className="text-lg mr-3">💰</span>
-                        Chi phí
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-red-600 font-semibold">Cao nhất</div>
-                        <div className="text-sm text-muted-foreground">Từ 50M VND/tháng</div>
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-green-600 font-semibold">Tiết kiệm</div>
-                        <div className="text-sm text-muted-foreground">Từ 500K VND/tháng</div>
-                      </td>
-                      <td className="text-center p-6">
-                        <div className="text-orange-600 font-semibold">Linh hoạt</div>
-                        <div className="text-sm text-muted-foreground">Pay-as-you-use</div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                  Server Management Services
+                </span>
               </div>
-            </Card>
-          </div>
-
-          {/* Call to Action */}
-          <div className="text-center">
-            <Card className="p-12 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-              <div className="max-w-3xl mx-auto">
-                <h2 className="text-3xl font-bold text-foreground mb-6">
-                  Sẵn sàng tìm giải pháp máy chủ phù hợp?
-                </h2>
-                <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                  Đội ngũ chuyên gia của chúng tôi sẽ tư vấn và thiết kế giải pháp máy chủ tối ưu 
-                  cho nhu cầu cụ thể của doanh nghiệp bạn. Liên hệ ngay để được hỗ trợ miễn phí!
-                </p>
+              
+              <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Server Management – 
+                <span className="text-green-600"> 24/7 Administration</span> 
+                Giảm 70% IT Workload!
+              </h1>
+              
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Dịch vụ quản lý server toàn diện với monitoring 24/7, security management và performance optimization. 
+                Dành riêng cho doanh nghiệp cần outsource IT infrastructure để focus on core business.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <Button 
+                  size="lg"
+                  className="bg-green-600 hover:bg-green-700 px-8 py-4 text-lg font-semibold"
+                  onClick={() => {
+                    document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  data-testid="button-check-service-packages"
+                >
+                  Kiểm Tra Gói Dịch Vụ
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
                 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                  <Button 
-                    size="lg" 
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg"
-                    data-testid="button-contact-consultation"
-                  >
-                    <Phone className="mr-2 h-5 w-5" />
-                    Liên hệ tư vấn miễn phí
-                  </Button>
-                  
-                  <div className="flex items-center text-muted-foreground">
-                    <CheckCircle className="h-5 w-5 mr-2 text-green-600" />
-                    <span className="text-sm">Tư vấn 24/7 - Báo giá trong 30 phút</span>
-                  </div>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white px-8 py-4 text-lg"
+                  onClick={() => setShowContactForm(true)}
+                  data-testid="button-free-assessment"
+                >
+                  Đánh Giá Hệ Thống Miễn Phí
+                </Button>
+              </div>
+              
+              <div className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                <span>Quản lý 2000+ servers cho các doanh nghiệp Việt Nam!</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 text-green-400 font-mono text-sm">
+                <div className="flex items-center mb-6">
+                  <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-gray-400 ml-4">Server Management Console</span>
+                </div>
+                
+                <div className="space-y-2">
+                  <div><span className="text-blue-400">$</span> htop -u www-data</div>
+                  <div><span className="text-blue-400">$</span> systemctl status mysql</div>
+                  <div><span className="text-blue-400">$</span> tail -f /var/log/access.log</div>
+                  <div><span className="text-green-500">✓</span> All services healthy!</div>
                 </div>
               </div>
-            </Card>
+
+              {/* Tech Stack Icons */}
+              <div className="mt-8 grid grid-cols-3 gap-4">
+                {techFeatures.map((tech, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-lg p-4 text-center">
+                    <tech.icon className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                    <span className="text-sm font-medium text-gray-700">{tech.name}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tại Sao Outsource Server Management?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Những lợi ích khi giao server management cho STEP
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100"
+                data-testid={`benefit-card-${index}`}
+              >
+                <div className="flex items-start space-x-6">
+                  <div className="bg-green-100 rounded-xl p-4 flex-shrink-0">
+                    <benefit.icon className="h-8 w-8 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Service Advantages Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-green-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Dịch Vụ Quản Lý Server Chuyên Nghiệp
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Comprehensive server management services với expert team
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {serviceAdvantages.map((advantage, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                data-testid={`advantage-card-${index}`}
+              >
+                <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-lg p-3 w-fit mb-4">
+                  <advantage.icon className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                  {advantage.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {advantage.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Packages Section */}
+      <section id="packages" className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Gói Dịch Vụ Server Management
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Lựa chọn level support phù hợp với server infrastructure
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative bg-white rounded-2xl shadow-xl border-2 ${
+                  pkg.popular 
+                    ? 'border-green-600 transform scale-105' 
+                    : 'border-gray-200'
+                } p-8 hover:shadow-2xl transition-all`}
+                data-testid={`package-card-${index}`}
+              >
+                {pkg.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+                      Phổ biến nhất
+                    </span>
+                  </div>
+                )}
+                
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
+                  <div className="text-3xl font-bold text-green-600 mb-2">{pkg.price}</div>
+                  <p className="text-gray-600 text-sm">{pkg.suitable}</p>
+                </div>
+                
+                <ul className="space-y-3 mb-8">
+                  {pkg.specs.map((spec, specIndex) => (
+                    <li key={specIndex} className="flex items-start text-sm">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{spec}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <Button 
+                  className={`w-full py-3 text-base font-semibold ${
+                    pkg.popular
+                      ? 'bg-green-600 hover:bg-green-700 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                  }`}
+                  onClick={() => setShowContactForm(true)}
+                  data-testid={`button-choose-package-${index}`}
+                >
+                  Chọn Gói {pkg.name}
+                </Button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Performance Benchmark Section */}
+      <section className="py-20 bg-gradient-to-br from-green-50 to-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              So Sánh Hiệu Quả Server Management
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Before vs After managed services implementation
+            </p>
+          </div>
+          
+          <PerformanceBenchmark />
+        </div>
+      </section>
+
+      {/* Testimonial Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-gradient-to-br from-green-50 to-gray-50 rounded-3xl p-12">
+              <div className="flex justify-center mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-8 w-8 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              
+              <blockquote className="text-2xl text-gray-900 font-medium mb-8 italic leading-relaxed">
+                "{testimonial.text}"
+              </blockquote>
+              
+              <div className="flex items-center justify-center space-x-4">
+                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div className="text-left">
+                  <div className="font-semibold text-gray-900">{testimonial.author}</div>
+                  <div className="text-gray-600 text-sm">Vietnam Gaming Industry</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-green-600 to-green-700 text-white">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            Sẵn Sàng Outsource Server Management?
+          </h2>
+          <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
+            Giảm 70% IT workload và tăng 99.9% uptime. Nhận assessment miễn phí cho infrastructure hiện tại.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg"
+              className="bg-white text-green-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-free-assessment-cta"
+            >
+              Đánh Giá Miễn Phí
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            
+            <Button 
+              variant="outline"
+              size="lg"
+              className="border-2 border-white text-white hover:bg-white hover:text-green-600 px-8 py-4 text-lg"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-contact-team"
+            >
+              Liên Hệ Team
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+
+      {/* Contact Form Modal */}
+      <ContactForm 
+        open={showContactForm} 
+        onOpenChange={setShowContactForm}
+      />
+
+      {/* Email Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl p-8 max-w-md w-full relative"
+          >
+            <button 
+              onClick={() => setShowPopup(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              data-testid="button-close-popup"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Settings className="h-8 w-8 text-green-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                🛠️ Ưu Đãi Server Management!
+              </h3>
+              <p className="text-gray-600">
+                Nhận assessment miễn phí + 1 tháng monitoring trial cho hệ thống server!
+              </p>
+            </div>
+            
+            <form onSubmit={handlePopupSubmit} className="space-y-4">
+              <Input
+                type="text"
+                placeholder="Họ tên *"
+                value={popupData.name}
+                onChange={(e) => setPopupData({...popupData, name: e.target.value})}
+                required
+                data-testid="input-popup-name"
+              />
+              <Input
+                type="email"
+                placeholder="Email *"
+                value={popupData.email}
+                onChange={(e) => setPopupData({...popupData, email: e.target.value})}
+                required
+                data-testid="input-popup-email"
+              />
+              <Input
+                type="tel"
+                placeholder="Số điện thoại *"
+                value={popupData.phone}
+                onChange={(e) => setPopupData({...popupData, phone: e.target.value})}
+                required
+                data-testid="input-popup-phone"
+              />
+              <Button 
+                type="submit" 
+                className="w-full bg-green-600 hover:bg-green-700"
+                data-testid="button-popup-submit"
+              >
+                Nhận Assessment Miễn Phí
+              </Button>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Email Popup Component - for consistent experience */}
+      <EmailPopup
+        discount="Free Assessment"
+        title="🛠️ Ưu Đãi Server Management!"
+        description="Đăng ký email để nhận assessment miễn phí + 1 tháng monitoring trial!"
+        buttonText="Nhận Assessment Miễn Phí"
+        storageKey="server_services_email_popup_shown"
+      />
     </div>
   );
 }

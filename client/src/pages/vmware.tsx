@@ -1,497 +1,620 @@
-import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { 
   Server, 
+  Shield, 
   Monitor, 
-  Network, 
-  Cloud, 
-  DollarSign, 
-  Settings,
-  CheckCircle,
-  ArrowRight,
+  CheckCircle, 
+  ArrowRight, 
+  Globe, 
+  Clock,
+  Users,
   Star,
+  X,
+  Database,
   TrendingUp,
+  Lock,
+  Network,
+  Cloud,
+  Zap,
+  Settings,
   Award
 } from "lucide-react";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import ContactForm from "@/components/contact-form";
+import PerformanceBenchmark from "@/components/performance-benchmark";
+import EmailPopup from "@/components/email-popup";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function VMwarePage() {
-  // VMware Products and Solutions
-  const vmwareProducts = [
-    {
-      icon: <Server className="h-14 w-14 text-blue-600" />,
-      title: "VMware vSphere",
-      subtitle: "Nền tảng Ảo hóa Compute",
-      description: "Giải pháp ảo hóa server hàng đầu thế giới, cho phép tối ưu hóa tài nguyên phần cứng và đơn giản hóa quản lý datacenter. Hỗ trợ high availability, load balancing và disaster recovery tự động.",
-      features: [
-        "vMotion - Di chuyển VM không downtime",
-        "High Availability (HA) tự động",
-        "Distributed Resource Scheduler (DRS)",
-        "vSAN - Storage ảo hóa tích hợp",
-        "Fault Tolerance cho ứng dụng quan trọng"
-      ],
-      useCases: "Lý tưởng cho datacenter doanh nghiệp, private cloud, và môi trường production quan trọng."
-    },
-    {
-      icon: <Monitor className="h-14 w-14 text-blue-600" />,
-      title: "VMware Horizon",
-      subtitle: "Virtual Desktop Infrastructure",
-      description: "Giải pháp VDI và DaaS cho phép cung cấp desktop ảo và ứng dụng từ xa một cách an toàn và linh hoạt. Hỗ trợ remote work và BYOD với trải nghiệm người dùng tối ưu.",
-      features: [
-        "Virtual Desktop Infrastructure (VDI)",
-        "Remote Application Publishing",
-        "Multi-cloud deployment",
-        "Advanced security policies",
-        "Instant Clone technology"
-      ],
-      useCases: "Phù hợp cho remote work, education, call center, và môi trường cần bảo mật cao."
-    },
-    {
-      icon: <Network className="h-14 w-14 text-blue-600" />,
-      title: "VMware NSX",
-      subtitle: "Network Virtualization Platform",
-      description: "Nền tảng ảo hóa mạng và bảo mật tiên tiến, cung cấp micro-segmentation, firewall phân tán và load balancing software-defined. Tạo ra mạng ảo linh hoạt và an toàn.",
-      features: [
-        "Micro-segmentation bảo mật",
-        "Distributed Firewall",
-        "Load Balancer tích hợp",
-        "VPN và NAT ảo hóa",
-        "Zero Trust Network Access"
-      ],
-      useCases: "Essential cho multi-cloud networking, security compliance, và modern application architecture."
-    },
-    {
-      icon: <Cloud className="h-14 w-14 text-blue-600" />,
-      title: "VMware Tanzu",
-      subtitle: "Modern Application Platform",
-      description: "Platform toàn diện cho việc build, run và manage modern applications trên Kubernetes. Tích hợp DevOps, container orchestration và application services cho cloud-native development.",
-      features: [
-        "Kubernetes cluster management",
-        "DevOps pipeline automation",
-        "Application catalog và marketplace",
-        "Multi-cloud application deployment",
-        "Developer-friendly tools"
-      ],
-      useCases: "Dành cho digital transformation, microservices architecture, và cloud-native application development."
-    }
-  ];
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupData, setPopupData] = useState({
+    email: "",
+    name: "",
+    phone: ""
+  });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    projectDescription: "",
+    package: ""
+  });
 
-  // Benefits
+  const handleEmailSubmit = async (email: string) => {
+    console.log('Email submitted for VMware:', email);
+    // Integration with email service would go here
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  };
+
+  // Show popup after 10 seconds or 50% scroll
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 10000);
+
+    const handleScroll = () => {
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      if (scrollPercent >= 50) {
+        setShowPopup(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const benefits = [
     {
-      icon: <DollarSign className="h-12 w-12 text-gray-700" />,
-      title: "Tối Ưu Hóa Chi Phí",
-      description: "Giảm 50-70% chi phí infrastructure thông qua server consolidation và resource pooling. Tối ưu hóa license, điện năng và không gian datacenter.",
-      metrics: [
-        "Giảm 60% số lượng physical server",
-        "Tiết kiệm 40% chi phí vận hành",
-        "ROI đạt 300% trong 18 tháng"
+      icon: Server,
+      title: "Ảo Hóa & Consolidation Mạnh Mẽ",
+      description: "vSphere với vMotion cho phép di chuyển VM không downtime, server consolidation giảm 60% hardware costs và High Availability tự động failover – lý tưởng cho datacenter enterprise cần uptime 99.99% mà không muốn đầu tư phức tạp."
+    },
+    {
+      icon: Shield,
+      title: "Bảo Mật NSX Micro-Segmentation", 
+      description: "NSX tạo ra firewall phân tán với micro-segmentation, Zero Trust Network Access và automated security policies – bảo vệ khỏi lateral movement attacks và đảm bảo compliance cho dữ liệu nhạy cảm."
+    },
+    {
+      icon: Cloud,
+      title: "Hybrid & Multi-Cloud Linh Hoạt",
+      description: "VMware Cloud Foundation với consistent operations across on-premises, AWS, Azure và Google Cloud. Avoid vendor lock-in với workload portability và unified management – perfect cho enterprise transformation strategy."
+    },
+    {
+      icon: Monitor,
+      title: "VDI & Remote Work Enterprise",
+      description: "Horizon VDI hỗ trợ 15K+ concurrent users, instant clone technology và rich multimedia experience. Tanzu platform cho modern apps với Kubernetes-native development – boost developer productivity 300%."
+    }
+  ];
+
+  const vmwareAdvantages = [
+    {
+      icon: Database,
+      title: "vSphere High Availability",
+      description: "Automatic failover trong 30 giây, vMotion live migration không downtime và Distributed Resource Scheduler (DRS) tự động balance workloads. Uptime 99.99% đảm bảo cho mission-critical applications."
+    },
+    {
+      icon: Network,
+      title: "NSX Network Virtualization",
+      description: "Software-defined networking với distributed firewall, load balancing và VPN services. Micro-segmentation bảo vệ east-west traffic, lý tưởng cho zero trust architecture và compliance requirements."
+    },
+    {
+      icon: Monitor,
+      title: "Horizon Virtual Desktop",
+      description: "VDI solution cho remote work với instant clone, App Volumes và User Environment Manager. Support 15,000+ concurrent sessions với performance như local desktop, perfect cho distributed workforce."
+    },
+    {
+      icon: Cloud,
+      title: "Tanzu Kubernetes Platform",
+      description: "Enterprise-grade Kubernetes với integrated CI/CD, service mesh và application catalog. Developer self-service với governance controls, accelerate cloud-native development cycles."
+    },
+    {
+      icon: Settings,
+      title: "vCenter Centralized Management",
+      description: "Single pane of glass cho toàn bộ virtual infrastructure, automated provisioning và policy-based governance. Reduce administrative overhead 70% với intelligent automation workflows."
+    },
+    {
+      icon: TrendingUp,
+      title: "vSAN Hyper-Converged Storage",
+      description: "Software-defined storage tích hợp trong vSphere, dedupe/compression và all-flash performance. Scale-out architecture với predictive analytics cho optimal storage utilization và cost efficiency."
+    }
+  ];
+
+  const packages = [
+    {
+      name: "Gói vSphere Essentials",
+      price: "15.000.000 VNĐ/tháng",
+      storage: "3 hosts, vCenter Server",
+      features: "Basic virtualization, vMotion",
+      suitable: "Small business/startup virtualization",
+      color: "gray",
+      specs: [
+        "vSphere Hypervisor",
+        "vCenter Server Essential",
+        "vMotion Live Migration",
+        "High Availability (HA)",
+        "Up to 3 Physical Hosts",
+        "Basic Support"
       ]
     },
     {
-      icon: <TrendingUp className="h-12 w-12 text-gray-700" />,
-      title: "Tăng Hiệu Suất",
-      description: "Cải thiện performance và uptime thông qua load balancing thông minh, automatic failover và resource optimization real-time.",
-      metrics: [
-        "Uptime 99.9% với HA clustering",
-        "Giảm 80% thời gian deployment",
-        "Tăng 200% resource utilization"
+      name: "Gói vSphere Standard",
+      price: "35.000.000 VNĐ/tháng", 
+      storage: "vSphere + vCenter + DRS",
+      features: "Advanced features, unlimited hosts",
+      suitable: "Enterprise datacenter operations",
+      color: "blue",
+      popular: true,
+      specs: [
+        "All từ gói Essentials",
+        "Distributed Resource Scheduler",
+        "vSphere API Integration", 
+        "vSphere Update Manager",
+        "Unlimited Physical Hosts",
+        "24/7 Premium Support"
       ]
     },
     {
-      icon: <Settings className="h-12 w-12 text-gray-700" />,
-      title: "Đơn Giản Hóa Quản Lý",
-      description: "Centralized management console, automation workflows và policy-based governance giúp IT team quản lý infrastructure hiệu quả hơn.",
-      metrics: [
-        "Giảm 70% thời gian admin tasks",
-        "Tự động hóa 90% routine operations",
-        "Single pane of glass management"
+      name: "Gói Cloud Foundation",
+      price: "85.000.000 VNĐ/tháng",
+      storage: "Full Stack: vSphere + NSX + vSAN", 
+      features: "Complete SDDC, Hybrid Cloud",
+      suitable: "Digital transformation enterprises",
+      color: "purple",
+      specs: [
+        "All từ gói Standard",
+        "NSX Network Virtualization",
+        "vSAN Hyper-Converged Storage",
+        "Horizon VDI Platform",
+        "Tanzu Kubernetes Grid",
+        "Dedicated Account Manager"
       ]
     }
   ];
 
-  // Customer Testimonials
-  const testimonials = [
-    {
-      company: "Vietcombank",
-      industry: "Ngân hàng",
-      logo: "🏦",
-      position: "CTO",
-      name: "Nguyễn Văn A",
-      quote: "VMware vSphere đã giúp chúng tôi tối ưu hóa datacenter và đảm bảo tính sẵn sàng cao cho các hệ thống ngân hàng quan trọng. Uptime 99.99% trong 3 năm qua.",
-      results: [
-        "99.99% uptime cho core banking",
-        "Giảm 60% chi phí infrastructure",
-        "Zero downtime maintenance"
-      ]
-    },
-    {
-      company: "FPT Corporation",
-      industry: "Công nghệ",
-      logo: "💻",
-      position: "Head of Infrastructure",
-      name: "Trần Thị B",
-      quote: "VMware Horizon cho phép 15,000 nhân viên làm việc từ xa hiệu quả. Tanzu platform giúp team DevOps deploy applications nhanh gấp 5 lần so với trước đây.",
-      results: [
-        "Hỗ trợ 15K remote users",
-        "Deploy time giảm 80%",
-        "Developer productivity tăng 300%"
-      ]
-    },
-    {
-      company: "Vinamilk",
-      industry: "Thực phẩm & Đồ uống",
-      logo: "🥛",
-      position: "IT Director",
-      name: "Lê Văn C",
-      quote: "NSX micro-segmentation bảo vệ hệ thống ERP và production line khỏi cyber threats. Compliance audit được thực hiện dễ dàng nhờ automated security policies.",
-      results: [
-        "Zero security incidents trong 2 năm",
-        "Compliance audit pass 100%",
-        "Network setup time giảm 70%"
-      ]
-    }
+  const testimonial = {
+    text: "VMware vSphere giúp chúng tôi đạt 99.99% uptime cho core banking và tiết kiệm 60% chi phí infrastructure!",
+    author: "Anh M., CTO tại Vietcombank"
+  };
+
+  const techFeatures = [
+    { name: "vSphere", icon: Server },
+    { name: "NSX", icon: Network },
+    { name: "Horizon VDI", icon: Monitor },
+    { name: "Tanzu", icon: Cloud },
+    { name: "vSAN", icon: Database },
+    { name: "vCenter", icon: Settings }
   ];
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Main form data:', formData);
+    // Handle form submission
+    setShowContactForm(false);
+  };
+
+  const handlePopupSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Popup form data:', popupData);
+    setShowPopup(false);
+  };
 
   return (
-    <main>
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-gray-50 via-slate-50 to-blue-50 py-24">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-              {/* Left Column - Content */}
-              <div className="">
-                {/* Badge */}
-                <div className="inline-flex items-center bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium mb-6">
-                  <Server className="mr-2 h-5 w-5" />
-                  VMware Enterprise
+    <div className="min-h-screen bg-white">
+      <Header />
+
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-slate-50 to-white py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="w-full h-full bg-gradient-to-br from-slate-50/50 to-transparent"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center mr-4">
+                  <Server className="text-white w-6 h-6" />
                 </div>
-                
-                <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-                  <span className="text-gray-700">Tương lai của</span>{" "}
-                  <span className="text-blue-600">Điện toán Đám mây và Ảo hóa</span>{" "}
-                  <span className="text-gray-700">– Đảm Bảo</span>{" "}
-                  <span className="text-blue-600">99.99% Uptime</span>{" "}
-                  <span className="text-gray-700">Và Bảo Mật Tối Ơu!</span>
-                </h1>
-                
-                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                  VMware vSphere với high availability clustering, NSX micro-segmentation bảo vệ khỏi cyber threats, 
-                  và Tanzu platform cho modern apps. Dành cho enterprise cần độ tin cậy mission-critical!
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <Button 
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4"
-                    data-testid="button-explore-solutions"
-                  >
-                    Thăm Dò VMware Phù Hợp
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="border-2 border-gray-600 text-gray-600 hover:bg-gray-600 hover:text-white text-lg px-8 py-4"
-                    data-testid="button-contact-specialist"
-                  >
-                    Liên Hệ Chuyên Gia
-                  </Button>
-                </div>
-                
-                <div className="flex items-center text-green-600">
-                  <CheckCircle className="h-5 w-5 mr-2" />
-                  <span className="text-sm font-medium">Tin cậy bởi 500K+ organizations toàn cầu!</span>
-                </div>
+                <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                  VMware Enterprise Virtualization
+                </span>
               </div>
               
-              {/* Right Column - Enterprise Metrics Card */}
-              <div className="lg:flex justify-center">
-                <Card className="bg-white shadow-2xl rounded-2xl p-6 w-full max-w-sm border-0">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex space-x-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    </div>
+              <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                VMware vSphere & NSX – 
+                <span className="text-gray-700"> Ảo Hóa Enterprise</span> 
+                Với 99.99% Uptime Guaranteed!
+              </h1>
+              
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Giải pháp ảo hóa toàn diện với vSphere high availability, NSX micro-segmentation và Horizon VDI. 
+                Dành riêng cho enterprise cần infrastructure mission-critical với performance cao và bảo mật tối ưu.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <Button 
+                  size="lg"
+                  className="bg-gray-700 hover:bg-gray-800 px-8 py-4 text-lg font-semibold"
+                  onClick={() => {
+                    document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  data-testid="button-check-vmware-packages"
+                >
+                  Kiểm Tra Gói VMware Phù Hợp
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-gray-700 text-gray-700 hover:bg-gray-700 hover:text-white px-8 py-4 text-lg"
+                  onClick={() => setShowContactForm(true)}
+                  data-testid="button-request-demo"
+                >
+                  Yêu Cầu Demo Enterprise
+                </Button>
+              </div>
+              
+              <div className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                <span>Tin cậy bởi 500,000+ organizations toàn cầu!</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 text-green-400 font-mono text-sm">
+                <div className="flex items-center mb-6">
+                  <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-gray-400 ml-4">vCenter Management</span>
+                </div>
+                
+                <div className="space-y-2">
+                  <div><span className="text-blue-400">$</span> esxcli system maintenanceMode set</div>
+                  <div><span className="text-blue-400">$</span> vim-cmd vmsvc/power.on vmid</div>
+                  <div><span className="text-blue-400">$</span> vmotion migrate --hot vm1 host2</div>
+                  <div><span className="text-green-500">✓</span> HA cluster ready: 99.99% uptime!</div>
+                </div>
+              </div>
+
+              {/* Tech Stack Icons */}
+              <div className="mt-8 grid grid-cols-3 gap-4">
+                {techFeatures.map((tech, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-lg p-4 text-center">
+                    <tech.icon className="h-8 w-8 text-gray-700 mx-auto mb-2" />
+                    <span className="text-sm font-medium text-gray-700">{tech.name}</span>
                   </div>
-                  
-                  <h3 className="text-lg font-bold text-gray-800 mb-6">VMware Enterprise Reliability</h3>
-                  
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600">Virtualization Efficiency</span>
-                        <span className="text-sm font-bold text-blue-600">95%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full" style={{width: "95%"}}></div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600">System Uptime</span>
-                        <span className="text-sm font-bold text-green-600">99.99%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full" style={{width: "99%"}}></div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-gray-600">Security Score</span>
-                        <span className="text-sm font-bold text-gray-700">A+</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div className="bg-gradient-to-r from-gray-600 to-gray-700 h-2 rounded-full" style={{width: "98%"}}></div>
-                      </div>
-                    </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tại Sao Chọn VMware Enterprise?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Những ưu thế vượt trội của VMware cho doanh nghiệp lớn
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100"
+                data-testid={`benefit-card-${index}`}
+              >
+                <div className="flex items-start space-x-6">
+                  <div className="bg-gray-100 rounded-xl p-4 flex-shrink-0">
+                    <benefit.icon className="h-8 w-8 text-gray-700" />
                   </div>
-                </Card>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* VMware Advantages Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-slate-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tính Năng Cốt Lõi VMware
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Bộ công cụ enterprise toàn diện cho virtualization và cloud
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {vmwareAdvantages.map((advantage, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                data-testid={`advantage-card-${index}`}
+              >
+                <div className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg p-3 w-fit mb-4">
+                  <advantage.icon className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                  {advantage.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {advantage.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Packages Section */}
+      <section id="packages" className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Gói Dịch Vụ VMware Enterprise
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Lựa chọn giải pháp phù hợp với quy mô và nhu cầu doanh nghiệp
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative bg-white rounded-2xl shadow-xl border-2 ${
+                  pkg.popular 
+                    ? 'border-gray-700 transform scale-105' 
+                    : 'border-gray-200'
+                } p-8 hover:shadow-2xl transition-all`}
+                data-testid={`package-card-${index}`}
+              >
+                {pkg.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-gray-700 text-white px-4 py-2 rounded-full text-sm font-medium">
+                      Phổ biến nhất
+                    </span>
+                  </div>
+                )}
+                
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
+                  <div className="text-3xl font-bold text-gray-700 mb-2">{pkg.price}</div>
+                  <p className="text-gray-600 text-sm">{pkg.suitable}</p>
+                </div>
+                
+                <ul className="space-y-3 mb-8">
+                  {pkg.specs.map((spec, specIndex) => (
+                    <li key={specIndex} className="flex items-start text-sm">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{spec}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <Button 
+                  className={`w-full py-3 text-base font-semibold ${
+                    pkg.popular
+                      ? 'bg-gray-700 hover:bg-gray-800 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                  }`}
+                  onClick={() => setShowContactForm(true)}
+                  data-testid={`button-choose-package-${index}`}
+                >
+                  Chọn Gói {pkg.name}
+                </Button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Performance Benchmark Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-slate-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              So Sánh Hiệu Suất VMware Enterprise
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Benchmarks thực tế cho virtualization và enterprise workloads
+            </p>
+          </div>
+          
+          <PerformanceBenchmark />
+        </div>
+      </section>
+
+      {/* Testimonial Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-3xl p-12">
+              <div className="flex justify-center mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-8 w-8 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              
+              <blockquote className="text-2xl text-gray-900 font-medium mb-8 italic leading-relaxed">
+                "{testimonial.text}"
+              </blockquote>
+              
+              <div className="flex items-center justify-center space-x-4">
+                <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div className="text-left">
+                  <div className="font-semibold text-gray-900">{testimonial.author}</div>
+                  <div className="text-gray-600 text-sm">Vietnam Banking Industry</div>
+                </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* VMware Products and Solutions Section */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-                Các Sản Phẩm và <span className="text-blue-600">Giải Pháp</span> VMware
-              </h2>
-              <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-                Bộ giải pháp toàn diện từ server virtualization đến modern application platform
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-gray-800 to-slate-800 text-white">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            Sẵn Sàng Triển Khai VMware Enterprise?
+          </h2>
+          <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
+            Tham gia 500,000+ organizations toàn cầu tin tưởng VMware. Nhận demo và tư vấn từ certified specialists.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg"
+              className="bg-white text-gray-800 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-request-demo-cta"
+            >
+              Yêu Cầu Demo Enterprise
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            
+            <Button 
+              variant="outline"
+              size="lg"
+              className="border-2 border-white text-white hover:bg-white hover:text-gray-800 px-8 py-4 text-lg"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-contact-specialist"
+            >
+              Liên Hệ Chuyên Gia
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+
+      {/* Contact Form Modal */}
+      <ContactForm 
+        open={showContactForm} 
+        onOpenChange={setShowContactForm}
+      />
+
+      {/* Email Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl p-8 max-w-md w-full relative"
+          >
+            <button 
+              onClick={() => setShowPopup(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              data-testid="button-close-popup"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Server className="h-8 w-8 text-gray-700" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                🏢 Ưu Đãi VMware Enterprise!
+              </h3>
+              <p className="text-gray-600">
+                Nhận demo miễn phí + consultation setup vSphere cho doanh nghiệp!
               </p>
             </div>
             
-            <div className="space-y-16 max-w-7xl mx-auto">
-              {vmwareProducts.map((product, index) => (
-                <Card key={index} className="shadow-xl border-0 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300" data-testid={`card-product-${index}`}>
-                  <CardContent className="p-0">
-                    <div className={`grid grid-cols-1 lg:grid-cols-2 ${index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''}`}>
-                      {/* Product Info */}
-                      <div className={`p-10 ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-                        <div className="flex items-center space-x-4 mb-6">
-                          <div className="bg-blue-50 rounded-2xl p-4">
-                            {product.icon}
-                          </div>
-                          <div>
-                            <h3 className="text-2xl font-bold text-gray-800">
-                              {product.title}
-                            </h3>
-                            <p className="text-blue-600 font-semibold">
-                              {product.subtitle}
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <p className="text-gray-700 mb-6 leading-relaxed text-lg">
-                          {product.description}
-                        </p>
-                        
-                        <div className="mb-6">
-                          <h4 className="font-semibold text-gray-800 mb-3">Tính năng chính:</h4>
-                          <ul className="space-y-2">
-                            {product.features.map((feature, featureIndex) => (
-                              <li key={featureIndex} className="flex items-start">
-                                <CheckCircle className="h-5 w-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
-                                <span className="text-gray-700">{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        
-                        <div className="bg-gray-50 rounded-xl p-4">
-                          <p className="text-sm text-gray-600 italic">
-                            <strong>Use Cases:</strong> {product.useCases}
-                          </p>
-                        </div>
-                      </div>
-                      
-                      {/* Visual/Stats Side */}
-                      <div className={`bg-gradient-to-br from-blue-50 to-gray-100 p-10 flex items-center justify-center ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                        <div className="text-center">
-                          <div className="bg-white rounded-full p-8 shadow-lg mb-6 inline-block">
-                            {React.cloneElement(product.icon, { className: "h-20 w-20 text-blue-600" })}
-                          </div>
-                          <h4 className="text-xl font-bold text-gray-800 mb-4">
-                            Enterprise Ready
-                          </h4>
-                          <div className="grid grid-cols-1 gap-4 text-center">
-                            <div className="bg-white rounded-lg p-4 shadow-sm">
-                              <div className="text-2xl font-bold text-blue-600">99.9%</div>
-                              <div className="text-sm text-gray-600">Uptime SLA</div>
-                            </div>
-                            <div className="bg-white rounded-lg p-4 shadow-sm">
-                              <div className="text-2xl font-bold text-blue-600">24/7</div>
-                              <div className="text-sm text-gray-600">Support</div>
-                            </div>
-                            <div className="bg-white rounded-lg p-4 shadow-sm">
-                              <div className="text-2xl font-bold text-blue-600">500K+</div>
-                              <div className="text-sm text-gray-600">Customers</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Benefits Section */}
-        <section className="py-24 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-                Lợi Ích <span className="text-blue-600">Cốt Lõi</span>
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Tại sao các doanh nghiệp hàng đầu thế giới tin tưởng VMware
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
-              {benefits.map((benefit, index) => (
-                <Card key={index} className="text-center shadow-xl border-0 rounded-2xl bg-white hover:shadow-2xl transition-all duration-300" data-testid={`card-benefit-${index}`}>
-                  <CardContent className="p-10">
-                    <div className="bg-gray-100 rounded-full p-6 w-24 h-24 mx-auto mb-8 flex items-center justify-center">
-                      {benefit.icon}
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold text-gray-800 mb-6">
-                      {benefit.title}
-                    </h3>
-                    
-                    <p className="text-gray-600 mb-8 leading-relaxed">
-                      {benefit.description}
-                    </p>
-                    
-                    <div className="space-y-4">
-                      {benefit.metrics.map((metric, metricIndex) => (
-                        <div key={metricIndex} className="bg-blue-50 rounded-lg p-4">
-                          <div className="flex items-center justify-center">
-                            <TrendingUp className="h-5 w-5 text-blue-600 mr-2" />
-                            <span className="font-semibold text-gray-800">{metric}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials Section */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-                Nhận Xét Từ <span className="text-blue-600">Khách Hàng</span>
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Lắng nghe từ các doanh nghiệp hàng đầu Việt Nam đã thành công với VMware
-              </p>
-            </div>
-            
-            <div className="space-y-12 max-w-6xl mx-auto">
-              {testimonials.map((testimonial, index) => (
-                <Card key={index} className="shadow-2xl border-0 rounded-3xl overflow-hidden" data-testid={`testimonial-${index}`}>
-                  <CardContent className="p-0">
-                    <div className="grid grid-cols-1 lg:grid-cols-3">
-                      {/* Company Info */}
-                      <div className="bg-gradient-to-br from-gray-800 to-gray-700 text-white p-10">
-                        <div className="text-center">
-                          <div className="text-6xl mb-4">{testimonial.logo}</div>
-                          <h3 className="text-2xl font-bold mb-2">
-                            {testimonial.company}
-                          </h3>
-                          <p className="text-gray-300 mb-6">
-                            {testimonial.industry}
-                          </p>
-                          
-                          <div className="border-t border-gray-600 pt-6">
-                            <p className="font-semibold text-lg">
-                              {testimonial.name}
-                            </p>
-                            <p className="text-gray-300 text-sm">
-                              {testimonial.position}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Testimonial Content */}
-                      <div className="lg:col-span-2 p-10">
-                        <div className="flex items-center mb-6">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
-                          ))}
-                        </div>
-                        
-                        <blockquote className="text-lg text-gray-700 mb-8 leading-relaxed italic">
-                          "{testimonial.quote}"
-                        </blockquote>
-                        
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-4 flex items-center">
-                            <Award className="h-5 w-5 text-blue-600 mr-2" />
-                            Kết quả đạt được:
-                          </h4>
-                          
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {testimonial.results.map((result, resultIndex) => (
-                              <div key={resultIndex} className="bg-blue-50 rounded-lg p-4 text-center">
-                                <CheckCircle className="h-6 w-6 text-blue-600 mx-auto mb-2" />
-                                <p className="text-sm font-semibold text-gray-800">
-                                  {result}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-24 bg-gradient-to-r from-gray-800 via-gray-700 to-blue-800 text-white">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">
-              Sẵn Sàng Chuyển Đổi Infrastructure?
-            </h2>
-            <p className="text-xl md:text-2xl mb-12 opacity-90 max-w-4xl mx-auto">
-              Tham gia cùng hàng triệu doanh nghiệp toàn cầu đã tin tưởng VMware. 
-              Nhận tư vấn miễn phí từ certified VMware specialists.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <form onSubmit={handlePopupSubmit} className="space-y-4">
+              <Input
+                type="text"
+                placeholder="Họ tên *"
+                value={popupData.name}
+                onChange={(e) => setPopupData({...popupData, name: e.target.value})}
+                required
+                data-testid="input-popup-name"
+              />
+              <Input
+                type="email"
+                placeholder="Email *"
+                value={popupData.email}
+                onChange={(e) => setPopupData({...popupData, email: e.target.value})}
+                required
+                data-testid="input-popup-email"
+              />
+              <Input
+                type="tel"
+                placeholder="Số điện thoại *"
+                value={popupData.phone}
+                onChange={(e) => setPopupData({...popupData, phone: e.target.value})}
+                required
+                data-testid="input-popup-phone"
+              />
               <Button 
-                className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
-                data-testid="button-request-demo"
+                type="submit" 
+                className="w-full bg-gray-700 hover:bg-gray-800"
+                data-testid="button-popup-submit"
               >
-                Yêu Cầu Demo & Báo Giá
-                <ArrowRight className="ml-3 h-6 w-6" />
+                Nhận Demo Miễn Phí
               </Button>
-              <Button 
-                variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-gray-800 text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
-                data-testid="button-download-guide"
-              >
-                Tải Tài Liệu Kỹ Thuật
-              </Button>
-            </div>
-          </div>
-        </section>
-      </main>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Email Popup Component - for consistent experience */}
+      <EmailPopup
+        discount="Free Demo"
+        title="🏢 Ưu Đãi VMware Enterprise!"
+        description="Đăng ký email để nhận demo miễn phí vSphere + NSX consultation cho doanh nghiệp!"
+        buttonText="Nhận Demo Miễn Phí"
+        storageKey="vmware_email_popup_shown"
+      />
+    </div>
   );
 }

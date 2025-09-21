@@ -1,412 +1,621 @@
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { 
   Router, 
+  Shield, 
   Network, 
-  Shield,
-  Cable,
-  Zap,
-  Award,
+  CheckCircle, 
+  ArrowRight, 
+  Globe, 
+  Clock,
   Users,
   Star,
-  CheckCircle,
-  ArrowRight,
-  Quote,
+  X,
+  Database,
   TrendingUp,
   Lock,
+  Cable,
+  Zap,
+  Settings,
+  Monitor,
+  Award,
   Gauge
-} from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+} from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import ContactForm from "@/components/contact-form";
+import PerformanceBenchmark from "@/components/performance-benchmark";
+import EmailPopup from "@/components/email-popup";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function NetworkEquipment() {
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupData, setPopupData] = useState({
+    email: "",
+    name: "",
+    phone: ""
+  });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    projectDescription: "",
+    package: ""
+  });
+
+  const handleEmailSubmit = async (email: string) => {
+    console.log('Email submitted for Network equipment:', email);
+    // Integration with email service would go here
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  };
+
+  // Show popup after 10 seconds or 50% scroll
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 10000);
+
+    const handleScroll = () => {
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      if (scrollPercent >= 50) {
+        setShowPopup(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const benefits = [
+    {
+      icon: Router,
+      title: "Enterprise Network Infrastructure",
+      description: "Cisco, Juniper và Aruba enterprise routers/switches với high-throughput performance và advanced routing protocols – lý tưởng cho large-scale networks cần reliability và scalability cho critical business operations."
+    },
+    {
+      icon: Shield,
+      title: "Network Security Appliances", 
+      description: "Next-generation firewalls, IPS/IDS systems và VPN concentrators với threat intelligence và automated response capabilities – comprehensive protection cho network perimeter và internal security."
+    },
+    {
+      icon: Monitor,
+      title: "Network Management & Monitoring",
+      description: "Professional installation, configuration và 24/7 monitoring services với proactive maintenance và performance optimization – complete lifecycle support cho network infrastructure investments."
+    },
+    {
+      icon: Zap,
+      title: "High-Performance Networking",
+      description: "10Gbps+ switches, fiber optic infrastructure và low-latency solutions với bandwidth optimization – designed cho demanding applications và high-throughput environments."
+    }
+  ];
+
+  const equipmentAdvantages = [
+    {
+      icon: Router,
+      title: "Enterprise Routers & Switches",
+      description: "Cisco Catalyst series, Juniper EX/QFX switches với advanced Layer 3 routing, VLAN management và QoS policies. Scalable solutions cho campus và data center networks."
+    },
+    {
+      icon: Shield,
+      title: "Firewall & Security Devices",
+      description: "Next-gen firewalls từ Palo Alto, Fortinet với application control, SSL inspection và threat prevention. Comprehensive security cho network perimeter protection."
+    },
+    {
+      icon: Cable,
+      title: "Wireless Infrastructure",
+      description: "Enterprise Wi-Fi 6/6E access points, wireless controllers và mesh networking solutions. High-density deployments với seamless roaming và advanced security."
+    },
+    {
+      icon: Monitor,
+      title: "Network Monitoring Tools",
+      description: "SNMP monitoring, network analyzers và performance management platforms. Real-time visibility và analytics cho network optimization và troubleshooting."
+    },
+    {
+      icon: Database,
+      title: "Fiber Optic Solutions",
+      description: "Single/multi-mode fiber infrastructure, SFP+ transceivers và fiber switches. High-bandwidth connectivity cho data center interconnects và backbone networks."
+    },
+    {
+      icon: Settings,
+      title: "Network Configuration Services",
+      description: "Professional setup, VLAN configuration và routing optimization. Expert deployment với best practices và documentation cho network administration."
+    }
+  ];
+
+  const packages = [
+    {
+      name: "Network Starter",
+      price: "25.000.000 VNĐ",
+      storage: "SMB network setup",
+      features: "Basic router + switch + firewall",
+      suitable: "Small business 10-50 users",
+      color: "blue",
+      specs: [
+        "Cisco SG350 managed switch",
+        "Cisco ISR4331 router",
+        "SonicWall TZ firewall",
+        "Basic configuration included",
+        "1 year warranty",
+        "Email support"
+      ]
+    },
+    {
+      name: "Network Professional",
+      price: "85.000.000 VNĐ", 
+      storage: "Enterprise-grade infrastructure",
+      features: "Advanced routing + security",
+      suitable: "Growing enterprises",
+      color: "green",
+      popular: true,
+      specs: [
+        "All từ gói Starter",
+        "Cisco Catalyst 9300 series", 
+        "Palo Alto firewall",
+        "Wireless controller + APs",
+        "Professional configuration",
+        "24/7 phone support"
+      ]
+    },
+    {
+      name: "Network Enterprise",
+      price: "200.000.000 VNĐ",
+      storage: "Full data center setup", 
+      features: "Redundant + high-availability",
+      suitable: "Large enterprises",
+      color: "purple",
+      specs: [
+        "All từ gói Professional",
+        "Cisco Nexus data center switches",
+        "Redundant core infrastructure",
+        "Fiber backbone installation",
+        "Dedicated account manager",
+        "SLA guarantees"
+      ]
+    }
+  ];
+
+  const testimonial = {
+    text: "Network infrastructure từ STEP đã tăng 300% throughput và giảm 90% network downtime!",
+    author: "Anh H., Network Admin tại Techcombank"
+  };
+
+  const techFeatures = [
+    { name: "Cisco Catalyst", icon: Router },
+    { name: "Palo Alto FW", icon: Shield },
+    { name: "Aruba WiFi", icon: Network },
+    { name: "Fiber Backbone", icon: Cable },
+    { name: "SNMP Monitor", icon: Monitor },
+    { name: "24/7 Support", icon: Settings }
+  ];
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Main form data:', formData);
+    // Handle form submission
+    setShowContactForm(false);
+  };
+
+  const handlePopupSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Popup form data:', popupData);
+    setShowPopup(false);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <Header />
-      
-      <main>
-        {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary/5 to-primary/10">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-                Thiết Bị Mạng Chuyên Dụng
-                <br />
-                <span className="text-primary">Xây Dựng Hạ Tầng Vững Chắc</span>
+
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-slate-50 to-white py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="w-full h-full bg-gradient-to-br from-slate-50/50 to-transparent"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center mr-4">
+                  <Network className="text-white w-6 h-6" />
+                </div>
+                <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                  Enterprise Network Equipment
+                </span>
+              </div>
+              
+              <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Network Equipment – 
+                <span className="text-orange-600"> Enterprise Infrastructure</span> 
+                Tăng 300% Network Performance!
               </h1>
               
-              <p className="text-xl text-muted-foreground mb-10 leading-relaxed max-w-3xl mx-auto">
-                Chúng tôi cung cấp các thiết bị mạng chất lượng cao từ các thương hiệu hàng đầu, 
-                đảm bảo tốc độ, độ ổn định và bảo mật tối đa cho hệ thống của bạn.
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Thiết bị mạng enterprise-grade từ Cisco, Juniper và Palo Alto với professional installation và 24/7 support. 
+                Dành riêng cho doanh nghiệp cần network infrastructure với high-availability và security tối đa.
               </p>
               
-              <Button 
-                size="lg" 
-                className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg"
-                data-testid="button-view-products"
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <Button 
+                  size="lg"
+                  className="bg-orange-600 hover:bg-orange-700 px-8 py-4 text-lg font-semibold"
+                  onClick={() => {
+                    document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  data-testid="button-check-network-packages"
+                >
+                  Kiểm Tra Gói Network Phù Hợp
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white px-8 py-4 text-lg"
+                  onClick={() => setShowContactForm(true)}
+                  data-testid="button-network-consultation"
+                >
+                  Tư Vấn Network Design
+                </Button>
+              </div>
+              
+              <div className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                <span>Triển khai 1000+ network infrastructures tại Việt Nam!</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 text-green-400 font-mono text-sm">
+                <div className="flex items-center mb-6">
+                  <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-gray-400 ml-4">Network Management</span>
+                </div>
+                
+                <div className="space-y-2">
+                  <div><span className="text-blue-400">$</span> show interface status</div>
+                  <div><span className="text-blue-400">$</span> show vlan brief</div>
+                  <div><span className="text-blue-400">$</span> show ip route summary</div>
+                  <div><span className="text-green-500">✓</span> Network topology healthy!</div>
+                </div>
+              </div>
+
+              {/* Tech Stack Icons */}
+              <div className="mt-8 grid grid-cols-3 gap-4">
+                {techFeatures.map((tech, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-lg p-4 text-center">
+                    <tech.icon className="h-8 w-8 text-orange-600 mx-auto mb-2" />
+                    <span className="text-sm font-medium text-gray-700">{tech.name}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Tại Sao Chọn Network Equipment Enterprise?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Những ưu thế vượt trội của network infrastructure enterprise-grade
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100"
+                data-testid={`benefit-card-${index}`}
               >
-                Xem Sản Phẩm
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
+                <div className="flex items-start space-x-6">
+                  <div className="bg-orange-100 rounded-xl p-4 flex-shrink-0">
+                    <benefit.icon className="h-8 w-8 text-orange-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Why Choose STEP Section */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Tại Sao Lại Chọn STEP?
-                </h2>
-                <p className="text-xl text-muted-foreground">
-                  Những giá trị cốt lõi làm nên sự khác biệt của chúng tôi
+      {/* Equipment Advantages Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-orange-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Các Loại Thiết Bị Mạng Enterprise
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Comprehensive network solutions từ access đến core layer
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {equipmentAdvantages.map((advantage, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                data-testid={`advantage-card-${index}`}
+              >
+                <div className="bg-gradient-to-br from-orange-600 to-orange-700 rounded-lg p-3 w-fit mb-4">
+                  <advantage.icon className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                  {advantage.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {advantage.description}
                 </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Packages Section */}
+      <section id="packages" className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Gói Thiết Bị Mạng Enterprise
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Network infrastructure packages cho mọi quy mô doanh nghiệp
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative bg-white rounded-2xl shadow-xl border-2 ${
+                  pkg.popular 
+                    ? 'border-orange-600 transform scale-105' 
+                    : 'border-gray-200'
+                } p-8 hover:shadow-2xl transition-all`}
+                data-testid={`package-card-${index}`}
+              >
+                {pkg.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+                      Phổ biến nhất
+                    </span>
+                  </div>
+                )}
+                
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
+                  <div className="text-3xl font-bold text-orange-600 mb-2">{pkg.price}</div>
+                  <p className="text-gray-600 text-sm">{pkg.suitable}</p>
+                </div>
+                
+                <ul className="space-y-3 mb-8">
+                  {pkg.specs.map((spec, specIndex) => (
+                    <li key={specIndex} className="flex items-start text-sm">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{spec}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <Button 
+                  className={`w-full py-3 text-base font-semibold ${
+                    pkg.popular
+                      ? 'bg-orange-600 hover:bg-orange-700 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                  }`}
+                  onClick={() => setShowContactForm(true)}
+                  data-testid={`button-choose-package-${index}`}
+                >
+                  Chọn Gói {pkg.name}
+                </Button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Performance Benchmark Section */}
+      <section className="py-20 bg-gradient-to-br from-orange-50 to-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              So Sánh Hiệu Suất Network Infrastructure
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Benchmarks thực tế cho network performance và throughput
+            </p>
+          </div>
+          
+          <PerformanceBenchmark />
+        </div>
+      </section>
+
+      {/* Testimonial Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-gradient-to-br from-orange-50 to-gray-50 rounded-3xl p-12">
+              <div className="flex justify-center mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-8 w-8 text-yellow-400 fill-current" />
+                ))}
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <Card className="p-8 text-center hover:shadow-lg transition-shadow border-2">
-                  <div className="flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6 mx-auto">
-                    <Award className="h-8 w-8 text-blue-600" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">Chính Hãng 100%</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Tất cả sản phẩm đều chính hãng với tem bảo hành rõ ràng từ nhà sản xuất, 
-                    đảm bảo chất lượng và hiệu suất tối ưu.
-                  </p>
-                </Card>
-
-                <Card className="p-8 text-center hover:shadow-lg transition-shadow border-2">
-                  <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-6 mx-auto">
-                    <Users className="h-8 w-8 text-green-600" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">Hỗ Trợ Chuyên Nghiệp</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Đội ngũ kỹ thuật giàu kinh nghiệm tư vấn và hỗ trợ cài đặt, 
-                    cấu hình thiết bị 24/7.
-                  </p>
-                </Card>
-
-                <Card className="p-8 text-center hover:shadow-lg transition-shadow border-2">
-                  <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6 mx-auto">
-                    <Star className="h-8 w-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">Giá Cạnh Tranh</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Cam kết giá tốt nhất thị trường với nhiều chương trình khuyến mãi 
-                    và ưu đãi cho khách hàng doanh nghiệp.
-                  </p>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Equipment Types Section */}
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Các Loại Thiết Bị Mạng Chúng Tôi Cung Cấp
-                </h2>
-                <p className="text-xl text-muted-foreground">
-                  Từ thiết bị cơ bản đến enterprise, đáp ứng mọi nhu cầu của bạn
-                </p>
-              </div>
+              <blockquote className="text-2xl text-gray-900 font-medium mb-8 italic leading-relaxed">
+                "{testimonial.text}"
+              </blockquote>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {/* Router */}
-                <Card className="p-6 hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 group">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6 mx-auto group-hover:bg-primary/20 transition-colors">
-                      <Router className="h-8 w-8 text-primary" />
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-foreground mb-3">
-                      Router
-                    </h3>
-                    
-                    <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                      Router WiFi 6, Router doanh nghiệp, Router cân bằng tải
-                    </p>
-                    
-                    <div className="text-2xl font-bold text-primary mb-4">
-                      Từ 2.500.000đ
-                    </div>
-                    
-                    <ul className="space-y-2 text-left text-sm">
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        Tốc độ đến 6 Gbps
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        Hỗ trợ WiFi 6/6E
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        VPN & Firewall tích hợp
-                      </li>
-                    </ul>
-                  </div>
-                </Card>
-
-                {/* Switch */}
-                <Card className="p-6 hover:shadow-xl transition-all duration-300 border-2 hover:border-blue-500/20 group">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6 mx-auto group-hover:bg-blue-200 transition-colors">
-                      <Network className="h-8 w-8 text-blue-600" />
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-foreground mb-3">
-                      Switch
-                    </h3>
-                    
-                    <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                      Switch Layer 2/3, PoE+, Managed Switch
-                    </p>
-                    
-                    <div className="text-2xl font-bold text-blue-600 mb-4">
-                      Từ 1.200.000đ
-                    </div>
-                    
-                    <ul className="space-y-2 text-left text-sm">
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        8-48 ports Gigabit
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        PoE+ 30W/port
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        VLAN & QoS
-                      </li>
-                    </ul>
-                  </div>
-                </Card>
-
-                {/* Firewall */}
-                <Card className="p-6 hover:shadow-xl transition-all duration-300 border-2 hover:border-red-500/20 group">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-6 mx-auto group-hover:bg-red-200 transition-colors">
-                      <Shield className="h-8 w-8 text-red-600" />
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-foreground mb-3">
-                      Tường Lửa
-                    </h3>
-                    
-                    <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                      Next-gen Firewall, UTM, Network Security
-                    </p>
-                    
-                    <div className="text-2xl font-bold text-red-600 mb-4">
-                      Từ 8.500.000đ
-                    </div>
-                    
-                    <ul className="space-y-2 text-left text-sm">
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        IPS/IDS tích hợp
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        Anti-virus & Anti-spam
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        SSL VPN
-                      </li>
-                    </ul>
-                  </div>
-                </Card>
-
-                {/* Cables & Accessories */}
-                <Card className="p-6 hover:shadow-xl transition-all duration-300 border-2 hover:border-green-500/20 group">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-6 mx-auto group-hover:bg-green-200 transition-colors">
-                      <Cable className="h-8 w-8 text-green-600" />
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-foreground mb-3">
-                      Cáp Mạng & Phụ Kiện
-                    </h3>
-                    
-                    <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                      Cáp Cat6/6A, Patch panel, Rack cabinet
-                    </p>
-                    
-                    <div className="text-2xl font-bold text-green-600 mb-4">
-                      Từ 15.000đ
-                    </div>
-                    
-                    <ul className="space-y-2 text-left text-sm">
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        Cáp Cat6A/Cat7
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        Patch panel 24/48 port
-                      </li>
-                      <li className="flex items-center text-foreground">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                        Rack 19 inch chuẩn
-                      </li>
-                    </ul>
-                  </div>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Benefits Section */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Tại Sao Nên Chọn Thiết Bị Mạng Từ Chúng Tôi?
-                </h2>
-                <p className="text-xl text-muted-foreground">
-                  Những lợi ích vượt trội khi lựa chọn STEP làm đối tác
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6 mx-auto">
-                    <Gauge className="h-8 w-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Hiệu Suất Cao</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Thiết bị enterprise-grade đảm bảo hiệu suất ổn định 24/7 
-                    với throughput cao và độ trễ thấp.
-                  </p>
+              <div className="flex items-center justify-center space-x-4">
+                <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-white" />
                 </div>
-
-                <div className="text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6 mx-auto">
-                    <Award className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Độ Bền Vượt Trội</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Chế tạo từ vật liệu cao cấp, thiết kế chống nhiễu và 
-                    chịu được điều kiện khắc nghiệt.
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-6 mx-auto">
-                    <Lock className="h-8 w-8 text-red-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Bảo Mật Mạnh Mẽ</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Tích hợp các tính năng bảo mật tiên tiến như IPS/IDS, 
-                    VPN và access control.
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6 mx-auto">
-                    <TrendingUp className="h-8 w-8 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">Tương Thích Đa Nền Tảng</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Hỗ trợ đa chuẩn kết nối, tương thích với mọi hệ điều hành 
-                    và ứng dụng doanh nghiệp.
-                  </p>
+                <div className="text-left">
+                  <div className="font-semibold text-gray-900">{testimonial.author}</div>
+                  <div className="text-gray-600 text-sm">Vietnam Banking Industry</div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Testimonials Section */}
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Khách Hàng Nói Gì Về Chúng Tôi?
-                </h2>
-                <p className="text-xl text-muted-foreground">
-                  Những phản hồi chân thực từ khách hàng đã sử dụng dịch vụ
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <Card className="p-8 hover:shadow-lg transition-shadow relative">
-                  <Quote className="h-8 w-8 text-primary/20 absolute top-6 left-6" />
-                  <div className="mt-6">
-                    <p className="text-muted-foreground leading-relaxed mb-6 italic">
-                      "Hệ thống mạng của công ty chúng tôi hoạt động cực kỳ ổn định sau khi 
-                      sử dụng thiết bị từ STEP. Đặc biệt ấn tượng với chất lượng switch và 
-                      dịch vụ hỗ trợ 24/7."
-                    </p>
-                    <div className="flex items-center">
-                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-                        <Users className="h-6 w-6 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">Nguyễn Minh Tuấn</p>
-                        <p className="text-sm text-muted-foreground">IT Manager, FPT Software</p>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="p-8 hover:shadow-lg transition-shadow relative">
-                  <Quote className="h-8 w-8 text-primary/20 absolute top-6 left-6" />
-                  <div className="mt-6">
-                    <p className="text-muted-foreground leading-relaxed mb-6 italic">
-                      "Tư vấn chuyên nghiệp, thiết bị chính hãng với giá cạnh tranh. 
-                      Router WiFi 6 mà chúng tôi mua có tốc độ và độ phủ sóng tuyệt vời 
-                      cho toàn bộ tòa nhà 5 tầng."
-                    </p>
-                    <div className="flex items-center">
-                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                        <Star className="h-6 w-6 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">Trần Thị Hương</p>
-                        <p className="text-sm text-muted-foreground">Giám đốc IT, Vietcombank</p>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="p-8 hover:shadow-lg transition-shadow relative">
-                  <Quote className="h-8 w-8 text-primary/20 absolute top-6 left-6" />
-                  <div className="mt-6">
-                    <p className="text-muted-foreground leading-relaxed mb-6 italic">
-                      "Firewall của STEP đã bảo vệ hệ thống của chúng tôi rất hiệu quả. 
-                      Giao diện quản lý trực quan, dễ cấu hình và báo cáo chi tiết. 
-                      Đội ngũ hỗ trợ rất nhiệt tình."
-                    </p>
-                    <div className="flex items-center">
-                      <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
-                        <Shield className="h-6 w-6 text-orange-600" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">Lê Văn Hùng</p>
-                        <p className="text-sm text-muted-foreground">Network Admin, VinGroup</p>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </div>
-            </div>
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-orange-600 to-orange-700 text-white">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            Sẵn Sàng Upgrade Network Infrastructure?
+          </h2>
+          <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
+            Tăng 300% network performance và giảm 90% downtime. Nhận network assessment miễn phí từ certified engineers.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg"
+              className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-network-assessment"
+            >
+              Network Assessment Miễn Phí
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            
+            <Button 
+              variant="outline"
+              size="lg"
+              className="border-2 border-white text-white hover:bg-white hover:text-orange-600 px-8 py-4 text-lg"
+              onClick={() => setShowContactForm(true)}
+              data-testid="button-contact-network-expert"
+            >
+              Liên Hệ Network Expert
+            </Button>
           </div>
-        </section>
-      </main>
-      
+        </div>
+      </section>
+
       <Footer />
+
+      {/* Contact Form Modal */}
+      <ContactForm 
+        open={showContactForm} 
+        onOpenChange={setShowContactForm}
+      />
+
+      {/* Email Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl p-8 max-w-md w-full relative"
+          >
+            <button 
+              onClick={() => setShowPopup(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              data-testid="button-close-popup"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Network className="h-8 w-8 text-orange-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                🌐 Ưu Đãi Network Equipment!
+              </h3>
+              <p className="text-gray-600">
+                Nhận network assessment miễn phí + installation support cho enterprise infrastructure!
+              </p>
+            </div>
+            
+            <form onSubmit={handlePopupSubmit} className="space-y-4">
+              <Input
+                type="text"
+                placeholder="Họ tên *"
+                value={popupData.name}
+                onChange={(e) => setPopupData({...popupData, name: e.target.value})}
+                required
+                data-testid="input-popup-name"
+              />
+              <Input
+                type="email"
+                placeholder="Email *"
+                value={popupData.email}
+                onChange={(e) => setPopupData({...popupData, email: e.target.value})}
+                required
+                data-testid="input-popup-email"
+              />
+              <Input
+                type="tel"
+                placeholder="Số điện thoại *"
+                value={popupData.phone}
+                onChange={(e) => setPopupData({...popupData, phone: e.target.value})}
+                required
+                data-testid="input-popup-phone"
+              />
+              <Button 
+                type="submit" 
+                className="w-full bg-orange-600 hover:bg-orange-700"
+                data-testid="button-popup-submit"
+              >
+                Nhận Assessment Miễn Phí
+              </Button>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Email Popup Component - for consistent experience */}
+      <EmailPopup
+        discount="Free Assessment"
+        title="🌐 Ưu Đãi Network Equipment!"
+        description="Đăng ký email để nhận network assessment miễn phí + installation support!"
+        buttonText="Nhận Assessment Miễn Phí"
+        storageKey="network_equipment_email_popup_shown"
+      />
     </div>
   );
 }

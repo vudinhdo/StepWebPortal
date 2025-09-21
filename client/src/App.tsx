@@ -74,6 +74,10 @@ function Router() {
         <Route path="/danh-muc/may-chu/dich-vu-may-chu" component={ServerServices} />
         <Route path="/may-chu" component={ServersOverview} />
         <Route path="/thiet-bi-mang" component={NetworkEquipment} />
+        <Route path="/network-equipment" component={NetworkEquipment} />
+        <Route path="/microsoft-365" component={Microsoft365} />
+        <Route path="/servers-overview" component={ServersOverview} />
+        <Route path="/server-services" component={ServerServices} />
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route path="/bao-gia" component={Quote} />
         <Route component={NotFound} />
