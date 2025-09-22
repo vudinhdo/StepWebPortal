@@ -32,7 +32,6 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Hosting() {
   const [showContactForm, setShowContactForm] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
   
   // Color mappings for dynamic Tailwind classes
@@ -45,32 +44,7 @@ export default function Hosting() {
     pink: "border-pink-400"
   };
 
-  const [popupData, setPopupData] = useState({
-    email: "",
-    name: "",
-    phone: ""
-  });
 
-  // Show popup after 10 seconds or 50% scroll
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPopup(true);
-    }, 10000);
-
-    const handleScroll = () => {
-      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      if (scrollPercent >= 50) {
-        setShowPopup(true);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   const benefits = [
     {
@@ -297,11 +271,6 @@ export default function Hosting() {
     }
   ];
 
-  const handlePopupSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Popup form data:', popupData);
-    setShowPopup(false);
-  };
 
   const packageVariants = {
     hidden: { opacity: 0, y: 50, scale: 0.95 },
@@ -868,70 +837,6 @@ export default function Hosting() {
         onOpenChange={setShowContactForm}
       />
 
-      {/* Email Popup */}
-      {showPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-2xl p-8 max-w-md w-full relative shadow-2xl"
-          >
-            <button 
-              onClick={() => setShowPopup(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-              data-testid="button-close-popup"
-            >
-              <X className="h-6 w-6" />
-            </button>
-            
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Rocket className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                🎁 Ưu Đãi Hosting Đặc Biệt!
-              </h3>
-              <p className="text-gray-600">
-                Giảm <strong>25% tháng đầu</strong> + migration miễn phí cho hosting mới!
-              </p>
-            </div>
-            
-            <form onSubmit={handlePopupSubmit} className="space-y-4">
-              <Input
-                type="text"
-                placeholder="Họ tên *"
-                value={popupData.name}
-                onChange={(e) => setPopupData({...popupData, name: e.target.value})}
-                required
-                data-testid="input-popup-name"
-              />
-              <Input
-                type="email"
-                placeholder="Email *"
-                value={popupData.email}
-                onChange={(e) => setPopupData({...popupData, email: e.target.value})}
-                required
-                data-testid="input-popup-email"
-              />
-              <Input
-                type="tel"
-                placeholder="Số điện thoại *"
-                value={popupData.phone}
-                onChange={(e) => setPopupData({...popupData, phone: e.target.value})}
-                required
-                data-testid="input-popup-phone"
-              />
-              <Button 
-                type="submit" 
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                data-testid="button-popup-submit"
-              >
-                Nhận Ưu Đãi 25% Ngay
-              </Button>
-            </form>
-          </motion.div>
-        </div>
-      )}
 
       {/* Email Popup Component */}
       <EmailPopup

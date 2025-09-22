@@ -40,10 +40,10 @@ export default function EmailPopup({
     const hasShown = localStorage.getItem(storageKey);
     if (hasShown) return;
 
-    // Show popup after 5 seconds for testing (change to 15000 for production)
+    // Show popup after 15 seconds
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 5000);
+    }, 15000);
 
     return () => clearTimeout(timer);
   }, [storageKey]);
