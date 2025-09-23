@@ -14,7 +14,9 @@ import {
   Calendar,
   Users,
   Shield,
-  Headphones
+  Headphones,
+  Server,
+  Database
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -347,7 +349,7 @@ export default function Contact() {
                       <div>
                         <Label htmlFor="service">Dịch vụ quan tâm</Label>
                         <Select 
-                          value={form.watch("service")} 
+                          value={form.watch("service") || ""} 
                           onValueChange={(value) => form.setValue("service", value)}
                         >
                           <SelectTrigger className="mt-1" data-testid="select-service">

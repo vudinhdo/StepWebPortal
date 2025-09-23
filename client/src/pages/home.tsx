@@ -197,7 +197,7 @@ export default function Home() {
                   <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent mb-6" data-testid="text-hero-title" style={{backgroundImage: `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`}}>
                     Điện Toán Đám Mây
                     <br />
-                    <span className="text-slate-800">Thế Hệ Mới</span>
+                    <span className="text-slate-800">Dịch Vụ Hạ Tầng Toàn Diện</span>
                   </h1>
                   
                   <p className="text-xl md:text-2xl text-slate-600 mb-8 max-w-4xl mx-auto leading-relaxed" data-testid="text-hero-description">
@@ -464,11 +464,11 @@ export default function Home() {
                 </div>
                 <div className="flex items-center justify-center gap-3" data-testid="contact-email">
                   <Mail className="h-5 w-5" />
-                  <span>hello@step.vn</span>
+                  <span>info@step.com.vn</span>
                 </div>
                 <div className="flex items-center justify-center gap-3" data-testid="contact-address">
                   <MapPin className="h-5 w-5" />
-                  <span>TP.HCM, Việt Nam</span>
+                  <span>Hà Nội, Việt Nam</span>
                 </div>
               </div>
             </motion.div>

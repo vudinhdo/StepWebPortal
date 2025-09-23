@@ -75,7 +75,7 @@ export default function ContactForm({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[hsl(207,100%,40%)]">
             {intent === "demo" ? "Yêu cầu demo sản phẩm" : "Liên hệ với chuyên gia STEP"}
@@ -144,24 +144,19 @@ export default function ContactForm({
           <div>
             <Label htmlFor="service">Dịch vụ quan tâm</Label>
             <Select 
-              value={form.watch("service")} 
+              value={form.watch("service") || ""} 
               onValueChange={(value) => form.setValue("service", value)}
             >
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="Chọn dịch vụ" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="domain">Tên miền</SelectItem>
                 <SelectItem value="cloud">Cloud Server</SelectItem>
                 <SelectItem value="hosting">Web Hosting</SelectItem>
                 <SelectItem value="server">Dedicated Server</SelectItem>
                 <SelectItem value="colocation">Colocation</SelectItem>
                 <SelectItem value="email">Email Hybrid</SelectItem>
                 <SelectItem value="DLP">DLP - Data Loss Prevention</SelectItem>
-                <SelectItem value="software">Phần mềm</SelectItem>
-                <SelectItem value="consulting">Tư vấn</SelectItem>
-                <SelectItem value="support">Hỗ trợ</SelectItem>
-                <SelectItem value="other">Khác</SelectItem>
               </SelectContent>
             </Select>
           </div>

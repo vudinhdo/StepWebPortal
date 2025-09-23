@@ -52,7 +52,7 @@ export default function Header() {
               Báo Giá
             </a>
             <a 
-              href="#contact" 
+              href="/contact" 
               className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
             >
               Liên hệ
@@ -134,7 +134,7 @@ export default function Header() {
                     Performance Benchmark
                   </a>
                   <a 
-                    href="#contact" 
+                    href="/contact" 
                     className="block py-3 text-gray-700 hover:text-[hsl(207,100%,40%)] transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
