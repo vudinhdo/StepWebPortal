@@ -148,14 +148,14 @@ export default function Contact() {
       ]
     };
 
-    let jsonLdScript = document.querySelector('script[type="application/ld+json"]');
+    let jsonLdScript = document.querySelector('script[type="application/ld+json"]') as HTMLScriptElement;
     if (jsonLdScript) {
       jsonLdScript.textContent = JSON.stringify(structuredData);
     } else {
-      jsonLdScript = document.createElement('script');
-      jsonLdScript.type = 'application/ld+json';
-      jsonLdScript.textContent = JSON.stringify(structuredData);
-      document.head.appendChild(jsonLdScript);
+      const newScript = document.createElement('script');
+      newScript.type = 'application/ld+json';
+      newScript.textContent = JSON.stringify(structuredData);
+      document.head.appendChild(newScript);
     }
 
     // Cleanup function
