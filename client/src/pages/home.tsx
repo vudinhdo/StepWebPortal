@@ -70,62 +70,69 @@ export default function Home() {
   // Cloud data and statistics
   const cloudMetrics = [
     { label: "Uptime Guarantee", value: "99.99%", icon: Clock },
-    { label: "Active Clients", value: "10,000+", icon: Users },
-    { label: "Data Centers", value: "12", icon: Server },
-    { label: "Support Response", value: "< 5min", icon: Zap }
+    { label: "Active Clients", value: "5,000+", icon: Users },
+    { label: "Data Centers", value: "8", icon: Server },
+    { label: "Support Response", value: "< 2min", icon: Zap }
   ];
 
   const cloudServices = [
     {
       icon: Cloud,
-      title: "Cloud Infrastructure",
-      description: "Scalable cloud solutions with GPU support, Kubernetes, and auto-scaling for modern enterprises.",
-      features: ["GPU Computing", "Kubernetes", "Auto-scaling", "Load Balancing"],
+      title: "Cloud Server",
+      description: "Máy chủ đám mây linh hoạt với CPU/GPU cao cấp, scale tự động và tối ưu chi phí theo nhu cầu sử dụng.",
+      features: ["Scale Tự Động", "CPU/GPU Cao Cấp", "Pay-as-you-use", "Docker/K8s Support"],
       color: "from-blue-500 to-cyan-500"
     },
     {
-      icon: Server,
-      title: "Dedicated Servers",
-      description: "High-performance dedicated servers with enterprise-grade hardware and 24/7 monitoring.",
-      features: ["Enterprise Hardware", "24/7 Monitoring", "Custom Config", "SLA 99.9%"],
-      color: "from-purple-500 to-pink-500"
-    },
-    {
-      icon: Shield,
-      title: "Security Solutions",
-      description: "Comprehensive security with DDoS protection, SSL certificates, and compliance management.",
-      features: ["DDoS Protection", "SSL Certificates", "Compliance", "Security Audit"],
+      icon: Globe,
+      title: "Web Hosting",
+      description: "Hosting WordPress, Laravel, Node.js với SSD NVMe, CDN tích hợp và backup tự động hàng ngày.",
+      features: ["SSD NVMe", "CDN Tích Hợp", "SSL Miễn Phí", "Backup Tự Động"],
       color: "from-green-500 to-emerald-500"
     },
     {
-      icon: Globe,
-      title: "Global CDN",
-      description: "Lightning-fast content delivery with edge servers worldwide for optimal performance.",
-      features: ["Edge Servers", "Global Network", "Cache Optimization", "Real-time Analytics"],
+      icon: Server,
+      title: "Dedicated Server",
+      description: "Máy chủ riêng biệt với phần cứng enterprise, băng thông không giới hạn và quản lý 24/7.",
+      features: ["Phần Cứng Enterprise", "Băng Thông Unlimited", "Quản Lý 24/7", "Root Access"],
+      color: "from-purple-500 to-pink-500"
+    },
+    {
+      icon: Database,
+      title: "Colocation",
+      description: "Dịch vụ đặt máy chủ tại datacenter với điện lưới dự phòng, bảo mật vật lý và kết nối internet cao cấp.",
+      features: ["Điện Lưới Dự Phòng", "Bảo Mật 24/7", "Kết Nối Cao Cấp", "Môi Trường Kiểm Soát"],
       color: "from-orange-500 to-red-500"
+    },
+    {
+      icon: Mail,
+      title: "Email Hybrid",
+      description: "Giải pháp email doanh nghiệp kết hợp cloud và on-premise với bảo mật cao và khả năng mở rộng.",
+      features: ["Anti-Spam/Virus", "Backup Email", "Mobile Sync", "Compliance Ready"],
+      color: "from-indigo-500 to-purple-500"
     }
   ];
 
   const testimonials = [
     {
-      name: "Nguyễn Văn A",
-      company: "TechStart Vietnam",
-      role: "CTO",
-      content: "STEP đã giúp chúng tôi scale infrastructure từ 100 users lên 100,000 users mà không có downtime nào.",
+      name: "Nguyễn Minh Tuấn",
+      company: "FPT Software",
+      role: "Infrastructure Manager",
+      content: "Cloud Server của STEP giúp chúng tôi tiết kiệm 50% chi phí và scale linh hoạt theo project. GPU computing rất mạnh cho AI workload.",
       rating: 5
     },
     {
-      name: "Trần Thị B", 
-      company: "E-commerce Plus",
-      role: "CEO",
-      content: "Chi phí cloud giảm 40% sau khi chuyển sang STEP. Performance tăng gấp 3 lần, support cực kỳ professional.",
+      name: "Trần Thị Linh", 
+      company: "VinCommerce",
+      role: "IT Director",
+      content: "Dedicated Server ổn định 99.9%, băng thông unlimited giúp e-commerce platform chạy mượt mà trong Black Friday. Hỗ trợ 24/7 rất chuyên nghiệp.",
       rating: 5
     },
     {
-      name: "Lê Minh C",
-      company: "Digital Agency",
-      role: "Tech Lead", 
-      content: "API integration dễ dàng, documentation chi tiết. Team STEP như partner thực sự cho startup.",
+      name: "Phạm Văn Đức",
+      company: "BKAV Corporation",
+      role: "Security Lead", 
+      content: "Email Hybrid solution hoàn hảo cho security compliance. Anti-spam hiệu quả 99.9%, backup tự động giúp an tâm về dữ liệu.",
       rating: 5
     }
   ];
@@ -187,10 +194,12 @@ export default function Home() {
                   </h1>
                   
                   <p className="text-xl md:text-2xl text-slate-600 mb-8 max-w-4xl mx-auto leading-relaxed" data-testid="text-hero-description">
-                    Xây dựng, triển khai và mở rộng ứng dụng với hạ tầng cloud hiện đại. 
-                    <span className="font-semibold text-blue-600">GPU Computing</span>, 
-                    <span className="font-semibold text-purple-600"> Kubernetes</span>, và
-                    <span className="font-semibold text-cyan-600"> AI/ML Platform</span> sẵn sàng sử dụng.
+                    Giải pháp hạ tầng IT toàn diện cho doanh nghiệp Việt Nam. Từ 
+                    <span className="font-semibold text-blue-600"> Cloud Server</span>, 
+                    <span className="font-semibold text-green-600"> Web Hosting</span>, 
+                    <span className="font-semibold text-purple-600"> Dedicated Server</span>, 
+                    <span className="font-semibold text-orange-600"> Colocation</span> đến
+                    <span className="font-semibold text-indigo-600"> Email Hybrid</span> - Tất cả trong một nền tảng.
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -261,14 +270,14 @@ export default function Home() {
                 ☁️ Cloud Services
               </Badge>
               <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-services-title">
-                Giải Pháp Cloud Toàn Diện
+                5 Dịch Vụ Cốt Lõi
               </h2>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Từ infrastructure cơ bản đến AI/ML platform tiên tiến, chúng tôi cung cấp mọi thứ doanh nghiệp cần để thành công trong kỷ nguyên số.
+                Từ cloud server linh hoạt đến email hybrid bảo mật, STEP cung cấp giải pháp hạ tầng IT hoàn chỉnh cho mọi quy mô doanh nghiệp.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {cloudServices.map((service, index) => (
                 <motion.div
                   key={index}
@@ -338,7 +347,7 @@ export default function Home() {
                 Khách Hàng Nói Về Chúng Tôi
               </h2>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Hơn 10,000+ doanh nghiệp tin tưởng STEP cho hạ tầng cloud của họ.
+                Hơn 5,000+ doanh nghiệp tin tưởng STEP cho giải pháp hạ tầng IT toàn diện.
               </p>
             </motion.div>
 
