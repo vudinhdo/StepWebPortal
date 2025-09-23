@@ -38,6 +38,7 @@ import ServerServices from "@/pages/server-services";
 import ServersOverview from "@/pages/servers-overview";
 import NetworkEquipment from "@/pages/network-equipment";
 import DLP from "@/pages/dlp";
+import Contact from "@/pages/contact";
 
 function Router() {
   return (
@@ -82,6 +83,7 @@ function Router() {
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route path="/bao-gia" component={Quote} />
         <Route path="/DLP" component={DLP} />
+        <Route path="/contact" component={Contact} />
         <Route component={NotFound} />
       </Switch>
     </PageTransition>
