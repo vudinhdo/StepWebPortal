@@ -18,7 +18,18 @@ import {
   Star,
   Mail,
   Phone,
-  MapPin
+  MapPin,
+  Monitor,
+  Settings,
+  Wifi,
+  Building,
+  Target,
+  ShoppingCart,
+  Wrench,
+  GraduationCap,
+  Shield as SecurityIcon,
+  Camera,
+  HardDrive
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -73,6 +84,88 @@ export default function Home() {
     { label: "Active Clients", value: "5,000+", icon: Users },
     { label: "Data Centers", value: "8", icon: Server },
     { label: "Support Response", value: "< 2min", icon: Zap }
+  ];
+
+  // Technical Certifications data
+  const technicalCertifications = [
+    { name: "MCT", fullName: "Microsoft Certificate Windows Server", icon: Monitor, color: "bg-blue-500" },
+    { name: "Linux LPI", fullName: "Linux Professional Institute", icon: Settings, color: "bg-orange-500" },
+    { name: "DLP Safetica", fullName: "Data Loss Prevention", icon: SecurityIcon, color: "bg-green-500" },
+    { name: "VCP5", fullName: "VMware Certified Professional", icon: Server, color: "bg-purple-500" },
+    { name: "Cisco CCNA", fullName: "Cisco Certified Network Associate", icon: Wifi, color: "bg-cyan-500" },
+    { name: "CEH", fullName: "Certified Ethical Hacker (Master in Hacking)", icon: Shield, color: "bg-red-500" }
+  ];
+
+  // Service Partners and Customers data
+  const servicePartners = [
+    "VMware", "CMC Corp", "VZAM", "Aruba", "FPT", "Dell", "Nakivo", "HVCG Software", "Viettel"
+  ];
+
+  const customers = [
+    "Medlatec", "BSG", "Sở Văn Hóa Hà Nội", "VETC", "CMC Telecom", 
+    "Sở Tài Nguyên Môi Trường", "Five9", "Mony", "Pal Vietnam"
+  ];
+
+  // Service Process steps
+  const serviceProcess = [
+    {
+      icon: Target,
+      title: "TƯ VẤN GIẢI PHÁP",
+      description: "Phân tích nhu cầu và tư vấn giải pháp CNTT phù hợp nhất cho doanh nghiệp",
+      color: "step-blue"
+    },
+    {
+      icon: ShoppingCart,
+      title: "CUNG CẤP THIẾT BỊ",
+      description: "Cung cấp thiết bị, phần cứng và phần mềm chất lượng cao từ các nhà sản xuất uy tín",
+      color: "step-light-blue"
+    },
+    {
+      icon: Wrench,
+      title: "TRIỂN KHAI THI CÔNG",
+      description: "Triển khai, cài đặt và cấu hình hệ thống theo đúng thiết kế và tiêu chuẩn kỹ thuật",
+      color: "step-blue"
+    },
+    {
+      icon: Settings,
+      title: "DỊCH VỤ VẬN HÀNH TRỌN GÓI",
+      description: "Vận hành, bảo trì và hỗ trợ kỹ thuật 24/7 để đảm bảo hệ thống hoạt động ổn định",
+      color: "step-light-blue"
+    }
+  ];
+
+  // Detailed IT Services
+  const detailedITServices = [
+    {
+      icon: Camera,
+      title: "Cho thuê thiết bị CNTT",
+      description: "Máy tính, camera, máy chủ với chế độ thuê linh hoạt",
+      color: "bg-blue-100"
+    },
+    {
+      icon: Settings,
+      title: "Bảo trì vệ sinh vật lý hệ thống máy chủ",
+      description: "Dịch vụ bảo trì định kỳ và vệ sinh chuyên nghiệp",
+      color: "bg-green-100"
+    },
+    {
+      icon: SecurityIcon,
+      title: "Xây dựng hệ thống kiểm soát truy cập mạng",
+      description: "Bảo vệ dữ liệu và kiểm soát an toàn thông tin doanh nghiệp",
+      color: "bg-red-100"
+    },
+    {
+      icon: Award,
+      title: "Dịch vụ bảo hành mở rộng thiết bị CNTT",
+      description: "Bảo hành và hỗ trợ kỹ thuật cho thiết bị công nghệ thông tin",
+      color: "bg-purple-100"
+    },
+    {
+      icon: GraduationCap,
+      title: "Đào tạo kỹ thuật viên máy tính - IT support",
+      description: "Chương trình đào tạo chuyên nghiệp cho đội ngũ IT",
+      color: "bg-yellow-100"
+    }
   ];
 
   const cloudServices = [
@@ -355,6 +448,249 @@ export default function Home() {
                   </Card>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Technical Certifications Section */}
+        <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-100">
+          <div className="container mx-auto px-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <Badge className="mb-4 px-4 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200" data-testid="badge-certifications">
+                🏆 Chứng Chỉ Kỹ Thuật
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-certifications-title">
+                Chuyên Môn Được Công Nhận
+              </h2>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Đội ngũ STEP sở hữu các chứng chỉ quốc tế uy tín, đảm bảo chất lượng dịch vụ cao nhất cho khách hàng.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
+              {technicalCertifications.map((cert, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  data-testid={`cert-card-${index}`}
+                >
+                  <Card className="h-full text-center p-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
+                    <CardContent className="p-0">
+                      <div className={`inline-flex p-4 rounded-xl text-white mb-4 ${cert.color}`}>
+                        <cert.icon className="h-8 w-8" />
+                      </div>
+                      <h3 className="font-bold text-lg text-slate-800 mb-2">{cert.name}</h3>
+                      <p className="text-xs text-slate-500 leading-tight">{cert.fullName}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Customers and Partners Section */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <Badge className="mb-4 px-4 py-2 bg-green-100 text-green-700 hover:bg-green-200" data-testid="badge-partners">
+                🤝 Đối Tác & Khách Hàng
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-partners-title">
+                Khách Hàng Của Chúng Tôi
+              </h2>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Được tin tưởng bởi hàng trăm doanh nghiệp và đối tác uy tín trong và ngoài nước.
+              </p>
+            </motion.div>
+
+            <div className="max-w-6xl mx-auto">
+              {/* Service Partners */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="mb-12"
+              >
+                <h3 className="text-2xl font-bold text-center text-slate-700 mb-8">Đối tác dịch vụ</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {servicePartners.map((partner, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      whileHover={{ scale: 1.05 }}
+                      data-testid={`partner-${index}`}
+                    >
+                      <Card className="p-6 text-center border border-gray-200 hover:border-blue-300 transition-all duration-300 bg-white">
+                        <CardContent className="p-0">
+                          <div className="flex items-center justify-center h-12 mb-3">
+                            <Building className="h-8 w-8 text-blue-600" />
+                          </div>
+                          <p className="font-medium text-slate-700 text-sm">{partner}</p>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Customers */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-2xl font-bold text-center text-slate-700 mb-8">Khách hàng</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {customers.map((customer, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      whileHover={{ scale: 1.05 }}
+                      data-testid={`customer-${index}`}
+                    >
+                      <Card className="p-6 text-center border border-gray-200 hover:border-green-300 transition-all duration-300 bg-white">
+                        <CardContent className="p-0">
+                          <div className="flex items-center justify-center h-12 mb-3">
+                            <Users className="h-8 w-8 text-green-600" />
+                          </div>
+                          <p className="font-medium text-slate-700 text-sm">{customer}</p>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Service Process Section */}
+        <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+          <div className="container mx-auto px-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <Badge className="mb-4 px-4 py-2 bg-purple-100 text-purple-700 hover:bg-purple-200" data-testid="badge-process">
+                🔄 Quy Trình Dịch Vụ
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-process-title">
+                Tổng Quan Về Sản Phẩm - Giải Pháp - Dịch Vụ - Hệ Sinh Thái
+              </h2>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Quy trình 4 bước hoàn chỉnh từ tư vấn đến vận hành, đảm bảo dự án thành công.
+              </p>
+            </motion.div>
+
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {serviceProcess.map((step, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.2 }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -8 }}
+                    className="relative"
+                    data-testid={`process-step-${index}`}
+                  >
+                    <Card className="h-full text-center p-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
+                      <CardContent className="p-0">
+                        <div className={`inline-flex p-4 rounded-xl text-white mb-6`} style={{backgroundColor: `hsl(var(--${step.color}))`}}>
+                          <step.icon className="h-8 w-8" />
+                        </div>
+                        <h3 className="font-bold text-lg text-slate-800 mb-4">{step.title}</h3>
+                        <p className="text-slate-600 text-sm leading-relaxed">{step.description}</p>
+                      </CardContent>
+                    </Card>
+                    
+                    {/* Arrow connector (except for last item) */}
+                    {index < serviceProcess.length - 1 && (
+                      <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                        <ArrowRight className="h-6 w-6 text-blue-400" />
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Detailed IT Services Section */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <Badge className="mb-4 px-4 py-2 bg-orange-100 text-orange-700 hover:bg-orange-200" data-testid="badge-detailed-services">
+                🛠️ Dịch Vụ Chuyên Sâu
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-detailed-services-title">
+                Dịch Vụ Công Nghệ Thông Tin
+              </h2>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Các dịch vụ chuyên nghiệp và toàn diện để đáp ứng mọi nhu cầu công nghệ của doanh nghiệp.
+              </p>
+            </motion.div>
+
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {detailedITServices.map((service, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -8 }}
+                    data-testid={`detailed-service-${index}`}
+                  >
+                    <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
+                      <CardContent className="p-6">
+                        <div className={`inline-flex p-3 rounded-lg mb-4 ${service.color}`}>
+                          <service.icon className="h-6 w-6 text-slate-700" />
+                        </div>
+                        <h3 className="font-bold text-lg text-slate-800 mb-3">{service.title}</h3>
+                        <p className="text-slate-600 text-sm leading-relaxed">{service.description}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
