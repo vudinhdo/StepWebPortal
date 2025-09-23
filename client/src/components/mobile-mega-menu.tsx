@@ -19,7 +19,8 @@ import {
   Briefcase,
   Chrome,
   CloudDownload,
-  Brain
+  Brain,
+  Lock
 } from "lucide-react";
 import { 
   DomainIcon, 
@@ -99,6 +100,7 @@ export default function MobileMegaMenu() {
         { name: 'Microsoft', icon: Briefcase },
         { name: 'Google', icon: CloudDownload },
         { name: 'VMware', icon: Monitor },
+        { name: 'DLP', icon: Lock },
         { name: 'Sangfor', icon: Shield },
         { name: 'Phần mềm AI', icon: Brain }
       ]
@@ -164,6 +166,7 @@ export default function MobileMegaMenu() {
                         category.id === 'email' && item.name === 'Microsoft 365' ? '/Dịch vụ/Email' :
                         // Software links
                         category.id === 'software' && item.name === 'Microsoft' ? '/Sản Phẩm & Dịch Vụ/Microsoft' :
+                        category.id === 'software' && item.name === 'DLP' ? '/DLP' :
                         // Domain links
                         category.id === 'domain' ? '/Sản Phẩm & Dịch Vụ/Domain' :
                         // Default fallback
