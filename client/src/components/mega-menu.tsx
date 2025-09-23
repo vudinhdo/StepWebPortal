@@ -95,6 +95,7 @@ export default function MegaMenu() {
         { name: 'Microsoft', desc: 'Windows, Office licenses', icon: Briefcase },
         { name: 'Google', desc: 'Google Cloud Platform', icon: CloudDownload },
         { name: 'VMware', desc: 'Virtualization solutions', icon: Monitor },
+        { name: 'DLP', desc: 'Data Loss Prevention', icon: Lock },
         { name: 'Phần mềm AI', desc: 'AI & Machine Learning', icon: Brain }
       ]
     }
@@ -258,6 +259,7 @@ export default function MegaMenu() {
                       item.name === 'Microsoft' ? '/Sản Phẩm & Dịch Vụ/Microsoft 365' :
                       item.name === 'Google' ? '/gcp' :
                       item.name === 'VMware' ? '/dich-vu/phan-mem/vmware' :
+                      item.name === 'DLP' ? '/DLP' :
                       '#'
                     } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />

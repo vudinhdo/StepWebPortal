@@ -15,9 +15,18 @@ import { insertContactSchema, type InsertContact } from "@shared/schema";
 interface ContactFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialService?: string;
+  intent?: "demo" | "quote" | "general";
+  defaultMessage?: string;
 }
 
-export default function ContactForm({ open, onOpenChange }: ContactFormProps) {
+export default function ContactForm({ 
+  open, 
+  onOpenChange, 
+  initialService = "",
+  intent = "general",
+  defaultMessage = ""
+}: ContactFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -28,8 +37,8 @@ export default function ContactForm({ open, onOpenChange }: ContactFormProps) {
       email: "",
       phone: "",
       company: "",
-      service: "",
-      message: "",
+      service: initialService,
+      message: defaultMessage,
     },
   });
 
@@ -69,10 +78,13 @@ export default function ContactForm({ open, onOpenChange }: ContactFormProps) {
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[hsl(207,100%,40%)]">
-            Liên hệ với chuyên gia STEP
+            {intent === "demo" ? "Yêu cầu demo sản phẩm" : "Liên hệ với chuyên gia STEP"}
           </DialogTitle>
           <DialogDescription className="text-gray-600">
-            Điền thông tin bên dưới để nhận tư vấn miễn phí về giải pháp CNTT phù hợp với doanh nghiệp của bạn.
+            {intent === "demo" 
+              ? "Điền thông tin bên dưới để nhận demo trực tiếp và tư vấn chi tiết về sản phẩm phù hợp với doanh nghiệp của bạn."
+              : "Điền thông tin bên dưới để nhận tư vấn miễn phí về giải pháp CNTT phù hợp với doanh nghiệp của bạn."
+            }
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -137,10 +149,12 @@ export default function ContactForm({ open, onOpenChange }: ContactFormProps) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="domain">Tên miền</SelectItem>
-                <SelectItem value="cloud">Cloud</SelectItem>
-                <SelectItem value="hosting">Hosting</SelectItem>
-                <SelectItem value="server">Máy chủ</SelectItem>
-                <SelectItem value="email">Email</SelectItem>
+                <SelectItem value="cloud">Cloud Server</SelectItem>
+                <SelectItem value="hosting">Web Hosting</SelectItem>
+                <SelectItem value="server">Dedicated Server</SelectItem>
+                <SelectItem value="colocation">Colocation</SelectItem>
+                <SelectItem value="email">Email Hybrid</SelectItem>
+                <SelectItem value="DLP">DLP - Data Loss Prevention</SelectItem>
                 <SelectItem value="software">Phần mềm</SelectItem>
                 <SelectItem value="consulting">Tư vấn</SelectItem>
                 <SelectItem value="support">Hỗ trợ</SelectItem>
