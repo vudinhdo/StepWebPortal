@@ -81,35 +81,42 @@ export default function Home() {
       title: "Cloud Server",
       description: "Máy chủ đám mây linh hoạt với CPU/GPU cao cấp, scale tự động và tối ưu chi phí theo nhu cầu sử dụng.",
       features: ["Scale Tự Động", "CPU/GPU Cao Cấp", "Pay-as-you-use", "Docker/K8s Support"],
-      color: "from-blue-500 to-cyan-500"
+      stepColor: "step-cloud"
     },
     {
       icon: Globe,
       title: "Web Hosting",
       description: "Hosting WordPress, Laravel, Node.js với SSD NVMe, CDN tích hợp và backup tự động hàng ngày.",
       features: ["SSD NVMe", "CDN Tích Hợp", "SSL Miễn Phí", "Backup Tự Động"],
-      color: "from-green-500 to-emerald-500"
+      stepColor: "step-hosting"
     },
     {
       icon: Server,
       title: "Dedicated Server",
       description: "Máy chủ riêng biệt với phần cứng enterprise, băng thông không giới hạn và quản lý 24/7.",
       features: ["Phần Cứng Enterprise", "Băng Thông Unlimited", "Quản Lý 24/7", "Root Access"],
-      color: "from-purple-500 to-pink-500"
+      stepColor: "step-server"
     },
     {
       icon: Database,
       title: "Colocation",
       description: "Dịch vụ đặt máy chủ tại datacenter với điện lưới dự phòng, bảo mật vật lý và kết nối internet cao cấp.",
       features: ["Điện Lưới Dự Phòng", "Bảo Mật 24/7", "Kết Nối Cao Cấp", "Môi Trường Kiểm Soát"],
-      color: "from-orange-500 to-red-500"
+      stepColor: "step-colocation"
     },
     {
       icon: Mail,
       title: "Email Hybrid",
       description: "Giải pháp email doanh nghiệp kết hợp cloud và on-premise với bảo mật cao và khả năng mở rộng.",
       features: ["Anti-Spam/Virus", "Backup Email", "Mobile Sync", "Compliance Ready"],
-      color: "from-indigo-500 to-purple-500"
+      stepColor: "step-email"
+    },
+    {
+      icon: Shield,
+      title: "DLP - Data Loss Prevention",
+      description: "Bảo vệ dữ liệu nhạy cảm khỏi rò rỉ với giám sát thời gian thực, phân loại tự động và chính sách bảo mật linh hoạt.",
+      features: ["Ngăn Rò Rỉ Dữ Liệu", "Giám Sát Thời Gian Thực", "Chính Sách Theo Vai Trò", "Báo Cáo Tuân Thủ"],
+      stepColor: "step-dlp"
     }
   ];
 
@@ -187,7 +194,7 @@ export default function Home() {
                     🚀 Enterprise Cloud Solutions
                   </Badge>
                   
-                  <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent mb-6" data-testid="text-hero-title">
+                  <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent mb-6" data-testid="text-hero-title" style={{backgroundImage: `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`}}>
                     Điện Toán Đám Mây
                     <br />
                     <span className="text-slate-800">Thế Hệ Mới</span>
@@ -195,22 +202,32 @@ export default function Home() {
                   
                   <p className="text-xl md:text-2xl text-slate-600 mb-8 max-w-4xl mx-auto leading-relaxed" data-testid="text-hero-description">
                     Giải pháp hạ tầng IT toàn diện cho doanh nghiệp Việt Nam. Từ 
-                    <span className="font-semibold text-blue-600"> Cloud Server</span>, 
-                    <span className="font-semibold text-green-600"> Web Hosting</span>, 
-                    <span className="font-semibold text-purple-600"> Dedicated Server</span>, 
-                    <span className="font-semibold text-orange-600"> Colocation</span> đến
-                    <span className="font-semibold text-indigo-600"> Email Hybrid</span> - Tất cả trong một nền tảng.
+                    <span className="font-semibold" style={{color: `hsl(var(--step-cloud))`}}> Cloud Server</span>, 
+                    <span className="font-semibold" style={{color: `hsl(var(--step-hosting))`}}> Web Hosting</span>, 
+                    <span className="font-semibold" style={{color: `hsl(var(--step-server))`}}> Dedicated Server</span>, 
+                    <span className="font-semibold" style={{color: `hsl(var(--step-colocation))`}}> Colocation</span>, 
+                    <span className="font-semibold" style={{color: `hsl(var(--step-email))`}}> Email Hybrid</span> đến
+                    <span className="font-semibold" style={{color: `hsl(var(--step-dlp))`}}> DLP</span> - Tất cả trong một nền tảng.
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button 
                         size="lg" 
-                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+                        className="text-white px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+                        style={{
+                          backgroundImage: `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`
+                        }}
                         onClick={() => setShowContactForm(true)}
                         data-testid="button-start-free"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundImage = `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-blue)))`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundImage = `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`;
+                        }}
                       >
-                        Bắt Đầu Miễn Phí
+                        Xem Demo Sản Phẩm
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </Button>
                     </motion.div>
@@ -219,11 +236,23 @@ export default function Home() {
                       <Button 
                         variant="outline" 
                         size="lg"
-                        className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg font-semibold transition-all duration-300"
-                        onClick={() => setShowContactForm(true)}
-                        data-testid="button-contact-expert"
+                        className="px-8 py-4 text-lg font-semibold transition-all duration-300"
+                        style={{
+                          borderColor: `hsl(var(--step-blue))`,
+                          color: `hsl(var(--step-blue))`
+                        }}
+                        onClick={() => window.location.href = '/bao-gia'}
+                        data-testid="button-quote-builder"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = `hsl(var(--step-blue))`;
+                          e.currentTarget.style.color = 'white';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.color = `hsl(var(--step-blue))`;
+                        }}
                       >
-                        Tư Vấn Miễn Phí
+                        Xây Dựng Báo Giá
                       </Button>
                     </motion.div>
                   </div>
@@ -270,10 +299,10 @@ export default function Home() {
                 ☁️ Cloud Services
               </Badge>
               <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-services-title">
-                5 Dịch Vụ Cốt Lõi
+                6 Dịch Vụ Cốt Lõi
               </h2>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Từ cloud server linh hoạt đến email hybrid bảo mật, STEP cung cấp giải pháp hạ tầng IT hoàn chỉnh cho mọi quy mô doanh nghiệp.
+                Từ cloud server linh hoạt, hosting chuyên nghiệp, dedicated server cao cấp, colocation an toàn, email hybrid bảo mật đến DLP ngăn chặn rò rỉ dữ liệu - STEP cung cấp giải pháp IT toàn diện.
               </p>
             </motion.div>
 
@@ -293,10 +322,10 @@ export default function Home() {
                     <CardContent className="p-8">
                       <div className="relative">
                         {/* Glow Effect */}
-                        <div className={`absolute inset-0 bg-gradient-to-r ${service.color} rounded-xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-300`}></div>
+                        <div className={`absolute inset-0 rounded-xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-300`} style={{backgroundColor: `hsl(var(--${service.stepColor}))`}}></div>
                         
                         <div className="relative">
-                          <div className={`inline-flex p-4 rounded-xl bg-gradient-to-r ${service.color} text-white mb-6`}>
+                          <div className={`inline-flex p-4 rounded-xl text-white mb-6`} style={{backgroundColor: `hsl(var(--${service.stepColor}))`}}>
                             <service.icon className="h-8 w-8" />
                           </div>
                           
@@ -383,7 +412,7 @@ export default function Home() {
         </section>
 
         {/* Contact CTA Section */}
-        <section className="py-24 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 relative overflow-hidden">
+        <section className="py-24 relative overflow-hidden" style={{backgroundImage: `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`}}>
           <div className="absolute inset-0 bg-black/20"></div>
           <div className="container mx-auto px-4 relative z-10">
             <motion.div 

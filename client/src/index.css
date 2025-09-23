@@ -30,6 +30,14 @@
   --step-gray: hsl(210, 17%, 96%);
   --step-dark-gray: hsl(210, 11%, 45%);
   
+  /* Extended Service Colors based on STEP palette */
+  --step-cloud: hsl(207, 100%, 40%);     /* Primary blue for Cloud Server */
+  --step-hosting: hsl(142, 76%, 36%);    /* Green for Hosting */
+  --step-server: hsl(271, 91%, 65%);     /* Purple for Dedicated Server */
+  --step-colocation: hsl(25, 95%, 53%);  /* Orange for Colocation */
+  --step-email: hsl(263, 70%, 50%);      /* Indigo for Email */
+  --step-dlp: hsl(339, 82%, 52%);        /* Pink for DLP */
+  
   /* Typography System */
   --fs-h1: clamp(2.25rem, 2.5vw + 1rem, 3.5rem);
   --fs-h2: clamp(1.875rem, 1.8vw + 0.9rem, 2.75rem);
