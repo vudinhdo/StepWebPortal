@@ -42,6 +42,10 @@ Preferred communication style: Simple, everyday language.
     - **Reseller Hosting**: For businesses offering hosting services.
 - **Domain Services Landing Page**: Comprehensive page for domain registration, transfer, DNS management, and protection, featuring a domain search tool and pricing plans.
 - **Interactive Tooltip System**: Contextual tooltips providing detailed information on features, benefits, and tips, with intelligent positioning and rich content.
+- **Technical Certifications Showcase**: Display of 6 professional certifications (MCT, Linux LPI, DLP Safetica, VCP5, Cisco CCNA, CEH) with animated cards.
+- **Customers & Partners Portfolio**: Comprehensive showcase of service partners (VMware, CMC Corp, VZAM, Aruba, FPT, Dell, etc.) and customers (Medlatec, BSG, Sở Văn Hóa Hà Nội, VETC, etc.).
+- **4-Step Service Process**: Visual workflow from consultation to full operation services with arrow connectors and detailed descriptions.
+- **Detailed IT Services**: Specialized services including equipment rental, server maintenance, network security, warranty services, and IT training.
 
 ## External Dependencies
 
