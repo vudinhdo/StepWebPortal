@@ -41,6 +41,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
+// Import company images
+import certificationsImage from "@assets/image_1758666044115.png";
+import customersPartnersImage from "@assets/image_1758666058304.png";
+import serviceProcessImage from "@assets/image_1758666086640.png";
+import detailedServicesImage from "@assets/image_1758666113896.png";
+
 interface UserInfo {
   name: string;
   company: string;
@@ -86,24 +92,39 @@ export default function Home() {
     { label: "Support Response", value: "< 2min", icon: Zap }
   ];
 
-  // Technical Certifications data
+  // Technical Certifications data with real logos from image
   const technicalCertifications = [
-    { name: "MCT", fullName: "Microsoft Certificate Windows Server", icon: Monitor, color: "bg-blue-500" },
-    { name: "Linux LPI", fullName: "Linux Professional Institute", icon: Settings, color: "bg-orange-500" },
-    { name: "DLP Safetica", fullName: "Data Loss Prevention", icon: SecurityIcon, color: "bg-green-500" },
-    { name: "VCP5", fullName: "VMware Certified Professional", icon: Server, color: "bg-purple-500" },
-    { name: "Cisco CCNA", fullName: "Cisco Certified Network Associate", icon: Wifi, color: "bg-cyan-500" },
-    { name: "CEH", fullName: "Certified Ethical Hacker (Master in Hacking)", icon: Shield, color: "bg-red-500" }
+    { name: "MCT", fullName: "Microsoft Certificate Windows Server", color: "bg-blue-500" },
+    { name: "Linux LPI", fullName: "Linux Professional Institute", color: "bg-orange-500" },
+    { name: "DLP Safetica", fullName: "Data Loss Prevention của hãng Safetica", color: "bg-green-500" },
+    { name: "VCP5", fullName: "VMware Certified Professional", color: "bg-purple-500" },
+    { name: "Cisco CCNA", fullName: "Cisco Certified Network Associate", color: "bg-cyan-500" },
+    { name: "CEH", fullName: "Certified Ethical Hacker (Master in Hacking)", color: "bg-red-500" }
   ];
 
-  // Service Partners and Customers data
+  // Service Partners and Customers data with real logos
   const servicePartners = [
-    "VMware", "CMC Corp", "VZAM", "Aruba", "FPT", "Dell", "Nakivo", "HVCG Software", "Viettel"
+    { name: "VMware", logo: customersPartnersImage },
+    { name: "CMC Corp", logo: customersPartnersImage },
+    { name: "VZAM", logo: customersPartnersImage },
+    { name: "Aruba", logo: customersPartnersImage },
+    { name: "FPT", logo: customersPartnersImage },
+    { name: "Dell", logo: customersPartnersImage },
+    { name: "Nakivo", logo: customersPartnersImage },
+    { name: "HVCG Software", logo: customersPartnersImage },
+    { name: "Viettel", logo: customersPartnersImage }
   ];
 
   const customers = [
-    "Medlatec", "BSG", "Sở Văn Hóa Hà Nội", "VETC", "CMC Telecom", 
-    "Sở Tài Nguyên Môi Trường", "Five9", "Mony", "Pal Vietnam"
+    { name: "Medlatec", logo: customersPartnersImage },
+    { name: "BSG", logo: customersPartnersImage },
+    { name: "Sở Văn Hóa Hà Nội", logo: customersPartnersImage },
+    { name: "VETC", logo: customersPartnersImage },
+    { name: "CMC Telecom", logo: customersPartnersImage },
+    { name: "Sở Tài Nguyên Môi Trường", logo: customersPartnersImage },
+    { name: "Five9", logo: customersPartnersImage },
+    { name: "Mony", logo: customersPartnersImage },
+    { name: "Pal Vietnam", logo: customersPartnersImage }
   ];
 
   // Service Process steps
@@ -452,143 +473,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Technical Certifications Section */}
-        <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-100">
-          <div className="container mx-auto px-4">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <Badge className="mb-4 px-4 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200" data-testid="badge-certifications">
-                🏆 Chứng Chỉ Kỹ Thuật
-              </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-certifications-title">
-                Chuyên Môn Được Công Nhận
-              </h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Đội ngũ STEP sở hữu các chứng chỉ quốc tế uy tín, đảm bảo chất lượng dịch vụ cao nhất cho khách hàng.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
-              {technicalCertifications.map((cert, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  data-testid={`cert-card-${index}`}
-                >
-                  <Card className="h-full text-center p-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
-                    <CardContent className="p-0">
-                      <div className={`inline-flex p-4 rounded-xl text-white mb-4 ${cert.color}`}>
-                        <cert.icon className="h-8 w-8" />
-                      </div>
-                      <h3 className="font-bold text-lg text-slate-800 mb-2">{cert.name}</h3>
-                      <p className="text-xs text-slate-500 leading-tight">{cert.fullName}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Customers and Partners Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <Badge className="mb-4 px-4 py-2 bg-green-100 text-green-700 hover:bg-green-200" data-testid="badge-partners">
-                🤝 Đối Tác & Khách Hàng
-              </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-partners-title">
-                Khách Hàng Của Chúng Tôi
-              </h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Được tin tưởng bởi hàng trăm doanh nghiệp và đối tác uy tín trong và ngoài nước.
-              </p>
-            </motion.div>
-
-            <div className="max-w-6xl mx-auto">
-              {/* Service Partners */}
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="mb-12"
-              >
-                <h3 className="text-2xl font-bold text-center text-slate-700 mb-8">Đối tác dịch vụ</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {servicePartners.map((partner, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      whileHover={{ scale: 1.05 }}
-                      data-testid={`partner-${index}`}
-                    >
-                      <Card className="p-6 text-center border border-gray-200 hover:border-blue-300 transition-all duration-300 bg-white">
-                        <CardContent className="p-0">
-                          <div className="flex items-center justify-center h-12 mb-3">
-                            <Building className="h-8 w-8 text-blue-600" />
-                          </div>
-                          <p className="font-medium text-slate-700 text-sm">{partner}</p>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Customers */}
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                <h3 className="text-2xl font-bold text-center text-slate-700 mb-8">Khách hàng</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {customers.map((customer, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      whileHover={{ scale: 1.05 }}
-                      data-testid={`customer-${index}`}
-                    >
-                      <Card className="p-6 text-center border border-gray-200 hover:border-green-300 transition-all duration-300 bg-white">
-                        <CardContent className="p-0">
-                          <div className="flex items-center justify-center h-12 mb-3">
-                            <Users className="h-8 w-8 text-green-600" />
-                          </div>
-                          <p className="font-medium text-slate-700 text-sm">{customer}</p>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
         {/* Service Process Section */}
         <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
           <div className="container mx-auto px-4">
@@ -691,6 +575,155 @@ export default function Home() {
                   </motion.div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Technical Certifications Section */}
+        <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-100">
+          <div className="container mx-auto px-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <Badge className="mb-4 px-4 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200" data-testid="badge-certifications">
+                🏆 Chứng Chỉ Kỹ Thuật
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-certifications-title">
+                Chuyên Môn Được Công Nhận
+              </h2>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Đội ngũ STEP sở hữu các chứng chỉ quốc tế uy tín, đảm bảo chất lượng dịch vụ cao nhất cho khách hàng.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
+              {technicalCertifications.map((cert, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  data-testid={`cert-card-${index}`}
+                >
+                  <Card className="h-full text-center p-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
+                    <CardContent className="p-0">
+                      <div className={`inline-flex p-4 rounded-xl text-white mb-4 ${cert.color}`}>
+                        <img 
+                          src={certificationsImage} 
+                          alt={cert.name}
+                          className="h-8 w-8 object-contain"
+                        />
+                      </div>
+                      <h3 className="font-bold text-lg text-slate-800 mb-2">{cert.name}</h3>
+                      <p className="text-xs text-slate-500 leading-tight">{cert.fullName}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Customers and Partners Section */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <Badge className="mb-4 px-4 py-2 bg-green-100 text-green-700 hover:bg-green-200" data-testid="badge-partners">
+                🤝 Đối Tác & Khách Hàng
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-partners-title">
+                Khách Hàng Của Chúng Tôi
+              </h2>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Được tin tưởng bởi hàng trăm doanh nghiệp và đối tác uy tín trong và ngoài nước.
+              </p>
+            </motion.div>
+
+            <div className="max-w-6xl mx-auto">
+              {/* Service Partners */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="mb-12"
+              >
+                <h3 className="text-2xl font-bold text-center text-slate-700 mb-8">Đối tác dịch vụ</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {servicePartners.map((partner, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      whileHover={{ scale: 1.05 }}
+                      data-testid={`partner-${index}`}
+                    >
+                      <Card className="p-6 text-center border border-gray-200 hover:border-blue-300 transition-all duration-300 bg-white">
+                        <CardContent className="p-0">
+                          <div className="flex items-center justify-center h-12 mb-3">
+                            <img 
+                              src={partner.logo} 
+                              alt={partner.name}
+                              className="h-8 w-12 object-contain"
+                            />
+                          </div>
+                          <p className="font-medium text-slate-700 text-sm">{partner.name}</p>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Customers */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-2xl font-bold text-center text-slate-700 mb-8">Khách hàng</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {customers.map((customer, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      whileHover={{ scale: 1.05 }}
+                      data-testid={`customer-${index}`}
+                    >
+                      <Card className="p-6 text-center border border-gray-200 hover:border-green-300 transition-all duration-300 bg-white">
+                        <CardContent className="p-0">
+                          <div className="flex items-center justify-center h-12 mb-3">
+                            <img 
+                              src={customer.logo} 
+                              alt={customer.name}
+                              className="h-8 w-12 object-contain"
+                            />
+                          </div>
+                          <p className="font-medium text-slate-700 text-sm">{customer.name}</p>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>
