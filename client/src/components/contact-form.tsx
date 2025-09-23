@@ -143,7 +143,10 @@ export default function ContactForm({
 
           <div>
             <Label htmlFor="service">Dịch vụ quan tâm</Label>
-            <Select onValueChange={(value) => form.setValue("service", value)}>
+            <Select 
+              value={form.watch("service")} 
+              onValueChange={(value) => form.setValue("service", value)}
+            >
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="Chọn dịch vụ" />
               </SelectTrigger>
