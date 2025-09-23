@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   Phone, 
@@ -53,6 +53,116 @@ import companyProfilePdf from "@assets/Profile step solution_1758643957915.pdf";
 export default function Contact() {
   const [showContactModal, setShowContactModal] = useState(false);
   const { toast } = useToast();
+
+  // SEO Meta Tags
+  useEffect(() => {
+    // Page Title
+    document.title = "Liên Hệ - STEP Technology | Giải Pháp Hạ Tầng CNTT Toàn Diện";
+    
+    // Meta Description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Liên hệ STEP Technology - Đối tác CNTT tin cậy từ 2018. Giải pháp hạ tầng toàn diện: Cloud Server, Hosting, Dedicated Server, Colocation, Email Hybrid, DLP. Tư vấn miễn phí.');
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = 'Liên hệ STEP Technology - Đối tác CNTT tin cậy từ 2018. Giải pháp hạ tầng toàn diện: Cloud Server, Hosting, Dedicated Server, Colocation, Email Hybrid, DLP. Tư vấn miễn phí.';
+      document.head.appendChild(meta);
+    }
+
+    // Open Graph Tags
+    const ogTags = [
+      { property: 'og:title', content: 'Liên Hệ - STEP Technology | Giải Pháp Hạ Tầng CNTT Toàn Diện' },
+      { property: 'og:description', content: 'Liên hệ STEP Technology - Đối tác CNTT tin cậy từ 2018. Tư vấn miễn phí về giải pháp hạ tầng CNTT toàn diện cho doanh nghiệp.' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://step.com.vn/contact' },
+      { property: 'og:site_name', content: 'STEP Technology' },
+      { property: 'og:locale', content: 'vi_VN' },
+    ];
+
+    ogTags.forEach(tag => {
+      let ogTag = document.querySelector(`meta[property="${tag.property}"]`);
+      if (ogTag) {
+        ogTag.setAttribute('content', tag.content);
+      } else {
+        ogTag = document.createElement('meta');
+        ogTag.setAttribute('property', tag.property);
+        ogTag.setAttribute('content', tag.content);
+        document.head.appendChild(ogTag);
+      }
+    });
+
+    // JSON-LD Structured Data
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://step.com.vn/#organization",
+          "name": "Công ty Cổ phần Đầu tư Công nghệ STEP",
+          "alternateName": "STEP Technology",
+          "url": "https://step.com.vn",
+          "logo": "https://step.com.vn/logo.png",
+          "foundingDate": "2018-04",
+          "email": "info@step.com.vn",
+          "telephone": "+84985636289",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Số 99 Hoàng Ngân, Phường Nhân Chính",
+            "addressLocality": "Quận Thanh Xuân",
+            "addressRegion": "Hà Nội",
+            "addressCountry": "VN"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+84985636289",
+            "contactType": "customer service",
+            "availableLanguage": "Vietnamese",
+            "hoursAvailable": "Mo-Su 00:00-23:59"
+          },
+          "sameAs": [
+            "https://step.com.vn"
+          ]
+        },
+        {
+          "@type": "Person",
+          "@id": "https://step.com.vn/#founder",
+          "name": "Nguyễn Duy Đại",
+          "jobTitle": "Founder & CEO",
+          "worksFor": {
+            "@id": "https://step.com.vn/#organization"
+          },
+          "description": "Kỹ sư sáng lập công ty STEP Technology, chuyên gia về giải pháp hạ tầng CNTT"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://step.com.vn/#services",
+          "provider": {
+            "@id": "https://step.com.vn/#organization"
+          },
+          "name": "Giải pháp hạ tầng CNTT",
+          "description": "Cung cấp giải pháp hạ tầng công nghệ thông tin toàn diện cho doanh nghiệp",
+          "serviceType": ["Cloud Server", "Web Hosting", "Dedicated Server", "Colocation", "Email Hybrid", "Data Loss Prevention"],
+          "areaServed": "Vietnam"
+        }
+      ]
+    };
+
+    let jsonLdScript = document.querySelector('script[type="application/ld+json"]');
+    if (jsonLdScript) {
+      jsonLdScript.textContent = JSON.stringify(structuredData);
+    } else {
+      jsonLdScript = document.createElement('script');
+      jsonLdScript.type = 'application/ld+json';
+      jsonLdScript.textContent = JSON.stringify(structuredData);
+      document.head.appendChild(jsonLdScript);
+    }
+
+    // Cleanup function
+    return () => {
+      // Note: We don't remove meta tags on cleanup as they should persist
+    };
+  }, []);
 
   const form = useForm<InsertContact>({
     resolver: zodResolver(insertContactSchema),
