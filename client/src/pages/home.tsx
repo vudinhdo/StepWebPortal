@@ -412,188 +412,93 @@ export default function Home() {
           </section>
         )}
 
-        {/* Cloud Services Section */}
-        <section className="py-32 relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-          {/* Animated Background Elements */}
-          <div className="absolute inset-0">
-            {/* Floating Particles */}
-            {[...Array(12)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-blue-400/20 rounded-full"
-                initial={{ 
-                  x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200), 
-                  y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800) 
-                }}
-                animate={{
-                  x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
-                  y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
-                }}
-                transition={{
-                  duration: 15 + Math.random() * 10,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  ease: "easeInOut"
-                }}
-              />
-            ))}
-            
-            {/* Gradient Orbs */}
-            <div className="absolute top-10 left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-          </div>
-
-          <div className="container mx-auto px-4 relative z-10">
+        {/* Cloud Services Section - Redesigned */}
+        <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+          <div className="container mx-auto px-4">
+            {/* Header */}
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
+              transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-center mb-20"
+              className="text-center mb-16"
             >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                <Badge className="mb-6 px-6 py-3 bg-blue-100 text-blue-700 hover:bg-blue-200 transition-all duration-300 text-lg font-semibold shadow-lg" data-testid="badge-services">
-                  ☁️ Cloud Services
-                </Badge>
-              </motion.div>
+              <Badge className="mb-4 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold" data-testid="badge-services">
+                ☁️ Cloud Services
+              </Badge>
               
-              <motion.h2 
-                className="text-5xl md:text-6xl font-bold mb-8 bg-clip-text text-transparent" 
-                style={{backgroundImage: `linear-gradient(135deg, hsl(var(--step-blue)), hsl(var(--step-light-blue)), #8b5cf6)`}}
-                data-testid="text-services-title"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                viewport={{ once: true }}
-              >
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6" data-testid="text-services-title">
                 Dịch Vụ Điện Toán Đám Mây
-              </motion.h2>
+              </h2>
               
-              <motion.p 
-                className="text-xl text-slate-700 max-w-4xl mx-auto leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                viewport={{ once: true }}
-              >
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
                 Khám phá thế giới điện toán đám mây với 6 dịch vụ tiên tiến - từ cloud server linh hoạt, hosting siêu tốc, dedicated server chuyên dụng, colocation đẳng cấp, email hybrid thông minh đến DLP bảo mật tuyệt đối.
-              </motion.p>
+              </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+            {/* Services Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {cloudServices.map((service, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 60, scale: 0.8 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   transition={{ 
-                    duration: 0.8, 
-                    delay: index * 0.15,
-                    ease: "easeOut",
-                    type: "spring",
-                    stiffness: 100
+                    duration: 0.6, 
+                    delay: index * 0.1
                   }}
                   viewport={{ once: true }}
-                  whileHover={{ 
-                    y: -12, 
-                    scale: 1.03,
-                    transition: { duration: 0.3, ease: "easeOut" }
-                  }}
+                  whileHover={{ y: -8 }}
                   className="group cursor-pointer"
                   data-testid={`service-card-${index}`}
                 >
-                  <Card className="h-full border-0 shadow-xl hover:shadow-3xl transition-all duration-700 overflow-hidden bg-gradient-to-br from-white/95 to-slate-50/95 backdrop-blur-sm relative group-hover:from-white group-hover:to-blue-50/30">
-                    <CardContent className="p-10 relative">
-                      {/* Enhanced Glow Effect */}
-                      <div className={`absolute -inset-2 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-all duration-700`} style={{backgroundColor: `hsl(var(--${service.stepColor}))`}}></div>
-                      <div className={`absolute inset-0 rounded-xl opacity-5 group-hover:opacity-15 transition-all duration-700`} style={{backgroundColor: `hsl(var(--${service.stepColor}))`}}></div>
+                  <Card className="h-full border border-gray-200 hover:border-gray-300 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
+                    <CardContent className="p-8 text-center">
                       
-                      <div className="relative z-10">
-                        {/* Animated Icon with Pulse Effect */}
-                        <motion.div 
-                          className={`inline-flex p-5 rounded-2xl text-white mb-8 shadow-lg group-hover:shadow-2xl transition-all duration-500`} 
+                      {/* Large Icon */}
+                      <motion.div 
+                        className="mb-6 flex justify-center"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <div 
+                          className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg" 
                           style={{backgroundColor: `hsl(var(--${service.stepColor}))`}}
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{ duration: 0.3 }}
                         >
-                          <motion.div
-                            animate={{
-                              scale: [1, 1.05, 1],
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Infinity,
-                              ease: "easeInOut"
-                            }}
-                          >
-                            <service.icon className="h-10 w-10" />
-                          </motion.div>
-                          
-                          {/* Pulse Ring */}
-                          <div className={`absolute inset-0 rounded-2xl animate-ping opacity-20`} style={{backgroundColor: `hsl(var(--${service.stepColor}))`}}></div>
-                        </motion.div>
-                        
-                        <h3 className="text-2xl font-bold text-slate-800 mb-5 group-hover:text-slate-900 transition-colors duration-300">
-                          {service.title}
-                        </h3>
-                        
-                        <p className="text-slate-600 mb-8 leading-relaxed text-lg group-hover:text-slate-700 transition-colors duration-300">
-                          {service.description}
-                        </p>
-                        
-                        <div className="space-y-4 mb-8">
-                          {service.features.map((feature, idx) => (
-                            <motion.div 
-                              key={idx} 
-                              className="flex items-center gap-4"
-                              initial={{ opacity: 0, x: -20 }}
-                              whileInView={{ opacity: 1, x: 0 }}
-                              transition={{ duration: 0.5, delay: index * 0.1 + idx * 0.1 }}
-                              viewport={{ once: true }}
-                            >
-                              <motion.div
-                                whileHover={{ scale: 1.2, rotate: 360 }}
-                                transition={{ duration: 0.3 }}
-                              >
-                                <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0" />
-                              </motion.div>
-                              <span className="text-slate-700 font-medium text-base">{feature}</span>
-                            </motion.div>
-                          ))}
+                          <service.icon className="h-10 w-10 text-white" />
                         </div>
-                        
-                        <motion.div
-                          whileHover={{ scale: 1.02 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <Button 
-                            className={`w-full font-bold py-4 text-white transition-all duration-500 shadow-lg hover:shadow-xl relative overflow-hidden group/btn`}
-                            style={{
-                              backgroundColor: `hsl(var(--${service.stepColor}))`
-                            }}
-                            onClick={() => setShowContactForm(true)}
-                            data-testid={`button-learn-more-${index}`}
-                          >
-                            {/* Button background effect */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></div>
-                            
-                            <span className="relative z-10 flex items-center justify-center gap-3">
-                              Khám Phá Ngay
-                              <motion.div
-                                animate={{ x: [0, 4, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                              >
-                                <ArrowRight className="h-5 w-5" />
-                              </motion.div>
-                            </span>
-                          </Button>
-                        </motion.div>
+                      </motion.div>
+                      
+                      {/* Title */}
+                      <h3 className="text-xl font-bold text-gray-900 mb-4">
+                        {service.title}
+                      </h3>
+                      
+                      {/* Description */}
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        {service.description}
+                      </p>
+                      
+                      {/* Features List */}
+                      <div className="space-y-3 mb-8 text-left">
+                        {service.features.map((feature, idx) => (
+                          <div key={idx} className="flex items-start gap-3">
+                            <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                            <span className="text-gray-700 text-sm">{feature}</span>
+                          </div>
+                        ))}
                       </div>
+                      
+                      {/* CTA Button */}
+                      <Button 
+                        className="w-full font-semibold py-3 text-white transition-all duration-300 hover:shadow-lg"
+                        style={{backgroundColor: `hsl(var(--${service.stepColor}))`}}
+                        onClick={() => setShowContactForm(true)}
+                        data-testid={`button-learn-more-${index}`}
+                      >
+                        Khám Phá Ngay
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
                     </CardContent>
                   </Card>
                 </motion.div>
