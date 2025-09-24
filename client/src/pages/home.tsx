@@ -87,12 +87,6 @@ import serviceProcessImage from "@assets/image_1758666086640.png";
 import detailedServicesImage from "@assets/image_1758666113896.png";
 import stepLogo from "@assets/logo step_1753193285585.png";
 
-// Import new additional images for sections below core services
-import itServicesImage from "@assets/image_1758729782271.png";
-import itProductsImage from "@assets/image_1758729789755.png";
-import technicalCertificationsImage from "@assets/image_1758729805095.png";
-import customersPartnersNewImage from "@assets/image_1758729815652.png";
-
 interface UserInfo {
   name: string;
   company: string;
@@ -506,91 +500,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-
-        {/* IT Services Image Section */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="max-w-5xl mx-auto"
-              data-testid="it-services-image"
-            >
-              <img 
-                src={itServicesImage} 
-                alt="Dịch Vụ Công Nghệ Thông Tin"
-                className="w-full h-auto rounded-lg shadow-lg"
-              />
-            </motion.div>
-          </div>
-        </section>
-
-        {/* IT Products Image Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="max-w-5xl mx-auto"
-              data-testid="it-products-image"
-            >
-              <img 
-                src={itProductsImage} 
-                alt="Sản Phẩm Công Nghệ Thông Tin"
-                className="w-full h-auto rounded-lg shadow-lg"
-              />
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Technical Certifications Image Section */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="max-w-5xl mx-auto"
-              data-testid="technical-certifications-image"
-            >
-              <img 
-                src={technicalCertificationsImage} 
-                alt="Chứng Chỉ Kỹ Thuật"
-                className="w-full h-auto rounded-lg shadow-lg"
-              />
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Customers and Partners Image Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="max-w-5xl mx-auto"
-              data-testid="customers-partners-image"
-            >
-              <img 
-                src={customersPartnersNewImage} 
-                alt="Khách Hàng Của Chúng Tôi"
-                className="w-full h-auto rounded-lg shadow-lg"
-              />
-            </motion.div>
-          </div>
-        </section>
-
-
-
-
 
         {/* Testimonials Section */}
         <section className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
