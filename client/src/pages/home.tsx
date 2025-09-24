@@ -184,39 +184,6 @@ export default function Home() {
     }
   ];
 
-  // Detailed IT Services
-  const detailedITServices = [
-    {
-      icon: Camera,
-      title: "Cho thuê thiết bị CNTT",
-      description: "Máy tính, camera, máy chủ với chế độ thuê linh hoạt",
-      color: "bg-blue-100"
-    },
-    {
-      icon: Settings,
-      title: "Bảo trì vệ sinh vật lý hệ thống máy chủ",
-      description: "Dịch vụ bảo trì định kỳ và vệ sinh chuyên nghiệp",
-      color: "bg-green-100"
-    },
-    {
-      icon: SecurityIcon,
-      title: "Xây dựng hệ thống kiểm soát truy cập mạng",
-      description: "Bảo vệ dữ liệu và kiểm soát an toàn thông tin doanh nghiệp",
-      color: "bg-red-100"
-    },
-    {
-      icon: Award,
-      title: "Dịch vụ bảo hành mở rộng thiết bị CNTT",
-      description: "Bảo hành và hỗ trợ kỹ thuật cho thiết bị công nghệ thông tin",
-      color: "bg-purple-100"
-    },
-    {
-      icon: GraduationCap,
-      title: "Đào tạo kỹ thuật viên máy tính - IT support",
-      description: "Chương trình đào tạo chuyên nghiệp cho đội ngũ IT",
-      color: "bg-yellow-100"
-    }
-  ];
 
   const cloudServices = [
     {
@@ -503,7 +470,7 @@ export default function Home() {
         </section>
 
         {/* Service Process Section */}
-        <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+        <section className="py-20 bg-white">
           <div className="container mx-auto px-4">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -512,15 +479,9 @@ export default function Home() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <Badge className="mb-4 px-4 py-2 bg-purple-100 text-purple-700 hover:bg-purple-200" data-testid="badge-process">
-                🔄 Quy Trình Dịch Vụ
-              </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-process-title">
-                Tổng Quan Về Sản Phẩm - Giải Pháp - Dịch Vụ - Hệ Sinh Thái
+              <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-6" data-testid="text-process-title">
+                TỔNG QUAN VỀ SẢN PHẨM - GIẢI PHÁP - DỊCH VỤ - HỆ SINH THÁI
               </h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Quy trình 4 bước hoàn chỉnh từ tư vấn đến vận hành, đảm bảo dự án thành công.
-              </p>
             </motion.div>
 
             <div className="max-w-6xl mx-auto">
@@ -538,7 +499,7 @@ export default function Home() {
                   >
                     <Card className="h-full text-center p-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
                       <CardContent className="p-0">
-                        <div className={`inline-flex p-4 rounded-xl text-white mb-6`} style={{backgroundColor: `hsl(var(--${step.color}))`}}>
+                        <div className="inline-flex p-4 rounded-xl text-white mb-6 bg-blue-500">
                           <step.icon className="h-8 w-8" />
                         </div>
                         <h3 className="font-bold text-lg text-slate-800 mb-4">{step.title}</h3>
@@ -559,54 +520,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Detailed IT Services Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <Badge className="mb-4 px-4 py-2 bg-orange-100 text-orange-700 hover:bg-orange-200" data-testid="badge-detailed-services">
-                🛠️ Dịch Vụ Chuyên Sâu
-              </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-detailed-services-title">
-                Dịch Vụ Công Nghệ Thông Tin
-              </h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Các dịch vụ chuyên nghiệp và toàn diện để đáp ứng mọi nhu cầu công nghệ của doanh nghiệp.
-              </p>
-            </motion.div>
-
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {detailedITServices.map((service, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    whileHover={{ y: -8 }}
-                    data-testid={`detailed-service-${index}`}
-                  >
-                    <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
-                      <CardContent className="p-6">
-                        <div className={`inline-flex p-3 rounded-lg mb-4 ${service.color}`}>
-                          <service.icon className="h-6 w-6 text-slate-700" />
-                        </div>
-                        <h3 className="font-bold text-lg text-slate-800 mb-3">{service.title}</h3>
-                        <p className="text-slate-600 text-sm leading-relaxed">{service.description}</p>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Technical Certifications Section */}
         <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-100">
