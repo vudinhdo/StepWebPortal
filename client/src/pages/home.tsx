@@ -41,13 +41,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
-// Import individual certification logos
-import mctLogo from "@assets/stock_images/microsoft_mct_certif_493f1793.jpg";
-import lpiLogo from "@assets/stock_images/linux_lpi_certificat_7b9ff9bb.jpg";
-import safeticaLogo from "@assets/stock_images/safetica_dlp_data_lo_bba47609.jpg";
-import vcp5Logo from "@assets/stock_images/vmware_vcp5_certific_a526225f.jpg";
-import ccnaLogo from "@assets/stock_images/cisco_ccna_certifica_d07d1cf8.jpg";
-import cehLogo from "@assets/stock_images/ceh_certified_ethica_af6a104b.jpg";
+// Import individual certification logos - official icons
+import mctLogo from "@assets/stock_images/microsoft_certified__4ac49bd2.jpg";
+import lpiLogo from "@assets/stock_images/linux_professional_i_86f60517.jpg";
+import safeticaLogo from "@assets/stock_images/safetica_data_loss_p_4dcd0791.jpg";
+import vcp5Logo from "@assets/stock_images/vmware_certified_pro_3b50b772.jpg";
+import ccnaLogo from "@assets/stock_images/cisco_ccna_certified_f86a7696.jpg";
+import cehLogo from "@assets/stock_images/ceh_certified_ethica_4ee2900f.jpg";
 
 // Import individual partner logos
 import vmwareLogo from "@assets/stock_images/vmware_company_logo_98a8fa28.jpg";
