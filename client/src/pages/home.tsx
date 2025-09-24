@@ -540,17 +540,19 @@ export default function Home() {
             <div className="max-w-6xl mx-auto">
               {/* STEP Logo in center */}
               <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 1 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="flex justify-center mb-8"
+                className="flex justify-center mb-8 h-auto"
+                style={{ minHeight: '180px' }}
               >
                 <img 
                   src={stepLogo} 
                   alt="STEP Logo"
-                  className="h-32 w-auto object-contain"
+                  className="w-auto object-contain"
                   data-testid="step-logo-center"
+                  style={{ height: '160px', minHeight: '160px', maxHeight: 'none' }}
                 />
               </motion.div>
 
@@ -560,7 +562,8 @@ export default function Home() {
                 whileInView={{ opacity: 1, scaleX: 1 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
                 viewport={{ once: true }}
-                className="w-full h-px bg-blue-300 mb-12"
+                className="w-full h-1 bg-blue-300 mb-12"
+                data-testid="certifications-divider"
               />
 
               {/* Certifications Grid - 2 rows of 3 */}
