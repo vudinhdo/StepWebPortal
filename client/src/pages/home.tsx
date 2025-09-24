@@ -537,48 +537,55 @@ export default function Home() {
               </h2>
             </motion.div>
 
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-6xl mx-auto">
               {/* STEP Logo in center */}
               <motion.div 
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="flex justify-center mb-12"
+                className="flex justify-center mb-8"
               >
-                <div className="bg-white p-8 rounded-xl shadow-lg">
-                  <img 
-                    src={stepLogo} 
-                    alt="STEP Logo"
-                    className="h-24 w-auto object-contain"
-                    data-testid="step-logo-center"
-                  />
-                </div>
+                <img 
+                  src={stepLogo} 
+                  alt="STEP Logo"
+                  className="h-32 w-auto object-contain"
+                  data-testid="step-logo-center"
+                />
               </motion.div>
 
-              {/* Certifications Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+              {/* Horizontal Divider */}
+              <motion.div 
+                initial={{ opacity: 0, scaleX: 0 }}
+                whileInView={{ opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                viewport={{ once: true }}
+                className="w-full h-px bg-blue-300 mb-12"
+              />
+
+              {/* Certifications Grid - 2 rows of 3 */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
                 {technicalCertifications.map((cert, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    whileHover={{ scale: 1.05, y: -5 }}
+                    whileHover={{ scale: 1.02 }}
                     data-testid={`cert-card-${index}`}
-                    className="flex flex-col items-center text-center"
+                    className="flex items-center space-x-4 p-4 bg-white rounded-lg border border-gray-200 hover:shadow-md transition-all duration-300"
                   >
-                    <div className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mb-3">
+                    <div className="flex-shrink-0">
                       <img 
                         src={cert.logo} 
                         alt={cert.name}
-                        className="h-12 w-12 object-contain mx-auto"
+                        className="h-16 w-16 object-contain"
                       />
                     </div>
-                    <div>
-                      <h3 className="font-bold text-sm text-slate-800 mb-1">{cert.name}</h3>
-                      <p className="text-xs text-slate-500 leading-tight">{cert.fullName}</p>
+                    <div className="flex-1 text-left">
+                      <h3 className="font-bold text-lg text-slate-800 mb-1">{cert.name}</h3>
+                      <p className="text-sm text-slate-600 leading-tight">{cert.fullName}</p>
                     </div>
                   </motion.div>
                 ))}
