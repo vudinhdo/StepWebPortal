@@ -477,6 +477,106 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Process Overview Image Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="max-w-5xl mx-auto"
+              data-testid="process-overview-image"
+            >
+              <img 
+                src={processOverviewImage} 
+                alt="Tổng Quan Về Sản Phẩm - Giải Pháp - Dịch Vụ - Hệ Sinh Thái"
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* IT Services Image Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="max-w-5xl mx-auto"
+              data-testid="it-services-image"
+            >
+              <img 
+                src={itServicesImage} 
+                alt="Dịch Vụ Công Nghệ Thông Tin"
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* IT Products Image Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="max-w-5xl mx-auto"
+              data-testid="it-products-image"
+            >
+              <img 
+                src={itProductsImage} 
+                alt="Sản Phẩm Công Nghệ Thông Tin"
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Technical Certifications Image Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="max-w-5xl mx-auto"
+              data-testid="technical-certifications-image"
+            >
+              <img 
+                src={technicalCertificationsImage} 
+                alt="Chứng Chỉ Kỹ Thuật"
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Customers and Partners Image Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="max-w-5xl mx-auto"
+              data-testid="customers-partners-image"
+            >
+              <img 
+                src={customersPartnersNewImage} 
+                alt="Khách Hàng Của Chúng Tôi"
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </motion.div>
+          </div>
+        </section>
+
         {/* Service Process Section */}
         <section className="py-20 bg-white">
           <div className="container mx-auto px-4">
