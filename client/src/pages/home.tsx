@@ -489,7 +489,7 @@ export default function Home() {
                 {serviceProcess.map((step, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 1, y: 0 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.2 }}
                     viewport={{ once: true }}
@@ -499,7 +499,7 @@ export default function Home() {
                   >
                     <Card className="h-full text-center p-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
                       <CardContent className="p-0">
-                        <div className="inline-flex p-4 rounded-xl text-white mb-6 bg-blue-500">
+                        <div className="inline-flex p-4 rounded-xl text-white mb-6 !bg-blue-500 bg-blue-500" style={{backgroundColor: '#3b82f6 !important'}}>
                           <step.icon className="h-8 w-8" />
                         </div>
                         <h3 className="font-bold text-lg text-slate-800 mb-4">{step.title}</h3>
