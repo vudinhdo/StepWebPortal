@@ -37,7 +37,8 @@ import {
   Cpu as ProcessorIcon,
   Network,
   Activity,
-  Gauge
+  Gauge,
+  MessageSquare
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -202,21 +203,21 @@ export default function Home() {
 
   const cloudServices = [
     {
-      icon: CloudSnow,
+      icon: Monitor,
       title: "Cloud Server",
       description: "Giải pháp máy chủ đám mây cao cấp với hiệu năng vượt trội và sự linh hoạt tối đa.",
       features: ["Thanh toán linh hoạt", "CPU cao cấp", "Hỗ trợ 1-1", "Backup tự động theo yêu cầu", "Ổ cứng NVME - HHHL siêu tốc"],
       stepColor: "step-cloud"
     },
     {
-      icon: Monitor,
+      icon: Zap,
       title: "Web Hosting",
       description: "Trải nghiệm hosting đỉnh cao với tốc độ tải trang nhanh như chớp, bảo mật tuyệt đối và khả năng mở rộng không giới hạn cho mọi loại website.",
       features: ["Tốc độ siêu nhanh", "Bảo mật tuyệt đối", "Mở rộng linh hoạt", "Hỗ trợ 24/7"],
       stepColor: "step-hosting"
     },
     {
-      icon: HardDrive,
+      icon: Database,
       title: "Dedicated Server",
       description: "Sức mạnh tuyệt đối với máy chủ riêng biệt, phần cứng chuyên dụng và dịch vụ hỗ trợ chuyên sâu.",
       features: ["Phần cứng chuyên dụng", "Băng thông không giới hạn", "Hỗ trợ 24/7", "Dịch vụ chuyên sâu phần cứng", "Hỗ trợ quản trị"],
@@ -230,14 +231,14 @@ export default function Home() {
       stepColor: "step-colocation"
     },
     {
-      icon: MailCheck,
+      icon: MessageSquare,
       title: "Email Hybrid",
       description: "Giải pháp email thông minh tích hợp đa nền tảng, tối ưu chi phí và đảm bảo tỉ lệ gửi thành công cao nhất.",
       features: ["Tiết kiệm chi phí", "Chạy song song với Google Workspace và Microsoft 365", "Tỉ lệ inbox cao"],
       stepColor: "step-email"
     },
     {
-      icon: ShieldCheck,
+      icon: Lock,
       title: "DLP - Data Loss Prevention",
       description: "Giải pháp bảo vệ dữ liệu toàn diện với công nghệ AI tiên tiến, ngăn chặn mọi rủi ro rò rỉ thông tin nhạy cảm.",
       features: ["Bảo vệ dữ liệu nhạy cảm", "Công nghệ AI tiên tiến", "Ngăn chặn rò rỉ toàn diện", "Giám sát thời gian thực"],
