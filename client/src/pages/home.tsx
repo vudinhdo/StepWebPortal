@@ -77,6 +77,13 @@ import serviceProcessImage from "@assets/image_1758666086640.png";
 import detailedServicesImage from "@assets/image_1758666113896.png";
 import stepLogo from "@assets/logo step_1753193285585.png";
 
+// Import new additional images for sections below core services
+import processOverviewImage from "@assets/image_1758729753671.png";
+import itServicesImage from "@assets/image_1758729782271.png";
+import itProductsImage from "@assets/image_1758729789755.png";
+import technicalCertificationsImage from "@assets/image_1758729805095.png";
+import customersPartnersNewImage from "@assets/image_1758729815652.png";
+
 interface UserInfo {
   name: string;
   company: string;
