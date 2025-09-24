@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { 
   Cloud, 
   Shield, 
@@ -39,7 +40,8 @@ import {
   Activity,
   Gauge,
   MessageSquare,
-  Warehouse
+  Warehouse,
+  ExternalLink
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -202,42 +204,48 @@ export default function Home() {
       title: "Cloud Server",
       description: "Giải pháp máy chủ đám mây cao cấp với hiệu năng vượt trội và sự linh hoạt tối đa.",
       features: ["Thanh toán linh hoạt", "CPU cao cấp", "Hỗ trợ 1-1", "Backup tự động theo yêu cầu", "Ổ cứng NVME - HHHL siêu tốc"],
-      stepColor: "step-cloud"
+      stepColor: "step-cloud",
+      link: "/cloud"
     },
     {
       icon: Globe,
       title: "Web Hosting",
       description: "Trải nghiệm hosting đỉnh cao với tốc độ tải trang nhanh như chớp, bảo mật tuyệt đối và khả năng mở rộng không giới hạn cho mọi loại website.",
       features: ["Tốc độ siêu nhanh", "Bảo mật tuyệt đối", "Mở rộng linh hoạt", "Hỗ trợ 24/7"],
-      stepColor: "step-hosting"
+      stepColor: "step-hosting",
+      link: "/hosting"
     },
     {
       icon: Server,
       title: "Dedicated Server",
       description: "Sức mạnh tuyệt đối với máy chủ riêng biệt, phần cứng chuyên dụng và dịch vụ hỗ trợ chuyên sâu.",
       features: ["Phần cứng chuyên dụng", "Băng thông không giới hạn", "Hỗ trợ 24/7", "Dịch vụ chuyên sâu phần cứng", "Hỗ trợ quản trị"],
-      stepColor: "step-server"
+      stepColor: "step-server",
+      link: "/Colocation"
     },
     {
       icon: Warehouse,
       title: "Colocation",
       description: "Hạ tầng datacenter đẳng cấp thế giới với hệ sinh thái đa dạng và dịch vụ hỗ trợ toàn diện.",
       features: ["Dịch vụ hỗ trợ 24/7", "Dịch vụ cho thuê Port 10GB", "Băng thông không giới hạn", "Hệ sinh thái đa dạng"],
-      stepColor: "step-colocation"
+      stepColor: "step-colocation",
+      link: "/Colocation"
     },
     {
       icon: Mail,
       title: "Email Hybrid",
       description: "Giải pháp email thông minh tích hợp đa nền tảng, tối ưu chi phí và đảm bảo tỉ lệ gửi thành công cao nhất.",
       features: ["Tiết kiệm chi phí", "Chạy song song với Google Workspace và Microsoft 365", "Tỉ lệ inbox cao"],
-      stepColor: "step-email"
+      stepColor: "step-email",
+      link: "/Email Hybrid"
     },
     {
       icon: Shield,
       title: "DLP - Data Loss Prevention",
       description: "Giải pháp bảo vệ dữ liệu toàn diện với công nghệ AI tiên tiến, ngăn chặn mọi rủi ro rò rỉ thông tin nhạy cảm.",
       features: ["Bảo vệ dữ liệu nhạy cảm", "Công nghệ AI tiên tiến", "Ngăn chặn rò rỉ toàn diện", "Giám sát thời gian thực"],
-      stepColor: "step-dlp"
+      stepColor: "step-dlp",
+      link: "/DLP"
     }
   ];
 
@@ -406,98 +414,139 @@ export default function Home() {
           </section>
         )}
 
-        {/* Cloud Services Section - Redesigned */}
-        <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
-          <div className="container mx-auto px-4">
+        {/* Cloud Services Section - Completely Redesigned */}
+        <section className="py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0" style={{backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`, backgroundSize: '20px 20px'}}></div>
+          </div>
+          
+          <div className="container mx-auto px-4 relative z-10">
             {/* Header */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="text-center mb-20"
             >
-              <Badge className="mb-4 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold" data-testid="badge-services">
-                ☁️ Cloud Services
+              <Badge className="mb-6 px-6 py-3 bg-blue-500/20 text-blue-200 text-sm font-semibold border border-blue-400/30" data-testid="badge-services">
+                ☁️ Dịch Vụ Chuyên Nghiệp
               </Badge>
               
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6" data-testid="text-services-title">
-                Dịch Vụ Điện Toán Đám Mây
+              <h2 className="text-5xl md:text-7xl font-bold text-white mb-8" data-testid="text-services-title">
+                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                  Dịch Vụ Điện Toán Đám Mây
+                </span>
               </h2>
               
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Khám phá thế giới điện toán đám mây với 6 dịch vụ tiên tiến - từ cloud server linh hoạt, hosting siêu tốc, dedicated server chuyên dụng, colocation đẳng cấp, email hybrid thông minh đến DLP bảo mật tuyệt đối.
+              <p className="text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
+                Hệ sinh thái dịch vụ công nghệ toàn diện - 6 giải pháp tiên tiến cho mọi nhu cầu doanh nghiệp hiện đại
               </p>
             </motion.div>
 
-            {/* Services Grid */}
+            {/* Services Grid - New Modern Design */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {cloudServices.map((service, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    duration: 0.6, 
-                    delay: index * 0.1
-                  }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -8 }}
-                  className="group cursor-pointer"
-                  data-testid={`service-card-${index}`}
-                >
-                  <Card className="h-full border border-gray-200 hover:border-gray-300 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
-                    <CardContent className="p-8 text-center">
-                      
-                      {/* Large Icon */}
-                      <motion.div 
-                        className="mb-6 flex justify-center"
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.2 }}
-                      >
+                <Link key={index} href={service.link}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      duration: 0.7, 
+                      delay: index * 0.15
+                    }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -12, scale: 1.02 }}
+                    className="group cursor-pointer"
+                    data-testid={`service-card-${index}`}
+                  >
+                    <Card className="h-full bg-white/10 backdrop-blur-xl border border-white/20 hover:border-white/40 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
+                      <CardContent className="p-0">
+                        {/* Header with Icon */}
                         <div 
-                          className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg" 
-                          style={{backgroundColor: `hsl(var(--${service.stepColor}))`}}
+                          className="p-8 relative"
+                          style={{
+                            background: `linear-gradient(135deg, hsl(var(--${service.stepColor})) 0%, hsl(var(--${service.stepColor})) 100%)`
+                          }}
                         >
-                          <service.icon className="h-10 w-10 text-white" />
-                        </div>
-                      </motion.div>
-                      
-                      {/* Title */}
-                      <h3 className="text-xl font-bold text-gray-900 mb-4">
-                        {service.title}
-                      </h3>
-                      
-                      {/* Description */}
-                      <p className="text-gray-600 mb-6 leading-relaxed">
-                        {service.description}
-                      </p>
-                      
-                      {/* Features List */}
-                      <div className="space-y-3 mb-8 text-left">
-                        {service.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-start gap-3">
-                            <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                            <span className="text-gray-700 text-sm">{feature}</span>
+                          {/* Floating Background Elements */}
+                          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-8 translate-x-8"></div>
+                          <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-4 -translate-x-4"></div>
+                          
+                          <div className="relative z-10 text-center">
+                            <motion.div 
+                              className="mb-4 flex justify-center"
+                              whileHover={{ rotate: 360 }}
+                              transition={{ duration: 0.8 }}
+                            >
+                              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                                <service.icon className="h-8 w-8 text-white" />
+                              </div>
+                            </motion.div>
+                            
+                            <h3 className="text-2xl font-bold text-white mb-2">
+                              {service.title}
+                            </h3>
                           </div>
-                        ))}
-                      </div>
-                      
-                      {/* CTA Button */}
-                      <Button 
-                        className="w-full font-semibold py-3 text-white transition-all duration-300 hover:shadow-lg"
-                        style={{backgroundColor: `hsl(var(--${service.stepColor}))`}}
-                        onClick={() => setShowContactForm(true)}
-                        data-testid={`button-learn-more-${index}`}
-                      >
-                        Khám Phá Ngay
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                        </div>
+                        
+                        {/* Content */}
+                        <div className="p-8 bg-white/5 backdrop-blur-sm">
+                          <p className="text-blue-100 mb-6 leading-relaxed text-center">
+                            {service.description}
+                          </p>
+                          
+                          {/* Key Features - Compact Display */}
+                          <div className="space-y-2 mb-8">
+                            {service.features.slice(0, 3).map((feature, idx) => (
+                              <div key={idx} className="flex items-center gap-3">
+                                <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                                <span className="text-blue-200 text-sm">{feature}</span>
+                              </div>
+                            ))}
+                            {service.features.length > 3 && (
+                              <div className="flex items-center gap-3">
+                                <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+                                <span className="text-blue-300 text-sm font-medium">+{service.features.length - 3} tính năng khác</span>
+                              </div>
+                            )}
+                          </div>
+                          
+                          {/* CTA Button */}
+                          <div className="flex items-center justify-between p-4 bg-white/10 rounded-xl border border-white/20 group-hover:bg-white/20 transition-all duration-300">
+                            <span className="text-white font-semibold">Khám Phá Chi Tiết</span>
+                            <ExternalLink className="h-5 w-5 text-white group-hover:translate-x-1 transition-transform duration-300" />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                </Link>
               ))}
             </div>
+
+            {/* Bottom CTA */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mt-16"
+            >
+              <p className="text-blue-200 mb-6 text-lg">
+                Cần tư vấn giải pháp phù hợp với doanh nghiệp?
+              </p>
+              <Button 
+                size="lg"
+                className="bg-white text-blue-900 hover:bg-blue-50 px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+                onClick={() => setShowContactForm(true)}
+                data-testid="button-contact-expert"
+              >
+                Liên Hệ Chuyên Gia
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </motion.div>
           </div>
         </section>
 
