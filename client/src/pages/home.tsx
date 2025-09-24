@@ -41,7 +41,36 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
-// Import company images
+// Import individual certification logos
+import mctLogo from "@assets/stock_images/microsoft_mct_certif_493f1793.jpg";
+import lpiLogo from "@assets/stock_images/linux_lpi_certificat_7b9ff9bb.jpg";
+import safeticaLogo from "@assets/stock_images/safetica_dlp_data_lo_bba47609.jpg";
+import vcp5Logo from "@assets/stock_images/vmware_vcp5_certific_a526225f.jpg";
+import ccnaLogo from "@assets/stock_images/cisco_ccna_certifica_d07d1cf8.jpg";
+import cehLogo from "@assets/stock_images/ceh_certified_ethica_af6a104b.jpg";
+
+// Import individual partner logos
+import vmwareLogo from "@assets/stock_images/vmware_company_logo_98a8fa28.jpg";
+import vzamLogo from "@assets/stock_images/vzam_vietnam_technol_fb730dcd.jpg";
+import arubaLogo from "@assets/stock_images/aruba_hpe_hewlett_pa_b3c10f89.jpg";
+import fptLogo from "@assets/stock_images/fpt_corporation_viet_ff353a19.jpg";
+import dellLogo from "@assets/stock_images/dell_technologies_co_b3482cfd.jpg";
+import nakivoLogo from "@assets/stock_images/nakivo_backup_softwa_cf7d1f6e.jpg";
+import hvcgLogo from "@assets/stock_images/hvcg_software_vietna_15b303d0.jpg";
+import viettelLogo from "@assets/stock_images/viettel_telecommunic_f34dd040.jpg";
+
+// Import individual customer logos
+import medlatecLogo from "@assets/stock_images/medlatec_medical_cen_eca53331.jpg";
+import bsgLogo from "@assets/stock_images/bsg_vietnam_company__bf28746d.jpg";
+import hanoiCultureLogo from "@assets/stock_images/vietnam_government_d_85d825a2.jpg";
+import vetcLogo from "@assets/stock_images/vetc_vietnam_express_75e5b865.jpg";
+import cmcTelecomLogo from "@assets/stock_images/cmc_telecom_vietnam__b4150596.jpg";
+import environmentLogo from "@assets/stock_images/vietnam_department_n_585270eb.jpg";
+import five9Logo from "@assets/stock_images/five9_contact_center_24cb331f.jpg";
+import monyLogo from "@assets/stock_images/mony_vietnam_financi_86ad3a5d.jpg";
+import palVietnamLogo from "@assets/stock_images/pal_vietnam_company__ff591243.jpg";
+
+// Import company images for fallback
 import certificationsImage from "@assets/image_1758666044115.png";
 import customersPartnersImage from "@assets/image_1758666058304.png";
 import serviceProcessImage from "@assets/image_1758666086640.png";
@@ -92,39 +121,39 @@ export default function Home() {
     { label: "Support Response", value: "< 2min", icon: Zap }
   ];
 
-  // Technical Certifications data with real logos from image
+  // Technical Certifications data with individual logos
   const technicalCertifications = [
-    { name: "MCT", fullName: "Microsoft Certificate Windows Server", color: "bg-blue-500" },
-    { name: "Linux LPI", fullName: "Linux Professional Institute", color: "bg-orange-500" },
-    { name: "DLP Safetica", fullName: "Data Loss Prevention của hãng Safetica", color: "bg-green-500" },
-    { name: "VCP5", fullName: "VMware Certified Professional", color: "bg-purple-500" },
-    { name: "Cisco CCNA", fullName: "Cisco Certified Network Associate", color: "bg-cyan-500" },
-    { name: "CEH", fullName: "Certified Ethical Hacker (Master in Hacking)", color: "bg-red-500" }
+    { name: "MCT", fullName: "Microsoft Certificate Windows Server", color: "bg-blue-500", logo: mctLogo },
+    { name: "Linux LPI", fullName: "Linux Professional Institute", color: "bg-orange-500", logo: lpiLogo },
+    { name: "DLP Safetica", fullName: "Data Loss Prevention của hãng Safetica", color: "bg-green-500", logo: safeticaLogo },
+    { name: "VCP5", fullName: "VMware Certified Professional", color: "bg-purple-500", logo: vcp5Logo },
+    { name: "Cisco CCNA", fullName: "Cisco Certified Network Associate", color: "bg-cyan-500", logo: ccnaLogo },
+    { name: "CEH", fullName: "Certified Ethical Hacker (Master in Hacking)", color: "bg-red-500", logo: cehLogo }
   ];
 
-  // Service Partners and Customers data with real logos
+  // Service Partners and Customers data with individual logos
   const servicePartners = [
-    { name: "VMware", logo: customersPartnersImage },
-    { name: "CMC Corp", logo: customersPartnersImage },
-    { name: "VZAM", logo: customersPartnersImage },
-    { name: "Aruba", logo: customersPartnersImage },
-    { name: "FPT", logo: customersPartnersImage },
-    { name: "Dell", logo: customersPartnersImage },
-    { name: "Nakivo", logo: customersPartnersImage },
-    { name: "HVCG Software", logo: customersPartnersImage },
-    { name: "Viettel", logo: customersPartnersImage }
+    { name: "VMware", logo: vmwareLogo },
+    { name: "CMC Corp", logo: customersPartnersImage }, // Fallback - specific logo failed to download
+    { name: "VZAM", logo: vzamLogo },
+    { name: "Aruba", logo: arubaLogo },
+    { name: "FPT", logo: fptLogo },
+    { name: "Dell", logo: dellLogo },
+    { name: "Nakivo", logo: nakivoLogo },
+    { name: "HVCG Software", logo: hvcgLogo },
+    { name: "Viettel", logo: viettelLogo }
   ];
 
   const customers = [
-    { name: "Medlatec", logo: customersPartnersImage },
-    { name: "BSG", logo: customersPartnersImage },
-    { name: "Sở Văn Hóa Hà Nội", logo: customersPartnersImage },
-    { name: "VETC", logo: customersPartnersImage },
-    { name: "CMC Telecom", logo: customersPartnersImage },
-    { name: "Sở Tài Nguyên Môi Trường", logo: customersPartnersImage },
-    { name: "Five9", logo: customersPartnersImage },
-    { name: "Mony", logo: customersPartnersImage },
-    { name: "Pal Vietnam", logo: customersPartnersImage }
+    { name: "Medlatec", logo: medlatecLogo },
+    { name: "BSG", logo: bsgLogo },
+    { name: "Sở Văn Hóa Hà Nội", logo: hanoiCultureLogo },
+    { name: "VETC", logo: vetcLogo },
+    { name: "CMC Telecom", logo: cmcTelecomLogo },
+    { name: "Sở Tài Nguyên Môi Trường", logo: environmentLogo },
+    { name: "Five9", logo: five9Logo },
+    { name: "Mony", logo: monyLogo },
+    { name: "Pal Vietnam", logo: palVietnamLogo }
   ];
 
   // Service Process steps
@@ -615,7 +644,7 @@ export default function Home() {
                     <CardContent className="p-0">
                       <div className={`inline-flex p-4 rounded-xl text-white mb-4 ${cert.color}`}>
                         <img 
-                          src={certificationsImage} 
+                          src={cert.logo} 
                           alt={cert.name}
                           className="h-8 w-8 object-contain"
                         />
