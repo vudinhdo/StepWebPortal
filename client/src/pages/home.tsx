@@ -78,7 +78,6 @@ import detailedServicesImage from "@assets/image_1758666113896.png";
 import stepLogo from "@assets/logo step_1753193285585.png";
 
 // Import new additional images for sections below core services
-import processOverviewImage from "@assets/image_1758729753671.png";
 import itServicesImage from "@assets/image_1758729782271.png";
 import itProductsImage from "@assets/image_1758729789755.png";
 import technicalCertificationsImage from "@assets/image_1758729805095.png";
@@ -477,25 +476,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Process Overview Image Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="max-w-5xl mx-auto"
-              data-testid="process-overview-image"
-            >
-              <img 
-                src={processOverviewImage} 
-                alt="Tổng Quan Về Sản Phẩm - Giải Pháp - Dịch Vụ - Hệ Sinh Thái"
-                className="w-full h-auto rounded-lg shadow-lg"
-              />
-            </motion.div>
-          </div>
-        </section>
 
         {/* IT Services Image Section */}
         <section className="py-16 bg-white">
