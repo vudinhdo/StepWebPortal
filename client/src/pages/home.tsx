@@ -196,43 +196,43 @@ export default function Home() {
     {
       icon: Cloud,
       title: "Cloud Server",
-      description: "Máy chủ đám mây linh hoạt với CPU/GPU cao cấp, scale tự động và tối ưu chi phí theo nhu cầu sử dụng.",
-      features: ["Scale Tự Động", "CPU/GPU Cao Cấp", "Pay-as-you-use", "Docker/K8s Support"],
+      description: "Giải pháp máy chủ đám mây cao cấp với hiệu năng vượt trội và sự linh hoạt tối đa.",
+      features: ["Thanh toán linh hoạt", "CPU cao cấp", "Hỗ trợ 1-1", "Backup tự động theo yêu cầu", "Ổ cứng NVME - HHHL siêu tốc"],
       stepColor: "step-cloud"
     },
     {
       icon: Globe,
       title: "Web Hosting",
-      description: "Hosting WordPress, Laravel, Node.js với SSD NVMe, CDN tích hợp và backup tự động hàng ngày.",
-      features: ["SSD NVMe", "CDN Tích Hợp", "SSL Miễn Phí", "Backup Tự Động"],
+      description: "Trải nghiệm hosting đỉnh cao với tốc độ tải trang nhanh như chớp, bảo mật tuyệt đối và khả năng mở rộng không giới hạn cho mọi loại website.",
+      features: ["Tốc độ siêu nhanh", "Bảo mật tuyệt đối", "Mở rộng linh hoạt", "Hỗ trợ 24/7"],
       stepColor: "step-hosting"
     },
     {
       icon: Server,
       title: "Dedicated Server",
-      description: "Máy chủ riêng biệt với phần cứng enterprise, băng thông không giới hạn và quản lý 24/7.",
-      features: ["Phần Cứng Enterprise", "Băng Thông Unlimited", "Quản Lý 24/7", "Root Access"],
+      description: "Sức mạnh tuyệt đối với máy chủ riêng biệt, phần cứng chuyên dụng và dịch vụ hỗ trợ chuyên sâu.",
+      features: ["Phần cứng chuyên dụng", "Băng thông không giới hạn", "Hỗ trợ 24/7", "Dịch vụ chuyên sâu phần cứng", "Hỗ trợ quản trị"],
       stepColor: "step-server"
     },
     {
       icon: Database,
       title: "Colocation",
-      description: "Dịch vụ đặt máy chủ tại datacenter với điện lưới dự phòng, bảo mật vật lý và kết nối internet cao cấp.",
-      features: ["Điện Lưới Dự Phòng", "Bảo Mật 24/7", "Kết Nối Cao Cấp", "Môi Trường Kiểm Soát"],
+      description: "Hạ tầng datacenter đẳng cấp thế giới với hệ sinh thái đa dạng và dịch vụ hỗ trợ toàn diện.",
+      features: ["Dịch vụ hỗ trợ 24/7", "Dịch vụ cho thuê Port 10GB", "Băng thông không giới hạn", "Hệ sinh thái đa dạng"],
       stepColor: "step-colocation"
     },
     {
       icon: Mail,
       title: "Email Hybrid",
-      description: "Giải pháp email doanh nghiệp kết hợp cloud và on-premise với bảo mật cao và khả năng mở rộng.",
-      features: ["Anti-Spam/Virus", "Backup Email", "Mobile Sync", "Compliance Ready"],
+      description: "Giải pháp email thông minh tích hợp đa nền tảng, tối ưu chi phí và đảm bảo tỉ lệ gửi thành công cao nhất.",
+      features: ["Tiết kiệm chi phí", "Chạy song song với Google Workspace và Microsoft 365", "Tỉ lệ inbox cao"],
       stepColor: "step-email"
     },
     {
       icon: Shield,
       title: "DLP - Data Loss Prevention",
-      description: "Bảo vệ dữ liệu nhạy cảm khỏi rò rỉ với giám sát thời gian thực, phân loại tự động và chính sách bảo mật linh hoạt.",
-      features: ["Ngăn Rò Rỉ Dữ Liệu", "Giám Sát Thời Gian Thực", "Chính Sách Theo Vai Trò", "Báo Cáo Tuân Thủ"],
+      description: "Giải pháp bảo vệ dữ liệu toàn diện với công nghệ AI tiên tiến, ngăn chặn mọi rủi ro rò rỉ thông tin nhạy cảm.",
+      features: ["Bảo vệ dữ liệu nhạy cảm", "Công nghệ AI tiên tiến", "Ngăn chặn rò rỉ toàn diện", "Giám sát thời gian thực"],
       stepColor: "step-dlp"
     }
   ];
@@ -416,7 +416,7 @@ export default function Home() {
                 ☁️ Cloud Services
               </Badge>
               <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-services-title">
-                6 Dịch Vụ Cốt Lõi
+                Dịch Vụ Điện Toán Đám Mây
               </h2>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
                 Từ cloud server linh hoạt, hosting chuyên nghiệp, dedicated server cao cấp, colocation an toàn, email hybrid bảo mật đến DLP ngăn chặn rò rỉ dữ liệu - STEP cung cấp giải pháp IT toàn diện.
