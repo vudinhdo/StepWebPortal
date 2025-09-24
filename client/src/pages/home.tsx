@@ -75,6 +75,7 @@ import certificationsImage from "@assets/image_1758666044115.png";
 import customersPartnersImage from "@assets/image_1758666058304.png";
 import serviceProcessImage from "@assets/image_1758666086640.png";
 import detailedServicesImage from "@assets/image_1758666113896.png";
+import stepLogo from "@assets/logo step_1753193285585.png";
 
 interface UserInfo {
   name: string;
@@ -522,7 +523,7 @@ export default function Home() {
 
 
         {/* Technical Certifications Section */}
-        <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-100">
+        <section className="py-20 bg-white border-b border-gray-100">
           <div className="container mx-auto px-4">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -531,43 +532,57 @@ export default function Home() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <Badge className="mb-4 px-4 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200" data-testid="badge-certifications">
-                🏆 Chứng Chỉ Kỹ Thuật
-              </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-certifications-title">
-                Chuyên Môn Được Công Nhận
+              <h2 className="text-4xl md:text-5xl font-bold text-blue-600 mb-6" data-testid="text-certifications-title">
+                CHỨNG CHỈ KỸ THUẬT
               </h2>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Đội ngũ STEP sở hữu các chứng chỉ quốc tế uy tín, đảm bảo chất lượng dịch vụ cao nhất cho khách hàng.
-              </p>
             </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
-              {technicalCertifications.map((cert, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  data-testid={`cert-card-${index}`}
-                >
-                  <Card className="h-full text-center p-6 border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
-                    <CardContent className="p-0">
-                      <div className={`inline-flex p-4 rounded-xl text-white mb-4 ${cert.color}`}>
-                        <img 
-                          src={cert.logo} 
-                          alt={cert.name}
-                          className="h-8 w-8 object-contain"
-                        />
-                      </div>
-                      <h3 className="font-bold text-lg text-slate-800 mb-2">{cert.name}</h3>
+            <div className="max-w-5xl mx-auto">
+              {/* STEP Logo in center */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="flex justify-center mb-12"
+              >
+                <div className="bg-white p-8 rounded-xl shadow-lg">
+                  <img 
+                    src={stepLogo} 
+                    alt="STEP Logo"
+                    className="h-24 w-auto object-contain"
+                    data-testid="step-logo-center"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Certifications Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                {technicalCertifications.map((cert, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    data-testid={`cert-card-${index}`}
+                    className="flex flex-col items-center text-center"
+                  >
+                    <div className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mb-3">
+                      <img 
+                        src={cert.logo} 
+                        alt={cert.name}
+                        className="h-12 w-12 object-contain mx-auto"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-sm text-slate-800 mb-1">{cert.name}</h3>
                       <p className="text-xs text-slate-500 leading-tight">{cert.fullName}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
