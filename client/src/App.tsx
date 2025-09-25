@@ -38,7 +38,6 @@ import ServerServices from "@/pages/server-services";
 import ServersOverview from "@/pages/servers-overview";
 import NetworkEquipment from "@/pages/network-equipment";
 import DLP from "@/pages/dlp";
-import Colocation from "@/pages/colocation";
 import Contact from "@/pages/contact";
 
 function Router() {
@@ -84,8 +83,6 @@ function Router() {
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route path="/bao-gia" component={Quote} />
         <Route path="/DLP" component={DLP} />
-        <Route path="/Colocation" component={Colocation} />
-        <Route path="/Email Hybrid" component={HybridEmail} />
         <Route path="/contact" component={Contact} />
         <Route component={NotFound} />
       </Switch>
