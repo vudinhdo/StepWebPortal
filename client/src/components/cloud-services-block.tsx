@@ -48,7 +48,7 @@ export default function CloudServicesBlock() {
       title: "Dedicated Server", 
       description: "Máy chủ vật lý cao cấp với hiệu suất tối đa, bảo mật tuyệt đối và dịch vụ colocation",
       icon: Server,
-      href: "/dedicated-server",
+      href: "/colocation",
       color: "hsl(271, 91%, 65%)", // STEP Purple
       bgColor: "hsl(271, 91%, 96%)",
       borderColor: "hsl(271, 91%, 75%)",
