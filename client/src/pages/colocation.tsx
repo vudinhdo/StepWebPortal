@@ -36,6 +36,94 @@ import Footer from "@/components/footer";
 import ContactForm from "@/components/contact-form";
 import { useToast } from "@/hooks/use-toast";
 
+// FAQ Accordion Component
+function FAQAccordion({ openFaqIndex, setOpenFaqIndex }: { 
+  openFaqIndex: number | null; 
+  setOpenFaqIndex: (index: number | null) => void;
+}) {
+  const faqs = [
+    {
+      question: "Colocation là gì và tại sao doanh nghiệp nên sử dụng?",
+      answer: "Colocation là dịch vụ cho thuê không gian, điện, làm mát và kết nối mạng để đặt máy chủ của khách hàng tại data center chuyên nghiệp. Lợi ích bao gồm: tiết kiệm chi phí xây dựng data center riêng, đảm bảo uptime cao 99.9%, bảo mật vật lý 24/7, băng thông chất lượng cao và hỗ trợ kỹ thuật chuyên nghiệp."
+    },
+    {
+      question: "STEP có những gói colocation nào và giá cả ra sao?",
+      answer: "STEP cung cấp 6 gói chính từ S-CMC01 (1.5M VNĐ/tháng) cho startup đến S-Full Rack (28.5M VNĐ/tháng) cho enterprise. Mỗi gói bao gồm không gian rack, điện, băng thông, IP và hỗ trợ 24/7. Khách hàng thanh toán 12 tháng được giảm 3-12% và nhận thêm các dịch vụ bổ sung miễn phí."
+    },
+    {
+      question: "Data center của STEP có đạt chuẩn quốc tế không?",
+      answer: "STEP hợp tác với các data center đạt chuẩn Tier III+ có chứng nhận ISO 27001, SOC 2. Hệ thống điện dự phòng N+1, UPS và máy phát điện đảm bảo 99.99% uptime. Hệ thống làm mát chính xác, giám sát 24/7, kiểm soát ra vào bằng thẻ từ và camera an ninh đa lớp."
+    },
+    {
+      question: "Băng thông quốc tế tại STEP có ưu điểm gì?",
+      answer: "STEP kết nối trực tiếp 4 tuyến cáp quang quốc tế (AAG, APG, IA, SMW3) và các Internet Exchange Point trong nước. Băng thông quốc tế lên đến 10Gbps với độ trễ thấp < 50ms tới Singapore, < 150ms tới US/EU. Có DDoS Protection miễn phí và redundant routing tự động đảm bảo kết nối ổn định."
+    },
+    {
+      question: "Quy trình triển khai colocation mất bao lâu?",
+      answer: "Sau khi ký hợp đồng, STEP sẽ chuẩn bị rack và kết nối trong 24-48h cho gói cơ bản, 3-5 ngày cho gói rack. Khách hàng có thể tự vận chuyển thiết bị hoặc sử dụng dịch vụ vận chuyển của STEP. Đội ngũ kỹ thuật hỗ trợ cài đặt, cấu hình và kiểm tra hệ thống trước khi bàn giao."
+    },
+    {
+      question: "STEP có hỗ trợ remote hands và managed service không?",
+      answer: "Có, STEP cung cấp dịch vụ remote hands 24/7 bao gồm: reboot server, thay thế linh kiện, kiểm tra led status, cắm rút cable. Ngoài ra có gói managed service toàn diện: giám sát server, backup, patching, security monitoring và báo cáo hàng tháng với mức phí hợp lý."
+    },
+    {
+      question: "Chính sách bảo mật và backup như thế nào?",
+      answer: "STEP áp dụng bảo mật đa lớp: kiểm soát ra vào bằng thẻ từ, camera 24/7, giám sát mạng real-time, firewall hardware. Có dịch vụ backup tự động hàng ngày với lưu trữ offsite, disaster recovery plan và khả năng restore nhanh chóng. Tất cả đều tuân thủ chuẩn ISO 27001."
+    },
+    {
+      question: "Có thể mở rộng hoặc downgrade gói dịch vụ không?",
+      answer: "Hoàn toàn có thể. STEP hỗ trợ scale up/down linh hoạt theo nhu cầu kinh doanh. Việc upgrade diễn ra ngay trong ngày, downgrade sẽ có hiệu lực từ kỳ thanh toán tiếp theo. Phí chênh lệch sẽ được tính theo tỷ lệ thời gian sử dụng thực tế."
+    }
+  ];
+
+  return (
+    <>
+      {faqs.map((faq, index) => {
+        const isOpen = openFaqIndex === index;
+        
+        return (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className="border border-gray-200 rounded-xl overflow-hidden"
+            data-testid={`faq-item-${index}`}
+          >
+            <button
+              onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+              className="w-full text-left p-6 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:bg-gray-50"
+              data-testid={`faq-question-${index}`}
+              aria-expanded={isOpen}
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900 pr-4">
+                  {faq.question}
+                </h3>
+                <ChevronDown className={`h-5 w-5 text-gray-500 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
+              </div>
+            </button>
+            
+            <motion.div
+              initial={false}
+              animate={{ height: isOpen ? 'auto' : 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="p-6 pt-0 bg-gray-50">
+                <p className="text-gray-700 leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        );
+      })}
+    </>
+  );
+}
+
 export default function Colocation() {
   const [showContactForm, setShowContactForm] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
@@ -1139,80 +1227,7 @@ export default function Colocation() {
           </motion.div>
 
           <div className="space-y-6">
-            {[
-              {
-                question: "Colocation là gì và tại sao doanh nghiệp nên sử dụng?",
-                answer: "Colocation là dịch vụ cho thuê không gian, điện, làm mát và kết nối mạng để đặt máy chủ của khách hàng tại data center chuyên nghiệp. Lợi ích bao gồm: tiết kiệm chi phí xây dựng data center riêng, đảm bảo uptime cao 99.9%, bảo mật vật lý 24/7, băng thông chất lượng cao và hỗ trợ kỹ thuật chuyên nghiệp."
-              },
-              {
-                question: "STEP có những gói colocation nào và giá cả ra sao?",
-                answer: "STEP cung cấp 6 gói chính từ S-CMC01 (1.5M VNĐ/tháng) cho startup đến S-Full Rack (28.5M VNĐ/tháng) cho enterprise. Mỗi gói bao gồm không gian rack, điện, băng thông, IP và hỗ trợ 24/7. Khách hàng thanh toán 12 tháng được giảm 3-12% và nhận thêm các dịch vụ bổ sung miễn phí."
-              },
-              {
-                question: "Data center của STEP có đạt chuẩn quốc tế không?",
-                answer: "STEP hợp tác với các data center đạt chuẩn Tier III+ có chứng nhận ISO 27001, SOC 2. Hệ thống điện dự phòng N+1, UPS và máy phát điện đảm bảo 99.99% uptime. Hệ thống làm mát chính xác, giám sát 24/7, kiểm soát ra vào bằng thẻ từ và camera an ninh đa lớp."
-              },
-              {
-                question: "Băng thông quốc tế tại STEP có ưu điểm gì?",
-                answer: "STEP kết nối trực tiếp 4 tuyến cáp quang quốc tế (AAG, APG, IA, SMW3) và các Internet Exchange Point trong nước. Băng thông quốc tế lên đến 10Gbps với độ trễ thấp < 50ms tới Singapore, < 150ms tới US/EU. Có DDoS Protection miễn phí và redundant routing tự động đảm bảo kết nối ổn định."
-              },
-              {
-                question: "Quy trình triển khai colocation mất bao lâu?",
-                answer: "Sau khi ký hợp đồng, STEP sẽ chuẩn bị rack và kết nối trong 24-48h cho gói cơ bản, 3-5 ngày cho gói rack. Khách hàng có thể tự vận chuyển thiết bị hoặc sử dụng dịch vụ vận chuyển của STEP. Đội ngũ kỹ thuật hỗ trợ cài đặt, cấu hình và kiểm tra hệ thống trước khi bàn giao."
-              },
-              {
-                question: "STEP có hỗ trợ remote hands và managed service không?",
-                answer: "Có, STEP cung cấp dịch vụ remote hands 24/7 bao gồm: reboot server, thay thế linh kiện, kiểm tra led status, cắm rút cable. Ngoài ra có gói managed service toàn diện: giám sát server, backup, patching, security monitoring và báo cáo hàng tháng với mức phí hợp lý."
-              },
-              {
-                question: "Chính sách bảo mật và backup như thế nào?",
-                answer: "STEP áp dụng bảo mật đa lớp: kiểm soát ra vào bằng thẻ từ, camera 24/7, giám sát mạng real-time, firewall hardware. Có dịch vụ backup tự động hàng ngày với lưu trữ offsite, disaster recovery plan và khả năng restore nhanh chóng. Tất cả đều tuân thủ chuẩn ISO 27001."
-              },
-              {
-                question: "Có thể mở rộng hoặc downgrade gói dịch vụ không?",
-                answer: "Hoàn toàn có thể. STEP hỗ trợ scale up/down linh hoạt theo nhu cầu kinh doanh. Việc upgrade diễn ra ngay trong ngày, downgrade sẽ có hiệu lực từ kỳ thanh toán tiếp theo. Phí chênh lệch sẽ được tính theo tỷ lệ thời gian sử dụng thực tế."
-              }
-            ].map((faq, index) => {
-              const isOpen = openFaqIndex === index;
-              
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="border border-gray-200 rounded-xl overflow-hidden"
-                  data-testid={`faq-item-${index}`}
-                >
-                  <button
-                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                    className="w-full text-left p-6 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:bg-gray-50"
-                    data-testid={`faq-question-${index}`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-gray-900 pr-4">
-                        {faq.question}
-                      </h3>
-                      <ChevronDown className={`h-5 w-5 text-gray-500 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
-                    </div>
-                  </button>
-                  
-                  <motion.div
-                    initial={false}
-                    animate={{ height: isOpen ? 'auto' : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-6 pt-0 bg-gray-50">
-                      <p className="text-gray-700 leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              );
-            })}
+            <FAQAccordion openFaqIndex={openFaqIndex} setOpenFaqIndex={setOpenFaqIndex} />
           </div>
 
           <motion.div
