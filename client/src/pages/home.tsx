@@ -414,11 +414,11 @@ export default function Home() {
           </section>
         )}
 
-        {/* Cloud Services Section - Completely Redesigned */}
-        <section className="py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0" style={{backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`, backgroundSize: '20px 20px'}}></div>
+        {/* Cloud Services Section - Logo-based Design with White Background */}
+        <section className="py-24 bg-white relative overflow-hidden">
+          {/* Subtle Background Pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0" style={{backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--step-blue)) 1px, transparent 0)`, backgroundSize: '40px 40px'}}></div>
           </div>
           
           <div className="container mx-auto px-4 relative z-10">
@@ -428,40 +428,40 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-center mb-20"
+              className="text-center mb-16"
             >
-              <Badge className="mb-6 px-6 py-3 bg-blue-500/20 text-blue-200 text-sm font-semibold border border-blue-400/30" data-testid="badge-services">
+              <Badge className="mb-4 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold" data-testid="badge-services">
                 ☁️ Dịch Vụ Chuyên Nghiệp
               </Badge>
               
-              <h2 className="text-5xl md:text-7xl font-bold text-white mb-8" data-testid="text-services-title">
-                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6" data-testid="text-services-title">
+                <span style={{color: `hsl(var(--step-blue))`}}>
                   Dịch Vụ Điện Toán Đám Mây
                 </span>
               </h2>
               
-              <p className="text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
                 Hệ sinh thái dịch vụ công nghệ toàn diện - 6 giải pháp tiên tiến cho mọi nhu cầu doanh nghiệp hiện đại
               </p>
             </motion.div>
 
-            {/* Services Grid - New Modern Design */}
+            {/* Services Grid - Clean White Design */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {cloudServices.map((service, index) => (
                 <Link key={index} href={service.link}>
                   <motion.div
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ 
-                      duration: 0.7, 
-                      delay: index * 0.15
+                      duration: 0.6, 
+                      delay: index * 0.1
                     }}
                     viewport={{ once: true }}
-                    whileHover={{ y: -12, scale: 1.02 }}
+                    whileHover={{ y: -8, scale: 1.02 }}
                     className="group cursor-pointer"
                     data-testid={`service-card-${index}`}
                   >
-                    <Card className="h-full bg-white/10 backdrop-blur-xl border border-white/20 hover:border-white/40 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
+                    <Card className="h-full bg-white border border-gray-200 hover:border-gray-300 shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden">
                       <CardContent className="p-0">
                         {/* Header with Icon */}
                         <div 
@@ -492,8 +492,8 @@ export default function Home() {
                         </div>
                         
                         {/* Content */}
-                        <div className="p-8 bg-white/5 backdrop-blur-sm">
-                          <p className="text-blue-100 mb-6 leading-relaxed text-center">
+                        <div className="p-8 bg-white">
+                          <p className="text-gray-600 mb-6 leading-relaxed text-center">
                             {service.description}
                           </p>
                           
@@ -501,22 +501,53 @@ export default function Home() {
                           <div className="space-y-2 mb-8">
                             {service.features.slice(0, 3).map((feature, idx) => (
                               <div key={idx} className="flex items-center gap-3">
-                                <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                                <span className="text-blue-200 text-sm">{feature}</span>
+                                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                <span className="text-gray-700 text-sm">{feature}</span>
                               </div>
                             ))}
                             {service.features.length > 3 && (
                               <div className="flex items-center gap-3">
-                                <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                                <span className="text-blue-300 text-sm font-medium">+{service.features.length - 3} tính năng khác</span>
+                                <div 
+                                  className="w-2 h-2 rounded-full" 
+                                  style={{backgroundColor: `hsl(var(--${service.stepColor}))`}}
+                                ></div>
+                                <span className="text-gray-600 text-sm font-medium">+{service.features.length - 3} tính năng khác</span>
                               </div>
                             )}
                           </div>
                           
                           {/* CTA Button */}
-                          <div className="flex items-center justify-between p-4 bg-white/10 rounded-xl border border-white/20 group-hover:bg-white/20 transition-all duration-300">
-                            <span className="text-white font-semibold">Khám Phá Chi Tiết</span>
-                            <ExternalLink className="h-5 w-5 text-white group-hover:translate-x-1 transition-transform duration-300" />
+                          <div 
+                            className="flex items-center justify-between p-4 rounded-xl border-2 transition-all duration-300 group-hover:shadow-lg"
+                            style={{
+                              borderColor: `hsl(var(--${service.stepColor}))`,
+                              backgroundColor: 'transparent'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = `hsl(var(--${service.stepColor}))`;
+                              const span = e.currentTarget.querySelector('span');
+                              const icon = e.currentTarget.querySelector('svg');
+                              if (span) span.style.color = 'white';
+                              if (icon) icon.style.color = 'white';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = 'transparent';
+                              const span = e.currentTarget.querySelector('span');
+                              const icon = e.currentTarget.querySelector('svg');
+                              if (span) span.style.color = `hsl(var(--${service.stepColor}))`;
+                              if (icon) icon.style.color = `hsl(var(--${service.stepColor}))`;
+                            }}
+                          >
+                            <span 
+                              className="font-semibold transition-colors duration-300"
+                              style={{color: `hsl(var(--${service.stepColor}))`}}
+                            >
+                              Khám Phá Chi Tiết
+                            </span>
+                            <ExternalLink 
+                              className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1"
+                              style={{color: `hsl(var(--${service.stepColor}))`}}
+                            />
                           </div>
                         </div>
                       </CardContent>
@@ -534,14 +565,21 @@ export default function Home() {
               viewport={{ once: true }}
               className="text-center mt-16"
             >
-              <p className="text-blue-200 mb-6 text-lg">
+              <p className="text-gray-600 mb-6 text-lg">
                 Cần tư vấn giải pháp phù hợp với doanh nghiệp?
               </p>
               <Button 
                 size="lg"
-                className="bg-white text-blue-900 hover:bg-blue-50 px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+                className="px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-white"
+                style={{backgroundColor: `hsl(var(--step-blue))`}}
                 onClick={() => setShowContactForm(true)}
                 data-testid="button-contact-expert"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = `hsl(var(--step-light-blue))`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = `hsl(var(--step-blue))`;
+                }}
               >
                 Liên Hệ Chuyên Gia
                 <ArrowRight className="ml-2 h-5 w-5" />
