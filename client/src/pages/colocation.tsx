@@ -40,189 +40,213 @@ export default function Colocation() {
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const { toast } = useToast();
 
-  // Premium colocation service packages
+  // Real colocation service packages based on BKNS market data
   const colocationPackages = [
     {
-      id: "starter-rack",
-      name: "Starter Rack",
-      subtitle: "Hoàn hảo cho SME",
-      price: "15,900,000",
-      unit: "VNĐ/tháng",
-      originalPrice: "18,900,000",
-      popular: false,
-      space: "1/4 Rack (10U)",
-      power: "2.5kW",
-      bandwidth: "100Mbps unlimited",
-      ips: "4 IP Public",
+      id: "bk-cmc01",
+      name: "BK-CMC01",
+      subtitle: "Gói cơ bản cho khởi nghiệp",
+      price: 1500000,
+      unit: "VNĐ/tháng", 
+      originalPrice: 1750000,
+      popular: true,
+      space: "1U Server",
+      power: "400W",
+      bandwidth: "100Mbps trong nước / 5Mbps quốc tế",
+      ips: "1 IPv4",
       color: "hsl(142, 76%, 36%)",
       bgColor: "hsl(142, 76%, 96%)",
       borderColor: "hsl(142, 76%, 70%)",
       features: [
-        "10U rack space",
-        "2.5kW power allocation", 
-        "100Mbps unlimited bandwidth",
-        "4 static IP addresses",
-        "24/7 security monitoring",
-        "Remote hands service",
-        "Climate control",
-        "Fire suppression system"
+        "Chỗ đặt máy chủ: 1U",
+        "Công suất điện: 400W",
+        "Lưu lượng thông tin: Không giới hạn",
+        "Băng thông trong nước: 100Mbps",
+        "Băng thông quốc tế: 5Mbps", 
+        "Cổng cắm mạng: 1Gbps",
+        "Điện máy nổ dự phòng: Có",
+        "UPS: Có",
+        "IPv4: 1 IP/máy",
+        "Hỗ trợ kỹ thuật: 24/7",
+        "Giảm 3% khi thanh toán 12 tháng"
       ],
-      support: "Business hours support",
+      support: "Hỗ trợ 24/7",
       sla: "99.5% uptime SLA"
     },
     {
-      id: "business-rack",
-      name: "Business Rack", 
-      subtitle: "Tối ưu cho doanh nghiệp",
-      price: "28,900,000",
+      id: "bk-cmc02",
+      name: "BK-CMC02", 
+      subtitle: "Nâng cao cho doanh nghiệp",
+      price: 1900000,
       unit: "VNĐ/tháng",
-      originalPrice: "32,900,000",
-      popular: true,
-      space: "1/2 Rack (21U)",
-      power: "5kW",
-      bandwidth: "1Gbps unlimited",
-      ips: "8 IP Public",
+      originalPrice: 2200000,
+      popular: false,
+      space: "1U Server",
+      power: "400W",
+      bandwidth: "200Mbps trong nước / 10Mbps quốc tế",
+      ips: "1 IPv4 + IPv6 miễn phí",
       color: "hsl(207, 100%, 40%)",
       bgColor: "hsl(207, 100%, 96%)",
       borderColor: "hsl(207, 100%, 80%)",
       features: [
-        "21U rack space",
-        "5kW power allocation",
-        "1Gbps unlimited bandwidth", 
-        "8 static IP addresses",
-        "Dedicated network ports",
-        "Priority remote hands",
-        "Advanced monitoring",
-        "Backup power systems",
-        "KVM over IP access"
+        "Chỗ đặt máy chủ: 1U",
+        "Công suất điện: 400W",
+        "Lưu lượng thông tin: Không giới hạn",
+        "Băng thông trong nước: 200Mbps",
+        "Băng thông quốc tế: 10Mbps",
+        "Cổng cắm mạng: 1Gbps",
+        "Điện máy nổ dự phòng: Có",
+        "UPS: Có", 
+        "IPv4: 1 IP/máy",
+        "IPv6: Miễn phí",
+        "Hỗ trợ kỹ thuật: 24/7",
+        "Giảm 3% khi thanh toán 12 tháng"
       ],
-      support: "24/7 priority support",
-      sla: "99.9% uptime SLA"
+      support: "Hỗ trợ 24/7 ưu tiên",
+      sla: "99.8% uptime SLA"
     },
     {
-      id: "enterprise-rack",
-      name: "Enterprise Rack",
-      subtitle: "Giải pháp cao cấp",
-      price: "45,900,000", 
+      id: "bk-cmc03",
+      name: "BK-CMC03",
+      subtitle: "Cao cấp cho enterprise",
+      price: 3500000, 
       unit: "VNĐ/tháng",
-      originalPrice: "52,900,000",
+      originalPrice: 4000000,
       popular: false,
-      space: "Full Rack (42U)",
-      power: "10kW",
-      bandwidth: "10Gbps unlimited",
-      ips: "16 IP Public",
+      space: "2U Server",
+      power: "800W",
+      bandwidth: "500Mbps trong nước / 25Mbps quốc tế",
+      ips: "2 IPv4 + IPv6",
       color: "hsl(271, 91%, 65%)",
       bgColor: "hsl(271, 91%, 96%)",
       borderColor: "hsl(271, 91%, 75%)",
       features: [
-        "42U full rack space",
-        "10kW power allocation",
-        "10Gbps unlimited bandwidth",
-        "16 static IP addresses", 
-        "Redundant network paths",
-        "Dedicated support engineer",
-        "Custom monitoring setup",
-        "Multiple power feeds",
-        "Private cage option"
+        "Chỗ đặt máy chủ: 2U",
+        "Công suất điện: 800W",
+        "Lưu lượng thông tin: Không giới hạn",
+        "Băng thông trong nước: 500Mbps",
+        "Băng thông quốc tế: 25Mbps",
+        "Cổng cắm mạng: 1Gbps",
+        "Điện máy nổ dự phòng: Có",
+        "UPS: Có",
+        "IPv4: 2 IP/máy",
+        "IPv6: Có",
+        "Remote hands: Có",
+        "Hỗ trợ kỹ thuật: 24/7",
+        "Giảm 5% khi thanh toán 12 tháng"
       ],
-      support: "Dedicated support team",
-      sla: "99.95% uptime SLA"
+      support: "Dedicated support team", 
+      sla: "99.9% uptime SLA"
     },
     {
-      id: "premium-cage",
-      name: "Premium Cage",
-      subtitle: "Không gian riêng biệt",
-      price: "89,900,000",
+      id: "bk-quarter-rack",
+      name: "BK-Quarter Rack",
+      subtitle: "1/4 tủ rack cho SME",
+      price: 8500000,
       unit: "VNĐ/tháng", 
-      originalPrice: "99,900,000",
+      originalPrice: 10000000,
       popular: false,
-      space: "Private Cage (4-6 racks)",
-      power: "20kW",
-      bandwidth: "20Gbps unlimited",
-      ips: "32 IP Public",
+      space: "1/4 Rack (10U)",
+      power: "2.5kW",
+      bandwidth: "1Gbps trong nước / 50Mbps quốc tế",
+      ips: "4 IPv4 + IPv6",
       color: "hsl(339, 82%, 52%)",
       bgColor: "hsl(339, 82%, 96%)",
       borderColor: "hsl(339, 82%, 75%)",
       features: [
-        "Private locked cage",
-        "4-6 rack positions",
-        "20kW power allocation",
-        "20Gbps unlimited bandwidth",
-        "32+ static IP addresses",
-        "Biometric access control", 
-        "Personal account manager",
-        "Custom cooling solution",
-        "Direct fiber connections"
+        "Chỗ đặt máy chủ: 1/4 Rack (10U)",
+        "Công suất điện: 2.5kW",
+        "Lưu lượng thông tin: Không giới hạn",
+        "Băng thông trong nước: 1Gbps", 
+        "Băng thông quốc tế: 50Mbps",
+        "Cổng cắm mạng: 1Gbps",
+        "Điện máy nổ dự phòng: Có",
+        "UPS: Có",
+        "IPv4: 4 IP",
+        "IPv6: Có",
+        "Remote hands: 4 giờ/tháng",
+        "Hỗ trợ kỹ thuật: 24/7",
+        "Giảm 8% khi thanh toán 12 tháng"
       ],
-      support: "VIP concierge support",
-      sla: "99.99% uptime SLA"
+      support: "Dedicated account manager",
+      sla: "99.9% uptime SLA"
     },
     {
-      id: "hybrid-cloud",
-      name: "Hybrid Cloud Suite",
-      subtitle: "Kết hợp colocation + cloud",
-      price: "65,900,000",
+      id: "bk-half-rack", 
+      name: "BK-Half Rack",
+      subtitle: "1/2 tủ rack cho tăng trưởng",
+      price: 15500000,
       unit: "VNĐ/tháng",
-      originalPrice: "75,900,000", 
+      originalPrice: 18000000, 
       popular: false,
-      space: "1/2 Rack + Cloud Resources",
-      power: "5kW + Virtual",
-      bandwidth: "5Gbps unlimited",
-      ips: "12 IP Public",
+      space: "1/2 Rack (21U)",
+      power: "5kW",
+      bandwidth: "2Gbps trong nước / 100Mbps quốc tế",
+      ips: "8 IPv4 + IPv6",
       color: "hsl(195, 100%, 50%)",
       bgColor: "hsl(195, 100%, 96%)",
       borderColor: "hsl(195, 100%, 75%)",
       features: [
-        "21U rack + cloud integration",
-        "5kW physical + cloud scaling",
-        "5Gbps unlimited bandwidth",
-        "12 static + dynamic IPs",
-        "Hybrid connectivity",
-        "Cloud migration support",
-        "Unified management portal",
-        "Disaster recovery setup",
-        "Auto-scaling triggers"
+        "Chỗ đặt máy chủ: 1/2 Rack (21U)",
+        "Công suất điện: 5kW",
+        "Lưu lượng thông tin: Không giới hạn",
+        "Băng thông trong nước: 2Gbps",
+        "Băng thông quốc tế: 100Mbps",
+        "Cổng cắm mạng: 10Gbps",
+        "Điện máy nổ dự phòng: Có",
+        "UPS: Có",
+        "IPv4: 8 IP",
+        "IPv6: Có", 
+        "Remote hands: 8 giờ/tháng",
+        "KVM over IP: Có",
+        "Hỗ trợ kỹ thuật: 24/7",
+        "Giảm 10% khi thanh toán 12 tháng"
       ],
-      support: "Hybrid solutions specialist",
-      sla: "99.9% physical + cloud SLA"
+      support: "Priority support specialist",
+      sla: "99.95% uptime SLA"
     },
     {
-      id: "enterprise-suite",
-      name: "Enterprise Data Center",
-      subtitle: "Giải pháp toàn diện",
-      price: "199,900,000",
+      id: "bk-full-rack",
+      name: "BK-Full Rack",
+      subtitle: "Tủ rack đầy đủ cho enterprise",
+      price: 28500000,
       unit: "VNĐ/tháng",
-      originalPrice: "229,900,000",
+      originalPrice: 33000000,
       popular: false,
-      space: "Dedicated Suite (10+ racks)", 
-      power: "50kW+",
-      bandwidth: "100Gbps unlimited",
-      ips: "64+ IP Public",
+      space: "Full Rack (42U)", 
+      power: "10kW",
+      bandwidth: "5Gbps trong nước / 200Mbps quốc tế",
+      ips: "16 IPv4 + IPv6",
       color: "hsl(25, 95%, 53%)",
       bgColor: "hsl(25, 95%, 96%)",
       borderColor: "hsl(25, 95%, 75%)",
       features: [
-        "Dedicated data center suite",
-        "10+ rack positions",
-        "50kW+ power allocation",
-        "100Gbps+ unlimited bandwidth",
-        "64+ static IP addresses",
-        "Private entrance access",
-        "Dedicated facilities team", 
-        "Custom infrastructure design",
-        "White-glove service",
-        "Compliance certifications"
+        "Chỗ đặt máy chủ: Full Rack (42U)",
+        "Công suất điện: 10kW",
+        "Lưu lượng thông tin: Không giới hạn",
+        "Băng thông trong nước: 5Gbps",
+        "Băng thông quốc tế: 200Mbps",
+        "Cổng cắm mạng: 10Gbps",
+        "Điện máy nổ dự phòng: Có",
+        "UPS: Có",
+        "IPv4: 16 IP",
+        "IPv6: Có",
+        "Remote hands: Unlimited",
+        "KVM over IP: Có",
+        "Private cage option: Có",
+        "Hỗ trợ kỹ thuật: 24/7",
+        "Giảm 12% khi thanh toán 12 tháng"
       ],
       support: "Executive-level support",
-      sla: "99.999% uptime SLA"
+      sla: "99.99% uptime SLA"
     }
   ];
 
   const premiumFeatures = [
     {
       icon: Building2,
-      title: "Data Center Tier III+",
-      description: "Cơ sở hạ tầng đạt chuẩn Tier III+ với độ tin cậy 99.99%, hệ thống dự phòng N+1 cho power và cooling.",
+      title: "Data Center Tier 3",
+      description: "Cơ sở hạ tầng đạt tiêu chuẩn Tier 3 với độ tin cậy cao, hệ thống dự phòng cho power và cooling.",
       color: "hsl(207, 100%, 40%)"
     },
     {
@@ -335,16 +359,20 @@ export default function Colocation() {
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
-                Chỗ Đặt Máy Chủ
+                Thuê Chỗ Đặt Máy Chủ
               </span>
               <br />
-              <span className="text-white">Dịch Vụ Colocation Hàng Đầu</span>
+              <span className="text-white">Giải pháp an toàn, bảo mật tuyệt đối</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-4xl mx-auto leading-relaxed">
-              Data center Tier III+ với bảo mật tối đa, nguồn điện dự phòng và dịch vụ hỗ trợ 24/7. 
-              Khách hàng được phục vụ tận răng với đội ngũ chuyên gia chuyên nghiệp.
+              Data Center đạt tiêu chuẩn Tier 3 với bảo mật mạnh mẽ, nguồn điện dự phòng và hỗ trợ 24/7. 
+              Khách hàng được phục vụ tận răng với dịch vụ chuyên nghiệp.
             </p>
+            
+            <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-8 py-4 rounded-lg inline-block mb-8">
+              <span className="text-2xl font-bold">Chỉ từ 1.500.000 VNĐ/tháng</span>
+            </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -507,12 +535,12 @@ export default function Colocation() {
                     <div className="mb-4">
                       <div className="flex items-baseline justify-center gap-2">
                         <span className="text-3xl font-bold" style={{ color: pkg.color }}>
-                          {pkg.price.toLocaleString()}
+                          {pkg.price.toLocaleString('vi-VN')}
                         </span>
-                        <span className="text-gray-500">/ tháng</span>
+                        <span className="text-gray-500">VNĐ/tháng</span>
                       </div>
                       <div className="text-sm text-gray-400 line-through">
-                        {pkg.originalPrice.toLocaleString()} VNĐ
+                        {pkg.originalPrice.toLocaleString('vi-VN')} VNĐ
                       </div>
                     </div>
                     
@@ -627,10 +655,10 @@ export default function Colocation() {
           >
             <div className="bg-white rounded-2xl p-8 shadow-xl max-w-4xl mx-auto">
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                Sẵn Sàng Trải Nghiệm Dịch Vụ Colocation Đẳng Cấp?
+                Sẵn Sàng Thuê Chỗ Đặt Máy Chủ Tại STEP?
               </h3>
               <p className="text-lg text-gray-600 mb-6">
-                Liên hệ ngay để được tư vấn miễn phí và nhận báo giá tốt nhất cho doanh nghiệp
+                Liên hệ ngay để được tư vấn miễn phí và nhận báo giá ưu đãi cho doanh nghiệp
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
