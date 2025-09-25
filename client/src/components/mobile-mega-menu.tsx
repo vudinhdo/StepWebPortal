@@ -159,6 +159,7 @@ export default function MobileMegaMenu() {
                         category.id === 'hosting' && item.name === 'Reseller Hosting' ? '/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting' :
                         // Server links
                         category.id === 'server' && item.name === 'Thuê máy chủ vật lý' ? '/Sản Phẩm & Dịch Vụ/Dedicated Server' :
+                        category.id === 'server' && item.name === 'Chỗ đặt máy chủ' ? '/colocation' :
                         // Email links
                         category.id === 'email' && item.name === 'Email server Riêng' ? '/Sản Phẩm & Dịch Vụ/Email Server Riêng' :
                         category.id === 'email' && item.name === 'Hybrid Email' ? '/Dịch vụ/Email' :

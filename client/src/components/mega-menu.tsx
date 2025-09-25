@@ -215,6 +215,7 @@ export default function MegaMenu() {
                     <a href={
                       item.name === 'Thuê máy chủ vật lý' ? '/Sản Phẩm & Dịch Vụ/Dedicated Server' :
                       item.name === 'Thiết bị mạng' ? '/thiet-bi-mang' :
+                      item.name === 'Chỗ đặt máy chủ' ? '/colocation' :
                       '#'
                     } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />
