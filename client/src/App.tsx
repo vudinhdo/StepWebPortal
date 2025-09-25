@@ -65,6 +65,7 @@ function Router() {
         <Route path="/Sản Phẩm & Dịch Vụ/Hybrid Email" component={HybridEmail} />
         <Route path="/Dịch vụ/Tên miền" component={Domain} />
         <Route path="/Sản Phẩm & Dịch Vụ/Dedicated Server" component={DedicatedServer} />
+        <Route path="/dedicated-server" component={DedicatedServer} />
         <Route path="/Sản Phẩm & Dịch Vụ/Microsoft" component={MicrosoftServices} />
         <Route path="/cloud" component={Cloud} />
         <Route path="/Cloud/Cloud Odoo" component={CloudOdoo} />
@@ -83,6 +84,8 @@ function Router() {
         <Route path="/performance-benchmark" component={PerformanceBenchmark} />
         <Route path="/bao-gia" component={Quote} />
         <Route path="/DLP" component={DLP} />
+        <Route path="/dlp" component={DLP} />
+        <Route path="/hybrid-email" component={HybridEmail} />
         <Route path="/contact" component={Contact} />
         <Route component={NotFound} />
       </Switch>

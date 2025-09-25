@@ -23,11 +23,10 @@ export default function CloudServicesBlock() {
       description: "Máy chủ đám mây linh hoạt với khả năng mở rộng tự động, tối ưu cho AI/ML và ứng dụng hiện đại",
       icon: Cloud,
       href: "/cloud",
-      color: "step-cloud", // Blue
-      bgColor: "bg-blue-50 dark:bg-blue-950/20",
-      borderColor: "border-blue-200 dark:border-blue-800",
-      textColor: "text-blue-700 dark:text-blue-300",
-      hoverColor: "hover:border-blue-400",
+      color: "hsl(207, 100%, 40%)", // STEP Blue
+      bgColor: "hsl(207, 100%, 96%)",
+      borderColor: "hsl(207, 100%, 80%)",
+      textColor: "hsl(207, 100%, 30%)",
       features: ["Auto-scaling", "GPU Support", "K8s Ready", "99.9% Uptime"],
       popular: true
     },
@@ -37,11 +36,10 @@ export default function CloudServicesBlock() {
       description: "Hosting tối ưu cho WordPress, Laravel với SSD NVMe và tốc độ vượt trội, SSL miễn phí",
       icon: Globe,
       href: "/hosting", 
-      color: "step-hosting", // Green
-      bgColor: "bg-green-50 dark:bg-green-950/20",
-      borderColor: "border-green-200 dark:border-green-800", 
-      textColor: "text-green-700 dark:text-green-300",
-      hoverColor: "hover:border-green-400",
+      color: "hsl(142, 76%, 36%)", // STEP Green
+      bgColor: "hsl(142, 76%, 96%)",
+      borderColor: "hsl(142, 76%, 70%)",
+      textColor: "hsl(142, 76%, 25%)",
       features: ["NVMe SSD", "Free SSL", "1-Click Install", "CDN Tích hợp"],
       popular: false
     },
@@ -51,11 +49,10 @@ export default function CloudServicesBlock() {
       description: "Máy chủ vật lý cao cấp với hiệu suất tối đa, bảo mật tuyệt đối và dịch vụ colocation",
       icon: Server,
       href: "/dedicated-server",
-      color: "step-server", // Purple
-      bgColor: "bg-purple-50 dark:bg-purple-950/20",
-      borderColor: "border-purple-200 dark:border-purple-800",
-      textColor: "text-purple-700 dark:text-purple-300", 
-      hoverColor: "hover:border-purple-400",
+      color: "hsl(271, 91%, 65%)", // STEP Purple
+      bgColor: "hsl(271, 91%, 96%)",
+      borderColor: "hsl(271, 91%, 75%)",
+      textColor: "hsl(271, 91%, 35%)",
       features: ["Intel Xeon", "Root Access", "DDoS Protection", "24/7 Support"],
       popular: false
     },
@@ -65,11 +62,10 @@ export default function CloudServicesBlock() {
       description: "Giải pháp bảo vệ dữ liệu tiên tiến với AI monitoring, mã hóa end-to-end và tuân thủ GDPR",
       icon: ShieldCheck,
       href: "/dlp",
-      color: "step-dlp", // Pink
-      bgColor: "bg-pink-50 dark:bg-pink-950/20", 
-      borderColor: "border-pink-200 dark:border-pink-800",
-      textColor: "text-pink-700 dark:text-pink-300",
-      hoverColor: "hover:border-pink-400",
+      color: "hsl(339, 82%, 52%)", // STEP Pink
+      bgColor: "hsl(339, 82%, 96%)",
+      borderColor: "hsl(339, 82%, 75%)",
+      textColor: "hsl(339, 82%, 35%)",
       features: ["AI Detection", "Real-time Monitor", "GDPR Comply", "Auto Encrypt"],
       popular: false
     },
@@ -79,11 +75,10 @@ export default function CloudServicesBlock() {
       description: "Giải pháp email lai kết hợp tính linh hoạt cloud và kiểm soát on-premise, Office 365 tích hợp",
       icon: Mail,
       href: "/hybrid-email",
-      color: "step-email", // Indigo
-      bgColor: "bg-indigo-50 dark:bg-indigo-950/20",
-      borderColor: "border-indigo-200 dark:border-indigo-800", 
-      textColor: "text-indigo-700 dark:text-indigo-300",
-      hoverColor: "hover:border-indigo-400",
+      color: "hsl(263, 70%, 50%)", // STEP Indigo
+      bgColor: "hsl(263, 70%, 96%)",
+      borderColor: "hsl(263, 70%, 75%)",
+      textColor: "hsl(263, 70%, 35%)",
       features: ["Office 365", "Hybrid Deploy", "Migration Support", "Security Plus"],
       popular: false
     }
@@ -176,12 +171,13 @@ export default function CloudServicesBlock() {
               )}
               
               <Link href={service.href} data-testid={`link-${service.id}`}>
-                <Card className={`
-                  h-full transition-all duration-300 cursor-pointer
-                  ${service.bgColor} ${service.borderColor} ${service.hoverColor}
-                  group-hover:shadow-2xl border-2 overflow-hidden
-                  relative backdrop-blur-sm
-                `}>
+                <Card 
+                  className="h-full transition-all duration-300 cursor-pointer group-hover:shadow-2xl border-2 overflow-hidden relative backdrop-blur-sm"
+                  style={{
+                    backgroundColor: service.bgColor,
+                    borderColor: service.borderColor
+                  }}
+                >
                   {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
@@ -193,19 +189,15 @@ export default function CloudServicesBlock() {
                         rotate: [0, -5, 5, 0],
                         transition: { duration: 0.4 }
                       }}
-                      className={`
-                        w-14 h-14 rounded-2xl mb-6 flex items-center justify-center
-                        bg-gradient-to-br from-white to-gray-50 shadow-lg
-                        border-2 ${service.borderColor}
-                        group-hover:shadow-xl transition-shadow duration-300
-                      `}
+                      className="w-14 h-14 rounded-2xl mb-6 flex items-center justify-center bg-gradient-to-br from-white to-gray-50 shadow-lg border-2 group-hover:shadow-xl transition-shadow duration-300"
+                      style={{ borderColor: service.borderColor }}
                     >
-                      <service.icon className={`w-7 h-7 ${service.textColor}`} />
+                      <service.icon className="w-7 h-7" style={{ color: service.textColor }} />
                     </motion.div>
 
                     {/* Content */}
                     <div className="flex-grow">
-                      <h3 className={`text-xl font-bold mb-3 ${service.textColor} group-hover:text-opacity-90 transition-colors`}>
+                      <h3 className="text-xl font-bold mb-3 group-hover:text-opacity-90 transition-colors" style={{ color: service.textColor }}>
                         {service.title}
                       </h3>
                       
@@ -224,7 +216,10 @@ export default function CloudServicesBlock() {
                             transition={{ delay: 0.6 + idx * 0.1 }}
                             className="flex items-center text-xs text-gray-500 dark:text-gray-400"
                           >
-                            <div className={`w-1.5 h-1.5 rounded-full ${service.bgColor.replace('bg-', 'bg-').replace('50', '400')} mr-2`} />
+                            <div 
+                              className="w-1.5 h-1.5 rounded-full mr-2" 
+                              style={{ backgroundColor: service.color }}
+                            />
                             {feature}
                           </motion.div>
                         ))}
@@ -233,11 +228,8 @@ export default function CloudServicesBlock() {
 
                     {/* CTA */}
                     <motion.div 
-                      className={`
-                        flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700
-                        ${service.textColor} font-semibold text-sm
-                        group-hover:text-opacity-80 transition-colors
-                      `}
+                      className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 font-semibold text-sm group-hover:text-opacity-80 transition-colors"
+                      style={{ color: service.textColor }}
                       whileHover={{ x: 3 }}
                     >
                       <span>Tìm hiểu thêm</span>
