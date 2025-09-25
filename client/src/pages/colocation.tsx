@@ -43,8 +43,8 @@ export default function Colocation() {
   // Real colocation service packages based on BKNS market data
   const colocationPackages = [
     {
-      id: "bk-cmc01",
-      name: "BK-CMC01",
+      id: "s-cmc01", 
+      name: "S-CMC01",
       subtitle: "Gói cơ bản cho khởi nghiệp",
       price: 1500000,
       unit: "VNĐ/tháng", 
@@ -74,8 +74,8 @@ export default function Colocation() {
       sla: "99.5% uptime SLA"
     },
     {
-      id: "bk-cmc02",
-      name: "BK-CMC02", 
+      id: "s-cmc02",
+      name: "S-CMC02", 
       subtitle: "Nâng cao cho doanh nghiệp",
       price: 1900000,
       unit: "VNĐ/tháng",
@@ -106,8 +106,8 @@ export default function Colocation() {
       sla: "99.8% uptime SLA"
     },
     {
-      id: "bk-cmc03",
-      name: "BK-CMC03",
+      id: "s-cmc03",
+      name: "S-CMC03",
       subtitle: "Cao cấp cho enterprise",
       price: 3500000, 
       unit: "VNĐ/tháng",
@@ -139,8 +139,8 @@ export default function Colocation() {
       sla: "99.9% uptime SLA"
     },
     {
-      id: "bk-quarter-rack",
-      name: "BK-Quarter Rack",
+      id: "s-quarter-rack",
+      name: "S-Quarter Rack",
       subtitle: "1/4 tủ rack cho SME",
       price: 8500000,
       unit: "VNĐ/tháng", 
@@ -172,8 +172,8 @@ export default function Colocation() {
       sla: "99.9% uptime SLA"
     },
     {
-      id: "bk-half-rack", 
-      name: "BK-Half Rack",
+      id: "s-half-rack",
+      name: "S-Half Rack",
       subtitle: "1/2 tủ rack cho tăng trưởng",
       price: 15500000,
       unit: "VNĐ/tháng",
@@ -206,8 +206,8 @@ export default function Colocation() {
       sla: "99.95% uptime SLA"
     },
     {
-      id: "bk-full-rack",
-      name: "BK-Full Rack",
+      id: "s-full-rack",
+      name: "S-Full Rack",
       subtitle: "Tủ rack đầy đủ cho enterprise",
       price: 28500000,
       unit: "VNĐ/tháng",
@@ -597,6 +597,178 @@ export default function Colocation() {
         </div>
       </section>
 
+      {/* Supplementary Services Pricing Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Bảng Giá Dịch Vụ Bổ Sung
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Các dịch vụ và tùy chọn bổ sung để tùy chỉnh giải pháp colocation theo nhu cầu của bạn
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: "🌐",
+                title: "Địa chỉ IP",
+                subtitle: "1 địa chỉ",
+                price: 80000,
+                color: "hsl(207, 100%, 40%)",
+                bgColor: "hsl(207, 100%, 96%)"
+              },
+              {
+                icon: "🗄️",
+                title: "Không gian Rack", 
+                subtitle: "1U",
+                price: 200000,
+                color: "hsl(339, 82%, 52%)",
+                bgColor: "hsl(339, 82%, 96%)"
+              },
+              {
+                icon: "📡",
+                title: "Băng thông",
+                subtitle: "100Mbps",
+                price: 1050000,
+                color: "hsl(207, 100%, 40%)",
+                bgColor: "hsl(207, 100%, 96%)"
+              },
+              {
+                icon: "📡",
+                title: "Băng thông", 
+                subtitle: "200Mbps",
+                price: 1800000,
+                color: "hsl(271, 91%, 65%)",
+                bgColor: "hsl(271, 91%, 96%)"
+              },
+              {
+                icon: "⚡",
+                title: "Công suất điện",
+                subtitle: "100W", 
+                price: 200000,
+                color: "hsl(339, 82%, 52%)",
+                bgColor: "hsl(339, 82%, 96%)"
+              },
+              {
+                icon: "🛡️",
+                title: "Firewall",
+                subtitle: "",
+                price: 350000,
+                color: "hsl(207, 100%, 40%)",
+                bgColor: "hsl(207, 100%, 96%)"
+              },
+              {
+                icon: "📦",
+                title: "Device Rack",
+                subtitle: "1U/50W",
+                price: 1000000,
+                color: "hsl(339, 82%, 52%)",
+                bgColor: "hsl(339, 82%, 96%)"
+              },
+              {
+                icon: "📦",
+                title: "Device Rack",
+                subtitle: "Dưới 1U/50W",
+                price: 500000,
+                color: "hsl(271, 91%, 65%)",
+                bgColor: "hsl(271, 91%, 96%)"
+              },
+              {
+                icon: "🔗",
+                title: "Đường cáp Local RJ45",
+                subtitle: "",
+                price: 1000000,
+                unit: "/tháng",
+                color: "hsl(207, 100%, 40%)",
+                bgColor: "hsl(207, 100%, 96%)"
+              },
+              {
+                icon: "🔗",
+                title: "Đường cáp quang",
+                subtitle: "Back-end",
+                price: 1000000,
+                unit: "/tháng", 
+                color: "hsl(339, 82%, 52%)",
+                bgColor: "hsl(339, 82%, 96%)"
+              }
+            ].map((service, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -5, scale: 1.02 }}
+                data-testid={`supplementary-service-${index}`}
+              >
+                <Card 
+                  className="h-full border-2 shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+                  style={{ 
+                    backgroundColor: service.bgColor,
+                    borderColor: service.color + "40"
+                  }}
+                >
+                  <CardContent className="p-6">
+                    <div className="text-4xl mb-4">{service.icon}</div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {service.title}
+                    </h3>
+                    {service.subtitle && (
+                      <p className="text-sm text-gray-600 mb-4">{service.subtitle}</p>
+                    )}
+                    <div className="text-center">
+                      <span 
+                        className="text-2xl font-bold"
+                        style={{ color: service.color }}
+                      >
+                        {service.price.toLocaleString('vi-VN')} VNĐ
+                      </span>
+                      {service.unit && (
+                        <span className="text-gray-600 text-sm block">{service.unit}</span>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-center mt-12"
+          >
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-4xl mx-auto">
+              <h3 className="text-xl font-bold text-blue-900 mb-3">
+                📞 Tư Vấn Dịch Vụ Bổ Sung
+              </h3>
+              <p className="text-blue-700 mb-4">
+                Cần tư vấn chi tiết về các dịch vụ bổ sung phù hợp với hạ tầng của bạn? 
+                Liên hệ ngay với chuyên gia của chúng tôi!
+              </p>
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() => setShowContactForm(true)}
+                data-testid="button-contact-supplementary"
+              >
+                <Phone className="mr-2 h-4 w-4" />
+                Liên Hệ Tư Vấn
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Support Excellence Section */}
       <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -682,7 +854,7 @@ export default function Colocation() {
                 </div>
                 <div className="flex items-center justify-center gap-3">
                   <Mail className="h-5 w-5 text-blue-600" />
-                  <span className="font-semibold">colocation@step.com.vn</span>
+                  <span className="font-semibold">info@step.com.vn</span>
                 </div>
                 <div className="flex items-center justify-center gap-3">
                   <MapPin className="h-5 w-5 text-blue-600" />
