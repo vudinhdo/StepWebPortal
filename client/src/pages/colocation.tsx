@@ -25,7 +25,8 @@ import {
   Activity,
   Gauge,
   ThermometerSun,
-  Eye
+  Eye,
+  ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -38,6 +39,7 @@ import { useToast } from "@/hooks/use-toast";
 export default function Colocation() {
   const [showContactForm, setShowContactForm] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const { toast } = useToast();
 
   // Real colocation service packages based on BKNS market data
@@ -861,6 +863,381 @@ export default function Colocation() {
                   <span className="font-semibold">Hà Nội, TP.HCM</span>
                 </div>
               </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* STEP Data Center Partnership Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-600 to-indigo-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              STEP - ĐỐI TÁC UY TÍN CỦA CÁC DATA CENTER TẠI VIỆT NAM
+            </h2>
+            <p className="text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
+              Với hơn 15 năm kinh nghiệm, STEP tự hào là đối tác chiến lược của các trung tâm dữ liệu hàng đầu Việt Nam, 
+              cung cấp dịch vụ colocation chất lượng cao với tiêu chuẩn quốc tế.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Partner Features */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="space-y-8">
+                {[
+                  {
+                    icon: Building2,
+                    title: "Data Center Tier III+",
+                    desc: "Hợp tác với các data center đạt chuẩn Tier III+ tại Hà Nội và TP.HCM"
+                  },
+                  {
+                    icon: Award,
+                    title: "15+ Năm Kinh Nghiệm",
+                    desc: "Đối tác tin cậy của FPT, Viettel, VNPT, CMC và các tập đoàn công nghệ lớn"
+                  },
+                  {
+                    icon: Shield,
+                    title: "Chứng Nhận ISO 27001",
+                    desc: "Đảm bảo an toàn bảo mật theo tiêu chuẩn quốc tế cao nhất"
+                  },
+                  {
+                    icon: Network,
+                    title: "Kết Nối Quốc Tế",
+                    desc: "Trực tiếp kết nối các cáp quang quốc tế AAG, APG, IA, SMW3"
+                  }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.2 }}
+                    className="flex items-start space-x-4"
+                  >
+                    <div className="bg-white/20 p-3 rounded-xl">
+                      <item.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                      <p className="text-blue-100 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Partnership Stats */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="grid grid-cols-2 gap-6"
+            >
+              {[
+                { number: "50+", label: "Data Center Partners", icon: Building2 },
+                { number: "99.99%", label: "Uptime SLA", icon: Activity },
+                { number: "5000+", label: "Servers Hosted", icon: Server },
+                { number: "24/7", label: "Expert Support", icon: Headphones }
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl text-center border border-white/20"
+                >
+                  <stat.icon className="h-8 w-8 text-white mx-auto mb-3" />
+                  <div className="text-3xl font-bold mb-2">{stat.number}</div>
+                  <div className="text-blue-100 text-sm">{stat.label}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* International Bandwidth Advantages */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Ưu Thế Băng Thông Quốc Tế Vượt Trội Tại STEP
+            </h2>
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+              Kết nối trực tiếp với các tuyến cáp quang quốc tế, đảm bảo tốc độ và độ ổn định tối ưu cho doanh nghiệp
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+            {[
+              {
+                title: "Kết Nối Đa Tuyến",
+                icon: Network,
+                color: "hsl(207, 100%, 40%)",
+                bgColor: "hsl(207, 100%, 96%)",
+                features: [
+                  "Cáp quang AAG (Asia America Gateway)",
+                  "Cáp quang APG (Asia Pacific Gateway)", 
+                  "Cáp quang IA (Intra Asia)",
+                  "Cáp quang SMW3 (Sea-Me-We 3)",
+                  "Kết nối VNIX, FPT IX"
+                ]
+              },
+              {
+                title: "Tốc Độ Vượt Trội",
+                icon: Zap,
+                color: "hsl(142, 76%, 36%)",
+                bgColor: "hsl(142, 76%, 96%)",
+                features: [
+                  "Băng thông quốc tế up to 10Gbps",
+                  "Độ trễ thấp < 50ms tới Singapore",
+                  "Độ trễ < 150ms tới US/EU",
+                  "Redundant routing tự động",
+                  "Load balancing thông minh"
+                ]
+              },
+              {
+                title: "Độ Tin Cậy Cao",
+                icon: Shield,
+                color: "hsl(339, 82%, 52%)",
+                bgColor: "hsl(339, 82%, 96%)",
+                features: [
+                  "99.9% uptime guarantee",
+                  "DDoS Protection miễn phí",
+                  "24/7 Network Monitoring",
+                  "Automatic failover",
+                  "SLA compensation"
+                ]
+              }
+            ].map((advantage, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                whileHover={{ y: -5, scale: 1.02 }}
+                data-testid={`bandwidth-advantage-${index}`}
+              >
+                <Card 
+                  className="h-full border-2 shadow-lg hover:shadow-xl transition-all duration-300"
+                  style={{ 
+                    backgroundColor: advantage.bgColor,
+                    borderColor: advantage.color + "40"
+                  }}
+                >
+                  <CardHeader className="text-center pb-4">
+                    <div 
+                      className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
+                      style={{ backgroundColor: advantage.color + "20" }}
+                    >
+                      <advantage.icon 
+                        className="h-8 w-8"
+                        style={{ color: advantage.color }}
+                      />
+                    </div>
+                    <CardTitle 
+                      className="text-xl font-bold"
+                      style={{ color: advantage.color }}
+                    >
+                      {advantage.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3">
+                      {advantage.features.map((feature, fIndex) => (
+                        <li key={fIndex} className="flex items-start">
+                          <CheckCircle className="h-4 w-4 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                          <span className="text-gray-700 text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Bandwidth Performance Chart */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="bg-white rounded-2xl p-8 shadow-xl"
+          >
+            <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              So Sánh Hiệu Năng Băng Thông Quốc Tế
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { region: "Singapore", latency: "< 50ms", speed: "10Gbps", reliability: "99.9%" },
+                { region: "USA/EU", latency: "< 150ms", speed: "5Gbps", reliability: "99.8%" },
+                { region: "Other Asia", latency: "< 80ms", speed: "8Gbps", reliability: "99.9%" }
+              ].map((region, index) => (
+                <div key={index} className="text-center p-6 bg-gray-50 rounded-xl">
+                  <h4 className="font-semibold text-lg mb-4 text-blue-600">{region.region}</h4>
+                  <div className="space-y-3">
+                    <div>
+                      <div className="text-2xl font-bold text-gray-900">{region.latency}</div>
+                      <div className="text-sm text-gray-600">Độ trễ</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-green-600">{region.speed}</div>
+                      <div className="text-sm text-gray-600">Tốc độ tối đa</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-purple-600">{region.reliability}</div>
+                      <div className="text-sm text-gray-600">Độ tin cậy</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Câu Hỏi Thường Gặp
+            </h2>
+            <p className="text-xl text-gray-600">
+              Những thắc mắc phổ biến về dịch vụ thuê chỗ đặt máy chủ tại STEP
+            </p>
+          </motion.div>
+
+          <div className="space-y-6">
+            {[
+              {
+                question: "Colocation là gì và tại sao doanh nghiệp nên sử dụng?",
+                answer: "Colocation là dịch vụ cho thuê không gian, điện, làm mát và kết nối mạng để đặt máy chủ của khách hàng tại data center chuyên nghiệp. Lợi ích bao gồm: tiết kiệm chi phí xây dựng data center riêng, đảm bảo uptime cao 99.9%, bảo mật vật lý 24/7, băng thông chất lượng cao và hỗ trợ kỹ thuật chuyên nghiệp."
+              },
+              {
+                question: "STEP có những gói colocation nào và giá cả ra sao?",
+                answer: "STEP cung cấp 6 gói chính từ S-CMC01 (1.5M VNĐ/tháng) cho startup đến S-Full Rack (28.5M VNĐ/tháng) cho enterprise. Mỗi gói bao gồm không gian rack, điện, băng thông, IP và hỗ trợ 24/7. Khách hàng thanh toán 12 tháng được giảm 3-12% và nhận thêm các dịch vụ bổ sung miễn phí."
+              },
+              {
+                question: "Data center của STEP có đạt chuẩn quốc tế không?",
+                answer: "STEP hợp tác với các data center đạt chuẩn Tier III+ có chứng nhận ISO 27001, SOC 2. Hệ thống điện dự phòng N+1, UPS và máy phát điện đảm bảo 99.99% uptime. Hệ thống làm mát chính xác, giám sát 24/7, kiểm soát ra vào bằng thẻ từ và camera an ninh đa lớp."
+              },
+              {
+                question: "Băng thông quốc tế tại STEP có ưu điểm gì?",
+                answer: "STEP kết nối trực tiếp 4 tuyến cáp quang quốc tế (AAG, APG, IA, SMW3) và các Internet Exchange Point trong nước. Băng thông quốc tế lên đến 10Gbps với độ trễ thấp < 50ms tới Singapore, < 150ms tới US/EU. Có DDoS Protection miễn phí và redundant routing tự động đảm bảo kết nối ổn định."
+              },
+              {
+                question: "Quy trình triển khai colocation mất bao lâu?",
+                answer: "Sau khi ký hợp đồng, STEP sẽ chuẩn bị rack và kết nối trong 24-48h cho gói cơ bản, 3-5 ngày cho gói rack. Khách hàng có thể tự vận chuyển thiết bị hoặc sử dụng dịch vụ vận chuyển của STEP. Đội ngũ kỹ thuật hỗ trợ cài đặt, cấu hình và kiểm tra hệ thống trước khi bàn giao."
+              },
+              {
+                question: "STEP có hỗ trợ remote hands và managed service không?",
+                answer: "Có, STEP cung cấp dịch vụ remote hands 24/7 bao gồm: reboot server, thay thế linh kiện, kiểm tra led status, cắm rút cable. Ngoài ra có gói managed service toàn diện: giám sát server, backup, patching, security monitoring và báo cáo hàng tháng với mức phí hợp lý."
+              },
+              {
+                question: "Chính sách bảo mật và backup như thế nào?",
+                answer: "STEP áp dụng bảo mật đa lớp: kiểm soát ra vào bằng thẻ từ, camera 24/7, giám sát mạng real-time, firewall hardware. Có dịch vụ backup tự động hàng ngày với lưu trữ offsite, disaster recovery plan và khả năng restore nhanh chóng. Tất cả đều tuân thủ chuẩn ISO 27001."
+              },
+              {
+                question: "Có thể mở rộng hoặc downgrade gói dịch vụ không?",
+                answer: "Hoàn toàn có thể. STEP hỗ trợ scale up/down linh hoạt theo nhu cầu kinh doanh. Việc upgrade diễn ra ngay trong ngày, downgrade sẽ có hiệu lực từ kỳ thanh toán tiếp theo. Phí chênh lệch sẽ được tính theo tỷ lệ thời gian sử dụng thực tế."
+              }
+            ].map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="border border-gray-200 rounded-xl overflow-hidden"
+                  data-testid={`faq-item-${index}`}
+                >
+                  <button
+                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                    className="w-full text-left p-6 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:bg-gray-50"
+                    data-testid={`faq-question-${index}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-gray-900 pr-4">
+                        {faq.question}
+                      </h3>
+                      <ChevronDown className={`h-5 w-5 text-gray-500 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                  </button>
+                  
+                  <motion.div
+                    initial={false}
+                    animate={{ height: isOpen ? 'auto' : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-6 pt-0 bg-gray-50">
+                      <p className="text-gray-700 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mt-12"
+          >
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-8">
+              <h3 className="text-xl font-bold text-blue-900 mb-3">
+                Vẫn Còn Câu Hỏi?
+              </h3>
+              <p className="text-blue-700 mb-6">
+                Đội ngũ chuyên gia của chúng tôi sẵn sàng tư vấn miễn phí 24/7
+              </p>
+              <Button 
+                size="lg"
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() => setShowContactForm(true)}
+                data-testid="button-contact-support"
+              >
+                <Phone className="mr-2 h-5 w-5" />
+                Liên Hệ Hỗ Trợ
+              </Button>
             </div>
           </motion.div>
         </div>
