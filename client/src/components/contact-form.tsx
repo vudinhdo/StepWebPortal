@@ -76,7 +76,7 @@ export default function ContactForm({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[650px] w-[95vw] max-h-[95vh] overflow-y-auto p-0 gap-0 rounded-2xl shadow-2xl border-0">
+      <DialogContent className="sm:max-w-[650px] w-[95vw] max-h-[95vh] overflow-y-auto p-0 gap-0 rounded-2xl shadow-2xl border-0 bg-white">
         {/* Header with gradient background */}
         <div className="bg-gradient-to-r from-[hsl(207,100%,40%)] to-[hsl(207,100%,50%)] p-8 text-white relative">
           <button
