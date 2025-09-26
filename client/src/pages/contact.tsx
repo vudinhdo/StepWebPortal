@@ -147,43 +147,42 @@ export default function Contact() {
       <Header />
       
       <main>
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-16 overflow-hidden">
-          <div className="absolute inset-0" style={{backgroundImage: `linear-gradient(135deg, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`}}>
-            <div className="absolute inset-0 bg-black/20"></div>
-          </div>
+        {/* Hero Section - Blue Background with White Text */}
+        <section className="relative pt-20 pb-24 overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
+          <div className="absolute inset-0 bg-blue-600"></div>
           
           <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-4xl mx-auto text-center text-white">
+            <div className="max-w-5xl mx-auto text-center">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="text-white"
               >
-                <Badge className="mb-6 px-4 py-2 bg-white/20 text-white hover:bg-white/30" data-testid="badge-contact">
+                <Badge className="mb-8 px-5 py-2 bg-white/15 text-white hover:bg-white/25 border-white/20 text-sm font-medium" data-testid="badge-contact">
                   💬 Tư Vấn Miễn Phí
                 </Badge>
                 
-                <h1 className="text-4xl md:text-6xl font-bold mb-6" data-testid="text-hero-title">
-                  Liên Hệ Với
-                  <br />
-                  <span className="text-blue-200">Chuyên Gia STEP</span>
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 tracking-tight" data-testid="text-hero-title">
+                  <span className="block text-white">Liên Hệ Với</span>
+                  <span className="block text-blue-200 mt-2">Chuyên Gia STEP</span>
                 </h1>
                 
-                <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto leading-relaxed" data-testid="text-hero-description">
-                  Để được tư vấn giải pháp CNTT phù hợp nhất cho doanh nghiệp của bạn.
-                  Chúng tôi cam kết phản hồi trong vòng 2 giờ.
+                <p className="text-xl md:text-2xl lg:text-3xl mb-10 text-white/90 max-w-4xl mx-auto leading-relaxed font-light" data-testid="text-hero-description">
+                  Để được tư vấn giải pháp CNTT phù hợp nhất cho doanh nghiệp
+                  <br className="hidden md:block" />
+                  của bạn. Chúng tôi cam kết phản hồi trong vòng 2 giờ.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <a href="#contact-form" className="inline-block">
                       <Button 
                         size="lg" 
-                        className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+                        className="bg-white text-blue-600 hover:bg-gray-50 px-10 py-5 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 rounded-xl border-0"
                         data-testid="button-contact-now"
                       >
-                        <MessageCircle className="mr-2 h-5 w-5" />
+                        <MessageCircle className="mr-3 h-6 w-6" />
                         Gửi Yêu Cầu Ngay
                       </Button>
                     </a>
@@ -194,10 +193,10 @@ export default function Contact() {
                       <Button 
                         variant="outline" 
                         size="lg"
-                        className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-semibold transition-all duration-300"
+                        className="border-3 border-white text-white hover:bg-white hover:text-blue-600 px-10 py-5 text-xl font-bold transition-all duration-300 rounded-xl bg-transparent"
                         data-testid="button-call-hotline"
                       >
-                        <Phone className="mr-2 h-5 w-5" />
+                        <Phone className="mr-3 h-6 w-6" />
                         Gọi Hotline: 0985.636.289
                       </Button>
                     </a>
@@ -205,6 +204,12 @@ export default function Contact() {
                 </div>
               </motion.div>
             </div>
+          </div>
+          
+          {/* Decorative background elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-300/10 rounded-full blur-3xl"></div>
           </div>
         </section>
 
