@@ -125,7 +125,6 @@ function FAQAccordion({ openFaqIndex, setOpenFaqIndex }: {
 }
 
 export default function Colocation() {
-  const [showContactForm, setShowContactForm] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const { toast } = useToast();
@@ -396,7 +395,7 @@ export default function Colocation() {
 
   const handlePackageSelect = (packageId: string) => {
     setSelectedPackage(packageId);
-    setShowContactForm(true);
+    window.location.href = '/contact';
   };
 
   const handleContactSubmit = () => {
@@ -469,7 +468,7 @@ export default function Colocation() {
                 <Button 
                   size="lg" 
                   className="bg-blue-600 hover:bg-blue-700 px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl"
-                  onClick={() => setShowContactForm(true)}
+                  onClick={() => window.location.href = '/contact'}
                   data-testid="button-contact-consultation"
                 >
                   <Phone className="mr-2 h-5 w-5" />
@@ -848,7 +847,7 @@ export default function Colocation() {
               </p>
               <Button 
                 className="bg-blue-600 hover:bg-blue-700"
-                onClick={() => setShowContactForm(true)}
+                onClick={() => window.location.href = '/contact'}
                 data-testid="button-contact-supplementary"
               >
                 <Phone className="mr-2 h-4 w-4" />
@@ -928,7 +927,7 @@ export default function Colocation() {
                   <Button 
                     size="lg" 
                     className="bg-blue-600 hover:bg-blue-700 px-8 py-4 text-lg font-semibold"
-                    onClick={() => setShowContactForm(true)}
+                    onClick={() => window.location.href = '/contact'}
                     data-testid="button-contact-expert"
                   >
                     <Phone className="mr-2 h-5 w-5" />
@@ -1247,7 +1246,7 @@ export default function Colocation() {
               <Button 
                 size="lg"
                 className="bg-blue-600 hover:bg-blue-700"
-                onClick={() => setShowContactForm(true)}
+                onClick={() => window.location.href = '/contact'}
                 data-testid="button-contact-support"
               >
                 <Phone className="mr-2 h-5 w-5" />

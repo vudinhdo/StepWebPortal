@@ -127,7 +127,6 @@ export default function Home() {
 
 
 
-  const [showContactForm, setShowContactForm] = useState(false);
 
   // Cloud data and statistics
   const cloudMetrics = [
@@ -344,7 +343,7 @@ export default function Home() {
                         style={{
                           backgroundImage: `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`
                         }}
-                        onClick={() => setShowContactForm(true)}
+                        onClick={() => window.location.href = '/contact'}
                         data-testid="button-start-free"
                         onMouseEnter={(e) => {
                           e.currentTarget.style.backgroundImage = `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-blue)))`;
@@ -574,7 +573,7 @@ export default function Home() {
                   <Button 
                     size="lg" 
                     className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
-                    onClick={() => setShowContactForm(true)}
+                    onClick={() => window.location.href = '/contact'}
                     data-testid="button-contact-now"
                   >
                     <Phone className="mr-2 h-5 w-5" />
@@ -587,7 +586,7 @@ export default function Home() {
                     variant="outline" 
                     size="lg"
                     className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-semibold transition-all duration-300"
-                    onClick={() => setShowContactForm(true)}
+                    onClick={() => window.location.href = '/contact'}
                     data-testid="button-free-consultation"
                   >
                     <Mail className="mr-2 h-5 w-5" />

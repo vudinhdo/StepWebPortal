@@ -22,7 +22,6 @@ import CloudPopup from "../components/cloud-popup";
 import QuoteBuilder from "../components/quote-builder";
 
 export default function CloudPage() {
-  const [showContactForm, setShowContactForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showQuoteBuilder, setShowQuoteBuilder] = useState(false);
 

@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import ContactForm from "@/components/contact-form";
 
 // Performance data for different hosting plans
 const responseTimeData = [
@@ -85,7 +84,6 @@ const planFeatures = {
 
 export default function PerformanceBenchmark() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-  const [showContactForm, setShowContactForm] = useState(false);
 
   const formatTooltip = (value: any, name: string) => {
     if (name.includes("Time") || name.includes("Response")) {
@@ -106,7 +104,7 @@ export default function PerformanceBenchmark() {
         </div>
         <p className="text-sm text-blue-700 mb-3">{planFeatures[plan as keyof typeof planFeatures].bestFor}</p>
         <Button 
-          onClick={() => setShowContactForm(true)}
+          onClick={() => window.location.href = '/contact'}
           className="w-full bg-blue-600 hover:bg-blue-700"
         >
           Tư vấn gói {plan}
@@ -393,7 +391,7 @@ export default function PerformanceBenchmark() {
                     variant={selectedPlan === plan ? "default" : "outline"}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setShowContactForm(true);
+                      window.location.href = '/contact';
                     }}
                   >
                     {selectedPlan === plan ? "Đã chọn" : "Chọn gói này"}
@@ -433,7 +431,7 @@ export default function PerformanceBenchmark() {
 
             <Button 
               size="lg" 
-              onClick={() => setShowContactForm(true)}
+              onClick={() => window.location.href = '/contact'}
               className="bg-blue-600 hover:bg-blue-700"
             >
               Tư vấn miễn phí về hiệu suất hosting
@@ -445,13 +443,6 @@ export default function PerformanceBenchmark() {
 
       <Footer />
 
-      {showContactForm && (
-        <ContactForm 
-          isOpen={showContactForm}
-          onClose={() => setShowContactForm(false)}
-          selectedService={selectedPlan ? `Hosting ${selectedPlan}` : "Performance Consultation"}
-        />
-      )}
     </div>
   );
 }
