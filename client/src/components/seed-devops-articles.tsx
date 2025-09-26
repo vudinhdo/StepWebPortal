@@ -3305,12 +3305,12 @@ pipeline {
         failure {
             slackSend channel: '#devops', 
                      color: 'danger', 
-                     message: "Build failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                     message: "Build failed: \${env.JOB_NAME} - \${env.BUILD_NUMBER}"
         }
         success {
             slackSend channel: '#devops', 
                      color: 'good', 
-                     message: "Build successful: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                     message: "Build successful: \${env.JOB_NAME} - \${env.BUILD_NUMBER}"
         }
     }
 }
@@ -6239,7 +6239,7 @@ spec:
   createNamespace: true
   values:
     auth:
-      postgresPassword: ${POSTGRES_PASSWORD}
+      postgresPassword: \${POSTGRES_PASSWORD}
       database: webapp
     primary:
       persistence:
