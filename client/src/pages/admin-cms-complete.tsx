@@ -16,6 +16,7 @@ import { ContentManager } from "@/components/cms/content-manager";
 import { LiveArticleManager } from "@/components/cms/live-article-manager";
 import { LivePageManager } from "@/components/cms/live-page-manager";
 import { LiveMenuManager } from "@/components/cms/live-menu-manager";
+import { SeedDevOpsArticles } from "@/components/seed-devops-articles";
 import { format } from "date-fns";
 
 interface CMSLayoutProps {
@@ -251,6 +252,11 @@ function DashboardContent({ articles, contacts, services }: any) {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* DevOps Content Seeding */}
+      <div className="grid gap-6">
+        <SeedDevOpsArticles />
       </div>
     </div>
   );
