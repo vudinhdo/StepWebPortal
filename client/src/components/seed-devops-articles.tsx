@@ -4845,9 +4845,1356 @@ terraform apply -var-file="environments/dev/terraform.tfvars"
 go test -v -timeout 30m
 \`\`\`
 
+## 6. Advanced State Management
+
+### Remote State Backends:
+\`\`\`hcl
+# S3 Backend với DynamoDB locking
+terraform {
+  backend "s3" {
+    bucket         = "terraform-state-bucket"
+    key            = "infrastructure/terraform.tfstate"
+    region         = "us-west-2"
+    encrypt        = true
+    dynamodb_table = "terraform-state-locks"
+    
+    # Versioning và lifecycle
+    versioning = true
+    lifecycle_rule {
+      enabled = true
+      noncurrent_version_expiration {
+        days = 90
+      }
+    }
+  }
+  
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+# State bucket setup
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "terraform-state-bucket"
+  
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "aws_s3_bucket_versioning" "terraform_state" {
+  bucket = aws_s3_bucket.terraform_state.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" {
+  bucket = aws_s3_bucket.terraform_state.id
+  
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_dynamodb_table" "terraform_state_locks" {
+  name           = "terraform-state-locks"
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "LockID"
+  
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+  
+  tags = {
+    Name        = "Terraform State Lock Table"
+    Environment = "production"
+  }
+}
+\`\`\`
+
+### State Import và Migration:
+\`\`\`bash
+# Import existing AWS resources
+terraform import aws_instance.web i-1234567890abcdef0
+terraform import aws_vpc.main vpc-abcd1234
+
+# State migration between backends
+terraform init -migrate-state
+
+# State manipulation
+terraform state list
+terraform state show aws_instance.web
+terraform state mv aws_instance.web aws_instance.web_server
+terraform state rm aws_instance.obsolete
+
+# State recovery
+terraform force-unlock LOCK_ID
+terraform refresh
+\`\`\`
+
+## 7. Multi-Cloud Infrastructure
+
+### AWS + Azure Deployment:
+\`\`\`hcl
+# Multi-cloud provider configuration
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0"
+    }
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.0"
+    }
+  }
+}
+
+# AWS Provider
+provider "aws" {
+  region = var.aws_region
+  
+  default_tags {
+    tags = {
+      Environment = var.environment
+      Project     = var.project_name
+      ManagedBy   = "terraform"
+    }
+  }
+}
+
+# Azure Provider
+provider "azurerm" {
+  features {}
+  subscription_id = var.azure_subscription_id
+}
+
+# GCP Provider
+provider "google" {
+  project = var.gcp_project_id
+  region  = var.gcp_region
+}
+
+# AWS VPC
+resource "aws_vpc" "main" {
+  cidr_block           = var.aws_vpc_cidr
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+  
+  tags = {
+    Name = "\${var.project_name}-aws-vpc"
+  }
+}
+
+# Azure Virtual Network
+resource "azurerm_resource_group" "main" {
+  name     = "\${var.project_name}-rg"
+  location = var.azure_location
+}
+
+resource "azurerm_virtual_network" "main" {
+  name                = "\${var.project_name}-vnet"
+  address_space       = [var.azure_vnet_cidr]
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+}
+
+# GCP VPC
+resource "google_compute_network" "main" {
+  name                    = "\${var.project_name}-vpc"
+  auto_create_subnetworks = false
+  routing_mode           = "GLOBAL"
+}
+
+# Inter-cloud VPN connections
+resource "aws_vpn_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+  
+  tags = {
+    Name = "\${var.project_name}-vpn-gateway"
+  }
+}
+
+resource "azurerm_virtual_network_gateway" "main" {
+  name                = "\${var.project_name}-vpn-gateway"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  
+  type     = "Vpn"
+  vpn_type = "RouteBased"
+  
+  active_active = false
+  enable_bgp    = false
+  sku           = "VpnGw1"
+  
+  ip_configuration {
+    name                          = "vnetGatewayConfig"
+    public_ip_address_id          = azurerm_public_ip.vpn_gateway.id
+    private_ip_address_allocation = "Dynamic"
+    subnet_id                     = azurerm_subnet.gateway.id
+  }
+}
+\`\`\`
+
+### Cross-Cloud Data Sync:
+\`\`\`hcl
+# Data sources for cross-cloud references
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical
+  
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+}
+
+data "azurerm_client_config" "current" {}
+
+data "google_compute_zones" "available" {
+  region = var.gcp_region
+}
+
+# Shared configuration through remote state
+data "terraform_remote_state" "network" {
+  backend = "s3"
+  config = {
+    bucket = "terraform-state-bucket"
+    key    = "network/terraform.tfstate"
+    region = "us-west-2"
+  }
+}
+
+# Multi-cloud load balancer setup
+resource "aws_lb" "main" {
+  name               = "\${var.project_name}-alb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.alb.id]
+  subnets           = aws_subnet.public[*].id
+  
+  enable_deletion_protection = var.environment == "production"
+}
+
+resource "azurerm_lb" "main" {
+  name                = "\${var.project_name}-lb"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  sku                = "Standard"
+  
+  frontend_ip_configuration {
+    name                 = "PublicIPAddress"
+    public_ip_address_id = azurerm_public_ip.lb.id
+  }
+}
+\`\`\`
+
+## 8. Security Hardening
+
+### Policy as Code với Sentinel:
+\`\`\`hcl
+# Sentinel policy enforcement
+policy "require-encryption" {
+  enforcement_level = "hard-mandatory"
+}
+
+# EBS encryption policy
+import "tfplan/v2" as tfplan
+
+# Check all EBS volumes are encrypted
+ebs_volumes = filter tfplan.resource_changes as _, rc {
+  rc.type is "aws_ebs_volume" and
+  rc.mode is "managed" and
+  (rc.change.actions contains "create" or rc.change.actions contains "update")
+}
+
+require_ebs_encryption = rule {
+  all ebs_volumes as _, volume {
+    volume.change.after.encrypted is true
+  }
+}
+
+# S3 encryption policy
+s3_buckets = filter tfplan.resource_changes as _, rc {
+  rc.type is "aws_s3_bucket" and
+  rc.mode is "managed" and
+  (rc.change.actions contains "create" or rc.change.actions contains "update")
+}
+
+require_s3_encryption = rule {
+  all s3_buckets as _, bucket {
+    bucket.change.after.server_side_encryption_configuration is not null
+  }
+}
+
+main = rule {
+  require_ebs_encryption and require_s3_encryption
+}
+\`\`\`
+
+### Security Groups và Network ACLs:
+\`\`\`hcl
+# Comprehensive security group setup
+resource "aws_security_group" "web_tier" {
+  name_prefix = "\${var.project_name}-web-"
+  vpc_id      = aws_vpc.main.id
+  description = "Security group for web tier"
+  
+  # HTTP/HTTPS from load balancer only
+  ingress {
+    description     = "HTTP from ALB"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
+  }
+  
+  ingress {
+    description     = "HTTPS from ALB"
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
+  }
+  
+  # Outbound to app tier
+  egress {
+    description     = "To app tier"
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
+    security_groups = [aws_security_group.app_tier.id]
+  }
+  
+  # HTTPS outbound for updates
+  egress {
+    description = "HTTPS outbound"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  tags = {
+    Name = "\${var.project_name}-web-sg"
+    Tier = "web"
+  }
+}
+
+resource "aws_security_group" "app_tier" {
+  name_prefix = "\${var.project_name}-app-"
+  vpc_id      = aws_vpc.main.id
+  description = "Security group for application tier"
+  
+  # App port from web tier only
+  ingress {
+    description     = "App port from web tier"
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
+    security_groups = [aws_security_group.web_tier.id]
+  }
+  
+  # Database access
+  egress {
+    description     = "To database"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.db_tier.id]
+  }
+  
+  tags = {
+    Name = "\${var.project_name}-app-sg"
+    Tier = "application"
+  }
+}
+
+# Network ACL for additional security
+resource "aws_network_acl" "private" {
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = aws_subnet.private[*].id
+  
+  # Allow inbound from VPC
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = aws_vpc.main.cidr_block
+    from_port  = 0
+    to_port    = 65535
+  }
+  
+  # Allow outbound to VPC
+  egress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = aws_vpc.main.cidr_block
+    from_port  = 0
+    to_port    = 65535
+  }
+  
+  # Allow HTTPS outbound
+  egress {
+    protocol   = "tcp"
+    rule_no    = 200
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 443
+    to_port    = 443
+  }
+  
+  tags = {
+    Name = "\${var.project_name}-private-nacl"
+  }
+}
+\`\`\`
+
+## 9. Advanced Module Development
+
+### Terraform Module Structure:
+\`\`\`
+modules/
+├── vpc/
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   ├── versions.tf
+│   └── README.md
+├── compute/
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   ├── user_data.sh
+│   └── versions.tf
+└── database/
+    ├── main.tf
+    ├── variables.tf
+    ├── outputs.tf
+    └── versions.tf
+\`\`\`
+
+### Production-Ready VPC Module:
+\`\`\`hcl
+# modules/vpc/main.tf
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+  }
+}
+
+locals {
+  # Calculate subnet CIDRs automatically
+  public_subnet_cidrs = [
+    for i in range(var.public_subnet_count) :
+    cidrsubnet(var.vpc_cidr, 8, i + 1)
+  ]
+  
+  private_subnet_cidrs = [
+    for i in range(var.private_subnet_count) :
+    cidrsubnet(var.vpc_cidr, 8, i + 100)
+  ]
+  
+  database_subnet_cidrs = [
+    for i in range(var.database_subnet_count) :
+    cidrsubnet(var.vpc_cidr, 8, i + 200)
+  ]
+}
+
+# VPC
+resource "aws_vpc" "main" {
+  cidr_block           = var.vpc_cidr
+  enable_dns_hostnames = var.enable_dns_hostnames
+  enable_dns_support   = var.enable_dns_support
+  
+  tags = merge(var.tags, {
+    Name = "\${var.name}-vpc"
+  })
+}
+
+# Internet Gateway
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+  
+  tags = merge(var.tags, {
+    Name = "\${var.name}-igw"
+  })
+}
+
+# Public Subnets
+resource "aws_subnet" "public" {
+  count             = var.public_subnet_count
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = local.public_subnet_cidrs[count.index]
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+  
+  map_public_ip_on_launch = true
+  
+  tags = merge(var.tags, {
+    Name = "\${var.name}-public-\${count.index + 1}"
+    Type = "public"
+  })
+}
+
+# Private Subnets
+resource "aws_subnet" "private" {
+  count             = var.private_subnet_count
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = local.private_subnet_cidrs[count.index]
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+  
+  tags = merge(var.tags, {
+    Name = "\${var.name}-private-\${count.index + 1}"
+    Type = "private"
+  })
+}
+
+# NAT Gateways
+resource "aws_eip" "nat" {
+  count  = var.enable_nat_gateway ? var.single_nat_gateway ? 1 : var.private_subnet_count : 0
+  domain = "vpc"
+  
+  depends_on = [aws_internet_gateway.main]
+  
+  tags = merge(var.tags, {
+    Name = "\${var.name}-nat-eip-\${count.index + 1}"
+  })
+}
+
+resource "aws_nat_gateway" "main" {
+  count         = var.enable_nat_gateway ? var.single_nat_gateway ? 1 : var.private_subnet_count : 0
+  allocation_id = aws_eip.nat[count.index].id
+  subnet_id     = aws_subnet.public[count.index].id
+  
+  depends_on = [aws_internet_gateway.main]
+  
+  tags = merge(var.tags, {
+    Name = "\${var.name}-nat-\${count.index + 1}"
+  })
+}
+
+# Route Tables
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+  
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+  
+  tags = merge(var.tags, {
+    Name = "\${var.name}-public-rt"
+  })
+}
+
+resource "aws_route_table" "private" {
+  count  = var.enable_nat_gateway ? var.single_nat_gateway ? 1 : var.private_subnet_count : 1
+  vpc_id = aws_vpc.main.id
+  
+  dynamic "route" {
+    for_each = var.enable_nat_gateway ? [1] : []
+    content {
+      cidr_block     = "0.0.0.0/0"
+      nat_gateway_id = var.single_nat_gateway ? aws_nat_gateway.main[0].id : aws_nat_gateway.main[count.index].id
+    }
+  }
+  
+  tags = merge(var.tags, {
+    Name = "\${var.name}-private-rt-\${count.index + 1}"
+  })
+}
+
+# Route Table Associations
+resource "aws_route_table_association" "public" {
+  count          = var.public_subnet_count
+  subnet_id      = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "private" {
+  count          = var.private_subnet_count
+  subnet_id      = aws_subnet.private[count.index].id
+  route_table_id = var.single_nat_gateway ? aws_route_table.private[0].id : aws_route_table.private[count.index].id
+}
+
+# VPC Flow Logs
+resource "aws_flow_log" "vpc" {
+  count                = var.enable_flow_logs ? 1 : 0
+  iam_role_arn         = aws_iam_role.flow_logs[0].arn
+  log_destination      = aws_cloudwatch_log_group.vpc_flow_logs[0].arn
+  traffic_type         = "ALL"
+  vpc_id               = aws_vpc.main.id
+  log_destination_type = "cloud-watch-logs"
+  
+  tags = var.tags
+}
+
+resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
+  count             = var.enable_flow_logs ? 1 : 0
+  name              = "/aws/vpc/\${var.name}-flow-logs"
+  retention_in_days = var.flow_logs_retention_days
+  
+  tags = var.tags
+}
+
+resource "aws_iam_role" "flow_logs" {
+  count = var.enable_flow_logs ? 1 : 0
+  name  = "\${var.name}-flow-logs-role"
+  
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "vpc-flow-logs.amazonaws.com"
+        }
+      }
+    ]
+  })
+  
+  tags = var.tags
+}
+
+resource "aws_iam_role_policy" "flow_logs" {
+  count = var.enable_flow_logs ? 1 : 0
+  name  = "\${var.name}-flow-logs-policy"
+  role  = aws_iam_role.flow_logs[0].id
+  
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# Data Sources
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+\`\`\`
+
+## 10. Testing và Validation
+
+### Terratest Integration:
+\`\`\`go
+// test/vpc_test.go
+package test
+
+import (
+  "testing"
+  
+  "github.com/gruntwork-io/terratest/modules/terraform"
+  "github.com/gruntwork-io/terratest/modules/aws"
+  "github.com/stretchr/testify/assert"
+)
+
+func TestVPCModule(t *testing.T) {
+  t.Parallel()
+  
+  // Pick a random AWS region
+  awsRegion := aws.GetRandomStableRegion(t, nil, nil)
+  
+  terraformOptions := &terraform.Options{
+    TerraformDir: "../examples/vpc",
+    
+    Vars: map[string]interface{}{
+      "region":      awsRegion,
+      "name":        "test-vpc",
+      "vpc_cidr":    "10.0.0.0/16",
+      "environment": "test",
+    },
+    
+    EnvVars: map[string]string{
+      "AWS_DEFAULT_REGION": awsRegion,
+    },
+  }
+  
+  defer terraform.Destroy(t, terraformOptions)
+  
+  terraform.InitAndApply(t, terraformOptions)
+  
+  // Validate VPC creation
+  vpcId := terraform.Output(t, terraformOptions, "vpc_id")
+  assert.NotEmpty(t, vpcId)
+  
+  // Validate subnets
+  publicSubnets := terraform.OutputList(t, terraformOptions, "public_subnet_ids")
+  privateSubnets := terraform.OutputList(t, terraformOptions, "private_subnet_ids")
+  
+  assert.Len(t, publicSubnets, 2)
+  assert.Len(t, privateSubnets, 2)
+  
+  // Validate internet connectivity for public subnets
+  for _, subnetId := range publicSubnets {
+    aws.AssertSubnetIsPublic(t, awsRegion, subnetId)
+  }
+  
+  // Validate private subnets have NAT gateway route
+  for _, subnetId := range privateSubnets {
+    aws.AssertSubnetIsPrivate(t, awsRegion, subnetId)
+  }
+}
+
+func TestVPCWithoutNATGateway(t *testing.T) {
+  t.Parallel()
+  
+  awsRegion := aws.GetRandomStableRegion(t, nil, nil)
+  
+  terraformOptions := &terraform.Options{
+    TerraformDir: "../examples/vpc",
+    
+    Vars: map[string]interface{}{
+      "region":           awsRegion,
+      "name":             "test-vpc-no-nat",
+      "vpc_cidr":         "10.1.0.0/16",
+      "enable_nat_gateway": false,
+    },
+  }
+  
+  defer terraform.Destroy(t, terraformOptions)
+  
+  terraform.InitAndApply(t, terraformOptions)
+  
+  // Validate no NAT gateways were created
+  natGateways := terraform.OutputList(t, terraformOptions, "nat_gateway_ids")
+  assert.Empty(t, natGateways)
+}
+\`\`\`
+
+### Terraform Testing Framework:
+\`\`\`hcl
+# tests/vpc.tftest.hcl
+run "setup_test_environment" {
+  module {
+    source = "./modules/vpc"
+  }
+  
+  variables {
+    name                    = "test-vpc"
+    vpc_cidr               = "10.0.0.0/16"
+    public_subnet_count    = 2
+    private_subnet_count   = 2
+    enable_nat_gateway     = true
+    single_nat_gateway     = false
+    enable_flow_logs       = true
+    
+    tags = {
+      Environment = "test"
+      Project     = "terraform-testing"
+    }
+  }
+}
+
+run "validate_vpc_creation" {
+  command = plan
+  
+  assert {
+    condition     = aws_vpc.main.cidr_block == "10.0.0.0/16"
+    error_message = "VPC CIDR block does not match expected value"
+  }
+  
+  assert {
+    condition     = length(aws_subnet.public) == 2
+    error_message = "Expected 2 public subnets"
+  }
+  
+  assert {
+    condition     = length(aws_subnet.private) == 2
+    error_message = "Expected 2 private subnets"
+  }
+}
+
+run "validate_nat_gateway_configuration" {
+  command = plan
+  
+  assert {
+    condition     = length(aws_nat_gateway.main) == 2
+    error_message = "Expected 2 NAT gateways when single_nat_gateway is false"
+  }
+  
+  assert {
+    condition     = length(aws_eip.nat) == 2
+    error_message = "Expected 2 Elastic IPs for NAT gateways"
+  }
+}
+
+run "validate_security_features" {
+  command = plan
+  
+  assert {
+    condition = length([
+      for log in aws_flow_log.vpc : log
+      if log.traffic_type == "ALL"
+    ]) == 1
+    error_message = "VPC Flow Logs should be enabled for ALL traffic"
+  }
+}
+\`\`\`
+
+## 11. CI/CD Integration
+
+### GitLab CI Pipeline:
+\`\`\`yaml
+# .gitlab-ci.yml
+stages:
+  - validate
+  - plan
+  - apply
+  - test
+  - destroy
+
+variables:
+  TF_ROOT: \${CI_PROJECT_DIR}
+  TF_ADDRESS: \${CI_API_V4_URL}/projects/\${CI_PROJECT_ID}/terraform/state/\${CI_ENVIRONMENT_NAME}
+
+.terraform:
+  image: hashicorp/terraform:1.5
+  before_script:
+    - cd \$TF_ROOT
+    - terraform --version
+    - terraform init
+
+validate:
+  extends: .terraform
+  stage: validate
+  script:
+    - terraform validate
+    - terraform fmt -check
+  rules:
+    - if: '\$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '\$CI_COMMIT_BRANCH && \$CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '\$CI_COMMIT_BRANCH'
+
+plan:
+  extends: .terraform
+  stage: plan
+  script:
+    - terraform plan -var-file="environments/\${CI_ENVIRONMENT_NAME}.tfvars" -out="plan.cache"
+    - terraform show -json plan.cache > plan.json
+  artifacts:
+    name: plan
+    paths:
+      - \$TF_ROOT/plan.cache
+      - \$TF_ROOT/plan.json
+    reports:
+      terraform: \$TF_ROOT/plan.json
+  environment:
+    name: \$CI_COMMIT_REF_SLUG
+  rules:
+    - if: '\$CI_COMMIT_BRANCH == "main"'
+    - if: '\$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+apply:
+  extends: .terraform
+  stage: apply
+  script:
+    - terraform apply -auto-approve "plan.cache"
+  environment:
+    name: \$CI_COMMIT_REF_SLUG
+    action: start
+  dependencies:
+    - plan
+  rules:
+    - if: '\$CI_COMMIT_BRANCH == "main"'
+      when: manual
+    - if: '\$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: manual
+
+terratest:
+  stage: test
+  image: golang:1.21
+  before_script:
+    - cd test
+    - go mod download
+  script:
+    - go test -v -timeout 30m
+  dependencies:
+    - apply
+  rules:
+    - if: '\$CI_COMMIT_BRANCH == "main"'
+      when: manual
+
+cleanup:
+  extends: .terraform
+  stage: destroy
+  script:
+    - terraform destroy -auto-approve -var-file="environments/\${CI_ENVIRONMENT_NAME}.tfvars"
+  environment:
+    name: \$CI_COMMIT_REF_SLUG
+    action: stop
+  rules:
+    - if: '\$CI_COMMIT_BRANCH == "main"'
+      when: manual
+    - if: '\$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: manual
+  dependencies:
+    - plan
+\`\`\`
+
+### GitHub Actions Workflow:
+\`\`\`yaml
+# .github/workflows/terraform.yml
+name: 'Terraform'
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  TF_CLOUD_ORGANIZATION: "your-org"
+  TF_API_TOKEN: "\${{ secrets.TF_API_TOKEN }}"
+  TF_WORKSPACE: "infrastructure"
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+    
+    defaults:
+      run:
+        shell: bash
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.5.0
+        cli_config_credentials_token: \${{ secrets.TF_API_TOKEN }}
+    
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -check
+    
+    - name: Terraform Init
+      id: init
+      run: terraform init
+    
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+    
+    - name: Terraform Plan
+      id: plan
+      if: github.event_name == 'pull_request'
+      run: terraform plan -no-color -input=false
+      continue-on-error: true
+    
+    - name: Update Pull Request
+      uses: actions/github-script@v7
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "\${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: \${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = \`#### Terraform Format and Style 🖌\\\`\${{ steps.fmt.outcome }}\\\`
+          #### Terraform Initialization ⚙️\\\`\${{ steps.init.outcome }}\\\`
+          #### Terraform Validation 🤖\\\`\${{ steps.validate.outcome }}\\\`
+          #### Terraform Plan 📖\\\`\${{ steps.plan.outcome }}\\\`
+          
+          <details><summary>Show Plan</summary>
+          
+          \\\`\\\`\\\`terraform\\n
+          \${process.env.PLAN}
+          \\\`\\\`\\\`
+          
+          </details>
+          
+          *Pushed by: @\${{ github.actor }}, Action: \\\`\${{ github.event_name }}\\\`*\`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+    
+    - name: Terraform Plan Status
+      if: steps.plan.outcome == 'failure'
+      run: exit 1
+    
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
+\`\`\`
+
+## 12. Performance Optimization
+
+### Resource Parallelism:
+\`\`\`hcl
+# terraform.tf
+terraform {
+  required_version = ">= 1.0"
+  
+  # Optimize performance
+  experiments = [
+    config_driven_move
+  ]
+}
+
+# Use for_each for better parallelism
+resource "aws_instance" "web" {
+  for_each = toset(var.availability_zones)
+  
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = var.instance_type
+  subnet_id     = aws_subnet.private[each.key].id
+  
+  vpc_security_group_ids = [aws_security_group.web.id]
+  
+  user_data = base64encode(templatefile("\${path.module}/user_data.sh", {
+    app_name = var.app_name
+    region   = var.region
+  }))
+  
+  root_block_device {
+    volume_type           = "gp3"
+    volume_size           = var.root_volume_size
+    encrypted             = true
+    delete_on_termination = true
+    
+    tags = {
+      Name = "\${var.name}-web-\${each.key}-root"
+    }
+  }
+  
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_put_response_hop_limit = 1
+    http_tokens                 = "required"
+    instance_metadata_tags      = "enabled"
+  }
+  
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes       = [ami]
+  }
+  
+  tags = {
+    Name = "\${var.name}-web-\${each.key}"
+    AZ   = each.key
+  }
+}
+
+# Use dynamic blocks for complex configurations
+resource "aws_security_group" "application" {
+  name_prefix = "\${var.name}-app-"
+  vpc_id      = aws_vpc.main.id
+  description = "Security group for application tier"
+  
+  dynamic "ingress" {
+    for_each = var.ingress_rules
+    content {
+      description      = ingress.value.description
+      from_port        = ingress.value.from_port
+      to_port          = ingress.value.to_port
+      protocol         = ingress.value.protocol
+      cidr_blocks      = ingress.value.cidr_blocks
+      security_groups  = ingress.value.security_groups
+    }
+  }
+  
+  dynamic "egress" {
+    for_each = var.egress_rules
+    content {
+      description      = egress.value.description
+      from_port        = egress.value.from_port
+      to_port          = egress.value.to_port
+      protocol         = egress.value.protocol
+      cidr_blocks      = egress.value.cidr_blocks
+      security_groups  = egress.value.security_groups
+    }
+  }
+}
+\`\`\`
+
+### State Management Optimization:
+\`\`\`bash
+#!/bin/bash
+# Performance optimization script
+
+# Terraform parallelism
+export TF_CLI_ARGS_plan="-parallelism=20"
+export TF_CLI_ARGS_apply="-parallelism=20"
+
+# Provider caching
+export TF_PLUGIN_CACHE_DIR="\$HOME/.terraform.d/plugin-cache"
+mkdir -p \$TF_PLUGIN_CACHE_DIR
+
+# Terraform logging
+export TF_LOG=INFO
+export TF_LOG_PATH="./terraform.log"
+
+# State backup
+terraform state pull > "terraform-state-backup-\$(date +%Y%m%d-%H%M%S).json"
+
+# Refresh optimization
+terraform refresh -parallelism=20
+
+# Plan with target resources for large infrastructure
+terraform plan -target=aws_vpc.main -target=aws_subnet.public
+
+# Apply with reduced parallelism for sensitive resources
+terraform apply -parallelism=5 -target=aws_db_instance.main
+
+# State operations optimization
+terraform state list | grep "aws_instance" | head -10 | xargs -I {} terraform state show {}
+\`\`\`
+
+## 13. Troubleshooting Guide
+
+### Common Issues và Solutions:
+
+#### State Lock Issues:
+\`\`\`bash
+# Check state lock
+terraform state list
+
+# Force unlock (use with caution)
+terraform force-unlock LOCK_ID
+
+# Alternative: Manual state cleanup
+aws dynamodb delete-item \\
+  --table-name terraform-state-locks \\
+  --key '{"LockID":{"S":"LOCK_ID"}}'
+
+# State corruption recovery
+terraform state pull > backup.tfstate
+terraform state push backup.tfstate
+\`\`\`
+
+#### Provider Issues:
+\`\`\`bash
+# Clear provider cache
+rm -rf .terraform/providers/
+
+# Reinstall providers
+terraform init -upgrade
+
+# Provider debugging
+export TF_LOG_PROVIDER=DEBUG
+terraform plan
+
+# Version constraints debugging
+terraform providers
+terraform version
+\`\`\`
+
+#### Resource Drift Detection:
+\`\`\`bash
+# Detect configuration drift
+terraform plan -detailed-exitcode
+
+# Import existing resources
+terraform import aws_instance.web i-1234567890abcdef0
+
+# Refresh state
+terraform refresh
+
+# Automated drift detection script
+#!/bin/bash
+set -e
+
+echo "Checking for infrastructure drift..."
+
+# Run terraform plan
+if terraform plan -detailed-exitcode -out=tfplan; then
+  echo "✅ No drift detected"
+  exit 0
+elif [ \$? -eq 2 ]; then
+  echo "⚠️  Infrastructure drift detected"
+  
+  # Show what changed
+  terraform show tfplan
+  
+  # Optionally auto-apply
+  if [ "\$AUTO_APPLY" = "true" ]; then
+    echo "Auto-applying changes..."
+    terraform apply tfplan
+  else
+    echo "Review changes and apply manually"
+    exit 2
+  fi
+else
+  echo "❌ Terraform plan failed"
+  exit 1
+fi
+\`\`\`
+
+#### Performance Debugging:
+\`\`\`bash
+# Enable detailed logging
+export TF_LOG=TRACE
+export TF_LOG_PATH="debug.log"
+
+# Profile terraform operations
+time terraform plan
+time terraform apply
+
+# Resource graph analysis
+terraform graph | dot -Tsvg > graph.svg
+
+# Analyze state file size
+ls -lh terraform.tfstate
+terraform state list | wc -l
+
+# Provider plugin debugging
+strace -e trace=network terraform plan 2>&1 | grep -E "connect|send|recv"
+\`\`\`
+
 ## Kết luận
 
-Infrastructure as Code với Terraform giúp teams quản lý infrastructure một cách consistent, repeatable và scalable. Việc adopt IaC sẽ mang lại benefits lớn về automation, reliability và collaboration.`,
+Infrastructure as Code với Terraform represents foundation critical cho modern cloud operations và enterprise infrastructure management. Comprehensive implementation của advanced Terraform practices enables organizations achieve unprecedented levels của automation, consistency, reliability trong infrastructure delivery.
+
+### Strategic Benefits Achieved:
+
+**Operational Excellence:**
+- **Infrastructure Consistency**: 100% reproducible infrastructure across environments
+- **Deployment Speed**: Infrastructure provision time reduced từ days xuống minutes
+- **Error Reduction**: Human errors eliminated through automation và validation
+- **Change Management**: Complete audit trail và rollback capabilities
+
+**Business Impact:**
+- **Cost Optimization**: Resource optimization reduces cloud costs 30-40%
+- **Time to Market**: Faster environment provisioning accelerates product delivery
+- **Compliance Assurance**: Policy as Code ensures regulatory compliance
+- **Risk Mitigation**: Standardized infrastructure reduces security vulnerabilities
+
+### Advanced Implementation Mastery:
+
+**Multi-Cloud Excellence:**
+- Unified infrastructure management across AWS, Azure, GCP
+- Cross-cloud networking và data synchronization
+- Provider-agnostic resource abstractions
+- Disaster recovery spanning multiple cloud providers
+
+**Security-First Architecture:**
+- Policy as Code với Sentinel enforcement
+- Comprehensive network segmentation
+- Encrypted state management với access controls
+- Automated security compliance validation
+
+**Enterprise Integration:**
+- CI/CD pipeline integration với automated testing
+- Module libraries với versioning và governance
+- State management với team collaboration
+- Performance optimization cho large-scale infrastructure
+
+### Production-Ready Capabilities:
+
+**Advanced State Management:**
+- Remote backends với locking mechanisms
+- State versioning và backup strategies
+- Multi-environment state organization
+- Collaborative workflows với team access controls
+
+**Comprehensive Testing:**
+- Unit testing với Terratest
+- Integration testing với real infrastructure
+- Policy validation với automated compliance checks
+- Performance testing cho resource provisioning
+
+**Monitoring và Observability:**
+- Infrastructure drift detection
+- Resource utilization monitoring
+- Cost tracking và optimization recommendations
+- Automated alerting cho infrastructure changes
+
+### Future-Ready Architecture:
+
+**Emerging Technologies:**
+- **GitOps Integration**: Declarative infrastructure với Git workflows
+- **AI-Driven Optimization**: Machine learning cho resource optimization
+- **Edge Computing**: Distributed infrastructure management
+- **Serverless Infrastructure**: Event-driven resource provisioning
+
+**Scalability Innovations:**
+- Micro-infrastructure patterns
+- Container-native infrastructure
+- Kubernetes operator patterns
+- Service mesh infrastructure automation
+
+### Implementation Roadmap:
+
+**Phase 1: Foundation (Months 1-2)**
+- Core Terraform skills development
+- Basic module creation
+- State management setup
+- Version control integration
+
+**Phase 2: Advanced Patterns (Months 3-4)**
+- Multi-cloud infrastructure
+- Security policy implementation
+- CI/CD pipeline integration
+- Testing framework adoption
+
+**Phase 3: Enterprise Integration (Months 5-6)**
+- Module library development
+- Team collaboration workflows
+- Performance optimization
+- Compliance automation
+
+**Phase 4: Continuous Innovation (Ongoing)**
+- Technology adoption
+- Process optimization
+- Team training và mentoring
+- Community contribution
+
+### Success Metrics:
+
+**Technical Excellence:**
+- Infrastructure provisioning time: <30 minutes for complete environments
+- Configuration drift incidents: <1 per quarter
+- Security policy compliance: 100% automated validation
+- Resource utilization efficiency: >80% optimal usage
+
+**Business Outcomes:**
+- Development team productivity: 50-70% improvement
+- Infrastructure costs: 30-40% reduction
+- Deployment reliability: 99.9% success rate
+- Time to market: 40-60% faster environment delivery
+
+Modern cloud infrastructure demands sophisticated Infrastructure as Code practices combining automation, security, scalability, reliability. Organizations mastering advanced Terraform capabilities achieve significant competitive advantages through faster delivery, improved security, cost optimization, operational excellence.
+
+Success requires commitment to continuous learning, best practices adoption, team collaboration, technological innovation. Companies embracing comprehensive IaC strategies position themselves for sustained growth trong rapidly evolving cloud landscape.
+
+The future belongs to organizations achieving infrastructure excellence through code, enabling rapid adaptation, reliable operations, seamless scalability essential for competitive success trong digital-first economy. Investment trong Terraform mastery provides foundational capabilities supporting business agility, innovation velocity, operational resilience critical for long-term prosperity.`,
     category: "DevOps",
     tags: ["terraform", "infrastructure-as-code", "aws", "automation", "cloud"],
     imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=400&fit=crop",
