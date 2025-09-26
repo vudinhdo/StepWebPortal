@@ -15357,9 +15357,1159 @@ requiredEnvVars.forEach(varName => {
 module.exports = config;
 \`\`\`
 
+## 6. Advanced Cloud-Native Architecture Patterns
+
+### Multi-Cluster Service Mesh Federation:
+\`\`\`yaml
+# Primary cluster configuration
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: primary-cluster
+spec:
+  values:
+    global:
+      meshID: mesh1
+      network: network1
+      multiCluster:
+        clusterName: primary
+      pilot:
+        env:
+          PILOT_ENABLE_WORKLOAD_ENTRY_AUTOREGISTRATION: true
+          PILOT_ENABLE_REMOTE_JWKS_ENDPOINT: true
+          PILOT_SKIP_VALIDATE_TRUST_DOMAIN: true
+  components:
+    pilot:
+      k8s:
+        env:
+          - name: PILOT_ENABLE_CROSS_CLUSTER_WORKLOAD_ENTRY
+            value: "true"
+          - name: PILOT_ENABLE_ENDPOINT_SLICE_CONTROLLER
+            value: "true"
+
+---
+# Remote cluster configuration
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: remote-cluster
+spec:
+  values:
+    global:
+      meshID: mesh1
+      network: network2
+      multiCluster:
+        clusterName: remote
+        primaryClusterName: primary
+        remotePilotAddress: ${DISCOVERY_ADDRESS}
+    istiodRemote:
+      enabled: true
+      
+---
+# Cross-cluster service exposure
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: cross-network-gateway
+  labels:
+    istio: eastwestgateway
+spec:
+  selector:
+    istio: eastwestgateway
+  servers:
+  - port:
+      number: 15443
+      name: tls
+      protocol: TLS
+    tls:
+      mode: ISTIO_MUTUAL
+    hosts:
+    - "*.local"
+
+---
+# Service entry cho cross-cluster services
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: remote-user-service
+spec:
+  hosts:
+  - user-service.production.global
+  location: MESH_EXTERNAL
+  ports:
+  - number: 8080
+    name: http
+    protocol: HTTP
+  resolution: DNS
+  addresses:
+  - 240.0.0.1  # Virtual IP
+  endpoints:
+  - address: user-service.production.svc.cluster.local
+    network: network2
+    ports:
+      http: 8080
+
+---
+# Destination rule cho multi-cluster load balancing
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: user-service-multicluster
+spec:
+  host: user-service.production.global
+  trafficPolicy:
+    outlierDetection:
+      consecutive5xxErrors: 3
+      interval: 30s
+      baseEjectionTime: 30s
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        http1MaxPendingRequests: 10
+        maxRequestsPerConnection: 2
+  subsets:
+  - name: primary-cluster
+    labels:
+      cluster: primary
+    trafficPolicy:
+      loadBalancer:
+        localityLbSetting:
+          enabled: true
+          distribute:
+          - from: "region1/zone1/*"
+            to:
+              "region1/zone1/*": 80
+              "region1/zone2/*": 20
+          failover:
+          - from: region1
+            to: region2
+  - name: remote-cluster
+    labels:
+      cluster: remote
+\`\`\`
+
+### Advanced Observability Integration:
+\`\`\`python
+# Comprehensive observability platform
+import asyncio
+import json
+import logging
+from datetime import datetime, timedelta
+import numpy as np
+from dataclasses import dataclass
+from typing import Dict, List, Optional
+import aiohttp
+import time
+
+@dataclass
+class ServiceMetrics:
+    service_name: str
+    timestamp: datetime
+    request_rate: float
+    error_rate: float
+    response_time_p95: float
+    response_time_p99: float
+    cpu_usage: float
+    memory_usage: float
+    active_connections: int
+    queue_depth: int
+
+class CloudNativeObservabilityPlatform:
+    def __init__(self):
+        self.metric_collectors = {}
+        self.alert_manager = AlertManager()
+        self.chaos_engineer = ChaosEngineer()
+        self.service_topology = ServiceTopologyMapper()
+        self.predictor = PerformancePredictor()
+        
+    async def start_comprehensive_monitoring(self):
+        """Start comprehensive cloud-native monitoring"""
+        
+        # Initialize distributed tracing
+        await self.setup_distributed_tracing()
+        
+        # Start metric collection
+        await self.start_metric_collection()
+        
+        # Initialize service topology discovery
+        await self.service_topology.discover_services()
+        
+        # Start predictive analytics
+        await self.predictor.start_prediction_engine()
+        
+        # Begin chaos engineering tests
+        await self.chaos_engineer.start_chaos_testing()
+        
+    async def setup_distributed_tracing(self):
+        """Advanced distributed tracing configuration"""
+        tracing_config = {
+            'service_name': 'cloud-native-platform',
+            'jaeger_endpoint': 'http://jaeger-collector:14268/api/traces',
+            'sampling_rate': 0.1,  # 10% sampling
+            'trace_correlation': {
+                'business_transaction_header': 'X-Business-Transaction-ID',
+                'user_journey_header': 'X-User-Journey-ID',
+                'feature_flag_header': 'X-Feature-Flags'
+            },
+            'custom_tags': {
+                'deployment.version': 'v1.2.3',
+                'cluster.name': 'production-us-west-2',
+                'environment': 'production'
+            }
+        }
+        
+        # Initialize OpenTelemetry với custom configuration
+        from opentelemetry import trace
+        from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import BatchSpanProcessor
+        
+        trace.set_tracer_provider(TracerProvider())
+        
+        jaeger_exporter = JaegerExporter(
+            agent_host_name="jaeger-agent",
+            agent_port=6831,
+        )
+        
+        span_processor = BatchSpanProcessor(jaeger_exporter)
+        trace.get_tracer_provider().add_span_processor(span_processor)
+        
+        self.tracer = trace.get_tracer(tracing_config['service_name'])
+        
+    async def start_metric_collection(self):
+        """Advanced metric collection cho cloud-native services"""
+        
+        # Business metrics collection
+        business_metrics = {
+            'user_journey_completion_rate': {
+                'query': 'rate(user_journey_completed_total[5m])',
+                'threshold': 0.95
+            },
+            'revenue_per_minute': {
+                'query': 'rate(transaction_amount_total[1m])',
+                'threshold': 1000
+            },
+            'feature_adoption_rate': {
+                'query': 'rate(feature_usage_total[1h]) by (feature_name)',
+                'threshold': 0.1
+            }
+        }
+        
+        # Infrastructure metrics
+        infrastructure_metrics = {
+            'service_mesh_success_rate': {
+                'query': 'rate(istio_requests_total{response_code!~"5.."}[5m]) / rate(istio_requests_total[5m])',
+                'threshold': 0.999
+            },
+            'cross_cluster_latency': {
+                'query': 'histogram_quantile(0.95, rate(istio_request_duration_milliseconds_bucket{source_cluster!=destination_cluster}[5m]))',
+                'threshold': 100
+            },
+            'service_discovery_health': {
+                'query': 'up{job="kubernetes-service-discovery"}',
+                'threshold': 1
+            }
+        }
+        
+        # Custom application metrics
+        application_metrics = {
+            'database_connection_pool_utilization': {
+                'query': 'pg_stat_activity_count / pg_settings_max_connections',
+                'threshold': 0.8
+            },
+            'cache_hit_ratio': {
+                'query': 'rate(redis_keyspace_hits_total[5m]) / (rate(redis_keyspace_hits_total[5m]) + rate(redis_keyspace_misses_total[5m]))',
+                'threshold': 0.9
+            },
+            'message_queue_lag': {
+                'query': 'sum(kafka_consumer_lag_total) by (topic, partition)',
+                'threshold': 1000
+            }
+        }
+        
+        # Start collection for all metric categories
+        all_metrics = {**business_metrics, **infrastructure_metrics, **application_metrics}
+        
+        for metric_name, config in all_metrics.items():
+            await self.start_metric_collector(metric_name, config)
+    
+    async def start_metric_collector(self, metric_name: str, config: Dict):
+        """Start individual metric collector"""
+        
+        async def collect_metric():
+            while True:
+                try:
+                    # Query Prometheus
+                    async with aiohttp.ClientSession() as session:
+                        prometheus_url = f"http://prometheus:9090/api/v1/query"
+                        params = {'query': config['query']}
+                        
+                        async with session.get(prometheus_url, params=params) as response:
+                            data = await response.json()
+                            
+                            if data['status'] == 'success':
+                                results = data['data']['result']
+                                
+                                for result in results:
+                                    value = float(result['value'][1])
+                                    labels = result['metric']
+                                    
+                                    # Store metric
+                                    await self.store_metric(metric_name, value, labels)
+                                    
+                                    # Check thresholds
+                                    if 'threshold' in config:
+                                        await self.check_threshold(metric_name, value, config['threshold'])
+                
+                except Exception as e:
+                    logging.error(f"Metric collection failed cho {metric_name}: {e}")
+                
+                await asyncio.sleep(30)  # Collect every 30 seconds
+        
+        # Start collector task
+        asyncio.create_task(collect_metric())
+    
+    async def store_metric(self, metric_name: str, value: float, labels: Dict):
+        """Store metric với time series database"""
+        metric_entry = {
+            'timestamp': datetime.now().isoformat(),
+            'metric_name': metric_name,
+            'value': value,
+            'labels': labels,
+            'cluster': labels.get('cluster', 'unknown'),
+            'service': labels.get('service_name', 'unknown')
+        }
+        
+        # Store trong time series database (InfluxDB, TimescaleDB, etc.)
+        # For this example, we'll use a simple in-memory store
+        if not hasattr(self, 'metric_store'):
+            self.metric_store = []
+        
+        self.metric_store.append(metric_entry)
+        
+        # Keep only last 10000 entries
+        if len(self.metric_store) > 10000:
+            self.metric_store = self.metric_store[-10000:]
+
+class ServiceTopologyMapper:
+    def __init__(self):
+        self.service_graph = {}
+        self.dependencies = {}
+        
+    async def discover_services(self):
+        """Discover service topology từ service mesh"""
+        
+        # Query Istio service registry
+        services = await self.query_istio_services()
+        
+        # Analyze traffic patterns
+        traffic_patterns = await self.analyze_traffic_patterns()
+        
+        # Build dependency graph
+        self.build_dependency_graph(services, traffic_patterns)
+        
+        # Detect circular dependencies
+        circular_deps = self.detect_circular_dependencies()
+        
+        if circular_deps:
+            logging.warning(f"Circular dependencies detected: {circular_deps}")
+        
+        return self.service_graph
+    
+    async def query_istio_services(self):
+        """Query Istio để get service information"""
+        # Simulate service discovery from Istio
+        return [
+            {
+                'name': 'user-service',
+                'namespace': 'production',
+                'endpoints': ['10.1.1.1:8080', '10.1.1.2:8080'],
+                'version': 'v1.2.0',
+                'cluster': 'primary'
+            },
+            {
+                'name': 'order-service',
+                'namespace': 'production',
+                'endpoints': ['10.1.2.1:8080', '10.1.2.2:8080'],
+                'version': 'v1.1.0',
+                'cluster': 'primary'
+            },
+            {
+                'name': 'payment-service',
+                'namespace': 'production',
+                'endpoints': ['10.1.3.1:8080'],
+                'version': 'v1.0.0',
+                'cluster': 'remote'
+            }
+        ]
+    
+    async def analyze_traffic_patterns(self):
+        """Analyze traffic patterns to understand service dependencies"""
+        # Query Istio telemetry to understand traffic flow
+        traffic_query = """
+        sum(rate(istio_requests_total[5m])) by (
+            source_service_name, 
+            destination_service_name,
+            source_cluster,
+            destination_cluster
+        )
+        """
+        
+        # Simulate traffic pattern analysis
+        return [
+            {
+                'source': 'api-gateway',
+                'destination': 'user-service',
+                'request_rate': 150.5,
+                'error_rate': 0.001,
+                'latency_p95': 45.2
+            },
+            {
+                'source': 'user-service',
+                'destination': 'order-service',
+                'request_rate': 89.3,
+                'error_rate': 0.002,
+                'latency_p95': 123.1
+            },
+            {
+                'source': 'order-service',
+                'destination': 'payment-service',
+                'request_rate': 67.8,
+                'error_rate': 0.005,
+                'latency_p95': 234.7
+            }
+        ]
+
+class PerformancePredictor:
+    def __init__(self):
+        self.models = {}
+        self.prediction_horizon = timedelta(hours=2)
+        
+    async def start_prediction_engine(self):
+        """Start predictive analytics engine"""
+        
+        # Load historical data
+        historical_data = await self.load_historical_metrics()
+        
+        # Train prediction models
+        await self.train_prediction_models(historical_data)
+        
+        # Start prediction loop
+        asyncio.create_task(self.prediction_loop())
+    
+    async def prediction_loop(self):
+        """Continuous prediction loop"""
+        while True:
+            try:
+                # Predict resource usage
+                resource_predictions = await self.predict_resource_usage()
+                
+                # Predict traffic patterns
+                traffic_predictions = await self.predict_traffic_patterns()
+                
+                # Predict potential failures
+                failure_predictions = await self.predict_potential_failures()
+                
+                # Generate recommendations
+                recommendations = self.generate_scaling_recommendations(
+                    resource_predictions, 
+                    traffic_predictions,
+                    failure_predictions
+                )
+                
+                # Execute auto-scaling if enabled
+                await self.execute_auto_scaling(recommendations)
+                
+            except Exception as e:
+                logging.error(f"Prediction loop error: {e}")
+            
+            await asyncio.sleep(300)  # Predict every 5 minutes
+    
+    async def predict_resource_usage(self):
+        """Predict resource usage for next 2 hours"""
+        # Simple linear regression for demonstration
+        # In production, use more sophisticated ML models
+        
+        current_time = datetime.now()
+        predictions = {}
+        
+        for service in ['user-service', 'order-service', 'payment-service']:
+            # Simulate prediction calculation
+            base_cpu = 45.0  # Current CPU usage %
+            base_memory = 67.0  # Current memory usage %
+            
+            # Add time-based patterns (higher during business hours)
+            hour_of_day = current_time.hour
+            business_hours_multiplier = 1.5 if 9 <= hour_of_day <= 17 else 0.8
+            
+            predicted_cpu = base_cpu * business_hours_multiplier
+            predicted_memory = base_memory * business_hours_multiplier * 1.1
+            
+            predictions[service] = {
+                'cpu_usage_percent': min(predicted_cpu, 100),
+                'memory_usage_percent': min(predicted_memory, 100),
+                'prediction_confidence': 0.85,
+                'prediction_time': current_time + self.prediction_horizon
+            }
+        
+        return predictions
+    
+    def generate_scaling_recommendations(self, resource_preds, traffic_preds, failure_preds):
+        """Generate intelligent scaling recommendations"""
+        recommendations = []
+        
+        for service, resource_pred in resource_preds.items():
+            if resource_pred['cpu_usage_percent'] > 80:
+                recommendations.append({
+                    'service': service,
+                    'action': 'scale_up',
+                    'reason': f"Predicted CPU usage: {resource_pred['cpu_usage_percent']:.1f}%",
+                    'recommended_replicas': '+2',
+                    'confidence': resource_pred['prediction_confidence']
+                })
+            elif resource_pred['cpu_usage_percent'] < 20:
+                recommendations.append({
+                    'service': service,
+                    'action': 'scale_down',
+                    'reason': f"Predicted CPU usage: {resource_pred['cpu_usage_percent']:.1f}%",
+                    'recommended_replicas': '-1',
+                    'confidence': resource_pred['prediction_confidence']
+                })
+        
+        return recommendations
+
+class ChaosEngineer:
+    def __init__(self):
+        self.chaos_experiments = {}
+        self.experiment_schedule = {}
+        
+    async def start_chaos_testing(self):
+        """Start automated chaos engineering"""
+        
+        # Define chaos experiments
+        experiments = [
+            {
+                'name': 'pod_failure',
+                'target': 'user-service',
+                'action': 'kill_random_pod',
+                'frequency': timedelta(hours=6),
+                'duration': timedelta(minutes=5)
+            },
+            {
+                'name': 'network_latency',
+                'target': 'order-service',
+                'action': 'inject_latency_500ms',
+                'frequency': timedelta(hours=8),
+                'duration': timedelta(minutes=10)
+            },
+            {
+                'name': 'cpu_stress',
+                'target': 'payment-service',
+                'action': 'stress_cpu_80_percent',
+                'frequency': timedelta(hours=12),
+                'duration': timedelta(minutes=3)
+            }
+        ]
+        
+        # Schedule experiments
+        for experiment in experiments:
+            asyncio.create_task(self.schedule_experiment(experiment))
+    
+    async def schedule_experiment(self, experiment):
+        """Schedule chaos experiment"""
+        while True:
+            try:
+                # Wait for next experiment time
+                await asyncio.sleep(experiment['frequency'].total_seconds())
+                
+                # Check if system is healthy before starting chaos
+                system_health = await self.check_system_health()
+                
+                if system_health['overall_health'] > 0.9:  # Only run if system is healthy
+                    logging.info(f"Starting chaos experiment: {experiment['name']}")
+                    
+                    # Execute chaos experiment
+                    await self.execute_chaos_experiment(experiment)
+                    
+                    # Monitor impact
+                    await self.monitor_chaos_impact(experiment)
+                    
+                else:
+                    logging.warning(f"Skipping chaos experiment {experiment['name']} - system health too low")
+                
+            except Exception as e:
+                logging.error(f"Chaos experiment error: {e}")
+
+# Usage example
+async def main():
+    platform = CloudNativeObservabilityPlatform()
+    
+    # Start comprehensive monitoring
+    await platform.start_comprehensive_monitoring()
+    
+    # Keep running
+    while True:
+        await asyncio.sleep(60)
+        
+        # Print status every minute
+        print(f"Platform status: Running at {datetime.now()}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+\`\`\`
+
+## 7. Enterprise Cloud-Native Security
+
+### Zero-Trust Service Communication:
+\`\`\`yaml
+# Comprehensive security policies
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: enterprise-authz-policy
+  namespace: production
+spec:
+  # Default deny all
+  rules: []
+
+---
+# Service-specific authorization
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: user-service-authz
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  rules:
+  # Allow API Gateway access
+  - from:
+    - source:
+        principals: ["cluster.local/ns/production/sa/api-gateway"]
+    to:
+    - operation:
+        methods: ["GET", "POST", "PUT"]
+        paths: ["/api/v1/users/*"]
+    when:
+    - key: request.headers[authorization]
+      values: ["Bearer *"]
+    - key: source.certificate_fingerprint
+      values: ["sha256:1234567890abcdef..."]
+  
+  # Allow inter-service communication
+  - from:
+    - source:
+        principals: ["cluster.local/ns/production/sa/order-service"]
+    to:
+    - operation:
+        methods: ["GET", "POST"]
+        paths: ["/api/v1/users/profile", "/api/v1/users/preferences"]
+    when:
+    - key: custom.service_version
+      values: ["v1.2.0", "v1.3.0"]
+
+---
+# Request authentication
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: jwt-auth
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  jwtRules:
+  - issuer: "https://auth.enterprise.com"
+    jwksUri: "https://auth.enterprise.com/.well-known/jwks.json"
+    audiences:
+    - "user-service-api"
+    forwardOriginalToken: true
+    fromHeaders:
+    - name: Authorization
+      prefix: "Bearer "
+    fromParams:
+    - "access_token"
+  - issuer: "https://internal-auth.enterprise.com"
+    jwksUri: "https://internal-auth.enterprise.com/certs"
+    audiences:
+    - "internal-services"
+
+---
+# Peer authentication với mTLS
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default-mtls
+  namespace: production
+spec:
+  mtls:
+    mode: STRICT
+
+---
+# Security scanning policy
+apiVersion: security.istio.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: runtime-security
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      security-scan: "enabled"
+  rules:
+  - violations:
+    - type: "RUNTIME_VIOLATION"
+      severity: "HIGH"
+      action: "BLOCK"
+    - type: "POLICY_VIOLATION"
+      severity: "MEDIUM"
+      action: "LOG"
+  
+  scanSettings:
+    imageScanEnabled: true
+    runtimeProtectionEnabled: true
+    networkPolicyEnforcement: true
+    
+  compliance:
+    standards: ["SOC2", "PCI-DSS", "GDPR"]
+    auditLogging: true
+    encryptionRequired: true
+\`\`\`
+
+## 8. Cost Optimization và Resource Management
+
+### Intelligent Resource Optimization:
+\`\`\`python
+# Advanced resource optimization platform
+import asyncio
+import json
+from datetime import datetime, timedelta
+import math
+from typing import Dict, List, Tuple
+import numpy as np
+
+class CloudNativeResourceOptimizer:
+    def __init__(self):
+        self.cost_analyzer = CostAnalyzer()
+        self.resource_predictor = ResourcePredictor()
+        self.optimizer = OptimizationEngine()
+        self.compliance_checker = ComplianceChecker()
+        
+    async def start_optimization_engine(self):
+        """Start comprehensive resource optimization"""
+        
+        # Analyze current costs
+        cost_analysis = await self.cost_analyzer.analyze_costs()
+        
+        # Predict resource needs
+        resource_predictions = await self.resource_predictor.predict_resource_needs()
+        
+        # Generate optimization recommendations
+        recommendations = await self.optimizer.generate_recommendations(
+            cost_analysis, resource_predictions
+        )
+        
+        # Check compliance constraints
+        validated_recommendations = await self.compliance_checker.validate_recommendations(
+            recommendations
+        )
+        
+        # Execute approved optimizations
+        await self.execute_optimizations(validated_recommendations)
+        
+        return validated_recommendations
+    
+    async def execute_optimizations(self, recommendations: List[Dict]):
+        """Execute optimization recommendations"""
+        
+        execution_results = []
+        
+        for recommendation in recommendations:
+            if recommendation['auto_executable'] and recommendation['risk_level'] == 'low':
+                try:
+                    result = await self.execute_single_optimization(recommendation)
+                    execution_results.append(result)
+                    
+                except Exception as e:
+                    logging.error(f"Optimization execution failed: {e}")
+                    execution_results.append({
+                        'recommendation_id': recommendation['id'],
+                        'status': 'failed',
+                        'error': str(e)
+                    })
+        
+        return execution_results
+    
+    async def execute_single_optimization(self, recommendation: Dict):
+        """Execute single optimization recommendation"""
+        
+        if recommendation['type'] == 'right_sizing':
+            return await self.right_size_workload(recommendation)
+        
+        elif recommendation['type'] == 'scaling_optimization':
+            return await self.optimize_scaling_policy(recommendation)
+        
+        elif recommendation['type'] == 'resource_consolidation':
+            return await self.consolidate_resources(recommendation)
+        
+        elif recommendation['type'] == 'storage_optimization':
+            return await self.optimize_storage(recommendation)
+        
+        else:
+            raise ValueError(f"Unknown optimization type: {recommendation['type']}")
+
+class CostAnalyzer:
+    def __init__(self):
+        self.cost_data = {}
+        self.billing_apis = {}
+        
+    async def analyze_costs(self):
+        """Comprehensive cost analysis"""
+        
+        # Collect cost data từ multiple sources
+        aws_costs = await self.get_aws_costs()
+        gcp_costs = await self.get_gcp_costs()
+        azure_costs = await self.get_azure_costs()
+        
+        # Analyze cost trends
+        cost_trends = self.analyze_cost_trends([aws_costs, gcp_costs, azure_costs])
+        
+        # Identify cost anomalies
+        anomalies = self.detect_cost_anomalies(cost_trends)
+        
+        # Calculate waste metrics
+        waste_analysis = self.calculate_waste_metrics()
+        
+        return {
+            'total_monthly_cost': cost_trends['total_monthly'],
+            'cost_by_service': cost_trends['by_service'],
+            'cost_by_environment': cost_trends['by_environment'],
+            'anomalies': anomalies,
+            'waste_analysis': waste_analysis,
+            'optimization_potential': self.calculate_optimization_potential(waste_analysis)
+        }
+    
+    def calculate_waste_metrics(self):
+        """Calculate resource waste metrics"""
+        
+        waste_metrics = {
+            'unused_resources': {
+                'idle_instances': 15,  # Count of idle instances
+                'unused_storage': 2.3,  # TB of unused storage
+                'abandoned_load_balancers': 3,
+                'estimated_monthly_waste': 2847.50  # USD
+            },
+            'oversized_resources': {
+                'oversized_instances': 8,
+                'potential_rightsizing_savings': 1234.75,  # USD/month
+                'storage_over_provisioning': 45.2  # Percentage
+            },
+            'inefficient_scaling': {
+                'services_with_poor_scaling': 5,
+                'scaling_inefficiency_cost': 567.25,  # USD/month
+                'recommended_scaling_adjustments': 12
+            }
+        }
+        
+        return waste_metrics
+    
+    def calculate_optimization_potential(self, waste_analysis):
+        """Calculate total optimization potential"""
+        
+        total_potential_savings = (
+            waste_analysis['unused_resources']['estimated_monthly_waste'] +
+            waste_analysis['oversized_resources']['potential_rightsizing_savings'] +
+            waste_analysis['inefficient_scaling']['scaling_inefficiency_cost']
+        )
+        
+        return {
+            'monthly_savings_potential': total_potential_savings,
+            'annual_savings_potential': total_potential_savings * 12,
+            'optimization_categories': {
+                'resource_cleanup': waste_analysis['unused_resources']['estimated_monthly_waste'],
+                'rightsizing': waste_analysis['oversized_resources']['potential_rightsizing_savings'],
+                'scaling_optimization': waste_analysis['inefficient_scaling']['scaling_inefficiency_cost']
+            }
+        }
+
+class OptimizationEngine:
+    def __init__(self):
+        self.optimization_algorithms = {
+            'right_sizing': self.generate_right_sizing_recommendations,
+            'scaling': self.generate_scaling_recommendations,
+            'consolidation': self.generate_consolidation_recommendations,
+            'storage': self.generate_storage_recommendations
+        }
+        
+    async def generate_recommendations(self, cost_analysis, resource_predictions):
+        """Generate comprehensive optimization recommendations"""
+        
+        all_recommendations = []
+        
+        # Generate different types of recommendations
+        for opt_type, algorithm in self.optimization_algorithms.items():
+            recommendations = await algorithm(cost_analysis, resource_predictions)
+            all_recommendations.extend(recommendations)
+        
+        # Sort by potential savings
+        all_recommendations.sort(
+            key=lambda x: x['estimated_monthly_savings'], 
+            reverse=True
+        )
+        
+        # Add priority scores
+        for i, recommendation in enumerate(all_recommendations):
+            recommendation['priority_score'] = self.calculate_priority_score(
+                recommendation, i
+            )
+        
+        return all_recommendations
+    
+    async def generate_right_sizing_recommendations(self, cost_analysis, resource_predictions):
+        """Generate right-sizing recommendations"""
+        
+        recommendations = []
+        
+        # Analyze current resource utilization
+        services = [
+            {
+                'name': 'user-service',
+                'current_cpu_request': '500m',
+                'current_memory_request': '1Gi',
+                'actual_cpu_usage': '200m',
+                'actual_memory_usage': '400Mi',
+                'current_cost': 145.50  # Monthly
+            },
+            {
+                'name': 'order-service',
+                'current_cpu_request': '1000m',
+                'current_memory_request': '2Gi',
+                'actual_cpu_usage': '800m',
+                'actual_memory_usage': '1.2Gi',
+                'current_cost': 291.00  # Monthly
+            }
+        ]
+        
+        for service in services:
+            # Calculate optimal sizing
+            optimal_cpu = self.calculate_optimal_cpu(service)
+            optimal_memory = self.calculate_optimal_memory(service)
+            
+            # Calculate savings
+            savings = self.calculate_rightsizing_savings(
+                service, optimal_cpu, optimal_memory
+            )
+            
+            if savings > 10:  # Only recommend if savings > $10/month
+                recommendations.append({
+                    'id': f"rightsize_{service['name']}",
+                    'type': 'right_sizing',
+                    'service': service['name'],
+                    'current_resources': {
+                        'cpu': service['current_cpu_request'],
+                        'memory': service['current_memory_request']
+                    },
+                    'recommended_resources': {
+                        'cpu': optimal_cpu,
+                        'memory': optimal_memory
+                    },
+                    'estimated_monthly_savings': savings,
+                    'confidence': 0.87,
+                    'risk_level': 'low',
+                    'auto_executable': True,
+                    'implementation_effort': 'low'
+                })
+        
+        return recommendations
+    
+    def calculate_optimal_cpu(self, service):
+        """Calculate optimal CPU allocation"""
+        actual_usage = self.parse_cpu_value(service['actual_cpu_usage'])
+        
+        # Add 20% buffer for peak usage
+        optimal_cpu = math.ceil(actual_usage * 1.2)
+        
+        return f"{optimal_cpu}m"
+    
+    def calculate_optimal_memory(self, service):
+        """Calculate optimal memory allocation"""
+        actual_usage = self.parse_memory_value(service['actual_memory_usage'])
+        
+        # Add 30% buffer for memory allocation
+        optimal_memory = math.ceil(actual_usage * 1.3)
+        
+        if optimal_memory < 1024:
+            return f"{optimal_memory}Mi"
+        else:
+            return f"{optimal_memory // 1024}Gi"
+
+# Usage
+async def main():
+    optimizer = CloudNativeResourceOptimizer()
+    
+    # Run optimization analysis
+    recommendations = await optimizer.start_optimization_engine()
+    
+    print("=== Cloud-Native Resource Optimization Results ===")
+    
+    total_savings = sum(r['estimated_monthly_savings'] for r in recommendations)
+    print(f"Total Monthly Savings Potential: ${total_savings:.2f}")
+    print(f"Annual Savings Potential: ${total_savings * 12:.2f}")
+    
+    print("\\nTop Recommendations:")
+    for i, rec in enumerate(recommendations[:5], 1):
+        print(f"{i}. {rec['type'].title()}: {rec.get('service', 'Multiple Services')}")
+        print(f"   Savings: ${rec['estimated_monthly_savings']:.2f}/month")
+        print(f"   Risk: {rec['risk_level'].title()}, Effort: {rec['implementation_effort'].title()}")
+        print()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+\`\`\`
+
 ## Kết luận
 
-Cloud-native development với service mesh và comprehensive observability enables teams để build highly scalable, resilient applications. Proper implementation của distributed tracing, metrics, logging và health checks là essential cho production-ready cloud-native systems.`,
+Cloud-Native Development với Service Mesh và Advanced Observability represents fundamental transformation trong modern software architecture, enabling organizations achieve unprecedented levels của scalability, reliability, security, cost efficiency trong sophisticated distributed system environments.
+
+### Strategic Business Transformation:
+
+**Operational Excellence Achievement:**
+- **Multi-Cloud Orchestration**: Seamless workload management across AWS, Azure, GCP environments
+- **Intelligent Traffic Management**: Service mesh routing với advanced load balancing algorithms reducing latency 40-60%
+- **Predictive Scaling**: AI-driven resource allocation preventing bottlenecks while optimizing costs
+- **Zero-Trust Security**: Comprehensive identity-based security protecting against advanced threats
+
+**Innovation Acceleration:**
+- **Rapid Experimentation**: Safe canary deployments enabling faster feature validation
+- **Development Velocity**: Service mesh abstractions allowing teams focus on business logic
+- **Technology Adoption**: Cloud-native patterns facilitating emerging technology integration
+- **Market Responsiveness**: Elastic scaling supporting sudden demand changes
+
+### Advanced Implementation Excellence:
+
+**Service Mesh Mastery:**
+- **Multi-Cluster Federation**: Unified service communication across geographic regions
+- **Traffic Splitting**: Sophisticated A/B testing với business metric correlation
+- **Circuit Breaking**: Intelligent failure isolation preventing cascade failures
+- **Security Policies**: Zero-trust networking với automated certificate management
+
+**Observability Sophistication:**
+- **Distributed Tracing**: End-to-end request tracking với business context correlation
+- **Predictive Analytics**: Machine learning identifying performance issues before impact
+- **Chaos Engineering**: Automated resilience testing ensuring system robustness
+- **Business Metrics**: Real-time KPI tracking aligned với technical performance
+
+**Cost Optimization Intelligence:**
+- **Resource Right-Sizing**: AI-driven recommendations reducing infrastructure costs 30-50%
+- **Waste Detection**: Automated identification of unused resources và optimization opportunities
+- **Scaling Efficiency**: Intelligent auto-scaling preventing over-provisioning
+- **Multi-Cloud Cost Management**: Unified cost optimization across cloud providers
+
+### Production-Ready Capabilities:
+
+**Enterprise-Grade Security:**
+- **Identity-Centric Protection**: Comprehensive authentication và authorization frameworks
+- **Runtime Security**: Real-time threat detection với automated response
+- **Compliance Automation**: Continuous SOC2, PCI-DSS, GDPR validation
+- **Secret Management**: Automated credential rotation với secure distribution
+
+**Comprehensive Monitoring:**
+- **Service Topology Discovery**: Automatic dependency mapping với impact analysis
+- **Performance Correlation**: Business metrics correlation với technical indicators
+- **Anomaly Detection**: ML-based identification of unusual patterns
+- **Incident Correlation**: Intelligent alert aggregation reducing noise
+
+**Advanced Automation:**
+- **Self-Healing Systems**: Automatic recovery from common failure scenarios
+- **Intelligent Routing**: Context-aware traffic management optimizing user experience
+- **Resource Optimization**: Continuous right-sizing với performance preservation
+- **Security Response**: Automated threat mitigation với incident documentation
+
+### Innovation Leadership:
+
+**Emerging Technology Integration:**
+- **Edge Computing**: Service mesh extension supporting edge deployments
+- **Serverless Integration**: Seamless FaaS integration với containerized services
+- **AI-First Operations**: Machine learning embedded trong operational workflows
+- **Quantum-Ready Architecture**: Future-proof designs supporting quantum computing integration
+
+**Advanced Patterns:**
+- **Event-Driven Architecture**: Reactive systems với real-time data processing
+- **Stream Processing**: Continuous data analysis supporting real-time decisions
+- **Digital Twin**: Virtual representations của infrastructure enabling simulation
+- **Autonomous Operations**: Self-managing systems requiring minimal human intervention
+
+### Implementation Roadmap:
+
+**Phase 1: Foundation (Months 1-3)**
+- Service mesh deployment với basic traffic management
+- Distributed tracing implementation
+- Basic observability stack setup
+- Security policy foundation
+
+**Phase 2: Intelligence (Months 4-6)**
+- Predictive analytics deployment
+- Advanced traffic management patterns
+- Comprehensive monitoring integration
+- Cost optimization automation
+
+**Phase 3: Excellence (Months 7-9)**
+- Multi-cluster federation implementation
+- Chaos engineering automation
+- AI-powered operations deployment
+- Advanced security hardening
+
+**Phase 4: Innovation (Ongoing)**
+- Emerging technology adoption
+- Industry best practices leadership
+- Community contribution và knowledge sharing
+- Continuous optimization và innovation
+
+### Success Metrics:
+
+**Technical Excellence:**
+- Service reliability: >99.99% uptime với automated recovery
+- Performance optimization: 50-70% latency reduction
+- Cost efficiency: 40-60% infrastructure cost reduction
+- Security posture: Zero successful security breaches
+
+**Business Impact:**
+- Innovation velocity: 400-500% faster feature delivery
+- Market responsiveness: Real-time adaptation to demand changes
+- Customer satisfaction: Improved user experience scores
+- Revenue protection: Zero revenue-impacting outages
+
+**Organizational Transformation:**
+- Team productivity: Developers focus on features rather than infrastructure
+- Operational efficiency: 80-90% reduction trong manual operations
+- Decision speed: Real-time insights driving rapid decisions
+- Innovation culture: Experimentation-friendly environment supporting growth
+
+### Future-Ready Strategy:
+
+**Technology Evolution:**
+- **Cloud-Native 2.0**: AI-integrated infrastructure với autonomous management
+- **Edge-First Design**: Distributed computing với edge intelligence
+- **Quantum Integration**: Quantum computing capabilities trong cloud-native platforms
+- **Sustainable Computing**: Environmental optimization với green technology adoption
+
+**Business Alignment:**
+- **Customer-Centric Systems**: Infrastructure optimized for user experience
+- **Global Scalability**: Worldwide deployment với local optimization
+- **Innovation Platform**: Technology foundation supporting business experimentation
+- **Competitive Advantage**: Superior technical capabilities driving market leadership
+
+Modern enterprises require sophisticated cloud-native capabilities combining automation, intelligence, security, efficiency. Advanced service mesh architectures với comprehensive observability provide foundation cho organizational excellence, enabling sustained competitive advantage through superior technology implementations.
+
+Investment trong cloud-native excellence delivers transformative returns through improved reliability, enhanced security, accelerated innovation, reduced costs essential for digital business success trong increasingly complex distributed computing environments.
+
+The future belongs to organizations mastering cloud-native development, achieving infrastructure automation, intelligent operations, security excellence enabling rapid adaptation to market demands, consistent service delivery, continuous innovation essential for long-term prosperity trong rapidly evolving technology landscape.
+
+Companies implementing advanced cloud-native architectures position themselves for technological leadership, operational excellence, business success through superior platform capabilities supporting sustained growth, customer satisfaction, competitive differentiation trong increasingly sophisticated cloud computing ecosystem.`,
     category: "DevOps",
     tags: ["cloud-native", "service-mesh", "observability", "microservices", "monitoring"],
     imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop",
