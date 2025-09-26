@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import ContactForm from "@/components/contact-form";
 import PerformanceBenchmark from "@/components/performance-benchmark";
 import EmailPopup from "@/components/email-popup";
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,6 @@ import {
 } from "lucide-react";
 
 export default function HostingReseller() {
-  const [showContactForm, setShowContactForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupData, setPopupData] = useState({
     email: "",
@@ -197,7 +195,7 @@ export default function HostingReseller() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Button
-                onClick={() => setShowContactForm(true)}
+                onClick={() => window.location.href = '/contact'}
                 size="lg"
                 className="bg-purple-600 hover:bg-purple-700 text-white px-8"
               >
@@ -363,7 +361,7 @@ export default function HostingReseller() {
                   <Button
                     onClick={() => {
                       setFormData({...formData, package: plan.name});
-                      setShowContactForm(true);
+                      window.location.href = '/contact';
                     }}
                     className={`w-full ${
                       plan.popular 
@@ -386,7 +384,7 @@ export default function HostingReseller() {
           selectedPlan="advanced"
           onPlanSelect={(plan) => {
             setFormData({...formData, package: plan});
-            setShowContactForm(true);
+            window.location.href = '/contact';
           }}
         />
       </section>
@@ -619,7 +617,6 @@ export default function HostingReseller() {
       )}
 
       {/* Contact Form Modal */}
-      <ContactForm open={showContactForm} onOpenChange={setShowContactForm} />
 
       {/* Email Popup - Show after 15 seconds */}
       <EmailPopup

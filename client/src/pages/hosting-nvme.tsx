@@ -9,7 +9,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Check, Zap, Shield, HardDrive, Users, Server, Lock, Database, X } from "lucide-react";
 import { motion } from "framer-motion";
-import ContactForm from "@/components/contact-form";
 import EmailPopup from "@/components/email-popup";
 import PerformanceBenchmark from "@/components/performance-benchmark";
 
@@ -28,7 +27,6 @@ export default function HostingNVME() {
     // Integration with email service would go here
     await new Promise(resolve => setTimeout(resolve, 1000));
   };
-  const [showContactForm, setShowContactForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -220,7 +218,7 @@ export default function HostingNVME() {
               variant="outline" 
               size="lg"
               className="border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-lg text-lg font-semibold transform hover:scale-105 transition-all"
-              onClick={() => setShowContactForm(true)}
+              onClick={() => window.location.href = '/contact'}
             >
               Tư vấn miễn phí
             </Button>
@@ -336,7 +334,7 @@ export default function HostingNVME() {
                     ))}
                     <Button 
                       className={`w-full mt-6 ${pkg.popular ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 hover:bg-gray-700'} text-white group-hover:scale-105 transition-all`}
-                      onClick={() => setShowContactForm(true)}
+                      onClick={() => window.location.href = '/contact'}
                     >
                       Chọn Gói & Nhận Backup Test
                     </Button>
@@ -440,7 +438,7 @@ export default function HostingNVME() {
           selectedPlan="advanced"
           onPlanSelect={(plan) => {
             setFormData({...formData, package: plan});
-            setShowContactForm(true);
+            window.location.href = '/contact';
           }}
         />
       </section>
@@ -612,10 +610,6 @@ export default function HostingNVME() {
       )}
 
       {/* Contact Form Modal */}
-      <ContactForm 
-        open={showContactForm} 
-        onOpenChange={setShowContactForm}
-      />
 
       {/* Email Popup - Show after 15 seconds */}
       <EmailPopup

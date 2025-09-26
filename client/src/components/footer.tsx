@@ -1,11 +1,9 @@
 import { ArrowRight, Phone, Mail, MapPin, Facebook, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import ContactForm from "./contact-form";
 import stepLogo from "@assets/logo step_1753193285585.png";
 
 export default function Footer() {
-  const [showContactForm, setShowContactForm] = useState(false);
 
   return (
     <>
@@ -223,7 +221,6 @@ export default function Footer() {
         </div>
       </footer>
 
-      <ContactForm open={showContactForm} onOpenChange={setShowContactForm} />
     </>
   );
 }

@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import ContactForm from "./contact-form";
 import { InlineEditor } from "./inline-editor";
 
 export default function Hero() {
-  const [showContactForm, setShowContactForm] = useState(false);
 
   return (
     <section className="pt-20 pb-16 step-hero-gradient relative overflow-hidden" data-onboarding="hero-section">
@@ -40,7 +38,7 @@ export default function Hero() {
             >
               <Button 
                 className="step-gradient text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:shadow-lg transition-all h-12 sm:h-14 step-pulse-animation button-hover nowrap"
-                onClick={() => setShowContactForm(true)}
+                onClick={() => window.location.href = '/contact'}
                 data-onboarding="hero-cta-button"
               >
                 Bắt đầu miễn phí
@@ -54,7 +52,7 @@ export default function Hero() {
               <Button 
                 variant="outline" 
                 className="border-[hsl(207,100%,40%)] text-[hsl(207,100%,40%)] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[hsl(207,100%,40%)] hover:text-white transition-all h-12 sm:h-14 button-hover nowrap"
-                onClick={() => setShowContactForm(true)}
+                onClick={() => window.location.href = '/contact'}
               >
                 Liên hệ chuyên gia
               </Button>
@@ -91,7 +89,6 @@ export default function Hero() {
         className="absolute bottom-20 right-10 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl"
       ></motion.div>
       
-      <ContactForm open={showContactForm} onOpenChange={setShowContactForm} />
     </section>
   );
 }

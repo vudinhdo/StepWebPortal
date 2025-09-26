@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import ContactForm from "@/components/contact-form";
 import PerformanceBenchmark from "@/components/performance-benchmark";
 import EmailPopup from "@/components/email-popup";
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,6 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function HostingWordPress() {
-  const [showContactForm, setShowContactForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupData, setPopupData] = useState({
     email: "",
@@ -128,7 +126,7 @@ export default function HostingWordPress() {
     e.preventDefault();
     console.log('Main form data:', formData);
     // Handle form submission
-    setShowContactForm(false);
+    // Contact form removed - navigate to /contact page
   };
 
   const handlePopupSubmit = (e: React.FormEvent) => {
@@ -191,7 +189,7 @@ export default function HostingWordPress() {
                   variant="outline"
                   size="lg"
                   className="border-[hsl(207,100%,40%)] text-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,40%)] hover:text-white px-8 py-4 text-lg"
-                  onClick={() => setShowContactForm(true)}
+                  onClick={() => window.location.href = '/contact'}
                 >
                   Tư Vấn Miễn Phí
                 </Button>
@@ -355,7 +353,7 @@ export default function HostingWordPress() {
                   }`}
                   onClick={() => {
                     setFormData({...formData, package: pkg.name});
-                    setShowContactForm(true);
+                    window.location.href = '/contact';
                   }}
                 >
                   Chọn Gói & Di Chuyển Site Miễn Phí
@@ -459,7 +457,7 @@ export default function HostingWordPress() {
           selectedPlan="advanced"
           onPlanSelect={(plan) => {
             setFormData({...formData, package: plan});
-            setShowContactForm(true);
+            window.location.href = '/contact';
           }}
         />
       </section>
@@ -540,7 +538,6 @@ export default function HostingWordPress() {
       </section>
 
       {/* Contact Form Modal */}
-      <ContactForm open={showContactForm} onOpenChange={setShowContactForm} />
 
       {/* Email Popup */}
       {showPopup && (

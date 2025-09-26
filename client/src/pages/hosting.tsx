@@ -23,7 +23,6 @@ import {
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import ContactForm from "@/components/contact-form";
 import PerformanceBenchmark from "@/components/performance-benchmark";
 import EmailPopup from "@/components/email-popup";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,6 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
 export default function Hosting() {
-  const [showContactForm, setShowContactForm] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
   
   // Color mappings for dynamic Tailwind classes
@@ -382,7 +380,7 @@ export default function Hosting() {
                   variant="outline"
                   size="lg"
                   className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg transition-all duration-300"
-                  onClick={() => setShowContactForm(true)}
+                  onClick={() => window.location.href = '/contact'}
                   data-testid="button-hosting-consultation"
                 >
                   Tư Vấn Miễn Phí
@@ -683,7 +681,7 @@ export default function Hosting() {
                           ? 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white'
                           : `bg-gradient-to-r ${pkg.gradient} hover:shadow-lg text-white`
                       } transition-all duration-300`}
-                      onClick={() => setShowContactForm(true)}
+                      onClick={() => window.location.href = '/contact'}
                       data-testid={`button-choose-package-${index}`}
                     >
                       <Rocket className="mr-2 h-4 w-4" />
@@ -807,7 +805,7 @@ export default function Hosting() {
               <Button 
                 size="lg"
                 className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
-                onClick={() => setShowContactForm(true)}
+                onClick={() => window.location.href = '/contact'}
                 data-testid="button-start-hosting"
               >
                 <Rocket className="mr-2 h-5 w-5" />
@@ -819,7 +817,7 @@ export default function Hosting() {
                 variant="outline"
                 size="lg"
                 className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg transition-all duration-300"
-                onClick={() => setShowContactForm(true)}
+                onClick={() => window.location.href = '/contact'}
                 data-testid="button-contact-hosting-expert"
               >
                 Liên Hệ Chuyên Gia
@@ -831,11 +829,6 @@ export default function Hosting() {
 
       <Footer />
 
-      {/* Contact Form Modal */}
-      <ContactForm 
-        open={showContactForm} 
-        onOpenChange={setShowContactForm}
-      />
 
 
       {/* Email Popup Component */}

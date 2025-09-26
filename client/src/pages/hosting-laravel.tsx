@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import ContactForm from "@/components/contact-form";
 import PerformanceBenchmark from "@/components/performance-benchmark";
 import EmailPopup from "@/components/email-popup";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function HostingLaravel() {
-  const [showContactForm, setShowContactForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupData, setPopupData] = useState({
     email: "",
@@ -199,7 +197,7 @@ export default function HostingLaravel() {
     e.preventDefault();
     console.log('Main form data:', formData);
     // Handle form submission
-    setShowContactForm(false);
+    // Contact form removed - navigate to /contact page
   };
 
   const handlePopupSubmit = (e: React.FormEvent) => {
@@ -262,7 +260,7 @@ export default function HostingLaravel() {
                   variant="outline"
                   size="lg"
                   className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-8 py-4 text-lg"
-                  onClick={() => setShowContactForm(true)}
+                  onClick={() => window.location.href = '/contact'}
                 >
                   Deploy Test Ngay
                 </Button>
@@ -417,7 +415,7 @@ export default function HostingLaravel() {
                   }`}
                   onClick={() => {
                     setFormData({...formData, package: pkg.name});
-                    setShowContactForm(true);
+                    window.location.href = '/contact';
                   }}
                 >
                   Chọn Gói & Deploy Test
@@ -586,7 +584,7 @@ export default function HostingLaravel() {
           selectedPlan="advanced"
           onPlanSelect={(plan) => {
             setFormData({...formData, package: plan});
-            setShowContactForm(true);
+            window.location.href = '/contact';
           }}
         />
       </section>
@@ -668,7 +666,6 @@ export default function HostingLaravel() {
       </section>
 
       {/* Contact Form Modal */}
-      <ContactForm open={showContactForm} onOpenChange={setShowContactForm} />
 
       {/* Email Popup */}
       {showPopup && (

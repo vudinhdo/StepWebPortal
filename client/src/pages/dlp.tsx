@@ -23,14 +23,12 @@ import {
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import ContactForm from "@/components/contact-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
 export default function DLP() {
-  const [showContactForm, setShowContactForm] = useState(false);
   const { toast } = useToast();
 
   const features = [
@@ -177,7 +175,7 @@ export default function DLP() {
                     <Button 
                       size="lg" 
                       className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
-                      onClick={() => setShowContactForm(true)}
+                      onClick={() => window.location.href = '/contact'}
                       data-testid="button-demo-dlp"
                     >
                       <Eye className="mr-2 h-5 w-5" />
@@ -190,7 +188,7 @@ export default function DLP() {
                       variant="outline" 
                       size="lg"
                       className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-semibold transition-all duration-300"
-                      onClick={() => setShowContactForm(true)}
+                      onClick={() => window.location.href = '/contact'}
                       data-testid="button-consultation"
                     >
                       <MessageCircle className="mr-2 h-5 w-5" />
@@ -328,7 +326,7 @@ export default function DLP() {
                           backgroundColor: model.recommended ? `hsl(var(--step-dlp))` : `hsl(var(--step-blue))`,
                           color: 'white'
                         }}
-                        onClick={() => setShowContactForm(true)}
+                        onClick={() => window.location.href = '/contact'}
                         data-testid={`button-select-${index}`}
                       >
                         Chọn Gói Này
@@ -457,7 +455,7 @@ export default function DLP() {
                   <Button 
                     size="lg" 
                     className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
-                    onClick={() => setShowContactForm(true)}
+                    onClick={() => window.location.href = '/contact'}
                     data-testid="button-contact-now"
                   >
                     <Phone className="mr-2 h-5 w-5" />
@@ -470,7 +468,7 @@ export default function DLP() {
                     variant="outline" 
                     size="lg"
                     className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-semibold transition-all duration-300"
-                    onClick={() => setShowContactForm(true)}
+                    onClick={() => window.location.href = '/contact'}
                     data-testid="button-free-demo"
                   >
                     <Eye className="mr-2 h-5 w-5" />
@@ -501,14 +499,6 @@ export default function DLP() {
       
       <Footer />
       
-      {/* Contact Form Modal */}
-      <ContactForm 
-        open={showContactForm} 
-        onOpenChange={setShowContactForm}
-        initialService="DLP"
-        intent="demo"
-        defaultMessage="Tôi muốn xem demo DLP và tư vấn giải pháp Data Loss Prevention phù hợp với doanh nghiệp."
-      />
     </div>
   );
 }

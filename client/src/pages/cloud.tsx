@@ -167,7 +167,7 @@ export default function CloudPage() {
                 </Button>
                 <Button 
                   variant="outline" 
-                  onClick={() => setShowContactForm(true)}
+                  onClick={() => window.location.href = '/contact'}
                   className="border-[hsl(207,100%,40%)] text-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,40%)] hover:text-white text-lg px-8 py-4"
                 >
                   Tư Vấn Miễn Phí
@@ -279,7 +279,7 @@ export default function CloudPage() {
                         ? 'bg-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,35%)] text-white' 
                         : 'bg-white border border-[hsl(207,100%,40%)] text-[hsl(207,100%,40%)] hover:bg-[hsl(207,100%,40%)] hover:text-white'
                       }`}
-                      onClick={() => setShowContactForm(true)}
+                      onClick={() => window.location.href = '/contact'}
                     >
                       Chọn Gói & Tư Vấn
                     </Button>
@@ -375,7 +375,7 @@ export default function CloudPage() {
               Nhận báo giá cá nhân hóa và ưu đãi 20% cho tháng đầu tiên!
             </p>
             <Button 
-              onClick={() => setShowContactForm(true)}
+              onClick={() => window.location.href = '/contact'}
               className="bg-white text-[hsl(207,100%,40%)] hover:bg-gray-100 text-lg px-8 py-4"
             >
               Gửi Yêu Cầu & Nhận Báo Giá
@@ -386,7 +386,6 @@ export default function CloudPage() {
       </main>
 
       <Footer />
-      <CloudContactForm open={showContactForm} onOpenChange={setShowContactForm} />
       <CloudPopup open={showPopup} onOpenChange={setShowPopup} />
     </>
   );

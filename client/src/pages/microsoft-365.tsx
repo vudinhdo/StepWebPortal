@@ -25,7 +25,6 @@ import {
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import ContactForm from "@/components/contact-form";
 import PerformanceBenchmark from "@/components/performance-benchmark";
 import EmailPopup from "@/components/email-popup";
 import { Button } from "@/components/ui/button";
@@ -34,7 +33,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Microsoft365() {
-  const [showContactForm, setShowContactForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupData, setPopupData] = useState({
     email: "",
@@ -202,7 +200,7 @@ export default function Microsoft365() {
     e.preventDefault();
     console.log('Main form data:', formData);
     // Handle form submission
-    setShowContactForm(false);
+    // Contact form removed - navigate to /contact page
   };
 
   const handlePopupSubmit = (e: React.FormEvent) => {
@@ -265,7 +263,7 @@ export default function Microsoft365() {
                   variant="outline"
                   size="lg"
                   className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg"
-                  onClick={() => setShowContactForm(true)}
+                  onClick={() => window.location.href = '/contact'}
                   data-testid="button-free-trial"
                 >
                   Nhận 17% Giảm Giá Năm Đầu
@@ -447,7 +445,7 @@ export default function Microsoft365() {
                       ? 'bg-blue-600 hover:bg-blue-700 text-white'
                       : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
                   }`}
-                  onClick={() => setShowContactForm(true)}
+                  onClick={() => window.location.href = '/contact'}
                   data-testid={`button-choose-package-${index}`}
                 >
                   Chọn Gói {pkg.name}
@@ -517,7 +515,7 @@ export default function Microsoft365() {
             <Button 
               size="lg"
               className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
-              onClick={() => setShowContactForm(true)}
+              onClick={() => window.location.href = '/contact'}
               data-testid="button-start-now"
             >
               Bắt Đầu Ngay
@@ -528,7 +526,7 @@ export default function Microsoft365() {
               variant="outline"
               size="lg"
               className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg"
-              onClick={() => setShowContactForm(true)}
+              onClick={() => window.location.href = '/contact'}
               data-testid="button-contact-consultant"
             >
               Liên Hệ Tư Vấn
@@ -539,11 +537,6 @@ export default function Microsoft365() {
 
       <Footer />
 
-      {/* Contact Form Modal */}
-      <ContactForm 
-        open={showContactForm} 
-        onOpenChange={setShowContactForm}
-      />
 
       {/* Email Popup */}
       {showPopup && (
