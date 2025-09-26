@@ -321,7 +321,7 @@ export default function Contact() {
                       name="service"
                       control={form.control}
                       render={({ field }) => (
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select onValueChange={field.onChange} value={field.value || ""}>
                           <SelectTrigger className="mt-1" data-testid="select-service">
                             <SelectValue placeholder="Chọn bộ phận hoặc dịch vụ" />
                           </SelectTrigger>
