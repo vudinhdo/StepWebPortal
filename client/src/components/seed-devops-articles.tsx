@@ -16357,13 +16357,13 @@ async def main():
     print("=== Cloud-Native Resource Optimization Results ===")
     
     total_savings = sum(r['estimated_monthly_savings'] for r in recommendations)
-    print(f"Total Monthly Savings Potential: ${total_savings:.2f}")
-    print(f"Annual Savings Potential: ${total_savings * 12:.2f}")
+    print("Total Monthly Savings Potential: $" + f"{total_savings:.2f}")
+    print("Annual Savings Potential: $" + f"{total_savings * 12:.2f}")
     
     print("\\nTop Recommendations:")
     for i, rec in enumerate(recommendations[:5], 1):
         print(f"{i}. {rec['type'].title()}: {rec.get('service', 'Multiple Services')}")
-        print(f"   Savings: ${rec['estimated_monthly_savings']:.2f}/month")
+        print("   Savings: $" + f"{rec['estimated_monthly_savings']:.2f}" + "/month")
         print(f"   Risk: {rec['risk_level'].title()}, Effort: {rec['implementation_effort'].title()}")
         print()
 
