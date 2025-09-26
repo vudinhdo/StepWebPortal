@@ -148,8 +148,8 @@ export default function Contact() {
       
       <main>
         {/* Hero Section - Blue Background with White Text */}
-        <section className="relative pt-20 pb-24 overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
-          <div className="absolute inset-0 bg-blue-600"></div>
+        <section className="relative pt-20 pb-24 overflow-hidden" style={{background: 'linear-gradient(to bottom right, #2563eb, #1d4ed8, #1e40af)'}}>
+          <div className="absolute inset-0" style={{backgroundColor: '#2563eb'}}></div>
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-5xl mx-auto text-center">
