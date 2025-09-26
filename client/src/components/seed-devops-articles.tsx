@@ -9485,9 +9485,1443 @@ if __name__ == "__main__":
     asyncio.run(main())
 \`\`\`
 
+## 4. Zero-Trust Security Architecture
+
+### Zero-Trust Network Implementation:
+\`\`\`yaml
+# Zero-trust network policies với Istio
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: zero-trust-policy
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  rules:
+  # Allow only authenticated requests
+  - from:
+    - source:
+        principals: ["cluster.local/ns/production/sa/api-gateway"]
+    to:
+    - operation:
+        methods: ["GET", "POST"]
+        paths: ["/api/users/*"]
+    when:
+    - key: request.headers[authorization]
+      values: ["Bearer *"]
+    - key: source.certificate_fingerprint
+      values: ["sha256:1234567890abcdef..."]
+
+---
+# Service-to-service mutual TLS
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: production
+spec:
+  mtls:
+    mode: STRICT
+
+---
+# JWT validation policy
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: jwt-validation
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  jwtRules:
+  - issuer: "https://auth.company.com"
+    jwksUri: "https://auth.company.com/.well-known/jwks.json"
+    audiences:
+    - "user-service-api"
+    forwardOriginalToken: true
+  - issuer: "https://internal-auth.company.com"
+    jwksUri: "https://internal-auth.company.com/certs"
+    audiences:
+    - "internal-services"
+
+---
+# Network segmentation
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: zero-trust-network-policy
+  namespace: production
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  
+  # Default deny all
+  ingress: []
+  egress:
+  # Allow DNS resolution
+  - to: []
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+  
+  # Allow specific service communication
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: database
+    ports:
+    - protocol: TCP
+      port: 5432
+  
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: cache
+    ports:
+    - protocol: TCP
+      port: 6379
+
+---
+# Workload-specific policies
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: user-service-policy
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: user-service
+  policyTypes:
+  - Ingress
+  - Egress
+  
+  ingress:
+  # Allow traffic từ API Gateway
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: api-gateway
+      podSelector:
+        matchLabels:
+          app: gateway
+    ports:
+    - protocol: TCP
+      port: 8080
+  
+  # Allow traffic từ monitoring
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    ports:
+    - protocol: TCP
+      port: 9090  # Metrics endpoint
+  
+  egress:
+  # Allow database access
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: database
+    ports:
+    - protocol: TCP
+      port: 5432
+  
+  # Allow external API calls
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443  # HTTPS
+    - protocol: TCP
+      port: 80   # HTTP
+\`\`\`
+
+### Advanced Identity và Access Management:
+\`\`\`python
+# RBAC automation với OIDC integration
+import json
+import jwt
+import requests
+from datetime import datetime, timedelta
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+
+class ZeroTrustAccessManager:
+    def __init__(self, oidc_config, rbac_config):
+        self.oidc_config = oidc_config
+        self.rbac_config = rbac_config
+        self.policy_engine = PolicyEngine()
+        
+    def validate_request(self, request_context):
+        """Comprehensive request validation"""
+        validation_result = {
+            'allowed': False,
+            'reason': '',
+            'required_actions': [],
+            'risk_score': 0
+        }
+        
+        # 1. Authentication validation
+        auth_result = self.validate_authentication(request_context)
+        if not auth_result['valid']:
+            validation_result['reason'] = 'Authentication failed'
+            return validation_result
+        
+        # 2. Authorization check
+        authz_result = self.check_authorization(
+            auth_result['user'],
+            request_context['resource'],
+            request_context['action']
+        )
+        
+        if not authz_result['allowed']:
+            validation_result['reason'] = 'Authorization denied'
+            return validation_result
+        
+        # 3. Context-based risk assessment
+        risk_assessment = self.assess_risk(request_context, auth_result['user'])
+        validation_result['risk_score'] = risk_assessment['score']
+        
+        # 4. Conditional access policies
+        conditional_result = self.evaluate_conditional_policies(
+            auth_result['user'],
+            request_context,
+            risk_assessment
+        )
+        
+        if conditional_result['additional_verification_required']:
+            validation_result['required_actions'] = conditional_result['actions']
+            validation_result['reason'] = 'Additional verification required'
+            return validation_result
+        
+        # 5. Final decision
+        validation_result['allowed'] = True
+        return validation_result
+    
+    def validate_authentication(self, request_context):
+        """Validate JWT tokens và certificates"""
+        token = request_context.get('authorization_token')
+        client_cert = request_context.get('client_certificate')
+        
+        if not token:
+            return {'valid': False, 'reason': 'Missing token'}
+        
+        try:
+            # Verify JWT signature và claims
+            decoded = jwt.decode(
+                token,
+                self.oidc_config['public_key'],
+                algorithms=['RS256'],
+                audience=self.oidc_config['audience'],
+                issuer=self.oidc_config['issuer']
+            )
+            
+            # Check token expiration
+            if decoded['exp'] < datetime.now().timestamp():
+                return {'valid': False, 'reason': 'Token expired'}
+            
+            # Verify client certificate if required
+            if self.oidc_config.get('require_client_cert', False):
+                if not client_cert:
+                    return {'valid': False, 'reason': 'Client certificate required'}
+                
+                cert_validation = self.validate_client_certificate(client_cert)
+                if not cert_validation['valid']:
+                    return cert_validation
+            
+            return {
+                'valid': True,
+                'user': decoded,
+                'token_claims': decoded
+            }
+            
+        except jwt.InvalidTokenError as e:
+            return {'valid': False, 'reason': f'Invalid token: {str(e)}'}
+    
+    def check_authorization(self, user, resource, action):
+        """RBAC authorization check"""
+        user_roles = user.get('roles', [])
+        user_groups = user.get('groups', [])
+        
+        # Check direct role permissions
+        for role in user_roles:
+            if self.role_has_permission(role, resource, action):
+                return {
+                    'allowed': True,
+                    'granted_by': f'role:{role}'
+                }
+        
+        # Check group permissions
+        for group in user_groups:
+            group_roles = self.rbac_config['groups'].get(group, {}).get('roles', [])
+            for role in group_roles:
+                if self.role_has_permission(role, resource, action):
+                    return {
+                        'allowed': True,
+                        'granted_by': f'group:{group}:role:{role}'
+                    }
+        
+        # Check attribute-based permissions
+        abac_result = self.check_attribute_based_access(user, resource, action)
+        if abac_result['allowed']:
+            return abac_result
+        
+        return {'allowed': False, 'reason': 'No matching permissions'}
+    
+    def assess_risk(self, request_context, user):
+        """Risk-based access control"""
+        risk_factors = []
+        total_score = 0
+        
+        # Geographic risk
+        user_location = request_context.get('source_ip_location', {})
+        expected_locations = user.get('expected_locations', [])
+        
+        if user_location and expected_locations:
+            if user_location['country'] not in expected_locations:
+                risk_factors.append({
+                    'factor': 'unusual_location',
+                    'score': 30,
+                    'details': f"Access from {user_location['country']}"
+                })
+                total_score += 30
+        
+        # Time-based risk
+        current_hour = datetime.now().hour
+        user_typical_hours = user.get('typical_access_hours', [])
+        
+        if user_typical_hours and current_hour not in user_typical_hours:
+            risk_factors.append({
+                'factor': 'unusual_time',
+                'score': 20,
+                'details': f"Access at {current_hour}:00"
+            })
+            total_score += 20
+        
+        # Device risk
+        device_fingerprint = request_context.get('device_fingerprint')
+        known_devices = user.get('known_devices', [])
+        
+        if device_fingerprint and device_fingerprint not in known_devices:
+            risk_factors.append({
+                'factor': 'unknown_device',
+                'score': 40,
+                'details': 'Unrecognized device'
+            })
+            total_score += 40
+        
+        # Behavioral analysis
+        behavior_score = self.analyze_behavior_patterns(user, request_context)
+        if behavior_score > 25:
+            risk_factors.append({
+                'factor': 'unusual_behavior',
+                'score': behavior_score,
+                'details': 'Deviation from normal patterns'
+            })
+            total_score += behavior_score
+        
+        return {
+            'score': min(total_score, 100),  # Cap at 100
+            'factors': risk_factors,
+            'risk_level': self.calculate_risk_level(total_score)
+        }
+    
+    def evaluate_conditional_policies(self, user, request_context, risk_assessment):
+        """Evaluate conditional access policies"""
+        policies = self.rbac_config.get('conditional_policies', [])
+        required_actions = []
+        
+        for policy in policies:
+            if self.policy_applies(policy, user, request_context, risk_assessment):
+                if policy['action'] == 'require_mfa':
+                    if not request_context.get('mfa_verified', False):
+                        required_actions.append({
+                            'type': 'mfa_verification',
+                            'methods': policy.get('mfa_methods', ['totp', 'sms'])
+                        })
+                
+                elif policy['action'] == 'require_device_compliance':
+                    device_compliance = self.check_device_compliance(
+                        request_context.get('device_fingerprint')
+                    )
+                    if not device_compliance['compliant']:
+                        required_actions.append({
+                            'type': 'device_compliance',
+                            'issues': device_compliance['issues']
+                        })
+                
+                elif policy['action'] == 'require_approval':
+                    required_actions.append({
+                        'type': 'manual_approval',
+                        'approvers': policy.get('approvers', []),
+                        'reason': policy.get('reason', 'High-risk access')
+                    })
+        
+        return {
+            'additional_verification_required': len(required_actions) > 0,
+            'actions': required_actions
+        }
+
+# Policy Engine cho advanced authorization
+class PolicyEngine:
+    def __init__(self):
+        self.policies = {}
+        
+    def evaluate_policy(self, policy_name, context):
+        """Evaluate OPA-style policies"""
+        policy = self.policies.get(policy_name)
+        if not policy:
+            return {'allowed': False, 'reason': 'Policy not found'}
+        
+        # Simple policy evaluation (in production, use OPA)
+        return policy(context)
+    
+    def add_policy(self, name, policy_func):
+        """Add custom policy function"""
+        self.policies[name] = policy_func
+
+# Usage với advanced security policies
+def setup_zero_trust_policies():
+    access_manager = ZeroTrustAccessManager(
+        oidc_config={
+            'public_key': load_public_key(),
+            'audience': 'production-api',
+            'issuer': 'https://auth.company.com',
+            'require_client_cert': True
+        },
+        rbac_config={
+            'roles': {
+                'admin': {
+                    'permissions': ['*:*:*']
+                },
+                'developer': {
+                    'permissions': [
+                        'applications:read:*',
+                        'applications:write:development/*',
+                        'logs:read:development/*'
+                    ]
+                },
+                'viewer': {
+                    'permissions': [
+                        'applications:read:*',
+                        'logs:read:*'
+                    ]
+                }
+            },
+            'conditional_policies': [
+                {
+                    'name': 'high_risk_mfa',
+                    'conditions': {
+                        'risk_score': {'gt': 50}
+                    },
+                    'action': 'require_mfa',
+                    'mfa_methods': ['totp', 'yubikey']
+                },
+                {
+                    'name': 'production_approval',
+                    'conditions': {
+                        'resource': {'matches': 'applications:write:production/*'},
+                        'time': {'not_in': 'business_hours'}
+                    },
+                    'action': 'require_approval',
+                    'approvers': ['production-team', 'security-team']
+                }
+            ]
+        }
+    )
+    
+    return access_manager
+
+# Test zero-trust access
+access_manager = setup_zero_trust_policies()
+
+request_context = {
+    'authorization_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...',
+    'client_certificate': 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...',
+    'source_ip': '203.0.113.1',
+    'source_ip_location': {'country': 'US', 'city': 'San Francisco'},
+    'device_fingerprint': 'device-fingerprint-hash',
+    'resource': 'applications:write:production/user-service',
+    'action': 'deploy',
+    'mfa_verified': False
+}
+
+validation_result = access_manager.validate_request(request_context)
+print(f"Access decision: {validation_result}")
+\`\`\`
+
+## 5. Advanced Threat Detection và Response
+
+### Security Information và Event Management (SIEM):
+\`\`\`python
+# Advanced SIEM implementation với ML-based threat detection
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import StandardScaler
+import asyncio
+import json
+from datetime import datetime, timedelta
+
+class AdvancedThreatDetector:
+    def __init__(self):
+        self.anomaly_detectors = {}
+        self.threat_intelligence = ThreatIntelligenceFeeds()
+        self.incident_responder = IncidentResponseSystem()
+        self.correlation_engine = EventCorrelationEngine()
+        
+    async def process_security_events(self, event_stream):
+        """Process real-time security events"""
+        async for event in event_stream:
+            # Enrich event với context
+            enriched_event = await self.enrich_event(event)
+            
+            # Correlate với other events
+            correlation_result = await self.correlation_engine.correlate(enriched_event)
+            
+            # Detect anomalies
+            anomaly_result = self.detect_anomalies(enriched_event)
+            
+            # Check threat intelligence
+            threat_intel_result = await self.threat_intelligence.check(enriched_event)
+            
+            # Calculate threat score
+            threat_score = self.calculate_threat_score(
+                enriched_event,
+                correlation_result,
+                anomaly_result,
+                threat_intel_result
+            )
+            
+            # Trigger response if needed
+            if threat_score > 75:  # High threat threshold
+                await self.incident_responder.handle_threat(
+                    enriched_event,
+                    threat_score,
+                    {
+                        'correlation': correlation_result,
+                        'anomaly': anomaly_result,
+                        'threat_intel': threat_intel_result
+                    }
+                )
+    
+    async def enrich_event(self, event):
+        """Enrich security event với additional context"""
+        enriched = event.copy()
+        
+        # Add geolocation data
+        if 'source_ip' in event:
+            geo_data = await self.get_geolocation(event['source_ip'])
+            enriched['geo_location'] = geo_data
+        
+        # Add user context
+        if 'user_id' in event:
+            user_context = await self.get_user_context(event['user_id'])
+            enriched['user_context'] = user_context
+        
+        # Add asset information
+        if 'asset_id' in event:
+            asset_info = await self.get_asset_info(event['asset_id'])
+            enriched['asset_info'] = asset_info
+        
+        # Add network context
+        if 'destination_ip' in event:
+            network_context = await self.get_network_context(event['destination_ip'])
+            enriched['network_context'] = network_context
+        
+        return enriched
+    
+    def detect_anomalies(self, event):
+        """ML-based anomaly detection"""
+        event_type = event.get('type', 'unknown')
+        
+        if event_type not in self.anomaly_detectors:
+            # Train new detector if not exists
+            self.train_anomaly_detector(event_type)
+        
+        detector = self.anomaly_detectors[event_type]
+        
+        # Extract features cho anomaly detection
+        features = self.extract_anomaly_features(event)
+        
+        if features is None:
+            return {'anomaly_score': 0, 'is_anomaly': False}
+        
+        # Predict anomaly
+        anomaly_score = detector.decision_function([features])[0]
+        is_anomaly = detector.predict([features])[0] == -1
+        
+        return {
+            'anomaly_score': float(anomaly_score),
+            'is_anomaly': is_anomaly,
+            'confidence': abs(anomaly_score)
+        }
+    
+    def train_anomaly_detector(self, event_type):
+        """Train anomaly detector cho specific event type"""
+        # Get historical data
+        historical_events = self.get_historical_events(event_type, days=30)
+        
+        if len(historical_events) < 100:  # Need minimum data
+            return False
+        
+        # Extract features
+        feature_matrix = []
+        for event in historical_events:
+            features = self.extract_anomaly_features(event)
+            if features is not None:
+                feature_matrix.append(features)
+        
+        if len(feature_matrix) < 50:
+            return False
+        
+        # Train model
+        scaler = StandardScaler()
+        scaled_features = scaler.fit_transform(feature_matrix)
+        
+        detector = IsolationForest(
+            contamination=0.1,  # Expect 10% anomalies
+            random_state=42,
+            n_estimators=100
+        )
+        
+        detector.fit(scaled_features)
+        
+        # Store model
+        self.anomaly_detectors[event_type] = {
+            'model': detector,
+            'scaler': scaler,
+            'trained_at': datetime.now()
+        }
+        
+        return True
+    
+    def extract_anomaly_features(self, event):
+        """Extract features cho anomaly detection"""
+        features = []
+        
+        # Time-based features
+        timestamp = datetime.fromisoformat(event.get('timestamp', datetime.now().isoformat()))
+        features.extend([
+            timestamp.hour,
+            timestamp.weekday(),
+            (timestamp.weekday() >= 5),  # Weekend
+        ])
+        
+        # User behavior features
+        if 'user_context' in event:
+            user_ctx = event['user_context']
+            features.extend([
+                user_ctx.get('session_count_today', 0),
+                user_ctx.get('failed_login_count', 0),
+                user_ctx.get('typical_access_score', 50),  # 0-100 score
+            ])
+        
+        # Network features
+        if 'source_ip' in event:
+            features.extend([
+                self.ip_to_numeric(event['source_ip']),
+                event.get('geo_location', {}).get('risk_score', 0),
+            ])
+        
+        # Asset features
+        if 'asset_info' in event:
+            asset_info = event['asset_info']
+            features.extend([
+                asset_info.get('criticality_score', 0),
+                asset_info.get('exposure_score', 0),
+            ])
+        
+        # Event-specific features
+        event_type = event.get('type', '')
+        if event_type == 'authentication':
+            features.extend([
+                event.get('success', 0),
+                len(event.get('user_agent', '')),
+                event.get('mfa_used', 0),
+            ])
+        elif event_type == 'network_connection':
+            features.extend([
+                event.get('bytes_transferred', 0),
+                event.get('duration', 0),
+                event.get('port', 0),
+            ])
+        
+        return features if features else None
+    
+    def calculate_threat_score(self, event, correlation, anomaly, threat_intel):
+        """Calculate composite threat score"""
+        base_score = 0
+        
+        # Event type base score
+        event_type_scores = {
+            'failed_authentication': 30,
+            'privilege_escalation': 80,
+            'data_exfiltration': 90,
+            'malware_detection': 95,
+            'network_intrusion': 70,
+            'policy_violation': 40
+        }
+        
+        base_score = event_type_scores.get(event.get('type'), 20)
+        
+        # Anomaly score contribution
+        if anomaly['is_anomaly']:
+            base_score += min(anomaly['confidence'] * 30, 40)
+        
+        # Correlation score
+        if correlation['related_events_count'] > 5:
+            base_score += 20
+        if correlation['pattern_match']:
+            base_score += correlation['pattern_confidence'] * 30
+        
+        # Threat intelligence
+        if threat_intel['found_indicators']:
+            base_score += threat_intel['severity_score']
+        
+        # Context modifiers
+        if event.get('geo_location', {}).get('country') in ['CN', 'RU', 'KP']:
+            base_score += 15  # High-risk countries
+        
+        if event.get('user_context', {}).get('is_privileged_user', False):
+            base_score += 20  # Privileged user activity
+        
+        if event.get('asset_info', {}).get('contains_sensitive_data', False):
+            base_score += 25  # Sensitive asset
+        
+        return min(base_score, 100)  # Cap at 100
+
+class ThreatIntelligenceFeeds:
+    def __init__(self):
+        self.ioc_database = IOCDatabase()
+        self.threat_feeds = [
+            'https://feeds.alienvault.com/reputation/generic',
+            'https://rules.emergingthreats.net/blockrules/compromised-ips.txt',
+            'https://reputation.alienvault.com/reputation.data'
+        ]
+    
+    async def check(self, event):
+        """Check event against threat intelligence"""
+        indicators = self.extract_indicators(event)
+        found_indicators = []
+        
+        for indicator in indicators:
+            threat_data = await self.ioc_database.lookup(indicator)
+            if threat_data:
+                found_indicators.append({
+                    'indicator': indicator,
+                    'threat_type': threat_data['type'],
+                    'severity': threat_data['severity'],
+                    'source': threat_data['source'],
+                    'first_seen': threat_data['first_seen'],
+                    'confidence': threat_data['confidence']
+                })
+        
+        severity_score = 0
+        if found_indicators:
+            severity_score = max(ind['severity'] for ind in found_indicators)
+        
+        return {
+            'found_indicators': len(found_indicators) > 0,
+            'indicators': found_indicators,
+            'severity_score': severity_score
+        }
+    
+    def extract_indicators(self, event):
+        """Extract IOCs từ event"""
+        indicators = []
+        
+        # IP addresses
+        for field in ['source_ip', 'destination_ip', 'remote_ip']:
+            if field in event:
+                indicators.append({
+                    'type': 'ip',
+                    'value': event[field]
+                })
+        
+        # Domain names
+        for field in ['domain', 'hostname', 'fqdn']:
+            if field in event:
+                indicators.append({
+                    'type': 'domain',
+                    'value': event[field]
+                })
+        
+        # File hashes
+        for field in ['md5', 'sha1', 'sha256']:
+            if field in event:
+                indicators.append({
+                    'type': 'hash',
+                    'value': event[field]
+                })
+        
+        # URLs
+        if 'url' in event:
+            indicators.append({
+                'type': 'url',
+                'value': event['url']
+            })
+        
+        return indicators
+
+class IncidentResponseSystem:
+    def __init__(self):
+        self.playbooks = self.load_playbooks()
+        self.notification_system = NotificationSystem()
+        
+    async def handle_threat(self, event, threat_score, analysis):
+        """Automated incident response"""
+        # Determine response level
+        if threat_score >= 90:
+            response_level = 'critical'
+        elif threat_score >= 75:
+            response_level = 'high'
+        elif threat_score >= 50:
+            response_level = 'medium'
+        else:
+            response_level = 'low'
+        
+        # Execute appropriate playbook
+        playbook = self.playbooks.get(event['type'], {}).get(response_level)
+        if playbook:
+            await self.execute_playbook(playbook, event, analysis)
+        
+        # Create incident ticket
+        incident = await self.create_incident(event, threat_score, analysis)
+        
+        # Send notifications
+        await self.notification_system.send_security_alert(
+            incident,
+            response_level,
+            analysis
+        )
+        
+        return incident
+    
+    async def execute_playbook(self, playbook, event, analysis):
+        """Execute incident response playbook"""
+        for action in playbook['actions']:
+            try:
+                if action['type'] == 'isolate_host':
+                    await self.isolate_host(action['target'])
+                elif action['type'] == 'block_ip':
+                    await self.block_ip_address(action['ip'])
+                elif action['type'] == 'disable_user':
+                    await self.disable_user_account(action['user_id'])
+                elif action['type'] == 'collect_forensics':
+                    await self.collect_forensic_data(action['target'])
+                elif action['type'] == 'update_signatures':
+                    await self.update_detection_signatures(action['indicators'])
+                
+                print(f"Executed action: {action['type']}")
+                
+            except Exception as e:
+                print(f"Failed to execute action {action['type']}: {e}")
+
+# Usage
+async def main():
+    threat_detector = AdvancedThreatDetector()
+    
+    # Sample security event
+    security_event = {
+        'timestamp': datetime.now().isoformat(),
+        'type': 'failed_authentication',
+        'source_ip': '203.0.113.100',
+        'user_id': 'user123',
+        'asset_id': 'web-server-01',
+        'details': {
+            'attempts': 15,
+            'timespan': '5 minutes',
+            'user_agent': 'curl/7.68.0'
+        }
+    }
+    
+    # Process event
+    await threat_detector.process_security_events([security_event])
+
+if __name__ == "__main__":
+    asyncio.run(main())
+\`\`\`
+
+## 6. Compliance Automation và Governance
+
+### Automated Compliance Monitoring:
+\`\`\`python
+# SOC2, ISO27001, PCI-DSS compliance automation
+import json
+import yaml
+from datetime import datetime, timedelta
+import requests
+import subprocess
+
+class ComplianceFramework:
+    def __init__(self, frameworks=['SOC2', 'ISO27001', 'PCI-DSS']):
+        self.frameworks = frameworks
+        self.control_catalog = self.load_control_catalog()
+        self.evidence_collector = EvidenceCollector()
+        self.assessment_engine = AssessmentEngine()
+        
+    def load_control_catalog(self):
+        """Load compliance control catalog"""
+        return {
+            'SOC2': {
+                'CC6.1': {
+                    'name': 'Logical and Physical Access Controls',
+                    'description': 'Controls provide reasonable assurance that access is restricted to authorized users',
+                    'requirements': [
+                        'Multi-factor authentication',
+                        'Role-based access control',
+                        'Regular access reviews',
+                        'Privileged access management'
+                    ],
+                    'evidence_types': ['access_logs', 'rbac_config', 'mfa_logs', 'access_reviews']
+                },
+                'CC6.2': {
+                    'name': 'System Communications Protection',
+                    'description': 'Communications are protected during transmission và storage',
+                    'requirements': [
+                        'Encryption in transit',
+                        'Encryption at rest',
+                        'Certificate management',
+                        'Network segmentation'
+                    ],
+                    'evidence_types': ['tls_config', 'encryption_config', 'network_policies']
+                },
+                'CC7.1': {
+                    'name': 'System Monitoring',
+                    'description': 'System monitoring activities provide detection of security events',
+                    'requirements': [
+                        'Security event logging',
+                        'Log monitoring and alerting',
+                        'Incident response procedures',
+                        'Vulnerability management'
+                    ],
+                    'evidence_types': ['security_logs', 'monitoring_config', 'incident_reports']
+                }
+            },
+            'ISO27001': {
+                'A.9.1.1': {
+                    'name': 'Access control policy',
+                    'description': 'Access control policy based on business requirements',
+                    'requirements': [
+                        'Documented access control policy',
+                        'Regular policy reviews',
+                        'Access control procedures',
+                        'User access provisioning'
+                    ],
+                    'evidence_types': ['policies', 'procedures', 'access_reviews']
+                },
+                'A.12.6.1': {
+                    'name': 'Management of technical vulnerabilities',
+                    'description': 'Technical vulnerabilities are managed để prevent exploitation',
+                    'requirements': [
+                        'Vulnerability scanning',
+                        'Patch management',
+                        'Vulnerability assessment',
+                        'Risk-based remediation'
+                    ],
+                    'evidence_types': ['scan_reports', 'patch_logs', 'remediation_tracking']
+                }
+            },
+            'PCI-DSS': {
+                'Req-1': {
+                    'name': 'Install and maintain firewall configuration',
+                    'description': 'Firewall configuration protects cardholder data',
+                    'requirements': [
+                        'Firewall rules documented',
+                        'Regular rule reviews',
+                        'Network segmentation',
+                        'DMZ implementation'
+                    ],
+                    'evidence_types': ['firewall_config', 'network_diagrams', 'rule_reviews']
+                },
+                'Req-8': {
+                    'name': 'Identify and authenticate access',
+                    'description': 'Strong authentication mechanisms for system access',
+                    'requirements': [
+                        'Unique user IDs',
+                        'Strong passwords',
+                        'Multi-factor authentication',
+                        'Account lockout policies'
+                    ],
+                    'evidence_types': ['user_configs', 'password_policies', 'mfa_configs']
+                }
+            }
+        }
+    
+    async def run_compliance_assessment(self, scope='all'):
+        """Run comprehensive compliance assessment"""
+        assessment_results = {
+            'timestamp': datetime.now().isoformat(),
+            'scope': scope,
+            'frameworks': {},
+            'overall_compliance': 0,
+            'recommendations': []
+        }
+        
+        for framework in self.frameworks:
+            if scope == 'all' or scope == framework:
+                framework_result = await self.assess_framework(framework)
+                assessment_results['frameworks'][framework] = framework_result
+        
+        # Calculate overall compliance
+        if assessment_results['frameworks']:
+            total_score = sum(
+                fw['compliance_percentage'] 
+                for fw in assessment_results['frameworks'].values()
+            )
+            assessment_results['overall_compliance'] = total_score / len(assessment_results['frameworks'])
+        
+        # Generate recommendations
+        assessment_results['recommendations'] = self.generate_recommendations(
+            assessment_results['frameworks']
+        )
+        
+        return assessment_results
+    
+    async def assess_framework(self, framework_name):
+        """Assess compliance for specific framework"""
+        controls = self.control_catalog[framework_name]
+        framework_result = {
+            'framework': framework_name,
+            'controls': {},
+            'compliant_controls': 0,
+            'total_controls': len(controls),
+            'compliance_percentage': 0,
+            'critical_gaps': []
+        }
+        
+        for control_id, control_spec in controls.items():
+            control_result = await self.assess_control(control_id, control_spec)
+            framework_result['controls'][control_id] = control_result
+            
+            if control_result['compliant']:
+                framework_result['compliant_controls'] += 1
+            else:
+                framework_result['critical_gaps'].append({
+                    'control_id': control_id,
+                    'name': control_spec['name'],
+                    'gaps': control_result['gaps']
+                })
+        
+        # Calculate compliance percentage
+        framework_result['compliance_percentage'] = (
+            framework_result['compliant_controls'] / 
+            framework_result['total_controls'] * 100
+        )
+        
+        return framework_result
+    
+    async def assess_control(self, control_id, control_spec):
+        """Assess individual control compliance"""
+        control_result = {
+            'control_id': control_id,
+            'name': control_spec['name'],
+            'compliant': True,
+            'evidence_collected': [],
+            'gaps': [],
+            'score': 0
+        }
+        
+        # Collect evidence cho control
+        for evidence_type in control_spec['evidence_types']:
+            evidence = await self.evidence_collector.collect(evidence_type)
+            control_result['evidence_collected'].append(evidence)
+        
+        # Assess each requirement
+        total_requirements = len(control_spec['requirements'])
+        met_requirements = 0
+        
+        for requirement in control_spec['requirements']:
+            requirement_met = await self.assess_requirement(
+                requirement,
+                control_result['evidence_collected']
+            )
+            
+            if requirement_met:
+                met_requirements += 1
+            else:
+                control_result['gaps'].append(requirement)
+        
+        # Calculate control score
+        control_result['score'] = (met_requirements / total_requirements) * 100
+        control_result['compliant'] = control_result['score'] >= 80  # 80% threshold
+        
+        return control_result
+    
+    async def assess_requirement(self, requirement, evidence_list):
+        """Assess if specific requirement is met"""
+        if requirement == 'Multi-factor authentication':
+            return self.check_mfa_implementation(evidence_list)
+        elif requirement == 'Role-based access control':
+            return self.check_rbac_implementation(evidence_list)
+        elif requirement == 'Encryption in transit':
+            return self.check_tls_implementation(evidence_list)
+        elif requirement == 'Security event logging':
+            return self.check_logging_implementation(evidence_list)
+        # Add more requirement checks...
+        
+        return False  # Default to not met
+    
+    def check_mfa_implementation(self, evidence_list):
+        """Check MFA implementation compliance"""
+        for evidence in evidence_list:
+            if evidence['type'] == 'mfa_logs':
+                mfa_coverage = evidence['data'].get('user_coverage_percentage', 0)
+                return mfa_coverage >= 95  # 95% of users must have MFA
+        return False
+    
+    def check_rbac_implementation(self, evidence_list):
+        """Check RBAC implementation compliance"""
+        for evidence in evidence_list:
+            if evidence['type'] == 'rbac_config':
+                rbac_data = evidence['data']
+                # Check for proper role separation
+                has_admin_separation = rbac_data.get('admin_role_separated', False)
+                has_principle_of_least_privilege = rbac_data.get('least_privilege_enforced', False)
+                regular_reviews = rbac_data.get('regular_access_reviews', False)
+                
+                return all([has_admin_separation, has_principle_of_least_privilege, regular_reviews])
+        return False
+    
+    def generate_recommendations(self, framework_results):
+        """Generate remediation recommendations"""
+        recommendations = []
+        
+        for framework_name, framework_data in framework_results.items():
+            for gap in framework_data['critical_gaps']:
+                for missing_requirement in gap['gaps']:
+                    recommendation = self.get_remediation_guidance(
+                        framework_name,
+                        gap['control_id'],
+                        missing_requirement
+                    )
+                    if recommendation:
+                        recommendations.append(recommendation)
+        
+        return recommendations
+    
+    def get_remediation_guidance(self, framework, control_id, requirement):
+        """Get specific remediation guidance"""
+        remediation_map = {
+            'Multi-factor authentication': {
+                'priority': 'high',
+                'effort': 'medium',
+                'description': 'Implement MFA for all user accounts',
+                'steps': [
+                    'Deploy MFA solution (TOTP, hardware tokens)',
+                    'Configure MFA policies in identity provider',
+                    'Train users on MFA usage',
+                    'Monitor MFA adoption rates'
+                ],
+                'timeline': '30 days'
+            },
+            'Role-based access control': {
+                'priority': 'high',
+                'effort': 'high',
+                'description': 'Implement comprehensive RBAC system',
+                'steps': [
+                    'Define role matrix based on job functions',
+                    'Implement role-based permissions',
+                    'Configure automated provisioning/deprovisioning',
+                    'Conduct quarterly access reviews'
+                ],
+                'timeline': '60 days'
+            },
+            'Encryption in transit': {
+                'priority': 'critical',
+                'effort': 'medium',
+                'description': 'Ensure all communications are encrypted',
+                'steps': [
+                    'Audit all network communications',
+                    'Implement TLS 1.3 for all services',
+                    'Configure certificate management',
+                    'Monitor for unencrypted communications'
+                ],
+                'timeline': '21 days'
+            }
+        }
+        
+        guidance = remediation_map.get(requirement)
+        if guidance:
+            guidance['framework'] = framework
+            guidance['control_id'] = control_id
+            guidance['requirement'] = requirement
+        
+        return guidance
+
+class EvidenceCollector:
+    def __init__(self):
+        self.collectors = {
+            'access_logs': self.collect_access_logs,
+            'rbac_config': self.collect_rbac_config,
+            'mfa_logs': self.collect_mfa_logs,
+            'tls_config': self.collect_tls_config,
+            'security_logs': self.collect_security_logs,
+            'firewall_config': self.collect_firewall_config,
+            'scan_reports': self.collect_vulnerability_scans
+        }
+    
+    async def collect(self, evidence_type):
+        """Collect specific type of evidence"""
+        collector = self.collectors.get(evidence_type)
+        if collector:
+            return await collector()
+        else:
+            return {'type': evidence_type, 'data': {}, 'collected_at': datetime.now().isoformat()}
+    
+    async def collect_access_logs(self):
+        """Collect access log evidence"""
+        # Query log management system
+        logs = await self.query_logs('access', days=30)
+        
+        return {
+            'type': 'access_logs',
+            'data': {
+                'total_events': len(logs),
+                'unique_users': len(set(log['user_id'] for log in logs if 'user_id' in log)),
+                'failed_attempts': len([log for log in logs if not log.get('success', True)]),
+                'geographic_distribution': self.analyze_geographic_distribution(logs),
+                'time_analysis': self.analyze_access_patterns(logs)
+            },
+            'collected_at': datetime.now().isoformat()
+        }
+    
+    async def collect_rbac_config(self):
+        """Collect RBAC configuration evidence"""
+        # Query Kubernetes RBAC, Active Directory, etc.
+        rbac_data = await self.query_rbac_systems()
+        
+        return {
+            'type': 'rbac_config',
+            'data': {
+                'total_roles': len(rbac_data.get('roles', [])),
+                'total_users': len(rbac_data.get('users', [])),
+                'admin_role_separated': self.check_admin_separation(rbac_data),
+                'least_privilege_enforced': self.check_least_privilege(rbac_data),
+                'regular_access_reviews': self.check_access_reviews(rbac_data),
+                'orphaned_accounts': self.find_orphaned_accounts(rbac_data)
+            },
+            'collected_at': datetime.now().isoformat()
+        }
+    
+    async def collect_mfa_logs(self):
+        """Collect MFA implementation evidence"""
+        mfa_data = await self.query_mfa_systems()
+        
+        return {
+            'type': 'mfa_logs',
+            'data': {
+                'total_users': mfa_data.get('total_users', 0),
+                'mfa_enabled_users': mfa_data.get('mfa_enabled_users', 0),
+                'user_coverage_percentage': (
+                    mfa_data.get('mfa_enabled_users', 0) / 
+                    max(mfa_data.get('total_users', 1), 1) * 100
+                ),
+                'mfa_methods': mfa_data.get('supported_methods', []),
+                'enforcement_policies': mfa_data.get('policies', {})
+            },
+            'collected_at': datetime.now().isoformat()
+        }
+
+# Usage
+async def main():
+    compliance_framework = ComplianceFramework(['SOC2', 'ISO27001'])
+    
+    # Run compliance assessment
+    results = await compliance_framework.run_compliance_assessment()
+    
+    # Generate compliance report
+    report = generate_compliance_report(results)
+    
+    # Save results
+    with open(f'compliance-assessment-{datetime.now().strftime("%Y%m%d")}.json', 'w') as f:
+        json.dump(results, f, indent=2)
+    
+    print(f"Overall Compliance: {results['overall_compliance']:.1f}%")
+    print(f"Critical Recommendations: {len(results['recommendations'])}")
+
+def generate_compliance_report(assessment_results):
+    """Generate executive compliance report"""
+    return {
+        'executive_summary': {
+            'assessment_date': assessment_results['timestamp'],
+            'overall_compliance': assessment_results['overall_compliance'],
+            'frameworks_assessed': list(assessment_results['frameworks'].keys()),
+            'critical_gaps': sum(
+                len(fw['critical_gaps']) 
+                for fw in assessment_results['frameworks'].values()
+            ),
+            'total_recommendations': len(assessment_results['recommendations'])
+        },
+        'detailed_findings': assessment_results,
+        'action_plan': {
+            'immediate_actions': [
+                rec for rec in assessment_results['recommendations']
+                if rec['priority'] == 'critical'
+            ],
+            'short_term_actions': [
+                rec for rec in assessment_results['recommendations']
+                if rec['priority'] == 'high'
+            ],
+            'long_term_actions': [
+                rec for rec in assessment_results['recommendations']
+                if rec['priority'] == 'medium'
+            ]
+        }
+    }
+
+if __name__ == "__main__":
+    asyncio.run(main())
+\`\`\`
+
 ## Kết luận
 
-DevSecOps implementation yêu cầu cultural shift và technical changes. Việc integrate security vào mọi giai đoạn của development lifecycle sẽ giúp organizations build more secure và resilient systems.`,
+DevSecOps implementation represents fundamental transformation trong modern software delivery, integrating security practices seamlessly vào development lifecycle để achieve unprecedented levels của application security, compliance adherence, operational resilience trong enterprise environments.
+
+### Strategic Business Transformation:
+
+**Security-First Culture Development:**
+- **Shift-Left Security**: Early vulnerability detection reducing remediation costs by 80-90%
+- **Developer Empowerment**: Security tools integration enabling developers proactively address security concerns
+- **Continuous Compliance**: Automated compliance validation ensuring regulatory adherence without workflow disruption
+- **Risk Reduction**: Proactive security measures minimizing security incidents và associated business costs
+
+**Operational Excellence Achievement:**
+- **Automated Security Testing**: Comprehensive SAST, DAST, SCA integration trong CI/CD pipelines
+- **Zero-Downtime Security Updates**: Blue-green deployments với integrated security validations
+- **Real-Time Threat Detection**: ML-based anomaly detection providing immediate threat response
+- **Compliance Automation**: Continuous SOC2, ISO27001, PCI-DSS validation reducing audit preparation time
+
+### Advanced Implementation Excellence:
+
+**Zero-Trust Architecture Mastery:**
+- **Identity-Centric Security**: Comprehensive authentication, authorization, accounting (AAA) systems
+- **Micro-Segmentation**: Network policies providing granular access control
+- **Continuous Verification**: Real-time risk assessment với adaptive access controls
+- **Context-Aware Security**: Behavioral analysis, geolocation, device trust integration
+
+**Threat Intelligence Integration:**
+- **Real-Time IOC Correlation**: Automated threat indicator matching với external intelligence feeds
+- **Behavioral Analytics**: Machine learning detecting anomalous patterns indicating potential threats
+- **Incident Response Automation**: Playbook-driven response ensuring consistent, rapid threat mitigation
+- **Forensic Data Collection**: Automated evidence gathering supporting incident investigation
+
+**Enterprise Security Governance:**
+- **Policy as Code**: Infrastructure security policies version-controlled với automated enforcement
+- **Continuous Compliance Monitoring**: Real-time compliance status tracking with gap identification
+- **Risk-Based Security**: Threat modeling integration với automated security control recommendations
+- **Security Metrics Dashboard**: Executive visibility into security posture với actionable insights
+
+### Production-Ready Capabilities:
+
+**Scalable Security Architecture:**
+- **Multi-Cloud Security**: Unified security policies across AWS, Azure, GCP environments
+- **Container Security**: Runtime protection, image scanning, vulnerability management
+- **API Security**: Comprehensive API gateway security với rate limiting, authentication, monitoring
+- **Data Protection**: Encryption at rest và in transit với automated key management
+
+**Advanced Monitoring và Detection:**
+- **SIEM Integration**: Security Information và Event Management với correlation rules
+- **UEBA Implementation**: User và Entity Behavioral Analytics detecting insider threats
+- **Threat Hunting**: Proactive security analysis identifying advanced persistent threats
+- **Security Orchestration**: SOAR platforms automating security workflows
+
+**Compliance Automation Excellence:**
+- **Multi-Framework Support**: Simultaneous SOC2, ISO27001, PCI-DSS, HIPAA compliance validation
+- **Evidence Collection**: Automated audit trail generation với regulatory reporting
+- **Gap Analysis**: Continuous compliance monitoring với remediation recommendations
+- **Executive Reporting**: Real-time compliance dashboards với risk visualization
+
+### Innovation Leadership:
+
+**Emerging Security Technologies:**
+- **AI-Powered Security**: Machine learning enhancing threat detection accuracy
+- **Quantum-Safe Cryptography**: Future-proof encryption algorithms protecting against quantum threats
+- **Zero-Trust Networking**: Software-defined perimeter replacing traditional network security
+- **Confidential Computing**: Hardware-based security protecting data during processing
+
+**Advanced Automation:**
+- **Self-Healing Security**: Automated vulnerability patching với rollback capabilities
+- **Predictive Security**: AI-driven threat prediction enabling preemptive defense measures
+- **Intelligent Incident Response**: Context-aware automation reducing response times
+- **Adaptive Security Controls**: Dynamic policy adjustment based on risk assessment
+
+### Implementation Roadmap:
+
+**Phase 1: Foundation (Months 1-3)**
+- Core DevSecOps pipeline implementation
+- Basic security scanning integration
+- RBAC và authentication setup
+- Initial compliance framework deployment
+
+**Phase 2: Enhancement (Months 4-6)**
+- Zero-trust architecture implementation
+- Advanced threat detection deployment
+- Automated incident response setup
+- Comprehensive compliance monitoring
+
+**Phase 3: Intelligence (Months 7-9)**
+- ML-based anomaly detection deployment
+- Threat intelligence integration
+- Behavioral analytics implementation
+- Advanced forensics capabilities
+
+**Phase 4: Excellence (Ongoing)**
+- Continuous optimization và tuning
+- Emerging technology adoption
+- Industry best practices leadership
+- Innovation development
+
+### Success Metrics:
+
+**Security Excellence:**
+- Vulnerability detection rate: >95% automated identification
+- Mean time to patch: <24 hours cho critical vulnerabilities
+- Security incident reduction: 70-80% decrease trong security events
+- Compliance score: >95% automated compliance validation
+
+**Business Impact:**
+- Development velocity: Maintained productivity với enhanced security
+- Risk reduction: 85-90% reduction trong security-related business risks
+- Audit preparation: 60-70% reduction trong compliance preparation time
+- Customer trust: Enhanced reputation through demonstrated security commitment
+
+**Organizational Transformation:**
+- Security awareness: 100% developer security training completion
+- Cultural shift: Security-first mindset adoption across organization
+- Process automation: 80-90% security processes automated
+- Innovation acceleration: Secure foundation enabling rapid feature development
+
+### Future-Ready Strategy:
+
+**Technology Evolution:**
+- **DevSecOps 2.0**: AI-driven security automation với predictive capabilities
+- **Quantum Security**: Post-quantum cryptography implementation
+- **Edge Security**: Distributed security controls cho edge computing
+- **Privacy Engineering**: Privacy-by-design integration trong development processes
+
+**Business Alignment:**
+- **Customer Security**: Enhanced product security driving competitive advantage
+- **Regulatory Compliance**: Proactive compliance supporting global expansion
+- **Business Resilience**: Comprehensive security ensuring business continuity
+- **Innovation Security**: Secure foundation enabling emerging technology adoption
+
+Modern enterprises require sophisticated security capabilities combining automation, intelligence, compliance, resilience. DevSecOps implementation với comprehensive security integration provides foundation cho organizational security excellence, enabling sustained competitive advantage through superior security practices.
+
+Investment trong advanced DevSecOps strategy delivers transformative returns through reduced security risks, enhanced compliance posture, accelerated development velocity, improved customer trust essential for digital business success.
+
+The future belongs to organizations mastering DevSecOps excellence, achieving security automation, compliance assurance, threat resilience enabling rapid adaptation to evolving threat landscape, consistent security delivery, continuous innovation essential for long-term prosperity trong increasingly complex cybersecurity environment.
+
+Companies implementing comprehensive DevSecOps practices position themselves for security leadership, operational excellence, business success through superior security capabilities supporting sustained growth, customer confidence, competitive differentiation trong rapidly evolving digital threat landscape.`,
     category: "DevOps",
     tags: ["devsecops", "security", "compliance", "automation", "monitoring"],
     imageUrl: "https://images.unsplash.com/photo-1563206767-5b18f218e8de?w=800&h=400&fit=crop",
