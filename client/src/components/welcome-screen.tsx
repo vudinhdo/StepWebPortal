@@ -125,7 +125,7 @@ export default function WelcomeScreen({ onComplete, onSkip }: WelcomeScreenProps
                 variant="ghost"
                 size="sm"
                 onClick={() => {
-                  console.log('Skip button clicked');
+                  // Skip button clicked
                   onSkip();
                 }}
                 className="absolute top-0 right-0 text-gray-400 hover:text-gray-600 p-2 z-10"

@@ -45,7 +45,7 @@ export default function PersonalizationPopup({ storageKey }: PersonalizationPopu
       (window as any).resetPersonalization = () => {
         localStorage.removeItem(storageKey);
         localStorage.removeItem("userProfile");
-        console.log('Personalization reset - refresh page to see popup');
+        // Personalization reset function
       };
     }
   }, [storageKey]);
@@ -61,12 +61,12 @@ export default function PersonalizationPopup({ storageKey }: PersonalizationPopu
   useEffect(() => {
     // Check if personalization has been completed or skipped
     const hasCompleted = localStorage.getItem(storageKey);
-    console.log('Personalization check:', { storageKey, hasCompleted });
+    // Check personalization completion status
     if (hasCompleted) return;
 
     // Show popup after 3 seconds for testing
     const timer = setTimeout(() => {
-      console.log('Showing personalization popup');
+      // Show personalization popup
       setIsVisible(true);
     }, 3000);
 
