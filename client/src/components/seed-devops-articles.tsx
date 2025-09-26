@@ -8690,9 +8690,1470 @@ spec:
         - containerPort: 8080
 \`\`\`
 
+## 3. Advanced Service Mesh Architecture
+
+### Istio Service Mesh Implementation:
+\`\`\`yaml
+# Comprehensive Istio configuration
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: production-istio
+spec:
+  values:
+    global:
+      meshID: mesh1
+      network: network1
+      proxy:
+        privileged: false
+        enableCoreDump: false
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 2000m
+            memory: 1024Mi
+      defaultResources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 2000m
+          memory: 1024Mi
+  components:
+    pilot:
+      k8s:
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2048Mi
+          limits:
+            cpu: 1000m
+            memory: 4096Mi
+        hpaSpec:
+          maxReplicas: 10
+          minReplicas: 2
+          scaleTargetRef:
+            apiVersion: apps/v1
+            kind: Deployment
+            name: istiod
+          metrics:
+          - type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 80
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: true
+      k8s:
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 1024Mi
+          limits:
+            cpu: 2000m
+            memory: 2048Mi
+        hpaSpec:
+          maxReplicas: 10
+          minReplicas: 3
+        service:
+          type: LoadBalancer
+          ports:
+          - port: 15021
+            targetPort: 15021
+            name: status-port
+          - port: 80
+            targetPort: 8080
+            name: http2
+          - port: 443
+            targetPort: 8443
+            name: https
+
+---
+# Advanced traffic management
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: advanced-user-service
+spec:
+  hosts:
+  - user-service
+  http:
+  # Canary deployment
+  - match:
+    - headers:
+        canary:
+          exact: "true"
+    route:
+    - destination:
+        host: user-service
+        subset: v2
+      weight: 100
+    fault:
+      delay:
+        percentage:
+          value: 0.1
+        fixedDelay: 5s
+    retries:
+      attempts: 3
+      perTryTimeout: 2s
+      retryOn: gateway-error,connect-failure,refused-stream
+  
+  # A/B testing
+  - match:
+    - headers:
+        experiment:
+          exact: "feature-a"
+    route:
+    - destination:
+        host: user-service
+        subset: feature-a
+      weight: 100
+    mirror:
+      host: analytics-service
+  
+  # Production traffic với advanced routing
+  - route:
+    - destination:
+        host: user-service
+        subset: v1
+      weight: 90
+    - destination:
+        host: user-service
+        subset: v2
+      weight: 10
+    timeout: 30s
+    retries:
+      attempts: 3
+      perTryTimeout: 10s
+      retryOn: 5xx,reset,connect-failure,refused-stream
+
+---
+# Service-level configurations
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: user-service-circuit-breaker
+spec:
+  host: user-service
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        http1MaxPendingRequests: 10
+        maxRequestsPerConnection: 2
+    circuitBreaker:
+      consecutiveErrors: 3
+      interval: 30s
+      baseEjectionTime: 30s
+    outlierDetection:
+      consecutive5xxErrors: 3
+      interval: 30s
+      baseEjectionTime: 30s
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+  - name: feature-a
+    labels:
+      feature: feature-a
+
+---
+# Security policies
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: user-service-authz
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/default/sa/api-gateway"]
+    to:
+    - operation:
+        methods: ["GET", "POST", "PUT"]
+        paths: ["/api/users/*"]
+    when:
+    - key: request.headers[authorization]
+      values: ["Bearer *"]
+
+---
+# Observability configuration
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: user-service-metrics
+spec:
+  metrics:
+  - providers:
+    - name: prometheus
+  - overrides:
+    - match:
+        metric: ALL_METRICS
+      tagOverrides:
+        request_id:
+          value: "%{REQUEST_ID}"
+        user_id:
+          value: "%{DYNAMIC_METADATA('envoy.filters.http.wasm:user_id')}"
+  accessLogging:
+  - providers:
+    - name: otel
+  tracing:
+  - providers:
+    - name: jaeger
+\`\`\`
+
+### Advanced Load Balancing và Service Discovery:
+\`\`\`python
+# Intelligent service discovery với health checking
+import asyncio
+import aiohttp
+import json
+from datetime import datetime, timedelta
+import random
+import time
+
+class AdvancedServiceRegistry:
+    def __init__(self):
+        self.services = {}
+        self.health_check_interval = 30  # seconds
+        self.circuit_breakers = {}
+        self.load_balancer = IntelligentLoadBalancer()
+        
+    async def register_service(self, service_info):
+        """Register new service instance"""
+        service_name = service_info['name']
+        instance_id = service_info['instance_id']
+        
+        if service_name not in self.services:
+            self.services[service_name] = {}
+        
+        self.services[service_name][instance_id] = {
+            'endpoint': service_info['endpoint'],
+            'health_check_url': service_info.get('health_check_url', f"{service_info['endpoint']}/health"),
+            'metadata': service_info.get('metadata', {}),
+            'registered_at': datetime.now(),
+            'last_health_check': None,
+            'health_status': 'unknown',
+            'consecutive_failures': 0,
+            'response_times': [],
+            'load_score': 0
+        }
+        
+        # Start health checking
+        asyncio.create_task(self.health_check_service(service_name, instance_id))
+        
+        return True
+    
+    async def discover_service(self, service_name, request_context=None):
+        """Intelligent service discovery với load balancing"""
+        if service_name not in self.services:
+            return None
+        
+        healthy_instances = [
+            (instance_id, instance_info)
+            for instance_id, instance_info in self.services[service_name].items()
+            if instance_info['health_status'] == 'healthy'
+        ]
+        
+        if not healthy_instances:
+            # Fallback to degraded instances if no healthy ones
+            degraded_instances = [
+                (instance_id, instance_info)
+                for instance_id, instance_info in self.services[service_name].items()
+                if instance_info['health_status'] == 'degraded'
+            ]
+            if degraded_instances:
+                healthy_instances = degraded_instances
+        
+        if not healthy_instances:
+            return None
+        
+        # Select best instance using load balancer
+        selected_instance = self.load_balancer.select_instance(
+            healthy_instances, request_context
+        )
+        
+        return selected_instance[1]['endpoint']
+    
+    async def health_check_service(self, service_name, instance_id):
+        """Continuous health checking với detailed metrics"""
+        while True:
+            try:
+                instance_info = self.services[service_name][instance_id]
+                health_url = instance_info['health_check_url']
+                
+                start_time = time.time()
+                
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(health_url, timeout=aiohttp.ClientTimeout(total=5)) as response:
+                        response_time = (time.time() - start_time) * 1000  # ms
+                        
+                        # Update response times
+                        instance_info['response_times'].append(response_time)
+                        if len(instance_info['response_times']) > 100:
+                            instance_info['response_times'].pop(0)
+                        
+                        # Determine health status
+                        if response.status == 200:
+                            instance_info['consecutive_failures'] = 0
+                            
+                            # Calculate health score based on response time
+                            avg_response_time = sum(instance_info['response_times']) / len(instance_info['response_times'])
+                            
+                            if avg_response_time < 100:  # < 100ms
+                                instance_info['health_status'] = 'healthy'
+                            elif avg_response_time < 500:  # < 500ms
+                                instance_info['health_status'] = 'degraded'
+                            else:
+                                instance_info['health_status'] = 'unhealthy'
+                                
+                        else:
+                            instance_info['consecutive_failures'] += 1
+                            if instance_info['consecutive_failures'] >= 3:
+                                instance_info['health_status'] = 'unhealthy'
+                            else:
+                                instance_info['health_status'] = 'degraded'
+                
+                instance_info['last_health_check'] = datetime.now()
+                
+            except Exception as e:
+                instance_info['consecutive_failures'] += 1
+                if instance_info['consecutive_failures'] >= 5:
+                    instance_info['health_status'] = 'unhealthy'
+                else:
+                    instance_info['health_status'] = 'degraded'
+                
+                print(f"Health check failed cho {service_name}/{instance_id}: {e}")
+            
+            await asyncio.sleep(self.health_check_interval)
+
+class IntelligentLoadBalancer:
+    def __init__(self):
+        self.algorithms = {
+            'round_robin': self.round_robin,
+            'weighted_response_time': self.weighted_response_time,
+            'least_connections': self.least_connections,
+            'geographic': self.geographic_proximity,
+            'adaptive': self.adaptive_selection
+        }
+        self.current_selection = {}
+    
+    def select_instance(self, instances, request_context=None):
+        """Select best instance based on multiple factors"""
+        if not instances:
+            return None
+        
+        if len(instances) == 1:
+            return instances[0]
+        
+        # Default to adaptive selection
+        algorithm = 'adaptive'
+        
+        if request_context:
+            # Override based on request context
+            if 'load_balancing_algorithm' in request_context:
+                algorithm = request_context['load_balancing_algorithm']
+        
+        return self.algorithms[algorithm](instances, request_context)
+    
+    def round_robin(self, instances, request_context=None):
+        """Simple round-robin selection"""
+        service_name = instances[0][1].get('name', 'unknown')
+        
+        if service_name not in self.current_selection:
+            self.current_selection[service_name] = 0
+        
+        index = self.current_selection[service_name] % len(instances)
+        self.current_selection[service_name] += 1
+        
+        return instances[index]
+    
+    def weighted_response_time(self, instances, request_context=None):
+        """Select based on response time performance"""
+        weights = []
+        
+        for instance_id, instance_info in instances:
+            response_times = instance_info.get('response_times', [100])
+            avg_response_time = sum(response_times) / len(response_times)
+            
+            # Lower response time = higher weight
+            weight = 1000 / (avg_response_time + 1)
+            weights.append(weight)
+        
+        # Weighted random selection
+        total_weight = sum(weights)
+        random_value = random.uniform(0, total_weight)
+        
+        cumulative_weight = 0
+        for i, weight in enumerate(weights):
+            cumulative_weight += weight
+            if random_value <= cumulative_weight:
+                return instances[i]
+        
+        return instances[0]  # Fallback
+    
+    def adaptive_selection(self, instances, request_context=None):
+        """Adaptive selection based on multiple metrics"""
+        scores = []
+        
+        for instance_id, instance_info in instances:
+            score = self.calculate_instance_score(instance_info, request_context)
+            scores.append((score, (instance_id, instance_info)))
+        
+        # Sort by score (higher is better)
+        scores.sort(key=lambda x: x[0], reverse=True)
+        
+        # Weighted selection favoring higher scores
+        total_score = sum(score for score, _ in scores)
+        if total_score == 0:
+            return random.choice(instances)
+        
+        random_value = random.uniform(0, total_score)
+        cumulative_score = 0
+        
+        for score, instance in scores:
+            cumulative_score += score
+            if random_value <= cumulative_score:
+                return instance
+        
+        return scores[0][1]  # Return highest scored instance
+    
+    def calculate_instance_score(self, instance_info, request_context):
+        """Calculate composite score cho instance"""
+        score = 100  # Base score
+        
+        # Response time factor (lower is better)
+        response_times = instance_info.get('response_times', [100])
+        if response_times:
+            avg_response_time = sum(response_times) / len(response_times)
+            response_score = max(0, 100 - (avg_response_time / 10))
+            score += response_score * 0.4
+        
+        # Health status factor
+        health_status = instance_info.get('health_status', 'unknown')
+        health_scores = {'healthy': 100, 'degraded': 50, 'unhealthy': 0, 'unknown': 25}
+        score += health_scores.get(health_status, 0) * 0.3
+        
+        # Load factor (if available)
+        load_score = instance_info.get('load_score', 50)
+        score += (100 - load_score) * 0.2  # Lower load is better
+        
+        # Geographic proximity (if request context available)
+        if request_context and 'client_region' in request_context:
+            instance_region = instance_info.get('metadata', {}).get('region')
+            client_region = request_context['client_region']
+            
+            if instance_region == client_region:
+                score += 20  # Regional bonus
+            elif instance_region and client_region:
+                # Cross-region penalty
+                score -= 10
+        
+        return max(0, score)
+
+# Service mesh traffic splitting
+class TrafficSplitter:
+    def __init__(self):
+        self.split_configs = {}
+        
+    def configure_split(self, service_name, split_config):
+        """Configure traffic splitting cho service"""
+        self.split_configs[service_name] = {
+            'splits': split_config['splits'],
+            'criteria': split_config.get('criteria', {}),
+            'created_at': datetime.now()
+        }
+    
+    def route_request(self, service_name, request_context):
+        """Route request based on traffic splitting rules"""
+        if service_name not in self.split_configs:
+            return 'primary'
+        
+        config = self.split_configs[service_name]
+        
+        # Check criteria-based routing
+        for criterion, criterion_config in config['criteria'].items():
+            if criterion == 'header':
+                header_name = criterion_config['name']
+                header_value = request_context.get('headers', {}).get(header_name)
+                
+                if header_value in criterion_config.get('values', []):
+                    return criterion_config['target']
+            
+            elif criterion == 'user_segment':
+                user_id = request_context.get('user_id')
+                if user_id:
+                    # Simple hash-based segmentation
+                    segment = hash(user_id) % 100
+                    
+                    for segment_config in criterion_config.get('segments', []):
+                        if segment_config['start'] <= segment <= segment_config['end']:
+                            return segment_config['target']
+        
+        # Default to percentage-based splitting
+        random_value = random.randint(1, 100)
+        cumulative_percentage = 0
+        
+        for split in config['splits']:
+            cumulative_percentage += split['percentage']
+            if random_value <= cumulative_percentage:
+                return split['target']
+        
+        return 'primary'  # Fallback
+
+# Usage example
+async def main():
+    registry = AdvancedServiceRegistry()
+    
+    # Register services
+    await registry.register_service({
+        'name': 'user-service',
+        'instance_id': 'user-service-1',
+        'endpoint': 'http://user-service-1:8080',
+        'metadata': {'region': 'us-west-2', 'version': 'v1.2.0'}
+    })
+    
+    await registry.register_service({
+        'name': 'user-service',
+        'instance_id': 'user-service-2',
+        'endpoint': 'http://user-service-2:8080',
+        'metadata': {'region': 'us-east-1', 'version': 'v1.2.0'}
+    })
+    
+    # Configure traffic splitting
+    splitter = TrafficSplitter()
+    splitter.configure_split('user-service', {
+        'splits': [
+            {'target': 'v1', 'percentage': 90},
+            {'target': 'v2', 'percentage': 10}
+        ],
+        'criteria': {
+            'header': {
+                'name': 'X-Version',
+                'values': ['v2'],
+                'target': 'v2'
+            }
+        }
+    })
+    
+    # Service discovery
+    request_context = {
+        'client_region': 'us-west-2',
+        'headers': {'X-Version': 'v1'}
+    }
+    
+    endpoint = await registry.discover_service('user-service', request_context)
+    print(f"Selected endpoint: {endpoint}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+\`\`\`
+
+## 4. Data Management Patterns
+
+### Database per Service Pattern:
+\`\`\`yaml
+# PostgreSQL cho User Service
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: user-service-db
+  namespace: user-service
+spec:
+  instances: 3
+  
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: "256MB"
+      effective_cache_size: "1GB"
+      maintenance_work_mem: "64MB"
+      checkpoint_completion_target: "0.9"
+      wal_buffers: "16MB"
+      default_statistics_target: "100"
+      random_page_cost: "1.1"
+      effective_io_concurrency: "200"
+    
+  bootstrap:
+    initdb:
+      database: userdb
+      owner: userapp
+      secret:
+        name: user-db-credentials
+  
+  storage:
+    size: 100Gi
+    storageClass: fast-ssd
+  
+  monitoring:
+    enabled: true
+    
+  backup:
+    retention: "30d"
+    barmanObjectStore:
+      destinationPath: "s3://backup-bucket/user-service-db"
+      s3Credentials:
+        accessKeyId:
+          name: backup-credentials
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: backup-credentials
+          key: SECRET_ACCESS_KEY
+      wal:
+        retention: "7d"
+
+---
+# MongoDB cho Order Service (document-based data)
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: order-service-db
+  namespace: order-service
+spec:
+  members: 3
+  type: ReplicaSet
+  version: "6.0.5"
+  
+  security:
+    authentication:
+      modes: ["SCRAM"]
+    tls:
+      enabled: true
+      certificateKeySecretRef:
+        name: order-db-tls
+      caConfigMapRef:
+        name: order-db-ca
+  
+  users:
+  - name: orderapp
+    db: orderdb
+    passwordSecretRef:
+      name: order-db-credentials
+    roles:
+    - name: readWrite
+      db: orderdb
+    - name: dbAdmin
+      db: orderdb
+  
+  additionalMongodConfig:
+    storage.wiredTiger.engineConfig.journalCompressor: zlib
+    storage.wiredTiger.collectionConfig.blockCompressor: snappy
+    net.maxIncomingConnections: 1000
+
+---
+# Redis cho Caching Service
+apiVersion: redis.redis.opstreelabs.in/v1beta1
+kind: Redis
+metadata:
+  name: cache-service
+  namespace: cache
+spec:
+  kubernetesConfig:
+    image: redis:7.0.8
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 1
+        memory: 2Gi
+    serviceType: ClusterIP
+  
+  redisExporter:
+    enabled: true
+    image: quay.io/oliver006/redis_exporter:latest
+  
+  redisConfig:
+    additionalRedisConfig: |
+      maxmemory 1.5gb
+      maxmemory-policy allkeys-lru
+      save 900 1
+      save 300 10
+      save 60 10000
+      tcp-keepalive 300
+      tcp-backlog 511
+      timeout 0
+      databases 16
+\`\`\`
+
+### Data Consistency Patterns:
+\`\`\`python
+# Saga pattern implementation với compensating transactions
+import asyncio
+import json
+from enum import Enum
+from dataclasses import dataclass
+from typing import List, Dict, Any, Optional
+import uuid
+from datetime import datetime
+
+class SagaStepStatus(Enum):
+    PENDING = "pending"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    COMPENSATED = "compensated"
+
+@dataclass
+class SagaStep:
+    step_id: str
+    service_name: str
+    action: str
+    payload: Dict[str, Any]
+    compensation_action: str
+    compensation_payload: Dict[str, Any]
+    status: SagaStepStatus = SagaStepStatus.PENDING
+    retry_count: int = 0
+    max_retries: int = 3
+    executed_at: Optional[datetime] = None
+    compensated_at: Optional[datetime] = None
+
+class SagaOrchestrator:
+    def __init__(self):
+        self.service_clients = {}
+        self.saga_store = SagaStore()
+        
+    async def execute_saga(self, saga_id: str, steps: List[SagaStep]) -> Dict[str, Any]:
+        """Execute saga với automatic compensation on failure"""
+        
+        # Store saga state
+        await self.saga_store.save_saga(saga_id, {
+            'steps': [step.__dict__ for step in steps],
+            'status': 'in_progress',
+            'created_at': datetime.now().isoformat()
+        })
+        
+        executed_steps = []
+        
+        try:
+            # Execute steps sequentially
+            for step in steps:
+                result = await self.execute_step(saga_id, step)
+                
+                if result['success']:
+                    step.status = SagaStepStatus.COMPLETED
+                    step.executed_at = datetime.now()
+                    executed_steps.append(step)
+                    
+                    # Update saga state
+                    await self.saga_store.update_step(saga_id, step)
+                else:
+                    step.status = SagaStepStatus.FAILED
+                    
+                    # Compensate all executed steps
+                    await self.compensate_saga(saga_id, executed_steps)
+                    
+                    return {
+                        'success': False,
+                        'error': result.get('error', 'Step execution failed'),
+                        'failed_step': step.step_id
+                    }
+            
+            # All steps completed successfully
+            await self.saga_store.update_saga_status(saga_id, 'completed')
+            
+            return {
+                'success': True,
+                'saga_id': saga_id,
+                'completed_steps': len(executed_steps)
+            }
+            
+        except Exception as e:
+            # Compensate on unexpected error
+            await self.compensate_saga(saga_id, executed_steps)
+            await self.saga_store.update_saga_status(saga_id, 'failed')
+            
+            return {
+                'success': False,
+                'error': str(e),
+                'saga_id': saga_id
+            }
+    
+    async def execute_step(self, saga_id: str, step: SagaStep) -> Dict[str, Any]:
+        """Execute individual saga step với retry logic"""
+        
+        for attempt in range(step.max_retries + 1):
+            try:
+                client = self.service_clients.get(step.service_name)
+                if not client:
+                    return {'success': False, 'error': f'Service client not found: {step.service_name}'}
+                
+                # Execute step action
+                result = await client.execute_action(step.action, step.payload)
+                
+                if result.get('success', False):
+                    return result
+                else:
+                    # Retry if not on last attempt
+                    if attempt < step.max_retries:
+                        step.retry_count += 1
+                        await asyncio.sleep(2 ** attempt)  # Exponential backoff
+                        continue
+                    else:
+                        return result
+                        
+            except Exception as e:
+                if attempt < step.max_retries:
+                    step.retry_count += 1
+                    await asyncio.sleep(2 ** attempt)
+                    continue
+                else:
+                    return {'success': False, 'error': str(e)}
+        
+        return {'success': False, 'error': 'Max retries exceeded'}
+    
+    async def compensate_saga(self, saga_id: str, executed_steps: List[SagaStep]):
+        """Execute compensation actions trong reverse order"""
+        
+        # Compensate trong reverse order
+        for step in reversed(executed_steps):
+            if step.status == SagaStepStatus.COMPLETED:
+                try:
+                    client = self.service_clients.get(step.service_name)
+                    if client:
+                        result = await client.execute_action(
+                            step.compensation_action,
+                            step.compensation_payload
+                        )
+                        
+                        if result.get('success', False):
+                            step.status = SagaStepStatus.COMPENSATED
+                            step.compensated_at = datetime.now()
+                        else:
+                            print(f"Compensation failed cho step {step.step_id}: {result}")
+                    
+                    # Update step status
+                    await self.saga_store.update_step(saga_id, step)
+                    
+                except Exception as e:
+                    print(f"Compensation error cho step {step.step_id}: {e}")
+
+# Event Sourcing pattern
+class EventStore:
+    def __init__(self):
+        self.events = {}
+        self.snapshots = {}
+    
+    async def append_event(self, aggregate_id: str, event: Dict[str, Any]) -> bool:
+        """Append event to event stream"""
+        if aggregate_id not in self.events:
+            self.events[aggregate_id] = []
+        
+        event['event_id'] = str(uuid.uuid4())
+        event['timestamp'] = datetime.now().isoformat()
+        event['version'] = len(self.events[aggregate_id]) + 1
+        
+        self.events[aggregate_id].append(event)
+        return True
+    
+    async def get_events(self, aggregate_id: str, from_version: int = 0) -> List[Dict[str, Any]]:
+        """Get events từ specific version"""
+        events = self.events.get(aggregate_id, [])
+        return [event for event in events if event['version'] > from_version]
+    
+    async def create_snapshot(self, aggregate_id: str, state: Dict[str, Any], version: int):
+        """Create snapshot cho performance optimization"""
+        self.snapshots[aggregate_id] = {
+            'state': state,
+            'version': version,
+            'created_at': datetime.now().isoformat()
+        }
+
+class OrderAggregate:
+    def __init__(self, order_id: str, event_store: EventStore):
+        self.order_id = order_id
+        self.event_store = event_store
+        self.state = {
+            'status': 'new',
+            'items': [],
+            'total_amount': 0,
+            'customer_id': None,
+            'payment_status': 'pending'
+        }
+        self.version = 0
+        self.uncommitted_events = []
+    
+    async def load_from_history(self):
+        """Load aggregate từ event history"""
+        # Try to load từ snapshot first
+        snapshot = await self.event_store.get_snapshot(self.order_id)
+        if snapshot:
+            self.state = snapshot['state']
+            self.version = snapshot['version']
+            from_version = snapshot['version']
+        else:
+            from_version = 0
+        
+        # Load events since snapshot
+        events = await self.event_store.get_events(self.order_id, from_version)
+        
+        for event in events:
+            self.apply_event(event)
+            self.version = event['version']
+    
+    def apply_event(self, event: Dict[str, Any]):
+        """Apply event to aggregate state"""
+        event_type = event['event_type']
+        data = event['data']
+        
+        if event_type == 'OrderCreated':
+            self.state['customer_id'] = data['customer_id']
+            self.state['status'] = 'created'
+        
+        elif event_type == 'ItemAdded':
+            self.state['items'].append(data['item'])
+            self.state['total_amount'] += data['item']['price'] * data['item']['quantity']
+        
+        elif event_type == 'PaymentProcessed':
+            self.state['payment_status'] = 'completed'
+            self.state['status'] = 'paid'
+        
+        elif event_type == 'OrderShipped':
+            self.state['status'] = 'shipped'
+        
+        elif event_type == 'OrderCancelled':
+            self.state['status'] = 'cancelled'
+    
+    async def create_order(self, customer_id: str):
+        """Command: Create order"""
+        if self.state['status'] != 'new':
+            raise Exception("Order already created")
+        
+        event = {
+            'event_type': 'OrderCreated',
+            'data': {'customer_id': customer_id}
+        }
+        
+        self.uncommitted_events.append(event)
+        self.apply_event(event)
+    
+    async def add_item(self, item: Dict[str, Any]):
+        """Command: Add item to order"""
+        if self.state['status'] not in ['created', 'new']:
+            raise Exception("Cannot add items to this order")
+        
+        event = {
+            'event_type': 'ItemAdded',
+            'data': {'item': item}
+        }
+        
+        self.uncommitted_events.append(event)
+        self.apply_event(event)
+    
+    async def save_changes(self):
+        """Save uncommitted events"""
+        for event in self.uncommitted_events:
+            await self.event_store.append_event(self.order_id, event)
+        
+        self.uncommitted_events = []
+        
+        # Create snapshot periodically
+        if self.version % 10 == 0:  # Every 10 events
+            await self.event_store.create_snapshot(
+                self.order_id, 
+                self.state.copy(), 
+                self.version
+            )
+
+# CQRS pattern implementation
+class CommandHandler:
+    def __init__(self, event_store: EventStore):
+        self.event_store = event_store
+    
+    async def handle_create_order(self, command: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle CreateOrder command"""
+        order_id = str(uuid.uuid4())
+        order = OrderAggregate(order_id, self.event_store)
+        
+        await order.create_order(command['customer_id'])
+        
+        for item in command.get('items', []):
+            await order.add_item(item)
+        
+        await order.save_changes()
+        
+        return {
+            'success': True,
+            'order_id': order_id,
+            'total_amount': order.state['total_amount']
+        }
+
+class QueryHandler:
+    def __init__(self, read_model_store):
+        self.read_model_store = read_model_store
+    
+    async def get_order_summary(self, order_id: str) -> Dict[str, Any]:
+        """Get optimized order summary"""
+        return await self.read_model_store.get_order_summary(order_id)
+    
+    async def get_customer_orders(self, customer_id: str) -> List[Dict[str, Any]]:
+        """Get all orders cho customer"""
+        return await self.read_model_store.get_orders_by_customer(customer_id)
+
+# Usage example
+async def main():
+    event_store = EventStore()
+    
+    # Execute saga
+    orchestrator = SagaOrchestrator()
+    
+    order_saga_steps = [
+        SagaStep(
+            step_id="validate_payment",
+            service_name="payment_service",
+            action="validate_payment_method",
+            payload={"customer_id": "cust_123", "amount": 100.00},
+            compensation_action="release_payment_hold",
+            compensation_payload={"customer_id": "cust_123"}
+        ),
+        SagaStep(
+            step_id="reserve_inventory",
+            service_name="inventory_service",
+            action="reserve_items",
+            payload={"items": [{"sku": "ITEM_001", "quantity": 2}]},
+            compensation_action="release_reservation",
+            compensation_payload={"items": [{"sku": "ITEM_001", "quantity": 2}]}
+        ),
+        SagaStep(
+            step_id="create_order",
+            service_name="order_service",
+            action="create_order",
+            payload={"customer_id": "cust_123", "items": [{"sku": "ITEM_001", "quantity": 2}]},
+            compensation_action="cancel_order",
+            compensation_payload={"order_id": "ORDER_TO_BE_SET"}
+        )
+    ]
+    
+    saga_id = str(uuid.uuid4())
+    result = await orchestrator.execute_saga(saga_id, order_saga_steps)
+    
+    print(f"Saga result: {result}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+\`\`\`
+
+## 5. Advanced Monitoring và Observability
+
+### Distributed Tracing Integration:
+\`\`\`python
+# Enhanced microservices monitoring
+import opentelemetry
+from opentelemetry import trace, metrics
+from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+from opentelemetry.instrumentation.auto_instrumentation import sitecustomize
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.resources import Resource
+import asyncio
+import time
+import json
+
+class MicroservicesObservability:
+    def __init__(self, service_name: str):
+        self.service_name = service_name
+        self.setup_tracing()
+        self.setup_metrics()
+        
+    def setup_tracing(self):
+        """Setup distributed tracing"""
+        resource = Resource.create({
+            "service.name": self.service_name,
+            "service.version": "1.0.0",
+            "deployment.environment": "production"
+        })
+        
+        trace.set_tracer_provider(TracerProvider(resource=resource))
+        
+        jaeger_exporter = JaegerExporter(
+            agent_host_name="jaeger-agent",
+            agent_port=6831,
+        )
+        
+        span_processor = BatchSpanProcessor(jaeger_exporter)
+        trace.get_tracer_provider().add_span_processor(span_processor)
+        
+        self.tracer = trace.get_tracer(self.service_name)
+    
+    def setup_metrics(self):
+        """Setup custom metrics"""
+        metrics.set_meter_provider(MeterProvider(
+            resource=Resource.create({
+                "service.name": self.service_name
+            })
+        ))
+        
+        self.meter = metrics.get_meter(self.service_name)
+        
+        # Business metrics
+        self.request_counter = self.meter.create_counter(
+            "requests_total",
+            description="Total requests processed"
+        )
+        
+        self.request_duration = self.meter.create_histogram(
+            "request_duration_seconds",
+            description="Request duration trong seconds"
+        )
+        
+        self.active_connections = self.meter.create_up_down_counter(
+            "active_connections",
+            description="Number of active connections"
+        )
+        
+        self.business_transactions = self.meter.create_counter(
+            "business_transactions_total",
+            description="Business transactions processed"
+        )
+    
+    async def trace_request(self, operation_name: str, request_data: dict, handler_func):
+        """Trace request với comprehensive context"""
+        with self.tracer.start_as_current_span(operation_name) as span:
+            # Add request attributes
+            span.set_attribute("http.method", request_data.get("method", "unknown"))
+            span.set_attribute("http.url", request_data.get("url", "unknown"))
+            span.set_attribute("user.id", request_data.get("user_id", "anonymous"))
+            span.set_attribute("request.size", len(json.dumps(request_data)))
+            
+            start_time = time.time()
+            
+            try:
+                # Execute handler
+                result = await handler_func(request_data)
+                
+                # Record success metrics
+                duration = time.time() - start_time
+                
+                span.set_attribute("http.status_code", result.get("status_code", 200))
+                span.set_attribute("response.size", len(json.dumps(result)))
+                
+                # Update metrics
+                self.request_counter.add(1, {
+                    "method": request_data.get("method", "unknown"),
+                    "status": "success",
+                    "endpoint": operation_name
+                })
+                
+                self.request_duration.record(duration, {
+                    "method": request_data.get("method", "unknown"),
+                    "endpoint": operation_name
+                })
+                
+                # Business metrics
+                if "business_event" trong result:
+                    self.business_transactions.add(1, {
+                        "event_type": result["business_event"],
+                        "success": True
+                    })
+                
+                span.set_status(trace.Status(trace.StatusCode.OK))
+                return result
+                
+            except Exception as e:
+                duration = time.time() - start_time
+                
+                span.record_exception(e)
+                span.set_status(trace.Status(trace.StatusCode.ERROR, str(e)))
+                
+                # Record error metrics
+                self.request_counter.add(1, {
+                    "method": request_data.get("method", "unknown"),
+                    "status": "error",
+                    "endpoint": operation_name,
+                    "error_type": type(e).__name__
+                })
+                
+                self.request_duration.record(duration, {
+                    "method": request_data.get("method", "unknown"),
+                    "endpoint": operation_name
+                })
+                
+                raise
+
+# Service dependency health monitoring
+class ServiceHealthMonitor:
+    def __init__(self):
+        self.dependencies = {}
+        self.health_checks = {}
+        
+    def register_dependency(self, service_name: str, endpoint: str, 
+                          health_check_url: str, critical: bool = True):
+        """Register service dependency"""
+        self.dependencies[service_name] = {
+            'endpoint': endpoint,
+            'health_check_url': health_check_url,
+            'critical': critical,
+            'status': 'unknown',
+            'last_check': None,
+            'response_time': None,
+            'failure_count': 0
+        }
+    
+    async def check_all_dependencies(self) -> dict:
+        """Check health của all dependencies"""
+        results = {}
+        overall_health = 'healthy'
+        
+        for service_name, config in self.dependencies.items():
+            health_result = await self.check_service_health(service_name)
+            results[service_name] = health_result
+            
+            if config['critical'] and health_result['status'] != 'healthy':
+                overall_health = 'unhealthy'
+            elif health_result['status'] == 'degraded' and overall_health == 'healthy':
+                overall_health = 'degraded'
+        
+        return {
+            'overall_status': overall_health,
+            'dependencies': results,
+            'checked_at': time.time()
+        }
+    
+    async def check_service_health(self, service_name: str) -> dict:
+        """Check individual service health"""
+        config = self.dependencies[service_name]
+        
+        try:
+            start_time = time.time()
+            
+            # Simulate health check call
+            await asyncio.sleep(0.01)  # Simulated network call
+            
+            response_time = (time.time() - start_time) * 1000  # ms
+            
+            # Determine health based on response time
+            if response_time < 100:
+                status = 'healthy'
+            elif response_time < 500:
+                status = 'degraded'
+            else:
+                status = 'unhealthy'
+            
+            config['status'] = status
+            config['response_time'] = response_time
+            config['failure_count'] = 0
+            config['last_check'] = time.time()
+            
+            return {
+                'status': status,
+                'response_time': response_time,
+                'last_check': config['last_check']
+            }
+            
+        except Exception as e:
+            config['failure_count'] += 1
+            config['status'] = 'unhealthy'
+            config['last_check'] = time.time()
+            
+            return {
+                'status': 'unhealthy',
+                'error': str(e),
+                'failure_count': config['failure_count'],
+                'last_check': config['last_check']
+            }
+
+# Usage
+async def main():
+    # Setup observability
+    observability = MicroservicesObservability("user-service")
+    health_monitor = ServiceHealthMonitor()
+    
+    # Register dependencies
+    health_monitor.register_dependency(
+        "database", 
+        "postgresql://db:5432", 
+        "http://db:5432/health",
+        critical=True
+    )
+    
+    health_monitor.register_dependency(
+        "cache", 
+        "redis://cache:6379", 
+        "http://cache:6379/ping",
+        critical=False
+    )
+    
+    # Simulate request handling
+    async def handle_user_request(request_data):
+        await asyncio.sleep(0.1)  # Simulate processing
+        return {
+            "status_code": 200,
+            "user_id": request_data.get("user_id"),
+            "business_event": "user_profile_updated"
+        }
+    
+    # Trace request
+    request = {
+        "method": "GET",
+        "url": "/api/users/123",
+        "user_id": "123"
+    }
+    
+    result = await observability.trace_request(
+        "get_user_profile", 
+        request, 
+        handle_user_request
+    )
+    
+    # Check service health
+    health_status = await health_monitor.check_all_dependencies()
+    print(f"Service health: {health_status}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+\`\`\`
+
 ## Kết luận
 
-Container orchestration và microservices architecture yêu cầu careful planning và robust patterns. Việc implement đúng cách sẽ mang lại benefits về scalability, maintainability và team productivity.`,
+Container Orchestration và Microservices Architecture implementation represents foundational transformation trong modern software development, enabling organizations achieve unprecedented levels của scalability, resilience, operational efficiency trong increasingly complex distributed system environments.
+
+### Strategic Business Transformation:
+
+**Operational Excellence Achievement:**
+- **Independent Scaling**: Individual service scaling based on demand patterns reducing infrastructure costs 40-60%
+- **Development Velocity**: Parallel team development enabling 300-400% faster feature delivery
+- **System Resilience**: Fault isolation preventing cascade failures achieving >99.9% system availability
+- **Technology Diversity**: Service-specific technology choices optimizing performance for specific use cases
+
+**Organizational Transformation:**
+- **Team Autonomy**: Independent service ownership enabling autonomous team operations
+- **Deployment Independence**: Service-specific release cycles reducing deployment coordination overhead
+- **Failure Isolation**: Localized failures preventing system-wide outages improving reliability
+- **Innovation Acceleration**: Experimental technology adoption without affecting entire system
+
+### Advanced Implementation Excellence:
+
+**Service Mesh Mastery:**
+- **Intelligent Traffic Management**: Istio-based routing với advanced load balancing algorithms
+- **Security by Default**: Mutual TLS, authorization policies, zero-trust networking implementation
+- **Observability Integration**: Distributed tracing, metrics collection, comprehensive monitoring
+- **Progressive Deployment**: Canary releases, A/B testing, traffic splitting automation
+
+**Data Management Sophistication:**
+- **Database per Service**: Service-specific data storage optimization với polyglot persistence
+- **Eventual Consistency**: Saga patterns, event sourcing, CQRS implementation
+- **Data Synchronization**: Cross-service data consistency với compensating transactions
+- **Performance Optimization**: Read replicas, caching strategies, data locality optimization
+
+**Advanced Orchestration Patterns:**
+- **Multi-Cluster Management**: Federation across cloud providers với centralized control
+- **Resource Optimization**: Intelligent scheduling, auto-scaling, cost optimization
+- **Disaster Recovery**: Cross-region failover, backup automation, state recovery
+- **Security Hardening**: Pod security policies, network segmentation, runtime protection
+
+### Production-Ready Capabilities:
+
+**Enterprise-Grade Reliability:**
+- **Circuit Breaker Patterns**: Automatic failure detection với graceful degradation
+- **Retry Logic**: Exponential backoff, jitter implementation, timeout management
+- **Health Checks**: Comprehensive health monitoring với dependency tracking
+- **Chaos Engineering**: Failure injection testing ensuring system resilience
+
+**Comprehensive Monitoring:**
+- **Distributed Tracing**: End-to-end request tracking across service boundaries
+- **Business Metrics**: Domain-specific KPI tracking với real-time dashboards
+- **Performance Analytics**: Response time optimization, bottleneck identification
+- **Cost Attribution**: Per-service cost tracking với optimization recommendations
+
+**Advanced Security Implementation:**
+- **Zero-Trust Architecture**: Service-to-service authentication, authorization
+- **Secret Management**: Automated credential rotation, secure storage
+- **Compliance Integration**: Audit logging, policy enforcement, regulatory adherence
+- **Threat Detection**: Anomaly detection, intrusion prevention, incident response
+
+### Innovation Leadership:
+
+**Emerging Technology Integration:**
+- **Serverless Microservices**: Function-as-a-Service integration với container orchestration
+- **AI-Powered Operations**: Machine learning optimizing service placement, scaling decisions
+- **Edge Computing**: Distributed microservices supporting edge deployment patterns
+- **Quantum-Ready Architectures**: Future-proof designs supporting emerging computational models
+
+**Advanced Automation:**
+- **Self-Healing Systems**: Automated recovery, root cause analysis, preventive measures
+- **Predictive Scaling**: AI-driven capacity planning với proactive resource allocation
+- **Intelligent Routing**: ML-based traffic optimization với performance prediction
+- **Automated Optimization**: Continuous performance tuning với minimal human intervention
+
+### Implementation Roadmap:
+
+**Phase 1: Foundation (Months 1-3)**
+- Core microservices architecture design
+- Container orchestration platform setup
+- Basic service mesh implementation
+- Initial monitoring và logging integration
+
+**Phase 2: Enhancement (Months 4-6)**
+- Advanced traffic management implementation
+- Data consistency patterns deployment
+- Comprehensive security hardening
+- Performance optimization tuning
+
+**Phase 3: Intelligence (Months 7-9)**
+- AI-powered operations integration
+- Advanced monitoring và analytics
+- Chaos engineering implementation
+- Multi-cloud federation setup
+
+**Phase 4: Excellence (Ongoing)**
+- Continuous optimization và innovation
+- Emerging technology adoption
+- Industry best practices leadership
+- Community contribution và knowledge sharing
+
+### Success Metrics:
+
+**Technical Excellence:**
+- Service independence: >95% autonomous deployment capability
+- System reliability: >99.9% uptime với automated recovery
+- Performance optimization: 50-70% response time improvement
+- Resource efficiency: 40-60% infrastructure cost reduction
+
+**Business Impact:**
+- Development velocity: 300-400% faster feature delivery
+- Innovation speed: 60-80% reduction trong time-to-market
+- Operational efficiency: 70-90% reduction trong manual operations
+- Customer satisfaction: Improved user experience với reliable services
+
+**Organizational Transformation:**
+- Team productivity: Autonomous team operations với minimal coordination overhead
+- Technology adoption: Rapid integration của emerging technologies
+- Scalability achievement: Linear scaling capability với business growth
+- Innovation culture: Experimentation-friendly environment supporting continuous improvement
+
+### Future-Ready Strategy:
+
+**Technology Evolution:**
+- **Microservices 2.0**: Event-driven architectures với real-time streaming
+- **Cloud-Native Excellence**: Full utilization của cloud provider capabilities
+- **AI-First Design**: Intelligence integrated into every service layer
+- **Sustainable Computing**: Environmental impact optimization với green computing practices
+
+**Business Alignment:**
+- **Customer-Centric Services**: Service design optimized for user experience
+- **Market Responsiveness**: Rapid adaptation to market changes với flexible architecture
+- **Global Scalability**: Worldwide service deployment với local optimization
+- **Innovation Platform**: Technology foundation supporting business experimentation
+
+Modern enterprises require sophisticated microservices capabilities combining scalability, reliability, security, observability. Container orchestration với advanced microservices patterns provides foundation cho organizational excellence, enabling sustained competitive advantage through superior software architecture.
+
+Investment trong comprehensive microservices strategy delivers transformative returns through improved development velocity, enhanced system reliability, reduced operational complexity, increased innovation capacity essential for digital business success.
+
+The future belongs to organizations mastering microservices excellence, achieving architectural scalability, operational resilience, development agility enabling rapid adaptation to market demands, consistent service delivery, continuous innovation essential for long-term prosperity trong increasingly complex distributed system landscape.
+
+Companies implementing advanced microservices architectures position themselves for technological leadership, operational excellence, business success through superior distributed system capabilities supporting sustained growth, customer satisfaction, competitive differentiation trong rapidly evolving cloud-native ecosystem.`,
     category: "DevOps",
     tags: ["microservices", "containers", "orchestration", "service-mesh", "architecture"],
     imageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop",
