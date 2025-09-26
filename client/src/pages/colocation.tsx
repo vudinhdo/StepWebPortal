@@ -1259,12 +1259,6 @@ export default function Colocation() {
       </section>
 
       <Footer />
-      
-      {/* Contact Form Modal */}
-      <ContactForm 
-        open={showContactForm} 
-        onOpenChange={setShowContactForm}
-      />
     </div>
   );
 }

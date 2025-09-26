@@ -618,12 +618,6 @@ export default function Home() {
       
       <Footer />
       
-      {/* Contact Form Modal */}
-      <ContactForm 
-        open={showContactForm} 
-        onOpenChange={setShowContactForm}
-      />
-      
       {/* Only show personalization settings if user has completed welcome */}
       {isPersonalized && userInfo && (
         <PersonalizationSettings 
