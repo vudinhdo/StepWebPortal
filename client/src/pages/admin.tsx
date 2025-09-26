@@ -184,8 +184,8 @@ export default function Admin() {
       tags: article.tags?.join(", ") || "",
       imageUrl: article.imageUrl || "",
       author: article.author,
-      isPublished: article.isPublished,
-      isFeatured: article.isFeatured,
+      isPublished: article.isPublished ?? false,
+      isFeatured: article.isFeatured ?? false,
     });
     setIsModalOpen(true);
   };
@@ -202,9 +202,10 @@ export default function Admin() {
     setIsModalOpen(false);
   };
 
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return "";
-    return format(new Date(dateString), "dd/MM/yyyy HH:mm");
+  const formatDate = (dateInput: string | Date | null) => {
+    if (!dateInput) return "";
+    const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+    return format(date, "dd/MM/yyyy HH:mm");
   };
 
   return (
