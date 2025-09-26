@@ -6782,9 +6782,1268 @@ logging.files:
 - Use runbooks cho mỗi alert
 - Test alerting rules regularly
 
+## 5. Advanced Monitoring Patterns
+
+### Service Level Objectives (SLOs) Implementation:
+\`\`\`yaml
+# SLO definitions và error budgets
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: slo-config
+data:
+  slos.yaml: |
+    slos:
+      - name: api-availability
+        service: user-api
+        sli:
+          query: |
+            sum(rate(http_requests_total{job="user-api",code!~"5.."}[5m])) /
+            sum(rate(http_requests_total{job="user-api"}[5m]))
+        objective: 0.999  # 99.9% availability
+        error_budget_period: 30d
+        
+      - name: api-latency-p99
+        service: user-api
+        sli:
+          query: |
+            histogram_quantile(0.99,
+              sum(rate(http_request_duration_seconds_bucket{job="user-api"}[5m])) by (le)
+            )
+        objective: 0.5  # 500ms p99 latency
+        error_budget_period: 30d
+        
+      - name: database-availability
+        service: postgres
+        sli:
+          query: |
+            up{job="postgres"}
+        objective: 0.9999  # 99.99% database availability
+        error_budget_period: 30d
+
+---
+# Error budget alerts
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: slo-error-budget-alerts
+spec:
+  groups:
+  - name: slo.rules
+    rules:
+    - alert: ErrorBudgetBurn
+      expr: |
+        (
+          1 - (
+            sum(rate(http_requests_total{job="user-api",code!~"5.."}[1h])) /
+            sum(rate(http_requests_total{job="user-api"}[1h]))
+          )
+        ) > (0.001 * 14.4)  # Burn rate > 14.4x acceptable rate
+      for: 2m
+      labels:
+        severity: critical
+        service: user-api
+      annotations:
+        summary: "Fast error budget burn for {{ \$labels.service }}"
+        description: "Error budget for {{ \$labels.service }} is burning too fast"
+        runbook_url: "https://runbooks.company.com/slo-error-budget"
+        
+    - alert: ErrorBudgetExhausted
+      expr: |
+        error_budget_remaining{service="user-api"} <= 0
+      for: 5m
+      labels:
+        severity: warning
+        service: user-api
+      annotations:
+        summary: "Error budget exhausted for {{ \$labels.service }}"
+        description: "{{ \$labels.service }} has exhausted its error budget"
+\`\`\`
+
+### Multi-Dimensional Monitoring:
+\`\`\`python
+# Advanced metrics collection với custom dimensions
+import time
+import json
+from prometheus_client import Counter, Histogram, Gauge, start_http_server
+from functools import wraps
+
+# Business metrics
+user_registration_counter = Counter(
+    'user_registrations_total',
+    'Total user registrations',
+    ['registration_type', 'user_tier', 'region', 'source']
+)
+
+order_processing_histogram = Histogram(
+    'order_processing_duration_seconds',
+    'Order processing duration',
+    ['order_type', 'payment_method', 'fulfillment_center', 'customer_tier'],
+    buckets=[0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 30.0, 60.0]
+)
+
+revenue_gauge = Gauge(
+    'revenue_per_minute',
+    'Revenue generated per minute',
+    ['product_category', 'region', 'channel']
+)
+
+# System metrics với business context
+cache_hit_ratio = Histogram(
+    'cache_hit_ratio',
+    'Cache hit ratio by operation',
+    ['cache_type', 'operation', 'data_type']
+)
+
+database_query_duration = Histogram(
+    'database_query_duration_seconds',
+    'Database query duration',
+    ['query_type', 'table', 'index_used', 'user_tier'],
+    buckets=[0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1.0, 5.0]
+)
+
+# Advanced instrumentation decorator
+def monitor_business_operation(operation_type, **dimensions):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            start_time = time.time()
+            
+            # Extract business context
+            context = extract_business_context(args, kwargs)
+            labels = {**dimensions, **context}
+            
+            try:
+                result = func(*args, **kwargs)
+                
+                # Record success metrics
+                if operation_type == 'user_registration':
+                    user_registration_counter.labels(**labels).inc()
+                elif operation_type == 'order_processing':
+                    duration = time.time() - start_time
+                    order_processing_histogram.labels(**labels).observe(duration)
+                    
+                    # Record revenue if order successful
+                    if hasattr(result, 'total_amount'):
+                        revenue_gauge.labels(
+                            product_category=labels.get('product_category', 'unknown'),
+                            region=labels.get('region', 'unknown'),
+                            channel=labels.get('channel', 'web')
+                        ).set(result.total_amount)
+                
+                return result
+                
+            except Exception as e:
+                # Record error metrics với detailed context
+                error_counter.labels(
+                    operation=operation_type,
+                    error_type=type(e).__name__,
+                    **labels
+                ).inc()
+                raise
+                
+        return wrapper
+    return decorator
+
+def extract_business_context(args, kwargs):
+    """Extract business context từ function arguments"""
+    context = {}
+    
+    # Extract user tier
+    if 'user' in kwargs:
+        user = kwargs['user']
+        context['user_tier'] = getattr(user, 'tier', 'unknown')
+        context['region'] = getattr(user, 'region', 'unknown')
+    
+    # Extract order details
+    if 'order' in kwargs:
+        order = kwargs['order']
+        context['order_type'] = getattr(order, 'type', 'unknown')
+        context['payment_method'] = getattr(order, 'payment_method', 'unknown')
+    
+    return context
+
+# Usage examples
+@monitor_business_operation('user_registration', 
+                          registration_type='email', 
+                          source='web')
+def register_user(email, password, user_data):
+    # Registration logic
+    user = create_user(email, password)
+    send_welcome_email(user)
+    return user
+
+@monitor_business_operation('order_processing')
+def process_order(order, user):
+    # Order processing logic
+    validate_inventory(order)
+    charge_payment(order)
+    schedule_fulfillment(order)
+    return order
+\`\`\`
+
+## 6. Distributed Tracing Architecture
+
+### OpenTelemetry Implementation:
+\`\`\`python
+# Comprehensive tracing setup
+from opentelemetry import trace, metrics, baggage
+from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+from opentelemetry.exporter.prometheus import PrometheusMetricReader
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.instrumentation.psycopg2 import Psycopg2Instrumentor
+from opentelemetry.instrumentation.redis import RedisInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.resources import Resource
+
+# Configure tracing
+resource = Resource.create({
+    "service.name": "user-service",
+    "service.version": "1.2.3",
+    "deployment.environment": "production",
+    "k8s.cluster.name": "production-cluster",
+    "k8s.namespace.name": "user-service",
+    "k8s.pod.name": os.environ.get("HOSTNAME", "unknown")
+})
+
+trace.set_tracer_provider(TracerProvider(resource=resource))
+
+# Jaeger exporter với sampling
+jaeger_exporter = JaegerExporter(
+    agent_host_name="jaeger-agent",
+    agent_port=6831,
+)
+
+span_processor = BatchSpanProcessor(
+    jaeger_exporter,
+    max_queue_size=512,
+    max_export_batch_size=32,
+    export_timeout_millis=30000
+)
+
+trace.get_tracer_provider().add_span_processor(span_processor)
+
+# Configure metrics
+metrics.set_meter_provider(
+    MeterProvider(
+        resource=resource,
+        metric_readers=[PrometheusMetricReader()]
+    )
+)
+
+# Auto-instrumentation
+FlaskInstrumentor().instrument()
+RequestsInstrumentor().instrument()
+Psycopg2Instrumentor().instrument()
+RedisInstrumentor().instrument()
+
+# Custom business tracing
+tracer = trace.get_tracer(__name__)
+meter = metrics.get_meter(__name__)
+
+# Business metrics
+order_counter = meter.create_counter(
+    "orders_processed_total",
+    description="Total orders processed"
+)
+
+user_registration_duration = meter.create_histogram(
+    "user_registration_duration",
+    description="User registration duration"
+)
+
+def trace_business_operation(operation_name):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            with tracer.start_as_current_span(
+                operation_name,
+                attributes={
+                    "business.operation": operation_name,
+                    "user.id": kwargs.get('user_id'),
+                    "service.version": "1.2.3"
+                }
+            ) as span:
+                try:
+                    # Add business context to baggage
+                    if 'user_id' in kwargs:
+                        baggage.set_baggage("user.id", str(kwargs['user_id']))
+                    if 'tenant_id' in kwargs:
+                        baggage.set_baggage("tenant.id", str(kwargs['tenant_id']))
+                    
+                    result = func(*args, **kwargs)
+                    
+                    # Add result attributes
+                    if hasattr(result, 'id'):
+                        span.set_attribute("result.id", str(result.id))
+                    if hasattr(result, 'status'):
+                        span.set_attribute("result.status", result.status)
+                    
+                    # Record business metrics
+                    if operation_name == "process_order":
+                        order_counter.add(1, {"status": "success"})
+                    
+                    span.set_status(trace.Status(trace.StatusCode.OK))
+                    return result
+                    
+                except Exception as e:
+                    span.record_exception(e)
+                    span.set_status(
+                        trace.Status(trace.StatusCode.ERROR, str(e))
+                    )
+                    
+                    # Record error metrics
+                    if operation_name == "process_order":
+                        order_counter.add(1, {"status": "error"})
+                    
+                    raise
+                    
+        return wrapper
+    return decorator
+
+# Advanced correlation và context propagation
+@trace_business_operation("user_registration")
+def register_user(email, password, **context):
+    with tracer.start_as_current_span("validate_user_data") as span:
+        span.set_attribute("email.domain", email.split('@')[1])
+        validate_user_data(email, password)
+    
+    with tracer.start_as_current_span("create_user_account") as span:
+        user = create_user_in_database(email, password)
+        span.set_attribute("user.id", user.id)
+        span.set_attribute("user.tier", user.tier)
+    
+    with tracer.start_as_current_span("send_welcome_email") as span:
+        send_welcome_email(user.email, user.id)
+        span.set_attribute("email.template", "welcome_v2")
+    
+    with tracer.start_as_current_span("setup_user_preferences") as span:
+        setup_default_preferences(user.id)
+    
+    return user
+
+# Cross-service correlation
+import requests
+
+def call_external_service(url, data, correlation_id=None):
+    headers = {}
+    
+    # Propagate trace context
+    from opentelemetry.propagate import inject
+    inject(headers)
+    
+    # Add correlation ID
+    if correlation_id:
+        headers['X-Correlation-ID'] = correlation_id
+    
+    with tracer.start_as_current_span("external_service_call") as span:
+        span.set_attribute("http.url", url)
+        span.set_attribute("correlation.id", correlation_id or "unknown")
+        
+        response = requests.post(url, json=data, headers=headers)
+        
+        span.set_attribute("http.status_code", response.status_code)
+        span.set_attribute("http.response_size", len(response.content))
+        
+        return response
+\`\`\`
+
+### Trace Analysis và Debugging:
+\`\`\`javascript
+// Frontend tracing với user journey tracking
+import { WebTracerProvider } from '@opentelemetry/sdk-trace-web';
+import { ConsoleSpanExporter, BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
+import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
+import { registerInstrumentations } from '@opentelemetry/instrumentation';
+import { DocumentLoadInstrumentation } from '@opentelemetry/instrumentation-document-load';
+import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch';
+import { XMLHttpRequestInstrumentation } from '@opentelemetry/instrumentation-xml-http-request';
+import { UserInteractionInstrumentation } from '@opentelemetry/instrumentation-user-interaction';
+
+// Configure web tracing
+const provider = new WebTracerProvider({
+  resource: new Resource({
+    'service.name': 'web-frontend',
+    'service.version': '1.0.0',
+  }),
+});
+
+provider.addSpanProcessor(
+  new BatchSpanProcessor(
+    new JaegerExporter({
+      endpoint: 'https://jaeger.company.com/api/traces',
+    })
+  )
+);
+
+// Register auto-instrumentations
+registerInstrumentations({
+  instrumentations: [
+    new DocumentLoadInstrumentation(),
+    new FetchInstrumentation({
+      propagateTraceHeaderCorsUrls: [
+        'https://api.company.com',
+        'https://user-service.company.com',
+      ],
+      clearTimingResources: true,
+    }),
+    new XMLHttpRequestInstrumentation(),
+    new UserInteractionInstrumentation({
+      eventNames: ['click', 'submit', 'keydown'],
+    }),
+  ],
+});
+
+provider.register();
+
+// Business journey tracing
+const tracer = opentelemetry.trace.getTracer('user-journey');
+
+class UserJourneyTracker {
+  constructor() {
+    this.sessionSpan = null;
+    this.currentJourney = null;
+  }
+  
+  startSession(userId) {
+    this.sessionSpan = tracer.startSpan('user_session', {
+      attributes: {
+        'user.id': userId,
+        'session.start_time': Date.now(),
+        'user.agent': navigator.userAgent,
+        'page.url': window.location.href,
+      }
+    });
+    
+    // Set session context
+    this.sessionSpan.setAttributes({
+      'browser.name': this.getBrowserName(),
+      'device.type': this.getDeviceType(),
+      'network.connection': navigator.connection?.effectiveType || 'unknown',
+    });
+  }
+  
+  startJourney(journeyType, journeyId) {
+    this.currentJourney = tracer.startSpan(\`user_journey_\${journeyType}\`, {
+      parent: this.sessionSpan,
+      attributes: {
+        'journey.type': journeyType,
+        'journey.id': journeyId,
+        'journey.start_time': Date.now(),
+      }
+    });
+  }
+  
+  trackStep(stepName, stepData = {}) {
+    if (!this.currentJourney) return;
+    
+    const stepSpan = tracer.startSpan(\`journey_step_\${stepName}\`, {
+      parent: this.currentJourney,
+      attributes: {
+        'step.name': stepName,
+        'step.timestamp': Date.now(),
+        ...stepData
+      }
+    });
+    
+    // Track step completion
+    setTimeout(() => stepSpan.end(), 100);
+  }
+  
+  trackConversion(conversionType, value = null) {
+    const conversionSpan = tracer.startSpan('conversion', {
+      parent: this.currentJourney,
+      attributes: {
+        'conversion.type': conversionType,
+        'conversion.value': value,
+        'conversion.timestamp': Date.now(),
+      }
+    });
+    
+    conversionSpan.end();
+  }
+  
+  trackError(error, context = {}) {
+    const errorSpan = tracer.startSpan('user_error', {
+      parent: this.currentJourney || this.sessionSpan,
+      attributes: {
+        'error.type': error.name,
+        'error.message': error.message,
+        'error.stack': error.stack,
+        'page.url': window.location.href,
+        ...context
+      }
+    });
+    
+    errorSpan.recordException(error);
+    errorSpan.end();
+  }
+  
+  getBrowserName() {
+    const userAgent = navigator.userAgent;
+    if (userAgent.includes('Chrome')) return 'chrome';
+    if (userAgent.includes('Firefox')) return 'firefox';
+    if (userAgent.includes('Safari')) return 'safari';
+    return 'unknown';
+  }
+  
+  getDeviceType() {
+    if (/Mobile|Android|iPhone|iPad/.test(navigator.userAgent)) {
+      return 'mobile';
+    }
+    return 'desktop';
+  }
+}
+
+// Usage
+const journeyTracker = new UserJourneyTracker();
+
+// Track e-commerce journey
+journeyTracker.startSession('user-123');
+journeyTracker.startJourney('purchase', 'journey-456');
+
+journeyTracker.trackStep('product_view', {
+  'product.id': 'prod-789',
+  'product.category': 'electronics',
+  'product.price': 299.99
+});
+
+journeyTracker.trackStep('add_to_cart', {
+  'cart.item_count': 1,
+  'cart.total_value': 299.99
+});
+
+journeyTracker.trackStep('checkout_start', {
+  'checkout.payment_method': 'credit_card'
+});
+
+journeyTracker.trackConversion('purchase', 299.99);
+\`\`\`
+
+## 7. Intelligent Alerting và Incident Response
+
+### Machine Learning-Based Anomaly Detection:
+\`\`\`python
+# Advanced anomaly detection với machine learning
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import StandardScaler
+from prometheus_client.parser import text_string_to_metric_families
+import requests
+import json
+
+class PrometheusAnomalyDetector:
+    def __init__(self, prometheus_url, lookback_days=30):
+        self.prometheus_url = prometheus_url
+        self.lookback_days = lookback_days
+        self.models = {}
+        self.scalers = {}
+        
+    def fetch_metrics(self, query, hours=24):
+        """Fetch time series data từ Prometheus"""
+        end_time = time.time()
+        start_time = end_time - (hours * 3600)
+        
+        params = {
+            'query': query,
+            'start': start_time,
+            'end': end_time,
+            'step': '60s'  # 1 minute resolution
+        }
+        
+        response = requests.get(
+            f"{self.prometheus_url}/api/v1/query_range",
+            params=params
+        )
+        
+        data = response.json()['data']['result']
+        return self.parse_time_series(data)
+    
+    def parse_time_series(self, prometheus_data):
+        """Convert Prometheus data to pandas DataFrame"""
+        series_list = []
+        
+        for series in prometheus_data:
+            labels = series['metric']
+            values = series['values']
+            
+            df = pd.DataFrame(values, columns=['timestamp', 'value'])
+            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
+            df['value'] = df['value'].astype(float)
+            
+            # Add metric labels as columns
+            for label, label_value in labels.items():
+                df[label] = label_value
+                
+            series_list.append(df)
+        
+        if series_list:
+            return pd.concat(series_list, ignore_index=True)
+        return pd.DataFrame()
+    
+    def prepare_features(self, df):
+        """Prepare features cho anomaly detection"""
+        # Time-based features
+        df['hour'] = df['timestamp'].dt.hour
+        df['day_of_week'] = df['timestamp'].dt.dayofweek
+        df['is_weekend'] = df['day_of_week'].isin([5, 6]).astype(int)
+        
+        # Rolling statistics
+        df['value_rolling_mean_1h'] = df['value'].rolling(window=60).mean()
+        df['value_rolling_std_1h'] = df['value'].rolling(window=60).std()
+        df['value_rolling_mean_24h'] = df['value'].rolling(window=1440).mean()
+        
+        # Lag features
+        df['value_lag_1'] = df['value'].shift(1)
+        df['value_lag_60'] = df['value'].shift(60)  # 1 hour lag
+        
+        # Rate of change
+        df['value_diff'] = df['value'].diff()
+        df['value_pct_change'] = df['value'].pct_change()
+        
+        # Remove NaN values
+        df = df.dropna()
+        
+        feature_columns = [
+            'value', 'hour', 'day_of_week', 'is_weekend',
+            'value_rolling_mean_1h', 'value_rolling_std_1h',
+            'value_rolling_mean_24h', 'value_lag_1', 'value_lag_60',
+            'value_diff', 'value_pct_change'
+        ]
+        
+        return df[feature_columns]
+    
+    def train_anomaly_detector(self, metric_name, query):
+        """Train anomaly detection model"""
+        # Fetch historical data
+        historical_data = self.fetch_metrics(query, hours=24 * self.lookback_days)
+        
+        if historical_data.empty:
+            print(f"No data available for {metric_name}")
+            return False
+        
+        # Prepare features
+        features = self.prepare_features(historical_data)
+        
+        if features.empty:
+            print(f"No features available for {metric_name}")
+            return False
+        
+        # Scale features
+        scaler = StandardScaler()
+        scaled_features = scaler.fit_transform(features)
+        
+        # Train Isolation Forest
+        model = IsolationForest(
+            contamination=0.1,  # Expect 10% anomalies
+            random_state=42,
+            n_estimators=100
+        )
+        
+        model.fit(scaled_features)
+        
+        # Store model và scaler
+        self.models[metric_name] = model
+        self.scalers[metric_name] = scaler
+        
+        print(f"Anomaly detector trained for {metric_name}")
+        return True
+    
+    def detect_anomalies(self, metric_name, query, threshold=-0.5):
+        """Detect anomalies trong real-time data"""
+        if metric_name not in self.models:
+            print(f"No model trained for {metric_name}")
+            return []
+        
+        # Fetch recent data
+        recent_data = self.fetch_metrics(query, hours=2)
+        
+        if recent_data.empty:
+            return []
+        
+        # Prepare features
+        features = self.prepare_features(recent_data)
+        
+        if features.empty:
+            return []
+        
+        # Scale features
+        scaled_features = self.scalers[metric_name].transform(features)
+        
+        # Predict anomalies
+        anomaly_scores = self.models[metric_name].decision_function(scaled_features)
+        is_anomaly = anomaly_scores < threshold
+        
+        # Return anomalies with context
+        anomalies = []
+        for idx, is_anom in enumerate(is_anomaly):
+            if is_anom:
+                anomalies.append({
+                    'timestamp': recent_data.iloc[idx]['timestamp'],
+                    'value': features.iloc[idx]['value'],
+                    'anomaly_score': anomaly_scores[idx],
+                    'metric': metric_name
+                })
+        
+        return anomalies
+
+# Intelligent alert routing
+class IntelligentAlertRouter:
+    def __init__(self):
+        self.escalation_rules = {}
+        self.team_schedules = {}
+        self.alert_history = []
+        
+    def add_escalation_rule(self, service, rules):
+        """Add escalation rules cho service"""
+        self.escalation_rules[service] = rules
+    
+    def set_team_schedule(self, team, schedule):
+        """Set on-call schedule cho team"""
+        self.team_schedules[team] = schedule
+    
+    def route_alert(self, alert):
+        """Route alert to appropriate team với intelligent escalation"""
+        service = alert.get('service', 'unknown')
+        severity = alert.get('severity', 'unknown')
+        
+        # Get routing rules
+        rules = self.escalation_rules.get(service, {})
+        
+        # Determine primary team
+        primary_team = rules.get('primary_team', 'ops')
+        
+        # Check if alert is duplicate
+        if self.is_duplicate_alert(alert):
+            return self.suppress_duplicate(alert)
+        
+        # Route based on severity và time
+        current_hour = datetime.now().hour
+        
+        routing_decision = {
+            'alert_id': alert['alert_id'],
+            'primary_team': primary_team,
+            'notification_channels': [],
+            'escalation_schedule': []
+        }
+        
+        if severity == 'critical':
+            # Immediate notification
+            routing_decision['notification_channels'] = [
+                'slack-critical',
+                'pagerduty',
+                'sms'
+            ]
+            
+            # Escalation schedule
+            routing_decision['escalation_schedule'] = [
+                {'time': 0, 'action': 'notify_primary'},
+                {'time': 300, 'action': 'escalate_to_manager'},  # 5 minutes
+                {'time': 900, 'action': 'escalate_to_director'}  # 15 minutes
+            ]
+            
+        elif severity == 'high':
+            routing_decision['notification_channels'] = ['slack-alerts']
+            
+            if 9 <= current_hour <= 17:  # Business hours
+                routing_decision['escalation_schedule'] = [
+                    {'time': 0, 'action': 'notify_primary'},
+                    {'time': 1800, 'action': 'escalate_to_manager'}  # 30 minutes
+                ]
+            else:  # After hours
+                routing_decision['escalation_schedule'] = [
+                    {'time': 0, 'action': 'notify_oncall'},
+                    {'time': 3600, 'action': 'escalate_to_manager'}  # 1 hour
+                ]
+        
+        # Log routing decision
+        self.alert_history.append({
+            'timestamp': datetime.now(),
+            'alert': alert,
+            'routing': routing_decision
+        })
+        
+        return routing_decision
+    
+    def is_duplicate_alert(self, alert):
+        """Check if alert is duplicate"""
+        # Look for similar alerts trong last 30 minutes
+        cutoff_time = datetime.now() - timedelta(minutes=30)
+        
+        for hist_alert in self.alert_history:
+            if hist_alert['timestamp'] < cutoff_time:
+                continue
+                
+            if (hist_alert['alert']['service'] == alert['service'] and
+                hist_alert['alert']['alert_name'] == alert['alert_name']):
+                return True
+        
+        return False
+
+# Usage
+detector = PrometheusAnomalyDetector('http://prometheus.monitoring.svc:9090')
+router = IntelligentAlertRouter()
+
+# Train models
+detector.train_anomaly_detector(
+    'api_response_time',
+    'histogram_quantile(0.95, http_request_duration_seconds_bucket{job="api"})'
+)
+
+detector.train_anomaly_detector(
+    'error_rate',
+    'rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m])'
+)
+
+# Setup routing rules
+router.add_escalation_rule('user-api', {
+    'primary_team': 'backend-team',
+    'secondary_team': 'platform-team',
+    'manager': 'engineering-manager'
+})
+
+# Detect anomalies
+anomalies = detector.detect_anomalies(
+    'api_response_time',
+    'histogram_quantile(0.95, http_request_duration_seconds_bucket{job="api"})'
+)
+
+for anomaly in anomalies:
+    alert = {
+        'alert_id': f"anomaly-{int(time.time())}",
+        'service': 'user-api',
+        'alert_name': 'response_time_anomaly',
+        'severity': 'high' if anomaly['anomaly_score'] < -0.7 else 'medium',
+        'description': f"Response time anomaly detected: {anomaly['value']:.2f}s",
+        'anomaly_score': anomaly['anomaly_score'],
+        'timestamp': anomaly['timestamp']
+    }
+    
+    routing = router.route_alert(alert)
+    print(f"Alert routed: {routing}")
+\`\`\`
+
+## 8. Cost Optimization và Resource Management
+
+### FinOps Integration:
+\`\`\`python
+# Advanced cost monitoring và optimization
+import boto3
+from datetime import datetime, timedelta
+import pandas as pd
+
+class CloudCostOptimizer:
+    def __init__(self):
+        self.cost_client = boto3.client('ce')  # Cost Explorer
+        self.cloudwatch = boto3.client('cloudwatch')
+        self.ec2 = boto3.client('ec2')
+        self.optimization_rules = []
+        
+    def analyze_cost_trends(self, days=30):
+        """Analyze cost trends và identify opportunities"""
+        end_date = datetime.now().date()
+        start_date = end_date - timedelta(days=days)
+        
+        # Get cost và usage data
+        response = self.cost_client.get_cost_and_usage(
+            TimePeriod={
+                'Start': start_date.strftime('%Y-%m-%d'),
+                'End': end_date.strftime('%Y-%m-%d')
+            },
+            Granularity='DAILY',
+            Metrics=['BlendedCost', 'UnblendedCost', 'UsageQuantity'],
+            GroupBy=[
+                {'Type': 'DIMENSION', 'Key': 'SERVICE'},
+                {'Type': 'DIMENSION', 'Key': 'INSTANCE_TYPE'}
+            ]
+        )
+        
+        # Process cost data
+        cost_data = []
+        for result in response['ResultsByTime']:
+            for group in result['Groups']:
+                cost_data.append({
+                    'date': result['TimePeriod']['Start'],
+                    'service': group['Keys'][0],
+                    'instance_type': group['Keys'][1],
+                    'cost': float(group['Metrics']['BlendedCost']['Amount']),
+                    'usage': float(group['Metrics']['UsageQuantity']['Amount'])
+                })
+        
+        df = pd.DataFrame(cost_data)
+        return self.identify_optimization_opportunities(df)
+    
+    def identify_optimization_opportunities(self, cost_df):
+        """Identify cost optimization opportunities"""
+        opportunities = []
+        
+        # 1. Underutilized instances
+        underutilized = self.find_underutilized_instances()
+        for instance in underutilized:
+            opportunities.append({
+                'type': 'rightsizing',
+                'resource': instance['instance_id'],
+                'current_cost': instance['monthly_cost'],
+                'potential_savings': instance['potential_savings'],
+                'recommendation': instance['recommendation']
+            })
+        
+        # 2. Reserved instance opportunities
+        ri_opportunities = self.analyze_reserved_instance_opportunities(cost_df)
+        opportunities.extend(ri_opportunities)
+        
+        # 3. Storage optimization
+        storage_opportunities = self.analyze_storage_optimization()
+        opportunities.extend(storage_opportunities)
+        
+        # 4. Unused resources
+        unused_resources = self.find_unused_resources()
+        opportunities.extend(unused_resources)
+        
+        return opportunities
+    
+    def find_underutilized_instances(self):
+        """Find underutilized EC2 instances"""
+        instances = []
+        
+        # Get all running instances
+        ec2_response = self.ec2.describe_instances(
+            Filters=[{'Name': 'instance-state-name', 'Values': ['running']}]
+        )
+        
+        for reservation in ec2_response['Reservations']:
+            for instance in reservation['Instances']:
+                instance_id = instance['InstanceId']
+                instance_type = instance['InstanceType']
+                
+                # Get CloudWatch metrics
+                cpu_utilization = self.get_average_metric(
+                    instance_id, 'AWS/EC2', 'CPUUtilization', days=30
+                )
+                
+                network_in = self.get_average_metric(
+                    instance_id, 'AWS/EC2', 'NetworkIn', days=30
+                )
+                
+                # Determine if underutilized
+                if cpu_utilization < 10 and network_in < 1000000:  # Low CPU và network
+                    # Calculate cost
+                    monthly_cost = self.calculate_instance_cost(instance_type)
+                    
+                    # Recommend smaller instance
+                    recommended_type = self.recommend_instance_type(
+                        instance_type, cpu_utilization
+                    )
+                    
+                    potential_savings = monthly_cost * 0.5  # Estimate 50% savings
+                    
+                    instances.append({
+                        'instance_id': instance_id,
+                        'current_type': instance_type,
+                        'cpu_utilization': cpu_utilization,
+                        'monthly_cost': monthly_cost,
+                        'recommended_type': recommended_type,
+                        'potential_savings': potential_savings,
+                        'recommendation': f"Resize from {instance_type} to {recommended_type}"
+                    })
+        
+        return instances
+    
+    def get_average_metric(self, instance_id, namespace, metric_name, days=30):
+        """Get average CloudWatch metric"""
+        end_time = datetime.now()
+        start_time = end_time - timedelta(days=days)
+        
+        response = self.cloudwatch.get_metric_statistics(
+            Namespace=namespace,
+            MetricName=metric_name,
+            Dimensions=[
+                {'Name': 'InstanceId', 'Value': instance_id}
+            ],
+            StartTime=start_time,
+            EndTime=end_time,
+            Period=3600,  # 1 hour
+            Statistics=['Average']
+        )
+        
+        if response['Datapoints']:
+            return sum(dp['Average'] for dp in response['Datapoints']) / len(response['Datapoints'])
+        return 0
+    
+    def setup_cost_alerts(self):
+        """Setup cost monitoring alerts"""
+        cost_alerts = [
+            {
+                'name': 'daily_cost_spike',
+                'threshold': 1000,  # $1000/day
+                'comparison': 'GreaterThanThreshold',
+                'metric': 'EstimatedCharges'
+            },
+            {
+                'name': 'monthly_budget_80_percent',
+                'threshold': 8000,  # 80% of $10k budget
+                'comparison': 'GreaterThanThreshold',
+                'metric': 'EstimatedCharges'
+            }
+        ]
+        
+        for alert in cost_alerts:
+            self.cloudwatch.put_metric_alarm(
+                AlarmName=alert['name'],
+                ComparisonOperator=alert['comparison'],
+                EvaluationPeriods=1,
+                MetricName=alert['metric'],
+                Namespace='AWS/Billing',
+                Period=86400,  # 24 hours
+                Statistic='Maximum',
+                Threshold=alert['threshold'],
+                ActionsEnabled=True,
+                AlarmActions=[
+                    'arn:aws:sns:us-west-2:123456789012:cost-alerts'
+                ],
+                AlarmDescription=f"Cost alert: {alert['name']}",
+                Dimensions=[
+                    {'Name': 'Currency', 'Value': 'USD'}
+                ]
+            )
+
+# Resource rightsizing recommendations
+class ResourceRightsizer:
+    def __init__(self):
+        self.recommendations = []
+        
+    def analyze_kubernetes_resources(self):
+        """Analyze Kubernetes resource usage"""
+        # Get Prometheus metrics
+        queries = {
+            'cpu_usage': 'avg_over_time(rate(container_cpu_usage_seconds_total[5m])[7d:1h])',
+            'memory_usage': 'avg_over_time(container_memory_working_set_bytes[7d:1h])',
+            'cpu_requests': 'kube_pod_container_resource_requests{resource="cpu"}',
+            'memory_requests': 'kube_pod_container_resource_requests{resource="memory"}'
+        }
+        
+        # Calculate utilization ratios
+        utilization_data = {}
+        for metric, query in queries.items():
+            data = self.query_prometheus(query)
+            utilization_data[metric] = data
+        
+        # Generate recommendations
+        for pod in self.get_pod_list():
+            recommendation = self.generate_rightsizing_recommendation(
+                pod, utilization_data
+            )
+            if recommendation:
+                self.recommendations.append(recommendation)
+        
+        return self.recommendations
+    
+    def generate_rightsizing_recommendation(self, pod, utilization_data):
+        """Generate rightsizing recommendation cho pod"""
+        pod_name = pod['name']
+        namespace = pod['namespace']
+        
+        # Get current resources
+        current_cpu_request = pod.get('cpu_request', 0)
+        current_memory_request = pod.get('memory_request', 0)
+        
+        # Get actual usage
+        actual_cpu = utilization_data['cpu_usage'].get(pod_name, 0)
+        actual_memory = utilization_data['memory_usage'].get(pod_name, 0)
+        
+        # Calculate utilization ratios
+        cpu_utilization = actual_cpu / current_cpu_request if current_cpu_request > 0 else 0
+        memory_utilization = actual_memory / current_memory_request if current_memory_request > 0 else 0
+        
+        # Generate recommendation
+        recommendation = None
+        
+        if cpu_utilization < 0.2 and memory_utilization < 0.2:
+            # Significant over-provisioning
+            recommended_cpu = max(actual_cpu * 1.5, 0.1)  # 50% buffer, min 100m
+            recommended_memory = max(actual_memory * 1.5, 128 * 1024 * 1024)  # 50% buffer, min 128Mi
+            
+            cost_savings = self.calculate_cost_savings(
+                current_cpu_request, current_memory_request,
+                recommended_cpu, recommended_memory
+            )
+            
+            recommendation = {
+                'pod': pod_name,
+                'namespace': namespace,
+                'type': 'downsize',
+                'current_cpu': current_cpu_request,
+                'current_memory': current_memory_request,
+                'recommended_cpu': recommended_cpu,
+                'recommended_memory': recommended_memory,
+                'cpu_utilization': cpu_utilization * 100,
+                'memory_utilization': memory_utilization * 100,
+                'estimated_savings': cost_savings
+            }
+        
+        elif cpu_utilization > 0.8 or memory_utilization > 0.8:
+            # Under-provisioned
+            recommended_cpu = actual_cpu * 1.3  # 30% buffer
+            recommended_memory = actual_memory * 1.3
+            
+            recommendation = {
+                'pod': pod_name,
+                'namespace': namespace,
+                'type': 'upsize',
+                'current_cpu': current_cpu_request,
+                'current_memory': current_memory_request,
+                'recommended_cpu': recommended_cpu,
+                'recommended_memory': recommended_memory,
+                'cpu_utilization': cpu_utilization * 100,
+                'memory_utilization': memory_utilization * 100,
+                'risk': 'performance_degradation'
+            }
+        
+        return recommendation
+
+# Usage
+cost_optimizer = CloudCostOptimizer()
+rightsizer = ResourceRightsizer()
+
+# Analyze costs
+opportunities = cost_optimizer.analyze_cost_trends()
+print(f"Found {len(opportunities)} cost optimization opportunities")
+
+# Setup cost alerts
+cost_optimizer.setup_cost_alerts()
+
+# Analyze Kubernetes resources
+k8s_recommendations = rightsizer.analyze_kubernetes_resources()
+print(f"Generated {len(k8s_recommendations)} rightsizing recommendations")
+\`\`\`
+
 ## Kết luận
 
-Monitoring và observability stack với Prometheus, Grafana và ELK cung cấp comprehensive visibility vào systems. Việc implement đúng cách sẽ giúp teams detect issues early, reduce MTTR và improve system reliability.`,
+Monitoring và Observability Stack implementation represents critical foundation cho modern cloud-native operations và enterprise system reliability. Comprehensive monitoring strategy combining metrics, logs, traces, và advanced analytics enables organizations achieve unprecedented operational excellence và business resilience.
+
+### Strategic Business Impact:
+
+**Operational Transformation:**
+- **Mean Time to Detection (MTTD)**: Advanced monitoring reduces incident detection từ hours xuống seconds
+- **Mean Time to Resolution (MTTR)**: Comprehensive observability decreases resolution time by 70-80%
+- **System Availability**: Proactive monitoring achieves 99.9%+ uptime với automated incident response
+- **Performance Optimization**: Real-time insights enable continuous performance tuning
+
+**Financial Benefits:**
+- **Cost Optimization**: Intelligent resource monitoring reduces infrastructure costs 30-40%
+- **Revenue Protection**: Early issue detection prevents revenue-impacting outages
+- **Operational Efficiency**: Automated monitoring reduces manual operations overhead 60-70%
+- **Compliance Assurance**: Comprehensive audit trails ensure regulatory compliance
+
+### Advanced Implementation Excellence:
+
+**Multi-Dimensional Observability:**
+- **Infrastructure Monitoring**: Prometheus + Grafana providing comprehensive metric collection và visualization
+- **Application Performance**: Distributed tracing với OpenTelemetry enabling end-to-end request analysis
+- **Log Management**: ELK Stack processing millions of log events với real-time analysis
+- **Business Metrics**: Custom KPI tracking aligning technical metrics với business outcomes
+
+**Intelligent Operations:**
+- **Machine Learning Integration**: Anomaly detection reducing false positives by 85%
+- **Predictive Analytics**: Trend analysis enabling proactive capacity planning
+- **Automated Remediation**: Self-healing systems responding to incidents without human intervention
+- **Context-Aware Alerting**: Intelligent routing reducing alert fatigue và improving response times
+
+**Enterprise Integration Patterns:**
+- **Multi-Cloud Monitoring**: Unified observability across AWS, Azure, GCP platforms
+- **Security Integration**: SIEM integration với security event correlation
+- **CI/CD Pipeline Monitoring**: Development lifecycle visibility from code commit to production
+- **Cost Management**: FinOps integration với resource optimization recommendations
+
+### Production-Ready Capabilities:
+
+**Scalable Architecture:**
+- **High Availability Setup**: Multi-region monitoring infrastructure với disaster recovery
+- **Performance Optimization**: Query optimization supporting millions of metrics per second
+- **Storage Management**: Time-series data retention policies balancing cost với compliance
+- **Federation**: Multi-cluster monitoring với centralized dashboards
+
+**Security-First Approach:**
+- **Access Control**: RBAC implementation với principle of least privilege
+- **Data Encryption**: End-to-end encryption cho sensitive monitoring data
+- **Audit Logging**: Comprehensive audit trails cho all monitoring activities
+- **Compliance Integration**: SOC2, PCI-DSS alignment với automated compliance reporting
+
+**Advanced Analytics:**
+- **SLI/SLO Management**: Service Level Objectives với error budget tracking
+- **Capacity Planning**: Predictive modeling cho resource requirements
+- **Root Cause Analysis**: Automated correlation identifying incident causes
+- **Performance Baselining**: Dynamic thresholds adapting to application behavior patterns
+
+### Innovation Leadership:
+
+**Emerging Technologies:**
+- **AIOps Integration**: Artificial Intelligence cho Operations automating complex decision-making
+- **Edge Monitoring**: Distributed monitoring cho IoT và edge computing environments
+- **Serverless Observability**: Specialized monitoring cho event-driven architectures
+- **Quantum-Ready Monitoring**: Future-proof observability designs
+
+**Advanced Patterns:**
+- **Chaos Engineering**: Monitoring system resilience trong failure scenarios
+- **Observability as Code**: Infrastructure-as-Code principles applied to monitoring configurations
+- **Real-User Monitoring**: Client-side performance tracking với user experience correlation
+- **Synthetic Monitoring**: Proactive testing simulating user journeys
+
+### Implementation Roadmap:
+
+**Phase 1: Foundation (Months 1-2)**
+- Core Prometheus + Grafana deployment
+- Basic log aggregation với ELK Stack
+- Essential alerting rules establishment
+- Team training và documentation
+
+**Phase 2: Enhancement (Months 3-4)**
+- Distributed tracing implementation
+- Custom metrics development
+- Advanced dashboard creation
+- Incident response automation
+
+**Phase 3: Intelligence (Months 5-6)**
+- Machine learning integration
+- Predictive analytics deployment
+- Cost optimization automation
+- Advanced security monitoring
+
+**Phase 4: Excellence (Ongoing)**
+- Continuous optimization
+- Emerging technology adoption
+- Cross-team collaboration enhancement
+- Industry best practices leadership
+
+### Success Metrics:
+
+**Technical Excellence:**
+- System availability: >99.9% uptime achievement
+- Incident response: <5 minute MTTD, <30 minute MTTR
+- Performance optimization: 40-60% response time improvement
+- Cost efficiency: 30-40% infrastructure cost reduction
+
+**Business Outcomes:**
+- Customer satisfaction: Improved user experience scores
+- Development velocity: 50-70% faster feature delivery
+- Operational efficiency: 60-80% reduction trong manual operations
+- Revenue protection: Zero revenue-impacting unplanned outages
+
+**Organizational Impact:**
+- Team productivity: Developers focus on features rather than operational issues
+- Data-driven decisions: Real-time business insights driving strategic decisions
+- Competitive advantage: Superior system reliability creating market differentiation
+- Innovation acceleration: Reliable infrastructure enabling rapid experimentation
+
+Modern enterprises require sophisticated observability capabilities combining technical monitoring với business intelligence. Organizations mastering comprehensive monitoring achieve operational excellence, cost efficiency, customer satisfaction essential for competitive success.
+
+Investment trong advanced monitoring và observability infrastructure provides foundational capabilities supporting business agility, system reliability, operational efficiency critical for sustained growth trong rapidly evolving digital landscape. Companies implementing comprehensive observability strategies position themselves for technological leadership, market success, continued innovation trong increasingly complex cloud-native ecosystems.
+
+The future belongs to organizations achieving monitoring excellence through intelligent automation, predictive analytics, proactive operations enabling rapid adaptation, consistent reliability, continuous improvement essential for long-term prosperity trong data-driven economy.`,
     category: "DevOps",
     tags: ["monitoring", "prometheus", "grafana", "elk", "observability"],
     imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop",
