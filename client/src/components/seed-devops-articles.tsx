@@ -6,6 +6,11 @@ import { apiRequest } from "@/lib/queryClient";
 import type { InsertArticle } from "@shared/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+// Jenkins pipeline variables for content display
+const TARGET_ENV = "${TARGET_ENV}";
+const BUILD_NUMBER = "${BUILD_NUMBER}";
+const BUILD_ID = "${BUILD_ID}";
+
 const devopsArticles: InsertArticle[] = [
   {
     title: "Hướng dẫn Docker từ cơ bản đến nâng cao cho DevOps Engineers",
@@ -3501,10 +3506,10 @@ pipeline {
                         returnStdout: true
                     ).trim()
                     
-                    env.TARGET_ENV = (currentEnv == 'blue') ? 'green' : 'blue'
-                    env.CURRENT_ENV = currentEnv
+                    def targetEnv = (currentEnv == 'blue') ? 'green' : 'blue'
+                    def currentEnvironment = currentEnv
                     
-                    echo "Current: \\${env.CURRENT_ENV}, Target: \\${env.TARGET_ENV}"
+                    echo "Current: " + currentEnvironment + ", Target: " + targetEnv
                 }
             }
         }
@@ -3513,18 +3518,18 @@ pipeline {
             steps {
                 script {
                     sh """
-                        helm upgrade --install myapp-\\${env.TARGET_ENV} ./helm-chart \\
-                            --set environment=\\${env.TARGET_ENV} \\
-                            --set image.tag=\\${env.BUILD_NUMBER} \\
-                            --set ingress.host=\\${env.TARGET_ENV}.myapp.com \\
-                            --namespace \\${env.TARGET_ENV}
+                        helm upgrade --install myapp-\\${TARGET_ENV} ./helm-chart \\
+                            --set environment=\\${TARGET_ENV} \\
+                            --set image.tag=\\${BUILD_NUMBER} \\
+                            --set ingress.host=\\${TARGET_ENV}.myapp.com \\
+                            --namespace \\${TARGET_ENV}
                     """
                     
                     sh """
                         kubectl wait --for=condition=available \\
                             --timeout=600s \\
-                            deployment/myapp-\\${env.TARGET_ENV} \\
-                            -n \\${env.TARGET_ENV}
+                            deployment/myapp-\\${TARGET_ENV} \\
+                            -n \\${TARGET_ENV}
                     """
                 }
             }
@@ -3535,16 +3540,16 @@ pipeline {
                 script {
                     def healthChecksPassed = sh(
                         script: """
-                            curl -f http://\\${env.TARGET_ENV}.myapp.com/health
-                            kubectl exec -n \\${env.TARGET_ENV} \\
-                                deployment/myapp-\\${env.TARGET_ENV} -- \\
+                            curl -f http://\\${TARGET_ENV}.myapp.com/health
+                            kubectl exec -n \\${TARGET_ENV} \\
+                                deployment/myapp-\\${TARGET_ENV} -- \\
                                 npm run health:db
                         """,
                         returnStatus: true
                     )
                     
                     if (healthChecksPassed != 0) {
-                        error "Health checks failed for \\${env.TARGET_ENV} environment"
+                        error "Health checks failed for \\${TARGET_ENV} environment"
                     }
                 }
             }
@@ -3552,12 +3557,12 @@ pipeline {
         
         stage('Switch Traffic') {
             steps {
-                input message: "Switch traffic to \\${env.TARGET_ENV}?", ok: 'Switch'
+                input message: "Switch traffic to \\${TARGET_ENV}?", ok: 'Switch'
                 
                 script {
                     sh """
                         kubectl patch service production-service \\
-                            -p '{"spec":{"selector":{"environment":"\\${env.TARGET_ENV}"}}}' \\
+                            -p '{"spec":{"selector":{"environment":"\\${TARGET_ENV}"}}}' \\
                             -n production
                     """
                     
