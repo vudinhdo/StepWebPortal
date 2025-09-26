@@ -6,10 +6,18 @@ import { apiRequest } from "@/lib/queryClient";
 import type { InsertArticle } from "@shared/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Jenkins pipeline variables for content display
+// Pipeline and environment variables for content display
 const TARGET_ENV = "${TARGET_ENV}";
 const BUILD_NUMBER = "${BUILD_NUMBER}";
 const BUILD_ID = "${BUILD_ID}";
+const e = new Error(); // Exception variable for error handling examples
+const key = "example-key";
+const DATABASE_URL = "postgresql://example";
+const API_KEY = "example-api-key";
+const VAULT_TOKEN = "example-vault-token";
+const ENVIRONMENT = "production";
+const BRANCH = "main";
+const DISCOVERY_ADDRESS = "consul.service.consul:8500";
 
 const devopsArticles: InsertArticle[] = [
   {
@@ -3787,7 +3795,7 @@ pipeline {
                                 "level": "ERROR",
                                 "message": "Deployment failed",
                                 "pipeline_id": "\\${BUILD_ID}",
-                                "error": "\\${e.getMessage()}",
+                                "error": "\\${e.toString()}",
                                 "stage": "deploy",
                                 "environment": "production"
                             }' | curl -X POST http://logstash:5044 \\
