@@ -609,11 +609,11 @@ export default function HostingWordPress() {
 
       {/* Email Popup - Show after 15 seconds */}
       <EmailPopup
+        discount="30%"
         title="💎 Ưu Đãi WordPress Hosting!"
         description="Đăng ký email để nhận mã giảm giá 30% hosting WordPress + di chuyển site miễn phí!"
         buttonText="Nhận Mã Giảm Giá"
-        onSubmit={handleEmailSubmit}
-        delay={15000}
+        storageKey="wordpress-hosting-popup"
       />
     </div>
   );

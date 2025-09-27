@@ -737,11 +737,11 @@ export default function HostingLaravel() {
 
       {/* Email Popup - Show after 15 seconds */}
       <EmailPopup
+        discount="25%"
         title="🔥 Ưu Đãi Laravel Hosting!"
         description="Đăng ký email để nhận mã giảm giá 25% hosting Laravel + e-book bảo mật miễn phí!"
         buttonText="Nhận Mã Giảm Giá"
-        onSubmit={handleEmailSubmit}
-        delay={15000}
+        storageKey="laravel-hosting-popup"
       />
     </div>
   );
