@@ -46,6 +46,7 @@ Preferred communication style: Simple, everyday language.
 - **Customers & Partners Portfolio**: Comprehensive showcase of service partners (VMware, CMC Corp, VZAM, Aruba, FPT, Dell, etc.) and customers (Medlatec, BSG, Sở Văn Hóa Hà Nội, VETC, etc.).
 - **4-Step Service Process**: Visual workflow from consultation to full operation services with arrow connectors and detailed descriptions.
 - **Detailed IT Services**: Specialized services including equipment rental, server maintenance, network security, warranty services, and IT training.
+- **Cloud Server Services**: Comprehensive cloud server solutions page (`/Cloud/Cloud Server`) featuring 6-tier package system (Basic 1/2, Pro 1/2, Enterprise 1/2) with component-based pricing structure. Includes interactive pricing calculator with payment cycle discounts (3-36 months: 3-36% off), detailed component pricing (CPU: 60k VND/core, RAM: 60k VND/GB, SSD: 3k VND/GB, HDD: 1k VND/GB, IP: 100k VND/IP, Bandwidth: 100k VND/100Mbps), complimentary services (SSL Certificate, Monitoring & Alert, 24/7 Support, Migration Service), and premium add-ons (Server Management, Database Optimization, Load Balancer, AI/ML Support).
 
 ## External Dependencies
 
