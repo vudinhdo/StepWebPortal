@@ -261,15 +261,16 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         Chu kỳ thanh toán
                       </Label>
                       <Select
+                        key={`payment-cycle-select-${server.id}`}
                         value={server.paymentCycle.toString()}
                         onValueChange={(value) => updateServer(server.id, 'paymentCycle', parseInt(value))}
                       >
                         <SelectTrigger className="w-full" data-testid={`select-payment-cycle-${server.id}`}>
-                          <SelectValue />
+                          <SelectValue placeholder="Chọn chu kỳ thanh toán" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent position="popper" side="bottom" align="start">
                           {paymentCycles.map((cycle) => (
-                            <SelectItem key={cycle.months} value={cycle.months.toString()}>
+                            <SelectItem key={`${server.id}-cycle-${cycle.months}`} value={cycle.months.toString()}>
                               {cycle.label} {cycle.discount > 0 && `(-${cycle.discount}%)`}
                             </SelectItem>
                           ))}
@@ -416,15 +417,16 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         GPU
                       </Label>
                       <Select
+                        key={`gpu-select-${server.id}`}
                         value={server.gpu}
                         onValueChange={(value) => updateServer(server.id, 'gpu', value)}
                       >
                         <SelectTrigger className="w-full" data-testid={`select-gpu-${server.id}`}>
-                          <SelectValue />
+                          <SelectValue placeholder="Chọn GPU" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent position="popper" side="bottom" align="start">
                           {gpuOptions.map((gpu) => (
-                            <SelectItem key={gpu.value} value={gpu.value}>
+                            <SelectItem key={`${server.id}-${gpu.value}`} value={gpu.value}>
                               {gpu.label} {gpu.price > 0 && `(+${formatCurrency(gpu.price)}/tháng)`}
                             </SelectItem>
                           ))}
@@ -439,21 +441,22 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         Operating System
                       </Label>
                       <Select
+                        key={`os-select-${server.id}`}
                         value={server.os}
                         onValueChange={(value) => updateServer(server.id, 'os', value)}
                       >
                         <SelectTrigger className="w-full" data-testid={`select-os-${server.id}`}>
-                          <SelectValue />
+                          <SelectValue placeholder="Chọn hệ điều hành" />
                         </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Ubuntu 22.04">Ubuntu 22.04 LTS</SelectItem>
-                          <SelectItem value="Ubuntu 20.04">Ubuntu 20.04 LTS</SelectItem>
-                          <SelectItem value="CentOS 8">CentOS 8</SelectItem>
-                          <SelectItem value="CentOS 7">CentOS 7</SelectItem>
-                          <SelectItem value="Debian 12">Debian 12</SelectItem>
-                          <SelectItem value="Debian 11">Debian 11</SelectItem>
-                          <SelectItem value="Windows Server 2022">Windows Server 2022</SelectItem>
-                          <SelectItem value="Windows Server 2019">Windows Server 2019</SelectItem>
+                        <SelectContent position="popper" side="bottom" align="start">
+                          <SelectItem key={`${server.id}-ubuntu-22`} value="Ubuntu 22.04">Ubuntu 22.04 LTS</SelectItem>
+                          <SelectItem key={`${server.id}-ubuntu-20`} value="Ubuntu 20.04">Ubuntu 20.04 LTS</SelectItem>
+                          <SelectItem key={`${server.id}-centos-8`} value="CentOS 8">CentOS 8</SelectItem>
+                          <SelectItem key={`${server.id}-centos-7`} value="CentOS 7">CentOS 7</SelectItem>
+                          <SelectItem key={`${server.id}-debian-12`} value="Debian 12">Debian 12</SelectItem>
+                          <SelectItem key={`${server.id}-debian-11`} value="Debian 11">Debian 11</SelectItem>
+                          <SelectItem key={`${server.id}-win-2022`} value="Windows Server 2022">Windows Server 2022</SelectItem>
+                          <SelectItem key={`${server.id}-win-2019`} value="Windows Server 2019">Windows Server 2019</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
