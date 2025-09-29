@@ -11,33 +11,62 @@ import {
   Globe,
   Zap,
   Copy,
-  Calculator
+  Calculator,
+  Calendar,
+  Shield
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import QuoteBuilder from './quote-builder';
 
-// Pricing configuration based on the attached image
+// Pricing configuration based on the Cloud Server page
 const componentPricing = {
   cpu: { unit: 'Core', basePrice: 60000, minQty: 1, maxQty: 64 },
   ram: { unit: 'GB', basePrice: 60000, minQty: 1, maxQty: 512 },
   ssd: { unit: 'GB', basePrice: 3000, minQty: 1, maxQty: 10000 },
+  hdd: { unit: 'GB', basePrice: 1000, minQty: 1, maxQty: 10000 },
   ipAddress: { unit: 'IP tĩnh', basePrice: 100000, minQty: 1, maxQty: 10 },
-  bandwidth: { unit: 'Mbps', basePrice: 200000, minQty: 100, maxQty: 10000, step: 100 },
-  gpu: { unit: 'NVIDIA RTX A5000', basePrice: 6000000, minQty: 0, maxQty: 8 }
+  bandwidth: { unit: '100Mbps', basePrice: 100000, minQty: 1, maxQty: 100, step: 1 },
+  backup: { unit: 'GB', basePrice: 2000, minQty: 0, maxQty: 1000 }
 };
+
+// Payment cycle discounts
+const paymentCycles = [
+  { months: 1, label: '1 tháng', discount: 0 },
+  { months: 3, label: '3 tháng', discount: 3 },
+  { months: 6, label: '6 tháng', discount: 6 },
+  { months: 12, label: '12 tháng', discount: 12 },
+  { months: 24, label: '24 tháng', discount: 24 },
+  { months: 36, label: '36 tháng', discount: 36 }
+];
+
+// Popular GPU options with pricing
+const gpuOptions = [
+  { value: 'none', label: 'Không cần GPU', price: 0 },
+  { value: 'rtx4060', label: 'NVIDIA RTX 4060', price: 2500000 },
+  { value: 'rtx4070', label: 'NVIDIA RTX 4070', price: 3500000 },
+  { value: 'rtx4080', label: 'NVIDIA RTX 4080', price: 5000000 },
+  { value: 'rtx4090', label: 'NVIDIA RTX 4090', price: 7500000 },
+  { value: 'a5000', label: 'NVIDIA RTX A5000', price: 6000000 },
+  { value: 'a6000', label: 'NVIDIA RTX A6000', price: 8500000 },
+  { value: 'h100', label: 'NVIDIA H100', price: 15000000 }
+];
 
 interface ServerConfig {
   id: string;
   name: string;
   cpu: number;
   ram: number;
-  ssd: number;
+  disk: number;
+  diskType: 'ssd' | 'hdd';
   ipAddress: number;
   bandwidth: number;
-  gpu: number;
+  backup: number;
+  gpu: string;
+  paymentCycle: number;
   os: string;
 }
 
@@ -49,28 +78,34 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
   const [servers, setServers] = useState<ServerConfig[]>([
     {
       id: '1',
-      name: 'Web Server',
-      cpu: 4,
-      ram: 6,
-      ssd: 10,
+      name: 'Cloud Server',
+      cpu: 2,
+      ram: 4,
+      disk: 40,
+      diskType: 'ssd',
       ipAddress: 1,
-      bandwidth: 0,
-      gpu: 0,
-      os: 'CentOS 7'
+      bandwidth: 1,
+      backup: 0,
+      gpu: 'none',
+      paymentCycle: 1,
+      os: 'Ubuntu 22.04'
     }
   ]);
 
   const addServer = () => {
     const newServer: ServerConfig = {
       id: Date.now().toString(),
-      name: `Server ${servers.length + 1}`,
-      cpu: 4,
-      ram: 6,
-      ssd: 10,
+      name: `Cloud Server ${servers.length + 1}`,
+      cpu: 2,
+      ram: 4,
+      disk: 40,
+      diskType: 'ssd',
       ipAddress: 1,
-      bandwidth: 0,
-      gpu: 0,
-      os: 'CentOS 7'
+      bandwidth: 1,
+      backup: 0,
+      gpu: 'none',
+      paymentCycle: 1,
+      os: 'Ubuntu 22.04'
     };
     setServers([...servers, newServer]);
   };
@@ -100,12 +135,22 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
   const calculateServerCost = (server: ServerConfig) => {
     const cpuCost = server.cpu * componentPricing.cpu.basePrice;
     const ramCost = server.ram * componentPricing.ram.basePrice;
-    const ssdCost = server.ssd * componentPricing.ssd.basePrice;
+    const diskPrice = server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice;
+    const diskCost = server.disk * diskPrice;
     const ipCost = server.ipAddress * componentPricing.ipAddress.basePrice;
     const bandwidthCost = server.bandwidth * componentPricing.bandwidth.basePrice;
-    const gpuCost = server.gpu * componentPricing.gpu.basePrice;
+    const backupCost = server.backup * componentPricing.backup.basePrice;
+    const gpuOption = gpuOptions.find(gpu => gpu.value === server.gpu);
+    const gpuCost = gpuOption ? gpuOption.price : 0;
     
-    return cpuCost + ramCost + ssdCost + ipCost + bandwidthCost + gpuCost;
+    const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost;
+    
+    // Apply payment cycle discount
+    const cycle = paymentCycles.find(c => c.months === server.paymentCycle);
+    const discount = cycle ? cycle.discount : 0;
+    const discountedPrice = subtotal * (1 - discount / 100);
+    
+    return discountedPrice;
   };
 
   const calculateTotalCost = () => {
