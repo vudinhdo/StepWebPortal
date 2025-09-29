@@ -96,56 +96,112 @@ const benefits = [
 // Pricing packages
 const packages = [
   {
-    name: "Starter",
-    price: "500.000 VNĐ/tháng",
-    specs: "2 vCPU, 4GB RAM, 50GB SSD",
-    suitable: "Lý tưởng cho DEV cá nhân hoặc dự án nhỏ",
+    name: "Basic 1",
+    price: "420.000 VNĐ/tháng",
+    specs: "1 vCPU, 2GB RAM, 40GB SSD",
+    suitable: "Lý tưởng cho DEV cá nhân hoặc dự án thử nghiệm",
+    popular: false,
+    features: [
+      "1 vCPU core",
+      "2GB RAM",
+      "40GB SSD storage",
+      "500GB bandwidth",
+      "SSL Certificate miễn phí",
+      "Monitoring & Alert miễn phí",
+      "Hỗ trợ 24/7 mức cơ bản",
+      "Migration Service miễn phí"
+    ]
+  },
+  {
+    name: "Basic 2",
+    price: "660.000 VNĐ/tháng",
+    specs: "2 vCPU, 4GB RAM, 60GB SSD",
+    suitable: "Phù hợp cho startup nhỏ và website cá nhân",
     popular: false,
     features: [
       "2 vCPU cores",
-      "4GB RAM",
-      "50GB SSD storage",
+      "4GB RAM", 
+      "60GB SSD storage",
       "1TB bandwidth",
-      "SSL miễn phí",
-      "Hỗ trợ 24/7 tiếng Việt",
-      "Backup tự động hàng ngày",
+      "SSL Certificate miễn phí",
+      "Monitoring & Alert miễn phí",
+      "Hỗ trợ 24/7 mức cơ bản",
+      "Migration Service miễn phí"
+    ]
+  },
+  {
+    name: "Pro 1",
+    price: "1.020.000 VNĐ/tháng",
+    specs: "3 vCPU, 6GB RAM, 100GB SSD",
+    suitable: "Dành cho doanh nghiệp vừa và ứng dụng web",
+    popular: true,
+    features: [
+      "3 vCPU cores",
+      "6GB RAM",
+      "100GB SSD storage",
+      "2TB bandwidth",
+      "SSL Certificate miễn phí",
+      "Monitoring & Alert miễn phí",
+      "Hỗ trợ 24/7 mức cơ bản",
+      "Migration Service miễn phí",
       "Dashboard tiếng Việt"
     ]
   },
   {
-    name: "Business",
-    price: "1.200.000 VNĐ/tháng",
-    specs: "4 vCPU, 8GB RAM, 100GB SSD",
-    suitable: "Hoàn hảo cho CTO doanh nghiệp vừa, tích hợp AI",
+    name: "Pro 2", 
+    price: "1.440.000 VNĐ/tháng",
+    specs: "4 vCPU, 8GB RAM, 150GB SSD",
+    suitable: "Hoàn hảo cho CTO doanh nghiệp, tích hợp AI/ML",
     popular: true,
     features: [
       "4 vCPU cores",
       "8GB RAM",
-      "100GB SSD storage",
+      "150GB SSD storage",
       "3TB bandwidth",
-      "SSL miễn phí",
-      "Hỗ trợ ưu tiên 24/7",
-      "Backup tự động",
-      "Monitoring nâng cao",
+      "SSL Certificate miễn phí",
+      "Monitoring & Alert miễn phí",
+      "Hỗ trợ 24/7 mức cơ bản",
+      "Migration Service miễn phí",
       "Tích hợp ví điện tử Việt"
     ]
   },
   {
-    name: "Enterprise",
-    price: "2.500.000 VNĐ/tháng",
-    specs: "8 vCPU, 16GB RAM, 200GB SSD",
+    name: "Enterprise 1",
+    price: "2.070.000 VNĐ/tháng",
+    specs: "6 vCPU, 12GB RAM, 250GB SSD",
+    suitable: "Dành cho doanh nghiệp lớn và ứng dụng phức tạp",
+    popular: false,
+    features: [
+      "6 vCPU cores",
+      "12GB RAM",
+      "250GB SSD storage",
+      "5TB bandwidth",
+      "SSL Certificate miễn phí",
+      "Monitoring & Alert miễn phí",
+      "Hỗ trợ 24/7 mức cơ bản",
+      "Migration Service miễn phí",
+      "Support manager chuyên riêng",
+      "Bảo mật cao cấp"
+    ]
+  },
+  {
+    name: "Enterprise 2",
+    price: "2.790.000 VNĐ/tháng",
+    specs: "8 vCPU, 16GB RAM, 350GB SSD",
     suitable: "Dành cho CEO tập đoàn, tùy chỉnh cao cấp",
     popular: false,
     features: [
       "8 vCPU cores",
-      "16GB RAM",
-      "200GB SSD storage",
+      "16GB RAM", 
+      "350GB SSD storage",
       "10TB bandwidth",
-      "SSL miễn phí",
+      "SSL Certificate miễn phí",
+      "Monitoring & Alert miễn phí", 
+      "Hỗ trợ 24/7 mức cơ bản",
+      "Migration Service miễn phí",
       "Support manager chuyên riêng",
       "Backup realtime",
       "Bảo mật cao cấp",
-      "Tích hợp custom",
       "SLA guarantee"
     ]
   }
@@ -1160,9 +1216,12 @@ export default function CloudServer() {
                       <SelectValue placeholder="Chọn gói dịch vụ" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Starter">Cloud Server Starter</SelectItem>
-                      <SelectItem value="Business">Cloud Server Business</SelectItem>
-                      <SelectItem value="Enterprise">Cloud Server Enterprise</SelectItem>
+                      <SelectItem value="Basic 1">Cloud Server Basic 1</SelectItem>
+                      <SelectItem value="Basic 2">Cloud Server Basic 2</SelectItem>
+                      <SelectItem value="Pro 1">Cloud Server Pro 1</SelectItem>
+                      <SelectItem value="Pro 2">Cloud Server Pro 2</SelectItem>
+                      <SelectItem value="Enterprise 1">Cloud Server Enterprise 1</SelectItem>
+                      <SelectItem value="Enterprise 2">Cloud Server Enterprise 2</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
