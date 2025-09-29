@@ -253,183 +253,265 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                 </div>
                 
                 <div className="p-6">
-                  <div className="space-y-8">
-                    {/* CPU Slider Configuration */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Cpu className="w-5 h-5 text-blue-500" />
-                          <label className="font-semibold text-gray-700">CPU</label>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                            {server.cpu}
-                          </span>
-                          <span className="text-right text-gray-500 text-sm min-w-[60px]">24</span>
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <Slider
-                          value={[server.cpu]}
-                          onValueChange={(value) => updateServer(server.id, 'cpu', value[0])}
-                          max={24}
-                          min={0}
-                          step={1}
-                          className="w-full"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>0</span>
-                          <span>6</span>
-                          <span>12</span>
-                          <span>18</span>
-                          <span>24</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* RAM Slider Configuration */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <HardDrive className="w-5 h-5 text-green-500" />
-                          <label className="font-semibold text-gray-700">RAM</label>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                            {server.ram}
-                          </span>
-                          <span className="text-right text-gray-500 text-sm min-w-[60px]">48</span>
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <Slider
-                          value={[server.ram]}
-                          onValueChange={(value) => updateServer(server.id, 'ram', value[0])}
-                          max={48}
-                          min={0}
-                          step={1}
-                          className="w-full"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>0</span>
-                          <span>12</span>
-                          <span>24</span>
-                          <span>36</span>
-                          <span>48</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* SSD Slider Configuration */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <HardDrive className="w-5 h-5 text-purple-500" />
-                          <label className="font-semibold text-gray-700">+{server.ssd}GB SSD</label>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
-                            {server.ssd}
-                          </span>
-                          <span className="text-right text-gray-500 text-sm min-w-[60px]">100</span>
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <Slider
-                          value={[server.ssd]}
-                          onValueChange={(value) => updateServer(server.id, 'ssd', value[0])}
-                          max={100}
-                          min={0}
-                          step={5}
-                          className="w-full"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>0</span>
-                          <span>25</span>
-                          <span>50</span>
-                          <span>75</span>
-                          <span>100</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* OS Selection */}
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2">
-                        <Server className="w-5 h-5 text-gray-500" />
-                        <label className="font-semibold text-gray-700">OS</label>
-                      </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Payment Cycle Selection */}
+                    <div className="space-y-3 col-span-full">
+                      <Label className="flex items-center gap-2 text-base font-semibold">
+                        <Calendar className="w-5 h-5 text-purple-500" />
+                        Chu kỳ thanh toán
+                      </Label>
                       <Select
-                        value={server.os}
-                        onValueChange={(value) => updateServer(server.id, 'os', value)}
+                        value={server.paymentCycle.toString()}
+                        onValueChange={(value) => updateServer(server.id, 'paymentCycle', parseInt(value))}
                       >
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className="w-full" data-testid={`select-payment-cycle-${server.id}`}>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="CentOS 7">CentOS 7</SelectItem>
-                          <SelectItem value="CentOS 8">CentOS 8</SelectItem>
-                          <SelectItem value="Ubuntu 20.04">Ubuntu 20.04</SelectItem>
-                          <SelectItem value="Ubuntu 22.04">Ubuntu 22.04</SelectItem>
-                          <SelectItem value="Windows Server 2019">Windows Server 2019</SelectItem>
-                          <SelectItem value="Windows Server 2022">Windows Server 2022</SelectItem>
-                          <SelectItem value="Debian 11">Debian 11</SelectItem>
-                          <SelectItem value="Debian 12">Debian 12</SelectItem>
+                          {paymentCycles.map((cycle) => (
+                            <SelectItem key={cycle.months} value={cycle.months.toString()}>
+                              {cycle.label} {cycle.discount > 0 && `(-${cycle.discount}%)`}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </div>
 
-                    {/* Bandwidth Slider Configuration */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Network className="w-5 h-5 text-cyan-500" />
-                          <label className="font-semibold text-gray-700">BỔ SUNG BĂNG THÔNG</label>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <span className="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-sm font-medium">
-                            {server.bandwidth}
-                          </span>
-                          <span className="text-right text-gray-500 text-sm min-w-[60px]">10</span>
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <Slider
-                          value={[server.bandwidth]}
-                          onValueChange={(value) => updateServer(server.id, 'bandwidth', value[0])}
-                          max={10}
-                          min={0}
-                          step={1}
-                          className="w-full"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                          <span>0</span>
-                          <span>2</span>
-                          <span>4</span>
-                          <span>6</span>
-                          <span>8</span>
-                          <span>10</span>
-                        </div>
+                    {/* CPU Configuration */}
+                    <div className="space-y-3">
+                      <Label className="flex items-center gap-2 text-base font-semibold">
+                        <Cpu className="w-5 h-5 text-blue-500" />
+                        CPU (Cores)
+                      </Label>
+                      <Input
+                        type="number"
+                        value={server.cpu}
+                        onChange={(e) => updateServer(server.id, 'cpu', Math.max(1, parseInt(e.target.value) || 1))}
+                        min="1"
+                        max="64"
+                        className="text-center text-lg font-semibold"
+                        data-testid={`input-cpu-${server.id}`}
+                      />
+                      <div className="text-xs text-gray-500 text-center">
+                        {formatCurrency(componentPricing.cpu.basePrice)}/core/tháng
                       </div>
                     </div>
 
-                    {/* Real-time Cost Display */}
-                    <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-blue-200">
-                      <div className="flex justify-between items-center">
-                        <div className="space-y-1">
-                          <h4 className="font-semibold text-gray-800">Tổng Chi Phí Tháng</h4>
-                          <div className="text-sm text-gray-600 space-y-1">
-                            <div>CPU: {server.cpu} Core × {formatCurrency(componentPricing.cpu.basePrice)} = {formatCurrency(server.cpu * componentPricing.cpu.basePrice)}</div>
-                            <div>RAM: {server.ram} GB × {formatCurrency(componentPricing.ram.basePrice)} = {formatCurrency(server.ram * componentPricing.ram.basePrice)}</div>
-                            <div>SSD: +{server.ssd} GB × {formatCurrency(componentPricing.ssd.basePrice)} = {formatCurrency(server.ssd * componentPricing.ssd.basePrice)}</div>
-                            <div>Bandwidth: +{server.bandwidth} Mbps × {formatCurrency(componentPricing.bandwidth.basePrice)} = {formatCurrency(server.bandwidth * componentPricing.bandwidth.basePrice)}</div>
-                          </div>
+                    {/* RAM Configuration */}
+                    <div className="space-y-3">
+                      <Label className="flex items-center gap-2 text-base font-semibold">
+                        <Zap className="w-5 h-5 text-green-500" />
+                        RAM (GB)
+                      </Label>
+                      <Input
+                        type="number"
+                        value={server.ram}
+                        onChange={(e) => updateServer(server.id, 'ram', Math.max(1, parseInt(e.target.value) || 1))}
+                        min="1"
+                        max="512"
+                        className="text-center text-lg font-semibold"
+                        data-testid={`input-ram-${server.id}`}
+                      />
+                      <div className="text-xs text-gray-500 text-center">
+                        {formatCurrency(componentPricing.ram.basePrice)}/GB/tháng
+                      </div>
+                    </div>
+
+                    {/* Disk Configuration */}
+                    <div className="space-y-3">
+                      <Label className="flex items-center gap-2 text-base font-semibold">
+                        <HardDrive className="w-5 h-5 text-purple-500" />
+                        Disk Storage (GB)
+                      </Label>
+                      <div className="flex items-center space-x-3">
+                        <Label className="text-sm font-medium">SSD</Label>
+                        <Switch
+                          checked={server.diskType === 'hdd'}
+                          onCheckedChange={(checked) => updateServer(server.id, 'diskType', checked ? 'hdd' : 'ssd')}
+                          data-testid={`switch-disk-type-${server.id}`}
+                        />
+                        <Label className="text-sm font-medium">HDD</Label>
+                      </div>
+                      <Input
+                        type="number"
+                        value={server.disk}
+                        onChange={(e) => updateServer(server.id, 'disk', Math.max(1, parseInt(e.target.value) || 1))}
+                        min="1"
+                        max="10000"
+                        className="text-center text-lg font-semibold"
+                        data-testid={`input-disk-${server.id}`}
+                      />
+                      <div className="text-xs text-gray-500 text-center">
+                        {server.diskType === 'ssd' 
+                          ? formatCurrency(componentPricing.ssd.basePrice) 
+                          : formatCurrency(componentPricing.hdd.basePrice)
+                        }/GB/tháng ({server.diskType.toUpperCase()})
+                      </div>
+                    </div>
+
+                    {/* IP Address Configuration */}
+                    <div className="space-y-3">
+                      <Label className="flex items-center gap-2 text-base font-semibold">
+                        <Globe className="w-5 h-5 text-orange-500" />
+                        IP Address
+                      </Label>
+                      <Input
+                        type="number"
+                        value={server.ipAddress}
+                        onChange={(e) => updateServer(server.id, 'ipAddress', Math.max(1, parseInt(e.target.value) || 1))}
+                        min="1"
+                        max="10"
+                        className="text-center text-lg font-semibold"
+                        data-testid={`input-ip-${server.id}`}
+                      />
+                      <div className="text-xs text-gray-500 text-center">
+                        {formatCurrency(componentPricing.ipAddress.basePrice)}/IP/tháng
+                      </div>
+                    </div>
+
+                    {/* Bandwidth Configuration */}
+                    <div className="space-y-3">
+                      <Label className="flex items-center gap-2 text-base font-semibold">
+                        <Network className="w-5 h-5 text-cyan-500" />
+                        Bandwidth (x100Mbps)
+                      </Label>
+                      <Input
+                        type="number"
+                        value={server.bandwidth}
+                        onChange={(e) => updateServer(server.id, 'bandwidth', Math.max(1, parseInt(e.target.value) || 1))}
+                        min="1"
+                        max="100"
+                        className="text-center text-lg font-semibold"
+                        data-testid={`input-bandwidth-${server.id}`}
+                      />
+                      <div className="text-xs text-gray-500 text-center">
+                        {formatCurrency(componentPricing.bandwidth.basePrice)}/100Mbps/tháng
+                      </div>
+                    </div>
+
+                    {/* Backup Configuration */}
+                    <div className="space-y-3">
+                      <Label className="flex items-center gap-2 text-base font-semibold">
+                        <Shield className="w-5 h-5 text-red-500" />
+                        Backup Storage (GB)
+                      </Label>
+                      <Input
+                        type="number"
+                        value={server.backup}
+                        onChange={(e) => updateServer(server.id, 'backup', Math.max(0, parseInt(e.target.value) || 0))}
+                        min="0"
+                        max="1000"
+                        className="text-center text-lg font-semibold"
+                        data-testid={`input-backup-${server.id}`}
+                      />
+                      <div className="text-xs text-gray-500 text-center">
+                        {formatCurrency(componentPricing.backup.basePrice)}/GB/tháng
+                      </div>
+                    </div>
+
+                    {/* GPU Selection */}
+                    <div className="space-y-3 col-span-full md:col-span-2">
+                      <Label className="flex items-center gap-2 text-base font-semibold">
+                        <Zap className="w-5 h-5 text-yellow-500" />
+                        GPU
+                      </Label>
+                      <Select
+                        value={server.gpu}
+                        onValueChange={(value) => updateServer(server.id, 'gpu', value)}
+                      >
+                        <SelectTrigger className="w-full" data-testid={`select-gpu-${server.id}`}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {gpuOptions.map((gpu) => (
+                            <SelectItem key={gpu.value} value={gpu.value}>
+                              {gpu.label} {gpu.price > 0 && `(+${formatCurrency(gpu.price)}/tháng)`}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* OS Selection */}
+                    <div className="space-y-3 col-span-full md:col-span-1">
+                      <Label className="flex items-center gap-2 text-base font-semibold">
+                        <Server className="w-5 h-5 text-gray-500" />
+                        Operating System
+                      </Label>
+                      <Select
+                        value={server.os}
+                        onValueChange={(value) => updateServer(server.id, 'os', value)}
+                      >
+                        <SelectTrigger className="w-full" data-testid={`select-os-${server.id}`}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Ubuntu 22.04">Ubuntu 22.04 LTS</SelectItem>
+                          <SelectItem value="Ubuntu 20.04">Ubuntu 20.04 LTS</SelectItem>
+                          <SelectItem value="CentOS 8">CentOS 8</SelectItem>
+                          <SelectItem value="CentOS 7">CentOS 7</SelectItem>
+                          <SelectItem value="Debian 12">Debian 12</SelectItem>
+                          <SelectItem value="Debian 11">Debian 11</SelectItem>
+                          <SelectItem value="Windows Server 2022">Windows Server 2022</SelectItem>
+                          <SelectItem value="Windows Server 2019">Windows Server 2019</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  {/* Real-time Cost Display */}
+                  <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-blue-200">
+                    <h4 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                      <Calculator className="w-5 h-5" />
+                      Chi Tiết Tính Giá
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2 text-sm text-gray-600">
+                        <div className="flex justify-between">
+                          <span>CPU: {server.cpu} core</span>
+                          <span>{formatCurrency(server.cpu * componentPricing.cpu.basePrice)}</span>
                         </div>
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-blue-600">
-                            {formatCurrency(calculateServerCost(server))}
+                        <div className="flex justify-between">
+                          <span>RAM: {server.ram} GB</span>
+                          <span>{formatCurrency(server.ram * componentPricing.ram.basePrice)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Disk: {server.disk} GB ({server.diskType.toUpperCase()})</span>
+                          <span>{formatCurrency(server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice))}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>IP: {server.ipAddress} địa chỉ</span>
+                          <span>{formatCurrency(server.ipAddress * componentPricing.ipAddress.basePrice)}</span>
+                        </div>
+                      </div>
+                      <div className="space-y-2 text-sm text-gray-600">
+                        <div className="flex justify-between">
+                          <span>Bandwidth: {server.bandwidth}x100Mbps</span>
+                          <span>{formatCurrency(server.bandwidth * componentPricing.bandwidth.basePrice)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Backup: {server.backup} GB</span>
+                          <span>{formatCurrency(server.backup * componentPricing.backup.basePrice)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>GPU: {gpuOptions.find(g => g.value === server.gpu)?.label}</span>
+                          <span>{formatCurrency(gpuOptions.find(g => g.value === server.gpu)?.price || 0)}</span>
+                        </div>
+                        {server.paymentCycle > 1 && (
+                          <div className="flex justify-between text-green-600 font-medium">
+                            <span>Giảm giá ({paymentCycles.find(c => c.months === server.paymentCycle)?.discount}%):</span>
+                            <span>-{formatCurrency((server.cpu * componentPricing.cpu.basePrice + server.ram * componentPricing.ram.basePrice + server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice) + server.ipAddress * componentPricing.ipAddress.basePrice + server.bandwidth * componentPricing.bandwidth.basePrice + server.backup * componentPricing.backup.basePrice + (gpuOptions.find(g => g.value === server.gpu)?.price || 0)) * (paymentCycles.find(c => c.months === server.paymentCycle)?.discount || 0) / 100)}</span>
                           </div>
-                          <div className="text-sm text-gray-500">VND/tháng</div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="border-t pt-4 mt-4">
+                      <div className="flex justify-between items-center">
+                        <div className="text-lg font-semibold text-gray-800">
+                          Tổng chi phí ({paymentCycles.find(c => c.months === server.paymentCycle)?.label})
+                        </div>
+                        <div className="text-2xl font-bold text-blue-600" data-testid={`total-cost-${server.id}`}>
+                          {formatCurrency(calculateServerCost(server))}
                         </div>
                       </div>
                     </div>
@@ -528,7 +610,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                     </p>
                   </motion.div>
 
-                  {/* SSD Component */}
+                  {/* Disk Component */}
                   <motion.div
                     drag
                     dragSnapToOrigin
@@ -537,11 +619,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <HardDrive className="w-4 h-4 text-purple-500" />
-                      <span className="font-semibold text-sm">SSD</span>
+                      <span className="font-semibold text-sm">{server.diskType.toUpperCase()}</span>
                     </div>
-                    <p className="text-sm text-gray-600">{server.ssd} GB</p>
+                    <p className="text-sm text-gray-600">{server.disk} GB</p>
                     <p className="text-xs text-green-600 font-medium">
-                      {formatCurrency(server.ssd * componentPricing.ssd.basePrice)}
+                      {formatCurrency(server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice))}
                     </p>
                   </motion.div>
 
@@ -580,7 +662,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                   </motion.div>
 
                   {/* GPU Component */}
-                  {server.gpu > 0 && (
+                  {server.gpu !== 'none' && (
                     <motion.div
                       drag
                       dragSnapToOrigin
@@ -591,9 +673,9 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         <Zap className="w-4 h-4 text-yellow-500" />
                         <span className="font-semibold text-sm">GPU</span>
                       </div>
-                      <p className="text-sm text-gray-600">{server.gpu} RTX A5000</p>
+                      <p className="text-sm text-gray-600">{gpuOptions.find(g => g.value === server.gpu)?.label}</p>
                       <p className="text-xs text-green-600 font-medium">
-                        {formatCurrency(server.gpu * componentPricing.gpu.basePrice)}
+                        {formatCurrency(gpuOptions.find(g => g.value === server.gpu)?.price || 0)}
                       </p>
                     </motion.div>
                   )}
