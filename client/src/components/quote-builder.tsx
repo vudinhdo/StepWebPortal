@@ -6,17 +6,12 @@ import {
   HardDrive, 
   Network, 
   Zap,
-  ArrowRight,
-  Mail,
-  Phone as PhoneIcon
+  ArrowRight
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
 
 // Cloud packages with predefined pricing
 const cloudPackages = {
@@ -77,7 +72,6 @@ interface QuoteConfig {
 
 
 export default function QuoteBuilder() {
-  const { toast } = useToast();
   const [config, setConfig] = useState<QuoteConfig>({
     selectedPackage: 'Chuyên Nghiệp',
     productType: 'CLOUD',
@@ -89,10 +83,6 @@ export default function QuoteBuilder() {
     bandwidth: 1000,
     period: 'monthly'
   });
-  
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [contactInfo, setContactInfo] = useState({ email: '', phone: '' });
-  const [errors, setErrors] = useState({ email: '', phone: '' });
 
   const updateConfig = (field: keyof QuoteConfig, value: string | number) => {
     setConfig(prev => ({ ...prev, [field]: value }));
@@ -123,37 +113,6 @@ export default function QuoteBuilder() {
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('vi-VN').format(amount) + ' VND';
-  };
-
-  const validateForm = () => {
-    const newErrors = { email: '', phone: '' };
-    
-    if (!contactInfo.email.trim()) {
-      newErrors.email = 'Email là bắt buộc';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactInfo.email)) {
-      newErrors.email = 'Email không hợp lệ';
-    }
-    
-    if (!contactInfo.phone.trim()) {
-      newErrors.phone = 'Số điện thoại là bắt buộc';
-    } else if (!/^[0-9]{10,11}$/.test(contactInfo.phone.replace(/\s/g, ''))) {
-      newErrors.phone = 'Số điện thoại không hợp lệ';
-    }
-    
-    setErrors(newErrors);
-    return !newErrors.email && !newErrors.phone;
-  };
-
-  const handleSubmitQuote = () => {
-    if (validateForm()) {
-      toast({
-        title: "Yêu cầu báo giá đã được gửi!",
-        description: "Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.",
-      });
-      setIsDialogOpen(false);
-      setContactInfo({ email: '', phone: '' });
-      setErrors({ email: '', phone: '' });
-    }
   };
 
   const costs = calculateCost();
@@ -448,11 +407,7 @@ export default function QuoteBuilder() {
                 </div>
               </div>
 
-              <Button 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-4"
-                onClick={() => setIsDialogOpen(true)}
-                data-testid="button-continue-quote"
-              >
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-4">
                 <span>Tiếp tục</span>
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -460,81 +415,6 @@ export default function QuoteBuilder() {
           </div>
         </div>
       </div>
-      
-      {/* Contact Information Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Thông Tin Liên Hệ</DialogTitle>
-            <DialogDescription>
-              Vui lòng cung cấp thông tin liên hệ để chúng tôi gửi báo giá chi tiết
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="flex items-center gap-2">
-                <Mail className="w-4 h-4" />
-                Email <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="example@company.com"
-                value={contactInfo.email}
-                onChange={(e) => {
-                  setContactInfo({ ...contactInfo, email: e.target.value });
-                  if (errors.email) setErrors({ ...errors, email: '' });
-                }}
-                className={errors.email ? 'border-red-500' : ''}
-                data-testid="input-quote-email"
-              />
-              {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="flex items-center gap-2">
-                <PhoneIcon className="w-4 h-4" />
-                Số điện thoại <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="phone"
-                type="tel"
-                placeholder="0987 654 321"
-                value={contactInfo.phone}
-                onChange={(e) => {
-                  setContactInfo({ ...contactInfo, phone: e.target.value });
-                  if (errors.phone) setErrors({ ...errors, phone: '' });
-                }}
-                className={errors.phone ? 'border-red-500' : ''}
-                data-testid="input-quote-phone"
-              />
-              {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
-            </div>
-          </div>
-          
-          <div className="flex gap-3">
-            <Button 
-              variant="outline" 
-              className="flex-1"
-              onClick={() => {
-                setIsDialogOpen(false);
-                setErrors({ email: '', phone: '' });
-              }}
-              data-testid="button-cancel-quote"
-            >
-              Hủy
-            </Button>
-            <Button 
-              className="flex-1 bg-blue-600 hover:bg-blue-700"
-              onClick={handleSubmitQuote}
-              data-testid="button-submit-quote"
-            >
-              Gửi Yêu Cầu
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
