@@ -642,13 +642,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Personalization Settings */}
-        {!isPersonalized && (
-          <PersonalizationSettings 
-            userInfo={userInfo} 
-            onReset={handleResetPersonalization}
-          />
-        )}
       </main>
       
       <Footer />
