@@ -37,9 +37,7 @@ import {
   Cpu as ProcessorIcon,
   Network,
   Activity,
-  Gauge,
-  Hexagon,
-  Box
+  Gauge
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -52,7 +50,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
-// Import individual certification logos
+// Import individual certification logos - official icons
 import mctLogo from "@assets/stock_images/microsoft_certified__4ac49bd2.jpg";
 import lpiLogo from "@assets/stock_images/linux_professional_i_86f60517.jpg";
 import safeticaLogo from "@assets/stock_images/safetica_data_loss_p_4dcd0791.jpg";
@@ -60,7 +58,7 @@ import vcp5Logo from "@assets/stock_images/vmware_certified_pro_3b50b772.jpg";
 import ccnaLogo from "@assets/stock_images/cisco_ccna_certified_f86a7696.jpg";
 import cehLogo from "@assets/stock_images/ceh_certified_ethica_4ee2900f.jpg";
 
-// Import partner/customer logos
+// Import individual partner logos
 import vmwareLogo from "@assets/stock_images/vmware_company_logo_98a8fa28.jpg";
 import vzamLogo from "@assets/stock_images/vzam_vietnam_technol_fb730dcd.jpg";
 import arubaLogo from "@assets/stock_images/aruba_hpe_hewlett_pa_b3c10f89.jpg";
@@ -69,6 +67,8 @@ import dellLogo from "@assets/stock_images/dell_technologies_co_b3482cfd.jpg";
 import nakivoLogo from "@assets/stock_images/nakivo_backup_softwa_cf7d1f6e.jpg";
 import hvcgLogo from "@assets/stock_images/hvcg_software_vietna_15b303d0.jpg";
 import viettelLogo from "@assets/stock_images/viettel_telecommunic_f34dd040.jpg";
+
+// Import individual customer logos
 import medlatecLogo from "@assets/stock_images/medlatec_medical_cen_eca53331.jpg";
 import bsgLogo from "@assets/stock_images/bsg_vietnam_company__bf28746d.jpg";
 import hanoiCultureLogo from "@assets/stock_images/vietnam_government_d_85d825a2.jpg";
@@ -79,14 +79,18 @@ import five9Logo from "@assets/stock_images/five9_contact_center_24cb331f.jpg";
 import monyLogo from "@assets/stock_images/mony_vietnam_financi_86ad3a5d.jpg";
 import palVietnamLogo from "@assets/stock_images/pal_vietnam_company__ff591243.jpg";
 
-// Import images
+// Import company images for fallback
 import certificationsImage from "@assets/image_1758666044115.png";
 import customersPartnersImage from "@assets/image_1758666058304.png";
+import serviceProcessImage from "@assets/image_1758666086640.png";
+import detailedServicesImage from "@assets/image_1758666113896.png";
+import stepLogo from "@assets/logo step_1753193285585.png";
+
+// Import new additional images for sections below core services
 import itServicesImage from "@assets/image_1758729782271.png";
 import itProductsImage from "@assets/image_1758729789755.png";
 import technicalCertificationsImage from "@assets/image_1758729805095.png";
 import customersPartnersNewImage from "@assets/image_1758729815652.png";
-import stepLogo from "@assets/logo step_1753193285585.png";
 
 interface UserInfo {
   name: string;
@@ -101,12 +105,15 @@ export default function Home() {
   const { toast } = useToast();
 
   useEffect(() => {
+    // Check if user has already completed personalization
     const savedUserInfo = localStorage.getItem('stepUserInfo');
+    
     if (savedUserInfo) {
       setUserInfo(JSON.parse(savedUserInfo));
       setIsPersonalized(true);
     }
   }, []);
+
 
   const handleResetPersonalization = () => {
     localStorage.removeItem('stepUserInfo');
@@ -118,57 +125,123 @@ export default function Home() {
     });
   };
 
-  // Crypto-themed metrics with neon colors
+
+
+
+  // Cloud data and statistics
   const cloudMetrics = [
-    { label: "Uptime", value: "99.99%", icon: Clock, color: "neon-blue" },
-    { label: "Clients", value: "5K+", icon: Users, color: "neon-pink" },
-    { label: "Data Centers", value: "08", icon: Server, color: "neon-green" },
-    { label: "Response", value: "<2min", icon: Zap, color: "neon-purple" }
+    { label: "Uptime Guarantee", value: "99.99%", icon: Clock },
+    { label: "Active Clients", value: "5,000+", icon: Users },
+    { label: "Data Centers", value: "8", icon: Server },
+    { label: "Support Response", value: "< 2min", icon: Zap }
   ];
 
-  // Cloud services with crypto aesthetic
+  // Technical Certifications data with individual logos
+  const technicalCertifications = [
+    { name: "MCT", fullName: "Microsoft Certificate Windows Server", color: "bg-blue-500", logo: mctLogo },
+    { name: "Linux LPI", fullName: "Linux Professional Institute", color: "bg-orange-500", logo: lpiLogo },
+    { name: "DLP Safetica", fullName: "Data Loss Prevention của hãng Safetica", color: "bg-green-500", logo: safeticaLogo },
+    { name: "VCP5", fullName: "VMware Certified Professional", color: "bg-purple-500", logo: vcp5Logo },
+    { name: "Cisco CCNA", fullName: "Cisco Certified Network Associate", color: "bg-cyan-500", logo: ccnaLogo },
+    { name: "CEH", fullName: "Certified Ethical Hacker (Master in Hacking)", color: "bg-red-500", logo: cehLogo }
+  ];
+
+  // Service Partners and Customers data with individual logos
+  const servicePartners = [
+    { name: "VMware", logo: vmwareLogo },
+    { name: "CMC Corp", logo: customersPartnersImage }, // Fallback - specific logo failed to download
+    { name: "VZAM", logo: vzamLogo },
+    { name: "Aruba", logo: arubaLogo },
+    { name: "FPT", logo: fptLogo },
+    { name: "Dell", logo: dellLogo },
+    { name: "Nakivo", logo: nakivoLogo },
+    { name: "HVCG Software", logo: hvcgLogo },
+    { name: "Viettel", logo: viettelLogo }
+  ];
+
+  const customers = [
+    { name: "Medlatec", logo: medlatecLogo },
+    { name: "BSG", logo: bsgLogo },
+    { name: "Sở Văn Hóa Hà Nội", logo: hanoiCultureLogo },
+    { name: "VETC", logo: vetcLogo },
+    { name: "CMC Telecom", logo: cmcTelecomLogo },
+    { name: "Sở Tài Nguyên Môi Trường", logo: environmentLogo },
+    { name: "Five9", logo: five9Logo },
+    { name: "Mony", logo: monyLogo },
+    { name: "Pal Vietnam", logo: palVietnamLogo }
+  ];
+
+  // Service Process steps
+  const serviceProcess = [
+    {
+      icon: Target,
+      title: "TƯ VẤN GIẢI PHÁP",
+      description: "Phân tích nhu cầu và tư vấn giải pháp CNTT phù hợp nhất cho doanh nghiệp",
+      color: "step-blue"
+    },
+    {
+      icon: ShoppingCart,
+      title: "CUNG CẤP THIẾT BỊ",
+      description: "Cung cấp thiết bị, phần cứng và phần mềm chất lượng cao từ các nhà sản xuất uy tín",
+      color: "step-light-blue"
+    },
+    {
+      icon: Wrench,
+      title: "TRIỂN KHAI THI CÔNG",
+      description: "Triển khai, cài đặt và cấu hình hệ thống theo đúng thiết kế và tiêu chuẩn kỹ thuật",
+      color: "step-blue"
+    },
+    {
+      icon: Settings,
+      title: "DỊCH VỤ VẬN HÀNH TRỌN GÓI",
+      description: "Vận hành, bảo trì và hỗ trợ kỹ thuật 24/7 để đảm bảo hệ thống hoạt động ổn định",
+      color: "step-light-blue"
+    }
+  ];
+
+
   const cloudServices = [
     {
       icon: CloudSnow,
       title: "Cloud Server",
-      description: "Máy chủ đám mây cao cấp với hiệu năng vượt trội và linh hoạt tối đa",
-      features: ["CPU Premium", "NVMe Ultra-Fast", "Auto Backup", "24/7 Support"],
-      gradient: "crypto-gradient-cyber"
+      description: "Giải pháp máy chủ đám mây cao cấp với hiệu năng vượt trội và sự linh hoạt tối đa.",
+      features: ["Thanh toán linh hoạt", "CPU cao cấp", "Hỗ trợ 1-1", "Backup tự động theo yêu cầu", "Ổ cứng NVME - HHHL siêu tốc"],
+      stepColor: "step-cloud"
     },
     {
       icon: Monitor,
       title: "Web Hosting",
-      description: "Hosting siêu tốc với bảo mật tuyệt đối và mở rộng không giới hạn",
-      features: ["Lightning Speed", "Max Security", "Unlimited Scale", "24/7 Support"],
-      gradient: "crypto-gradient-matrix"
+      description: "Trải nghiệm hosting đỉnh cao với tốc độ tải trang nhanh như chớp, bảo mật tuyệt đối và khả năng mở rộng không giới hạn cho mọi loại website.",
+      features: ["Tốc độ siêu nhanh", "Bảo mật tuyệt đối", "Mở rộng linh hoạt", "Hỗ trợ 24/7"],
+      stepColor: "step-hosting"
     },
     {
       icon: HardDrive,
       title: "Dedicated Server",
-      description: "Sức mạnh tuyệt đối với máy chủ riêng và phần cứng chuyên dụng",
-      features: ["Dedicated Hardware", "Unlimited Bandwidth", "Deep Support", "Full Control"],
-      gradient: "crypto-gradient-neon"
+      description: "Sức mạnh tuyệt đối với máy chủ riêng biệt, phần cứng chuyên dụng và dịch vụ hỗ trợ chuyên sâu.",
+      features: ["Phần cứng chuyên dụng", "Băng thông không giới hạn", "Hỗ trợ 24/7", "Dịch vụ chuyên sâu phần cứng", "Hỗ trợ quản trị"],
+      stepColor: "step-server"
     },
     {
       icon: Building,
       title: "Colocation",
-      description: "Hạ tầng datacenter đẳng cấp thế giới với hệ sinh thái đa dạng",
-      features: ["10GB Port", "Unlimited Bandwidth", "Diverse Ecosystem", "24/7 Support"],
-      gradient: "crypto-gradient-fire"
+      description: "Hạ tầng datacenter đẳng cấp thế giới với hệ sinh thái đa dạng và dịch vụ hỗ trợ toàn diện.",
+      features: ["Dịch vụ hỗ trợ 24/7", "Dịch vụ cho thuê Port 10GB", "Băng thông không giới hạn", "Hệ sinh thái đa dạng"],
+      stepColor: "step-colocation"
     },
     {
       icon: MailCheck,
       title: "Email Hybrid",
-      description: "Email thông minh tích hợp đa nền tảng với tỉ lệ inbox cao nhất",
-      features: ["Cost Saving", "Multi-Platform", "High Inbox Rate", "Smart Integration"],
-      gradient: "crypto-gradient-cyber"
+      description: "Giải pháp email thông minh tích hợp đa nền tảng, tối ưu chi phí và đảm bảo tỉ lệ gửi thành công cao nhất.",
+      features: ["Tiết kiệm chi phí", "Chạy song song với Google Workspace và Microsoft 365", "Tỉ lệ inbox cao"],
+      stepColor: "step-email"
     },
     {
       icon: ShieldCheck,
-      title: "DLP Protection",
-      description: "Bảo vệ dữ liệu toàn diện với AI tiên tiến ngăn chặn rò rỉ",
-      features: ["AI-Powered", "Real-time Monitor", "Full Protection", "Smart Detection"],
-      gradient: "crypto-gradient-neon"
+      title: "DLP - Data Loss Prevention",
+      description: "Giải pháp bảo vệ dữ liệu toàn diện với công nghệ AI tiên tiến, ngăn chặn mọi rủi ro rò rỉ thông tin nhạy cảm.",
+      features: ["Bảo vệ dữ liệu nhạy cảm", "Công nghệ AI tiên tiến", "Ngăn chặn rò rỉ toàn diện", "Giám sát thời gian thực"],
+      stepColor: "step-dlp"
     }
   ];
 
@@ -177,142 +250,132 @@ export default function Home() {
       name: "Nguyễn Minh Tuấn",
       company: "FPT Software",
       role: "Infrastructure Manager",
-      content: "Cloud Server của STEP giúp chúng tôi tiết kiệm 50% chi phí và scale linh hoạt. GPU computing mạnh mẽ cho AI workload.",
+      content: "Cloud Server của STEP giúp chúng tôi tiết kiệm 50% chi phí và scale linh hoạt theo project. GPU computing rất mạnh cho AI workload.",
       rating: 5
     },
     {
-      name: "Trần Thị Linh",
+      name: "Trần Thị Linh", 
       company: "VinCommerce",
       role: "IT Director",
-      content: "Dedicated Server ổn định 99.9%, băng thông unlimited. E-commerce platform chạy mượt mà trong Black Friday.",
+      content: "Dedicated Server ổn định 99.9%, băng thông unlimited giúp e-commerce platform chạy mượt mà trong Black Friday. Hỗ trợ 24/7 rất chuyên nghiệp.",
       rating: 5
     },
     {
       name: "Phạm Văn Đức",
       company: "BKAV Corporation",
-      role: "Security Lead",
-      content: "Email Hybrid hoàn hảo cho security compliance. Anti-spam 99.9%, backup tự động đảm bảo an tâm.",
+      role: "Security Lead", 
+      content: "Email Hybrid solution hoàn hảo cho security compliance. Anti-spam hiệu quả 99.9%, backup tự động giúp an tâm về dữ liệu.",
       rating: 5
     }
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <Header />
       
       <main>
         {isPersonalized && userInfo ? (
-          <div className="pt-20 pb-8 crypto-gradient-cyber">
+          <div className="pt-20 pb-8 bg-gradient-to-br from-blue-50 to-indigo-100">
             <PersonalizedContent userInfo={userInfo} />
           </div>
         ) : (
-          /* CRYPTO AESTHETIC HERO SECTION */
-          <section className="relative pt-32 pb-48 overflow-hidden animated-grid">
-            {/* Neon Grid Background */}
-            <div className="absolute inset-0 crypto-grid-bg opacity-30"></div>
-            
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90"></div>
-
-            {/* Animated Geometric Shapes */}
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute"
-                initial={{ 
-                  x: Math.random() * 100 + '%',
-                  y: Math.random() * 100 + '%',
-                  scale: 0.5,
-                  opacity: 0.1
-                }}
-                animate={{
-                  x: [Math.random() * 100 + '%', Math.random() * 100 + '%'],
-                  y: [Math.random() * 100 + '%', Math.random() * 100 + '%'],
-                  scale: [0.5, 0.8, 0.5],
-                  opacity: [0.1, 0.2, 0.1],
-                  rotate: [0, 360]
-                }}
-                transition={{
-                  duration: 20 + Math.random() * 10,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              >
-                <Hexagon className="w-24 h-24 text-primary/20" strokeWidth={1} />
-              </motion.div>
-            ))}
+          /* Modern Hero Section */
+          <section className="relative pt-20 pb-32 overflow-hidden">
+            {/* Animated Background */}
+            <div className="absolute inset-0">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/5 to-cyan-600/10"></div>
+              
+              {/* Floating Cloud Particles */}
+              {[...Array(8)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-4 h-4 bg-blue-400/20 rounded-full"
+                  initial={{ 
+                    x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200), 
+                    y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800) 
+                  }}
+                  animate={{
+                    x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
+                    y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
+                  }}
+                  transition={{
+                    duration: 20 + Math.random() * 10,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "linear"
+                  }}
+                />
+              ))}
+            </div>
 
             <div className="container mx-auto px-4 relative z-10">
               <div className="max-w-6xl mx-auto text-center">
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1 }}
+                  transition={{ duration: 0.8 }}
                 >
-                  {/* Neon Badge */}
-                  <motion.div
-                    className="inline-block mb-8"
-                    animate={{ 
-                      boxShadow: [
-                        "0 0 20px rgba(0, 217, 255, 0.3)",
-                        "0 0 40px rgba(0, 217, 255, 0.5)",
-                        "0 0 20px rgba(0, 217, 255, 0.3)"
-                      ]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <Badge className="neon-border-blue glass-card px-6 py-3 text-primary font-bold text-base" data-testid="badge-enterprise">
-                      🚀 ENTERPRISE CLOUD PLATFORM
-                    </Badge>
-                  </motion.div>
+                  <Badge className="mb-6 px-4 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors" data-testid="badge-enterprise">
+                    🚀 Enterprise Cloud Solutions
+                  </Badge>
                   
-                  {/* Holographic Title */}
-                  <h1 className="text-6xl md:text-8xl font-black mb-8 leading-tight" data-testid="text-hero-title">
-                    <span className="neon-text-blue block mb-4">
-                      ĐIỆN TOÁN ĐÁM MÂY
-                    </span>
-                    <span className="holographic bg-clip-text text-transparent block">
-                      NEXT-GEN INFRASTRUCTURE
-                    </span>
+                  <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent mb-6" data-testid="text-hero-title" style={{backgroundImage: `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`}}>
+                    Điện Toán Đám Mây
+                    <br />
+                    <span className="text-slate-800">Dịch Vụ Hạ Tầng Toàn Diện</span>
                   </h1>
                   
-                  {/* Description with Glow */}
-                  <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-4xl mx-auto leading-relaxed" data-testid="text-hero-description">
-                    Nền tảng hạ tầng IT toàn diện cho doanh nghiệp Việt Nam.
-                    <br />
-                    <span className="neon-text-blue font-semibold">Cloud Server</span> • 
-                    <span className="neon-text-green font-semibold"> Hosting</span> • 
-                    <span className="neon-text-pink font-semibold"> Dedicated</span> • 
-                    <span className="neon-text-purple font-semibold"> Colocation</span>
+                  <p className="text-xl md:text-2xl text-slate-600 mb-8 max-w-4xl mx-auto leading-relaxed" data-testid="text-hero-description">
+                    Giải pháp hạ tầng IT toàn diện cho doanh nghiệp Việt Nam. Từ 
+                    <span className="font-semibold" style={{color: `hsl(var(--step-cloud))`}}> Cloud Server</span>, 
+                    <span className="font-semibold" style={{color: `hsl(var(--step-hosting))`}}> Web Hosting</span>, 
+                    <span className="font-semibold" style={{color: `hsl(var(--step-server))`}}> Dedicated Server</span>, 
+                    <span className="font-semibold" style={{color: `hsl(var(--step-colocation))`}}> Colocation</span>, 
+                    <span className="font-semibold" style={{color: `hsl(var(--step-email))`}}> Email Hybrid</span> đến
+                    <span className="font-semibold" style={{color: `hsl(var(--step-dlp))`}}> DLP</span> - Tất cả trong một nền tảng.
                   </p>
 
-                  {/* CTA Buttons with Neon Glow */}
-                  <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-                    <motion.div 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button 
                         size="lg" 
-                        className="crypto-gradient-cyber neon-glow-blue px-10 py-6 text-lg font-bold shadow-2xl hover:brightness-110 transition-all"
+                        className="text-white px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+                        style={{
+                          backgroundImage: `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`
+                        }}
                         onClick={() => window.location.href = '/contact'}
                         data-testid="button-start-free"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundImage = `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-blue)))`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundImage = `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`;
+                        }}
                       >
                         Xem Demo Sản Phẩm
-                        <ArrowRight className="ml-3 h-6 w-6" />
+                        <ArrowRight className="ml-2 h-5 w-5" />
                       </Button>
                     </motion.div>
                     
-                    <motion.div 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button 
-                        variant="outline"
+                        variant="outline" 
                         size="lg"
-                        className="glass-card neon-border-pink px-10 py-6 text-lg font-bold text-accent hover:bg-accent/10 transition-all"
+                        className="px-8 py-4 text-lg font-semibold transition-all duration-300"
+                        style={{
+                          borderColor: `hsl(var(--step-blue))`,
+                          color: `hsl(var(--step-blue))`
+                        }}
                         onClick={() => window.location.href = '/bao-gia'}
                         data-testid="button-quote-builder"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = `hsl(var(--step-blue))`;
+                          e.currentTarget.style.color = 'white';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.color = `hsl(var(--step-blue))`;
+                        }}
                       >
                         Xây Dựng Báo Giá
                       </Button>
@@ -320,45 +383,25 @@ export default function Home() {
                   </div>
                 </motion.div>
 
-                {/* Crypto Metrics Dashboard */}
+                {/* Cloud Metrics Dashboard */}
                 <motion.div 
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1, delay: 0.5 }}
-                  className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto"
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
                 >
                   {cloudMetrics.map((metric, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
-                      whileHover={{ y: -10, scale: 1.05 }}
-                      className="glass-card rounded-2xl p-8 neon-pulse relative overflow-hidden group"
+                      transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                      className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-white/50"
                       data-testid={`metric-card-${index}`}
                     >
-                      {/* Glow Effect on Hover */}
-                      <div className={`absolute inset-0 ${metric.color === 'neon-blue' ? 'neon-glow-blue' : metric.color === 'neon-pink' ? 'neon-glow-pink' : metric.color === 'neon-green' ? 'neon-glow-green' : 'neon-glow-purple'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
-                      
-                      <div className="relative z-10">
-                        <metric.icon className={`h-10 w-10 mx-auto mb-4 ${
-                          metric.color === 'neon-blue' ? 'text-primary' :
-                          metric.color === 'neon-pink' ? 'text-[hsl(330,100%,60%)]' :
-                          metric.color === 'neon-green' ? 'text-[hsl(120,100%,50%)]' :
-                          'text-accent'
-                        }`} />
-                        <div className={`text-4xl font-black mb-2 ${
-                          metric.color === 'neon-blue' ? 'neon-text-blue' :
-                          metric.color === 'neon-pink' ? 'neon-text-pink' :
-                          metric.color === 'neon-green' ? 'neon-text-green' :
-                          'text-accent'
-                        }`}>
-                          {metric.value}
-                        </div>
-                        <div className="text-sm text-muted-foreground font-semibold tracking-wide uppercase">
-                          {metric.label}
-                        </div>
-                      </div>
+                      <metric.icon className="h-8 w-8 text-blue-600 mx-auto mb-3" />
+                      <div className="text-2xl font-bold text-slate-800 mb-1">{metric.value}</div>
+                      <div className="text-sm text-slate-600">{metric.label}</div>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -367,159 +410,137 @@ export default function Home() {
           </section>
         )}
 
-        {/* CRYPTO SERVICES GRID */}
-        <section className="py-24 relative overflow-hidden">
-          <div className="absolute inset-0 crypto-grid-bg opacity-10"></div>
-          
-          <div className="container mx-auto px-4 relative z-10">
+        {/* Cloud Services Section - Enhanced Block */}
+        <CloudServicesBlock />
+
+
+        {/* IT Services Image Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="max-w-5xl mx-auto"
+              data-testid="it-services-image"
             >
-              <Badge className="neon-border-pink glass-card px-6 py-3 text-accent font-bold mb-6" data-testid="badge-services">
-                💎 PREMIUM SERVICES
-              </Badge>
-              <h2 className="text-5xl md:text-6xl font-black mb-6" data-testid="text-services-title">
-                <span className="holographic bg-clip-text text-transparent">
-                  Dịch Vụ Hạ Tầng IT
-                </span>
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Giải pháp toàn diện từ Cloud đến Security với công nghệ tiên tiến nhất
-              </p>
+              <img 
+                src={itServicesImage} 
+                alt="Dịch Vụ Công Nghệ Thông Tin"
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
             </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-              {cloudServices.map((service, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -15, scale: 1.02 }}
-                  className="group"
-                  data-testid={`service-card-${index}`}
-                >
-                  <Card className="h-full glass-card border-2 border-white/10 hover:border-primary/50 transition-all duration-300 overflow-hidden relative">
-                    {/* Gradient Background */}
-                    <div className={`absolute inset-0 ${service.gradient} opacity-10 group-hover:opacity-20 transition-opacity`}></div>
-                    
-                    <CardContent className="p-8 relative z-10">
-                      {/* Icon with Glow */}
-                      <div className="mb-6 relative inline-block">
-                        <motion.div
-                          className="absolute inset-0 blur-xl opacity-50 group-hover:opacity-100 transition-opacity"
-                          animate={{
-                            scale: [1, 1.2, 1],
-                            opacity: [0.3, 0.6, 0.3]
-                          }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        >
-                          <service.icon className="w-16 h-16 text-primary" />
-                        </motion.div>
-                        <service.icon className="w-16 h-16 text-primary relative" />
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="text-2xl font-bold mb-4 text-foreground group-hover:neon-text-blue transition-all">
-                        {service.title}
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-muted-foreground mb-6 leading-relaxed">
-                        {service.description}
-                      </p>
-
-                      {/* Features */}
-                      <ul className="space-y-3">
-                        {service.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center gap-3 text-sm">
-                            <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                            <span className="text-foreground/80">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* CTA Button */}
-                      <Button 
-                        className="w-full mt-6 crypto-gradient-cyber neon-glow-blue hover:brightness-110 transition-all"
-                        size="lg"
-                        onClick={() => window.location.href = '/contact'}
-                      >
-                        Tìm Hiểu Thêm
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
           </div>
         </section>
 
-        {/* CloudServicesBlock */}
-        <CloudServicesBlock />
-
-        {/* CRYPTO TESTIMONIALS */}
-        <section className="py-24 relative overflow-hidden">
-          <div className="absolute inset-0 animated-grid opacity-20"></div>
-          
-          <div className="container mx-auto px-4 relative z-10">
+        {/* IT Products Image Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="max-w-5xl mx-auto"
+              data-testid="it-products-image"
+            >
+              <img 
+                src={itProductsImage} 
+                alt="Sản Phẩm Công Nghệ Thông Tin"
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Technical Certifications Image Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="max-w-5xl mx-auto"
+              data-testid="technical-certifications-image"
+            >
+              <img 
+                src={technicalCertificationsImage} 
+                alt="Chứng Chỉ Kỹ Thuật"
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Customers and Partners Image Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="max-w-5xl mx-auto"
+              data-testid="customers-partners-image"
+            >
+              <img 
+                src={customersPartnersNewImage} 
+                alt="Khách Hàng Của Chúng Tôi"
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+
+
+
+
+        {/* Testimonials Section */}
+        <section className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
+          <div className="container mx-auto px-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <Badge className="neon-border-green glass-card px-6 py-3 text-[hsl(120,100%,50%)] font-bold mb-6" data-testid="badge-testimonials">
-                ⭐ SUCCESS STORIES
+              <Badge className="mb-4 px-4 py-2 bg-green-100 text-green-700 hover:bg-green-200" data-testid="badge-testimonials">
+                ⭐ Success Stories
               </Badge>
-              <h2 className="text-5xl md:text-6xl font-black mb-6" data-testid="text-testimonials-title">
-                <span className="neon-text-green">Khách Hàng</span>{" "}
-                <span className="holographic bg-clip-text text-transparent">Tin Tưởng</span>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6" data-testid="text-testimonials-title">
+                Khách Hàng Nói Về Chúng Tôi
               </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Hơn 5,000+ doanh nghiệp đã chọn STEP cho giải pháp hạ tầng IT
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Hơn 5,000+ doanh nghiệp tin tưởng STEP cho giải pháp hạ tầng IT toàn diện.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {testimonials.map((testimonial, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
                   viewport={{ once: true }}
-                  whileHover={{ y: -10 }}
+                  whileHover={{ y: -8 }}
                   data-testid={`testimonial-card-${index}`}
                 >
-                  <Card className="h-full glass-card border-2 border-white/10 hover:neon-glow-pink transition-all duration-300">
+                  <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
                     <CardContent className="p-8">
-                      {/* Stars */}
-                      <div className="flex mb-6">
+                      <div className="flex mb-4">
                         {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+                          <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                         ))}
                       </div>
-
-                      {/* Content */}
-                      <p className="text-foreground/90 mb-6 leading-relaxed italic">
-                        "{testimonial.content}"
-                      </p>
-
-                      {/* Author */}
-                      <div className="border-t border-white/10 pt-6">
-                        <div className="font-bold text-foreground neon-text-pink text-lg">
-                          {testimonial.name}
-                        </div>
-                        <div className="text-muted-foreground text-sm">{testimonial.role}</div>
-                        <div className="text-primary text-sm font-semibold">{testimonial.company}</div>
+                      <p className="text-slate-700 mb-6 leading-relaxed italic">"{testimonial.content}"</p>
+                      <div className="border-t border-slate-200 pt-4">
+                        <div className="font-semibold text-slate-800">{testimonial.name}</div>
+                        <div className="text-sm text-slate-600">{testimonial.role} tại {testimonial.company}</div>
                       </div>
                     </CardContent>
                   </Card>
@@ -529,122 +550,80 @@ export default function Home() {
           </div>
         </section>
 
-        {/* IT SERVICES & PRODUCTS IMAGES */}
-        <section className="py-16 relative">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="glass-card p-4 rounded-2xl neon-border-blue"
-                data-testid="it-services-image"
-              >
-                <img 
-                  src={itServicesImage} 
-                  alt="Dịch Vụ CNTT"
-                  className="w-full h-auto rounded-lg"
-                />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="glass-card p-4 rounded-2xl neon-border-pink"
-                data-testid="it-products-image"
-              >
-                <img 
-                  src={itProductsImage} 
-                  alt="Sản Phẩm CNTT"
-                  className="w-full h-auto rounded-lg"
-                />
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* CERTIFICATIONS & PARTNERS */}
-        <section className="py-16 relative">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="glass-card p-4 rounded-2xl neon-border-purple"
-                data-testid="technical-certifications-image"
-              >
-                <img 
-                  src={technicalCertificationsImage} 
-                  alt="Chứng Chỉ Kỹ Thuật"
-                  className="w-full h-auto rounded-lg"
-                />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="glass-card p-4 rounded-2xl holographic"
-                data-testid="customers-partners-image"
-              >
-                <img 
-                  src={customersPartnersNewImage} 
-                  alt="Đối Tác & Khách Hàng"
-                  className="w-full h-auto rounded-lg"
-                />
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* CONTACT CTA */}
-        <section className="py-32 relative overflow-hidden">
-          <div className="absolute inset-0 crypto-gradient-cyber opacity-20"></div>
-          <div className="absolute inset-0 animated-grid opacity-30"></div>
-          
+        {/* Contact CTA Section */}
+        <section className="py-24 relative overflow-hidden" style={{backgroundImage: `linear-gradient(to right, hsl(var(--step-blue)), hsl(var(--step-light-blue)))`}}>
+          <div className="absolute inset-0 bg-black/20"></div>
           <div className="container mx-auto px-4 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="max-w-4xl mx-auto text-center"
+              className="max-w-4xl mx-auto text-center text-white"
             >
-              <h2 className="text-5xl md:text-7xl font-black mb-8" data-testid="text-cta-title">
-                <span className="holographic bg-clip-text text-transparent">
-                  Sẵn Sàng Bắt Đầu?
-                </span>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6" data-testid="text-cta-title">
+                Sẵn Sàng Chuyển Đổi Số Với STEP?
               </h2>
-              <p className="text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-                Liên hệ ngay để nhận tư vấn miễn phí từ chuyên gia STEP
+              <p className="text-xl md:text-2xl mb-8 opacity-90">
+                Liên hệ ngay để được tư vấn miễn phí về giải pháp cloud phù hợp với doanh nghiệp của bạn.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button 
                     size="lg" 
-                    className="crypto-gradient-neon neon-glow-pink px-12 py-8 text-xl font-bold"
+                    className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
                     onClick={() => window.location.href = '/contact'}
-                    data-testid="button-contact"
+                    data-testid="button-contact-now"
                   >
+                    <Phone className="mr-2 h-5 w-5" />
                     Liên Hệ Ngay
-                    <ArrowRight className="ml-3 h-6 w-6" />
                   </Button>
                 </motion.div>
+                
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-semibold transition-all duration-300"
+                    onClick={() => window.location.href = '/contact'}
+                    data-testid="button-free-consultation"
+                  >
+                    <Mail className="mr-2 h-5 w-5" />
+                    Tư Vấn Miễn Phí
+                  </Button>
+                </motion.div>
+              </div>
+
+              {/* Contact Info */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto text-center">
+                <div className="flex items-center justify-center gap-3" data-testid="contact-phone">
+                  <Phone className="h-5 w-5" />
+                  <span>0985.636.289</span>
+                </div>
+                <div className="flex items-center justify-center gap-3" data-testid="contact-email">
+                  <Mail className="h-5 w-5" />
+                  <span>info@step.com.vn</span>
+                </div>
+                <div className="flex items-center justify-center gap-3" data-testid="contact-address">
+                  <MapPin className="h-5 w-5" />
+                  <span>Hà Nội, Việt Nam</span>
+                </div>
               </div>
             </motion.div>
           </div>
         </section>
-
       </main>
       
       <Footer />
+      
+      {/* Only show personalization settings if user has completed welcome */}
+      {isPersonalized && userInfo && (
+        <PersonalizationSettings 
+          userInfo={userInfo}
+          onReset={handleResetPersonalization}
+        />
+      )}
     </div>
   );
 }
