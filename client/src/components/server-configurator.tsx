@@ -198,6 +198,10 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       os: 'ubuntu-22.04'
     }
   ]);
+  
+  const [voucherPercent, setVoucherPercent] = useState<number>(0);
+  const [includeVAT, setIncludeVAT] = useState<boolean>(false);
+  const VAT_RATE = 0.10; // 10% VAT
 
   const addServer = () => {
     const newServer: ServerConfig = {
@@ -283,7 +287,19 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
   };
 
   const calculateTotalCost = () => {
-    return servers.reduce((total, server) => total + calculateServerCost(server), 0);
+    const subtotal = servers.reduce((total, server) => total + calculateServerCost(server), 0);
+    const voucherDiscount = subtotal * (voucherPercent / 100);
+    const afterVoucher = subtotal - voucherDiscount;
+    const vatAmount = includeVAT ? afterVoucher * VAT_RATE : 0;
+    const grandTotal = afterVoucher + vatAmount;
+    
+    return {
+      subtotal,
+      voucherDiscount,
+      afterVoucher,
+      vatAmount,
+      grandTotal
+    };
   };
 
   const formatCurrency = (amount: number) => {
@@ -436,20 +452,51 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       yPosition += 10;
     });
     
-    // Grand Total
-    if (yPosition > 240) {
+    // Grand Total with Voucher and VAT
+    if (yPosition > 220) {
       doc.addPage();
       yPosition = 20;
     }
+    
+    const costBreakdown = calculateTotalCost();
     
     doc.setDrawColor(41, 128, 185);
     doc.setLineWidth(0.5);
     doc.line(15, yPosition, 195, yPosition);
     yPosition += 8;
     
+    // Subtotal
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.text(`Tạm tính:`, 15, yPosition);
+    doc.text(`${formatCurrency(costBreakdown.subtotal)}/tháng`, 195, yPosition, { align: 'right' });
+    yPosition += 6;
+    
+    // Voucher discount if applicable
+    if (voucherPercent > 0) {
+      doc.setTextColor(220, 38, 38); // Red color for discount
+      doc.text(`Giảm giá voucher (${voucherPercent}%):`, 15, yPosition);
+      doc.text(`-${formatCurrency(costBreakdown.voucherDiscount)}`, 195, yPosition, { align: 'right' });
+      doc.setTextColor(0, 0, 0); // Reset to black
+      yPosition += 6;
+      
+      doc.text(`Sau giảm giá:`, 15, yPosition);
+      doc.text(`${formatCurrency(costBreakdown.afterVoucher)}/tháng`, 195, yPosition, { align: 'right' });
+      yPosition += 6;
+    }
+    
+    // VAT if applicable
+    if (includeVAT) {
+      doc.text(`VAT (10%):`, 15, yPosition);
+      doc.text(`${formatCurrency(costBreakdown.vatAmount)}`, 195, yPosition, { align: 'right' });
+      yPosition += 6;
+    }
+    
+    // Grand total
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(14);
-    doc.text(`TỔNG CỘNG: ${formatCurrency(calculateTotalCost())}/tháng`, 105, yPosition, { align: 'center' });
+    doc.text(`TỔNG CỘNG:`, 15, yPosition);
+    doc.text(`${formatCurrency(costBreakdown.grandTotal)}/tháng`, 195, yPosition, { align: 'right' });
     yPosition += 12;
     
     // Terms and Notes
@@ -460,15 +507,27 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
-    const notes = [
-      '- Giá trên chưa bao gồm VAT (10%)',
-      '- IP đầu tiên và 100Mbps băng thông đầu tiên được miễn phí',
-      '- Miễn phí: SSL Certificate, Monitoring & Alert, 24/7 Support, Migration Service',
-      '- Thanh toán theo chu kỳ càng dài, chiết khấu càng cao (tối đa 36%)',
-      '- Báo giá có hiệu lực trong 30 ngày kể từ ngày phát hành'
-    ];
     
-    notes.forEach(note => {
+    // Build notes array with only valid entries
+    const notesArray: string[] = [];
+    
+    // VAT status
+    notesArray.push(includeVAT 
+      ? '- Giá trên ĐÃ BAO GỒM VAT (10%)'
+      : '- Giá trên CHƯA BAO GỒM VAT (10%)');
+    
+    // Voucher note if applicable
+    if (voucherPercent > 0) {
+      notesArray.push(`- Đã áp dụng mã giảm giá ${voucherPercent}% (áp dụng trước VAT)`);
+    }
+    
+    // Standard notes
+    notesArray.push('- IP đầu tiên và 100Mbps băng thông đầu tiên được miễn phí');
+    notesArray.push('- Miễn phí: SSL Certificate, Monitoring & Alert, 24/7 Support, Migration Service');
+    notesArray.push('- Thanh toán theo chu kỳ càng dài, chiết khấu càng cao (tối đa 36%)');
+    notesArray.push('- Báo giá có hiệu lực trong 30 ngày kể từ ngày phát hành');
+    
+    notesArray.forEach(note => {
       doc.text(note, 15, yPosition);
       yPosition += 5;
     });
@@ -886,31 +945,125 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         </AnimatePresence>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-gray-50 p-6 rounded-lg">
-        <Button
-          onClick={addServer}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Thêm Server Mới
-        </Button>
-
-        <div className="flex items-center gap-4">
-          <div className="text-right">
-            <p className="text-sm text-gray-600">Tổng chi phí ({servers.length} server)</p>
-            <p className="text-2xl font-bold text-blue-600">
-              {formatCurrency(calculateTotalCost())}/tháng
-            </p>
+      {/* Voucher & VAT Controls */}
+      <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-lg border-2 border-purple-200">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+          <Calculator className="w-5 h-5 text-purple-600" />
+          Mã Giảm Giá & Thuế VAT
+        </h3>
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Voucher Input */}
+          <div className="space-y-2">
+            <Label htmlFor="voucher-percent" className="text-sm font-medium text-gray-700">
+              Voucher Giảm Giá (% trước VAT)
+            </Label>
+            <div className="flex gap-2 items-center">
+              <Input
+                id="voucher-percent"
+                type="number"
+                min="0"
+                max="100"
+                value={voucherPercent}
+                onChange={(e) => setVoucherPercent(Math.min(100, Math.max(0, Number(e.target.value))))}
+                className="flex-1"
+                placeholder="Nhập % giảm giá"
+                data-testid="input-voucher-percent"
+              />
+              <span className="text-gray-600 font-medium">%</span>
+            </div>
+            {voucherPercent > 0 && (
+              <p className="text-sm text-green-600 font-medium">
+                Giảm giá: {formatCurrency(calculateTotalCost().voucherDiscount)}
+              </p>
+            )}
           </div>
           
-          <Button
-            onClick={generatePDFQuote}
-            className="bg-green-600 hover:bg-green-700 text-white"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Xuất Báo Giá PDF
-          </Button>
+          {/* VAT Toggle */}
+          <div className="space-y-2">
+            <Label htmlFor="include-vat" className="text-sm font-medium text-gray-700">
+              Bao Gồm VAT 10%
+            </Label>
+            <div className="flex items-center gap-3 p-3 bg-white rounded-lg border">
+              <Switch
+                id="include-vat"
+                checked={includeVAT}
+                onCheckedChange={setIncludeVAT}
+                data-testid="switch-include-vat"
+              />
+              <span className={`text-sm font-medium ${includeVAT ? 'text-blue-600' : 'text-gray-500'}`}>
+                {includeVAT ? 'Có VAT 10%' : 'Chưa bao gồm VAT'}
+              </span>
+            </div>
+            {includeVAT && (
+              <p className="text-sm text-blue-600 font-medium">
+                VAT: {formatCurrency(calculateTotalCost().vatAmount)}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Total Cost Breakdown & Action Buttons */}
+      <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-6 rounded-lg shadow-lg text-white">
+        <div className="grid md:grid-cols-2 gap-6 items-center">
+          <div className="space-y-3">
+            <Button
+              onClick={addServer}
+              className="w-full bg-white text-blue-700 hover:bg-blue-50 font-semibold"
+              data-testid="button-add-server"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Thêm Server Mới
+            </Button>
+            
+            <Button
+              onClick={generatePDFQuote}
+              className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold"
+              data-testid="button-generate-pdf"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Xuất Báo Giá PDF
+            </Button>
+          </div>
+          
+          {/* Cost Breakdown */}
+          <div className="space-y-2 bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20">
+            <h4 className="text-sm font-semibold text-blue-200 mb-3">Chi Tiết Thanh Toán ({servers.length} server)</h4>
+            
+            <div className="flex justify-between text-sm">
+              <span className="text-blue-100">Tạm tính:</span>
+              <span className="font-semibold">{formatCurrency(calculateTotalCost().subtotal)}</span>
+            </div>
+            
+            {voucherPercent > 0 && (
+              <>
+                <div className="flex justify-between text-sm text-green-300">
+                  <span>Giảm giá ({voucherPercent}%):</span>
+                  <span className="font-semibold">-{formatCurrency(calculateTotalCost().voucherDiscount)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-blue-100">Sau giảm giá:</span>
+                  <span className="font-semibold">{formatCurrency(calculateTotalCost().afterVoucher)}</span>
+                </div>
+              </>
+            )}
+            
+            {includeVAT && (
+              <div className="flex justify-between text-sm text-yellow-300">
+                <span>VAT (10%):</span>
+                <span className="font-semibold">+{formatCurrency(calculateTotalCost().vatAmount)}</span>
+              </div>
+            )}
+            
+            <div className="border-t border-white/30 pt-2 mt-2">
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-bold">TỔNG CỘNG:</span>
+                <span className="text-2xl font-bold text-yellow-300" data-testid="text-grand-total">
+                  {formatCurrency(calculateTotalCost().grandTotal)}/tháng
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1120,7 +1273,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         <h5 className="font-medium text-gray-800">Server Management</h5>
                         <p className="text-sm text-gray-600">Quản lý server toàn diện, cài đặt phần mềm</p>
                       </div>
-                      <span className="text-sm font-semibold text-blue-600">500K VND/tháng</span>
+                      <span className="text-sm font-semibold text-blue-600">1M VND/tháng</span>
                     </div>
                   </div>
                 </div>
@@ -1132,7 +1285,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         <h5 className="font-medium text-gray-800">Database Optimization</h5>
                         <p className="text-sm text-gray-600">Tối ưu hóa MySQL, PostgreSQL, MongoDB</p>
                       </div>
-                      <span className="text-sm font-semibold text-blue-600">300K VND/lần</span>
+                      <span className="text-sm font-semibold text-blue-600">3M - 5M VND/lần</span>
                     </div>
                   </div>
                 </div>

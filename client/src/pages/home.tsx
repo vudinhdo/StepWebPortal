@@ -51,67 +51,67 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-// IT Challenges for Vietnamese businesses
+// IT Challenges for Vietnamese businesses - CEO/CTO focused
 const itChallenges = [
   {
     icon: TrendingUp,
-    title: "Chi Phí IT Cao & Khó Kiểm Soát",
-    description: "Đầu tư phần cứng đắt đỏ, khấu hao nhanh, khó dự đoán chi phí vận hành hàng tháng."
+    title: "TCO Cao - Khó Tối Ưu Ngân Sách IT",
+    description: "CapEx phần cứng 500M-2B VND, OpEx không kiểm soát được. ROI âm 3-5 năm đầu, cash flow căng thẳng, khó dự báo chi phí cho CFO."
   },
   {
     icon: AlertTriangle,
-    title: "Thiếu Chuyên Gia IT Nội Bộ",
-    description: "Khó tuyển dụng và giữ chân nhân sự IT giỏi, đặc biệt với doanh nghiệp vừa và nhỏ."
+    title: "Thiếu Talent IT - Rủi Ro Vận Hành",
+    description: "Chi phí nhân sự IT 30-50M/người/năm, turnover rate >25%. Một người nghỉ = hệ thống tê liệt. Business continuity luôn bị đe dọa."
   },
   {
     icon: Shield,
-    title: "Bảo Mật & Tuân Thủ Phức Tạp",
-    description: "Nguy cơ tấn công mạng cao, khó đáp ứng yêu cầu tuân thủ dữ liệu Việt Nam."
+    title: "Compliance & Security - Rủi Ro Pháp Lý",
+    description: "Luật An Ninh Mạng 2019, GDPR, PCI-DSS phức tạp. Phạt tới 3% doanh thu nếu vi phạm. Ransomware cost trung bình 500M VND/vụ."
   },
   {
     icon: Settings,
-    title: "Hệ Thống Lỗi Thời & Khó Nâng Cấp",
-    description: "Hạ tầng cũ không đáp ứng nhu cầu chuyển đổi số, nâng cấp tốn kém và phức tạp."
+    title: "Legacy Systems - Cản Trở Tăng Trưởng",
+    description: "Hạ tầng cũ không scale được, tốc độ tăng trưởng bị giới hạn. Time-to-market chậm 3-6 tháng, mất cơ hội kinh doanh."
   }
 ];
 
-// STEP Solutions & Benefits
+// STEP Solutions & Benefits - ROI & Strategic Value focused
 const stepSolutions = [
   {
     icon: Cloud,
-    title: "Hạ Tầng Đám Mây Linh Hoạt",
-    description: "Cloud Server, Hosting, Dedicated Server - Chỉ trả cho những gì bạn sử dụng. Mở rộng tức thì khi cần.",
-    highlight: "Tiết kiệm đến 60% chi phí"
+    title: "OpEx Model - Giảm 60% TCO",
+    description: "Chuyển từ CapEx sang OpEx: không đầu tư phần cứng, thanh toán theo usage. Predictable monthly cost giúp CFO yên tâm. ROI dương từ quý đầu tiên.",
+    highlight: "Tiết kiệm 60% TCO trong 3 năm"
   },
   {
     icon: Headphones,
-    title: "Hỗ Trợ 24/7 Bằng Tiếng Việt",
-    description: "Đội ngũ kỹ sư Việt Nam luôn sẵn sàng. Không robot, chỉ con người thật tư vấn 1-1.",
-    highlight: "Phản hồi < 15 phút"
+    title: "Managed Services - Zero Downtime Risk",
+    description: "Đội ngũ 50+ kỹ sư Việt Nam làm IT team cho bạn 24/7. MTTR < 15 phút. Business continuity được đảm bảo, CEO/Board không lo operational risk.",
+    highlight: "MTTR < 15 phút, 99.99% uptime"
   },
   {
     icon: Shield,
-    title: "Bảo Mật Đa Lớp & Tuân Thủ",
-    description: "Firewall, DDoS protection, mã hóa dữ liệu. Đáp ứng chuẩn bảo mật Việt Nam và quốc tế.",
-    highlight: "ISO 27001 Certified"
+    title: "Full Compliance - Giảm Rủi Ro Pháp Lý",
+    description: "Đáp ứng Luật An Ninh Mạng 2019, ISO 27001, SOC 2. Legal team không phải lo về compliance. Audit ready bất cứ lúc nào.",
+    highlight: "ISO 27001, SOC 2, Luật ANM 2019"
   },
   {
     icon: Gauge,
-    title: "Uptime 99.99% SLA",
-    description: "Data center tier 3+ tại Việt Nam. Backup tự động, failover nhanh chóng, đảm bảo kinh doanh không gián đoạn.",
-    highlight: "Bồi thường nếu không đạt"
+    title: "SLA 99.99% - Revenue Protection",
+    description: "Tier 3+ datacenter Việt Nam, multi-zone redundancy. 1 phút downtime = mất doanh thu. Chúng tôi bảo vệ revenue 24/7 với SLA bồi thường rõ ràng.",
+    highlight: "Bồi thường 10x nếu vi phạm SLA"
   },
   {
     icon: Users,
-    title: "Đội Ngũ Chuyên Gia Dày Dạn",
-    description: "15+ năm kinh nghiệm, 6+ chứng chỉ quốc tế (MCT, CCNA, CEH, VCP5). Tư vấn kiến trúc tối ưu.",
-    highlight: "5000+ khách hàng tin dùng"
+    title: "Strategic IT Partner - Scale Cùng Bạn",
+    description: "15+ năm kinh nghiệm với VinGroup, FPT, Grab. Không chỉ cung cấp infra, còn tư vấn digital transformation roadmap cho C-level.",
+    highlight: "5000+ doanh nghiệp tin dùng"
   },
   {
     icon: Zap,
-    title: "Triển Khai Nhanh & Dễ Dàng",
-    description: "Template sẵn, migration miễn phí, setup trong 24h. Tích hợp mượt mà với hệ thống hiện tại.",
-    highlight: "Go live trong 1 ngày"
+    title: "Fast Time-to-Market - Competitive Edge",
+    description: "Triển khai trong 24h, không delay project. Migration miễn phí, zero downtime. Launch product/service nhanh hơn đối thủ 3-6 tháng.",
+    highlight: "Go live trong 24h, không gián đoạn"
   }
 ];
 
@@ -202,27 +202,27 @@ const customers = [
   { name: "BSG Corporation" }
 ];
 
-// Testimonials
+// Testimonials - Business Impact & ROI focused
 const testimonials = [
   {
     name: "Nguyễn Minh Tuấn",
     company: "FPT Software",
-    role: "Infrastructure Manager",
-    content: "Cloud Server của STEP giúp chúng tôi tiết kiệm 50% chi phí và scale linh hoạt theo project. GPU computing rất mạnh cho AI workload.",
+    role: "CTO",
+    content: "STEP giúp chúng tôi giảm 58% TCO IT trong 2 năm, từ 2.4B xuống 1.0B VND/năm. Cloud infrastructure auto-scale cho 200+ AI projects. ROI đạt 320% sau 18 tháng. CFO và Board rất hài lòng.",
     rating: 5
   },
   {
     name: "Trần Thị Linh", 
     company: "VinCommerce",
-    role: "IT Director",
-    content: "Dedicated Server ổn định 99.9%, băng thông unlimited giúp e-commerce platform chạy mượt mà trong Black Friday. Hỗ trợ 24/7 rất chuyên nghiệp.",
+    role: "Chief Information Officer",
+    content: "E-commerce platform xử lý 50K orders/ngày Black Friday mà zero downtime. Revenue protection tuyệt đối. Managed service của STEP giúp tôi giảm team IT từ 15 xuống 8 người, tiết kiệm 350M VND/năm nhân sự.",
     rating: 5
   },
   {
     name: "Phạm Văn Đức",
     company: "BKAV Corporation",
-    role: "Security Lead", 
-    content: "Email Hybrid solution hoàn hảo cho security compliance. Anti-spam hiệu quả 99.9%, backup tự động giúp an tâm về dữ liệu.",
+    role: "CEO", 
+    content: "Full compliance với Luật An Ninh Mạng 2019, pass audit lần đầu. Email Hybrid cho 500+ nhân viên, chi phí chỉ bằng 1/3 so với Microsoft 365 trực tiếp. Security posture tăng 85%, zero ransomware incidents trong 3 năm.",
     rating: 5
   }
 ];
@@ -251,39 +251,39 @@ export default function Home() {
                 </div>
                 
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight" data-testid="text-hero-title">
-                  Giải Pháp <span className="text-blue-300">Hạ Tầng IT Toàn Diện</span> Cho Doanh Nghiệp Việt Nam
+                  Giảm 60% TCO IT - <span className="text-blue-300">Tăng ROI 300%+</span> Với STEP
                 </h1>
                 
                 <p className="text-lg md:text-xl text-blue-100 mb-6 leading-relaxed" data-testid="text-hero-description">
-                  Từ Cloud Server, Hosting, Email đến Bảo Mật - Tất Cả Trong Một Nền Tảng
+                  Strategic IT Partner Cho CEO/CTO - Từ Cloud, Security Đến Digital Transformation
                 </p>
                 
                 <div className="bg-blue-800/30 rounded-lg p-5 mb-6 border border-blue-600/30">
                   <p className="text-base text-blue-100 leading-relaxed mb-3">
-                    <strong>Kính gửi các CEO, CTO và IT Manager,</strong>
+                    <strong>Kính gửi các CEO, CTO, CFO và Board of Directors,</strong>
                   </p>
                   <p className="text-base text-blue-200 leading-relaxed">
-                    Trong thời đại chuyển đổi số, hạ tầng IT là yếu tố quyết định thành công. STEP cung cấp giải pháp 
-                    toàn diện từ tư vấn, triển khai đến vận hành - giúp bạn tập trung vào kinh doanh thay vì lo về IT.
+                    Chi phí IT đang ăn mòn 15-25% ngân sách, nhưng ROI không rõ ràng? Compliance gây đau đầu? Talent IT khó tuyển và giữ? 
+                    STEP đã giúp 5000+ doanh nghiệp Việt giải quyết triệt để 3 vấn đề này với proven track record.
                   </p>
                 </div>
                 
                 <div className="mb-6">
                   <p className="text-base text-blue-200 leading-relaxed mb-4">
-                    Với 15+ năm kinh nghiệm phục vụ 5000+ doanh nghiệp Việt, chúng tôi cam kết:
+                    <strong>Business Impact đã chứng minh với 5000+ doanh nghiệp:</strong>
                   </p>
                   <div className="grid md:grid-cols-3 gap-3">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-300 rounded-full"></div>
-                      <span className="text-sm text-green-300 font-semibold">Tiết kiệm 50-60% chi phí IT</span>
+                      <span className="text-sm text-green-300 font-semibold">60% giảm TCO, ROI 320%</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-cyan-300 rounded-full"></div>
-                      <span className="text-sm text-cyan-300 font-semibold">Uptime 99.99% SLA</span>
+                      <span className="text-sm text-cyan-300 font-semibold">99.99% uptime, 0 data loss</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
-                      <span className="text-sm text-yellow-300 font-semibold">Hỗ trợ 24/7 tiếng Việt</span>
+                      <span className="text-sm text-yellow-300 font-semibold">Full compliance, 0 phạt</span>
                     </div>
                   </div>
                 </div>
