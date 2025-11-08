@@ -46,36 +46,40 @@ import {
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import CloudContactForm from "@/components/cloud-contact-form";
+import ServerConfigurator from "@/components/server-configurator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 // Import individual certification logos
-import mctLogo from "@assets/stock_images/microsoft_certified__4ac49bd2.jpg";
-import lpiLogo from "@assets/stock_images/linux_professional_i_86f60517.jpg";
-import safeticaLogo from "@assets/stock_images/safetica_data_loss_p_4dcd0791.jpg";
-import vcp5Logo from "@assets/stock_images/vmware_certified_pro_3b50b772.jpg";
-import ccnaLogo from "@assets/stock_images/cisco_ccna_certified_f86a7696.jpg";
-import cehLogo from "@assets/stock_images/ceh_certified_ethica_4ee2900f.jpg";
+import mctLogo from "@assets/stock_images/microsoft_certificat_e5e70f9e.jpg";
+import lpiLogo from "@assets/stock_images/linux_certification__34496d8e.jpg";
+import safeticaLogo from "@assets/stock_images/it_certification_pro_ef9b1fe4.jpg";
+import vcp5Logo from "@assets/stock_images/vmware_certification_4f1a6bf4.jpg";
+import ccnaLogo from "@assets/stock_images/cisco_certification__13915deb.jpg";
+import cehLogo from "@assets/stock_images/cybersecurity_certif_5ea69690.jpg";
 
 // Import partner and customer logos
-import vmwareLogo from "@assets/stock_images/vmware_company_logo_98a8fa28.jpg";
-import vzamLogo from "@assets/stock_images/vzam_vietnam_technol_fb730dcd.jpg";
-import arubaLogo from "@assets/stock_images/aruba_hpe_hewlett_pa_b3c10f89.jpg";
-import fptLogo from "@assets/stock_images/fpt_corporation_viet_ff353a19.jpg";
-import dellLogo from "@assets/stock_images/dell_technologies_co_b3482cfd.jpg";
-import nakivoLogo from "@assets/stock_images/nakivo_backup_softwa_cf7d1f6e.jpg";
-import hvcgLogo from "@assets/stock_images/hvcg_software_vietna_15b303d0.jpg";
-import viettelLogo from "@assets/stock_images/viettel_telecommunic_f34dd040.jpg";
+import vmwareLogo from "@assets/stock_images/vmware_certification_4f1a6bf4.jpg";
+import fptLogo from "@assets/stock_images/fpt_corporation_viet_91eece03.jpg";
+import cmcLogo from "@assets/stock_images/cmc_corporation_viet_35804eb7.jpg";
+import vnptLogo from "@assets/stock_images/vnpt_vietnam_posts_t_032c7d01.jpg";
+import viettelLogo from "@assets/stock_images/viettel_telecommunic_72d49b25.jpg";
+import dellLogo from "@assets/stock_images/dell_technologies_lo_bc3bc408.jpg";
+import hpeLogo from "@assets/stock_images/hpe_hewlett_packard__01582d42.jpg";
+import ciscoLogo from "@assets/stock_images/cisco_certification__13915deb.jpg";
+
+// Import customer logos
+import vetcLogo from "@assets/stock_images/vetc_vietnam_express_75e5b865.jpg";
+import palVietnamLogo from "@assets/stock_images/pal_vietnam_company__ff591243.jpg";
+import vien103Logo from "@assets/stock_images/vien_103_vietnam_mil_a3f914e2.jpg";
+import vingroupLogo from "@assets/stock_images/vingroup_vietnam_cor_d70643af.jpg";
+import vinamilkLogo from "@assets/stock_images/vinamilk_vietnam_dai_2715613b.jpg";
+import vietcombankLogo from "@assets/stock_images/vietcombank_vietnam__02b63e66.jpg";
+import grabLogo from "@assets/stock_images/grab_vietnam_ride_ha_7b32abec.jpg";
+import momoLogo from "@assets/stock_images/momo_vietnam_fintech_d5b848db.jpg";
 import medlatecLogo from "@assets/stock_images/medlatec_medical_cen_eca53331.jpg";
 import bsgLogo from "@assets/stock_images/bsg_vietnam_company__bf28746d.jpg";
-import hanoiCultureLogo from "@assets/stock_images/vietnam_government_d_85d825a2.jpg";
-import vetcLogo from "@assets/stock_images/vetc_vietnam_express_75e5b865.jpg";
-import cmcTelecomLogo from "@assets/stock_images/cmc_telecom_vietnam__b4150596.jpg";
-import environmentLogo from "@assets/stock_images/vietnam_department_n_585270eb.jpg";
-import five9Logo from "@assets/stock_images/five9_contact_center_24cb331f.jpg";
-import monyLogo from "@assets/stock_images/mony_vietnam_financi_86ad3a5d.jpg";
-import palVietnamLogo from "@assets/stock_images/pal_vietnam_company__ff591243.jpg";
 
 // Fallback images
 import customersPartnersImage from "@assets/image_1758666058304.png";
@@ -209,25 +213,26 @@ const technicalCertifications = [
 // Service Partners and Customers
 const servicePartners = [
   { name: "VMware", logo: vmwareLogo },
-  { name: "VZAM", logo: vzamLogo },
-  { name: "Aruba", logo: arubaLogo },
-  { name: "FPT", logo: fptLogo },
-  { name: "Dell", logo: dellLogo },
-  { name: "Nakivo", logo: nakivoLogo },
-  { name: "HVCG Software", logo: hvcgLogo },
-  { name: "Viettel", logo: viettelLogo }
+  { name: "FPT Corporation", logo: fptLogo },
+  { name: "CMC Corporation", logo: cmcLogo },
+  { name: "VNPT", logo: vnptLogo },
+  { name: "Viettel", logo: viettelLogo },
+  { name: "Dell Technologies", logo: dellLogo },
+  { name: "HPE", logo: hpeLogo },
+  { name: "Cisco", logo: ciscoLogo }
 ];
 
 const customers = [
-  { name: "Medlatec", logo: medlatecLogo },
-  { name: "BSG", logo: bsgLogo },
-  { name: "Sở Văn Hóa Hà Nội", logo: hanoiCultureLogo },
   { name: "VETC", logo: vetcLogo },
-  { name: "CMC Telecom", logo: cmcTelecomLogo },
-  { name: "Sở Tài Nguyên Môi Trường", logo: environmentLogo },
-  { name: "Five9", logo: five9Logo },
-  { name: "Mony", logo: monyLogo },
-  { name: "Pal Vietnam", logo: palVietnamLogo }
+  { name: "PAL Vietnam", logo: palVietnamLogo },
+  { name: "Viện 103 - Bệnh Viện Quân Y", logo: vien103Logo },
+  { name: "VinGroup", logo: vingroupLogo },
+  { name: "Vinamilk", logo: vinamilkLogo },
+  { name: "Vietcombank", logo: vietcombankLogo },
+  { name: "Grab Vietnam", logo: grabLogo },
+  { name: "MoMo", logo: momoLogo },
+  { name: "Medlatec", logo: medlatecLogo },
+  { name: "BSG Corporation", logo: bsgLogo }
 ];
 
 // Testimonials
@@ -576,6 +581,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Server Configurator Section */}
+        <ServerConfigurator />
 
         {/* Technical Certifications Section */}
         <section className="py-20 bg-white">
