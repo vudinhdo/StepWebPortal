@@ -175,6 +175,7 @@ interface ServerConfig {
   gpu: string;
   paymentCycle: number;
   os: string;
+  voucherDiscount: number;
 }
 
 interface ServerConfiguratorProps {
@@ -195,9 +196,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       backup: 0,
       gpu: 'none',
       paymentCycle: 1,
-      os: 'ubuntu-22.04'
+      os: 'ubuntu-22.04',
+      voucherDiscount: 0
     }
   ]);
+  const [includeVAT, setIncludeVAT] = useState(false);
 
   const addServer = () => {
     const newServer: ServerConfig = {
@@ -212,7 +215,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       backup: 0,
       gpu: 'none',
       paymentCycle: 1,
-      os: 'ubuntu-22.04'
+      os: 'ubuntu-22.04',
+      voucherDiscount: 0
     };
     setServers([...servers, newServer]);
   };
@@ -279,7 +283,13 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     const discount = cycle ? cycle.discount : 0;
     const discountedPrice = subtotal * (1 - discount / 100);
     
-    return discountedPrice;
+    // Apply voucher discount (before VAT)
+    const afterVoucherPrice = discountedPrice * (1 - server.voucherDiscount / 100);
+    
+    // Apply VAT if enabled (10%)
+    const finalPrice = includeVAT ? afterVoucherPrice * 1.1 : afterVoucherPrice;
+    
+    return finalPrice;
   };
 
   const calculateTotalCost = () => {
@@ -299,33 +309,33 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     
     // Header - Company Info
     doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 105, 20, { align: 'center' });
+    doc.setFont('times', 'bold');
+    doc.text('CONG TY CO PHAN DAU TU CONG NGHE STEP', 105, 20, { align: 'center' });
     
     doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.text('Địa chỉ: Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội', 105, 28, { align: 'center' });
-    doc.text('Văn phòng: Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội', 105, 33, { align: 'center' });
+    doc.setFont('times', 'normal');
+    doc.text('Dia chi: Xom 9, Khu 3, Xa Quoc Oai, Thanh pho Ha Noi', 105, 28, { align: 'center' });
+    doc.text('Van phong: So 99 Hoang Ngan - Phuong Nhan Chinh - Quan Thanh Xuan - Tp.Ha Noi', 105, 33, { align: 'center' });
     doc.text('Hotline: 0985.636.289 | Email: info@step.com.vn | Website: step.com.vn', 105, 38, { align: 'center' });
     doc.text('MST: 0108230633', 105, 43, { align: 'center' });
     
     // Title
     doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.text('BÁO GIÁ CLOUD SERVER', 105, 55, { align: 'center' });
+    doc.setFont('times', 'bold');
+    doc.text('BAO GIA CLOUD SERVER', 105, 55, { align: 'center' });
     
     // Date
     doc.setFontSize(10);
-    doc.setFont('helvetica', 'italic');
-    doc.text(`Ngày: ${currentDate}`, 105, 62, { align: 'center' });
+    doc.setFont('times', 'italic');
+    doc.text(`Ngay: ${currentDate}`, 105, 62, { align: 'center' });
     
     // Customer Info Section
     doc.setFontSize(11);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Kính gửi: Quý khách hàng', 15, 75);
+    doc.setFont('times', 'bold');
+    doc.text('Kinh gui: Quy khach hang', 15, 75);
     
-    doc.setFont('helvetica', 'normal');
-    doc.text('STEP xin gửi tới Quý khách hàng báo giá dịch vụ Cloud Server như sau:', 15, 82);
+    doc.setFont('times', 'normal');
+    doc.text('STEP xin gui toi Quy khach hang bao gia dich vu Cloud Server nhu sau:', 15, 82);
     
     let yPosition = 90;
     
@@ -337,7 +347,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         yPosition = 20;
       }
       
-      doc.setFont('helvetica', 'bold');
+      doc.setFont('times', 'bold');
       doc.setFontSize(12);
       doc.text(`${index + 1}. ${server.name}`, 15, yPosition);
       yPosition += 8;
@@ -361,7 +371,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       
       // Disk
       componentData.push([
-        `Ổ cứng ${server.diskType.toUpperCase()}`,
+        `O cung ${server.diskType.toUpperCase()}`,
         `${server.disk} GB`,
         formatCurrency(server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice))
       ]);
@@ -369,16 +379,16 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       // IP
       const ipCost = server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0;
       componentData.push([
-        'IP Tĩnh',
-        `${server.ipAddress} IP ${server.ipAddress === 1 ? '(miễn phí)' : `(${server.ipAddress - 1} tính phí)`}`,
+        'IP Tinh',
+        `${server.ipAddress} IP ${server.ipAddress === 1 ? '(mien phi)' : `(${server.ipAddress - 1} tinh phi)`}`,
         formatCurrency(ipCost)
       ]);
       
       // Bandwidth
       const bandwidthCost = server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0;
       componentData.push([
-        'Băng thông',
-        `${server.bandwidth}x100Mbps ${server.bandwidth === 1 ? '(miễn phí)' : `(${server.bandwidth - 1} tính phí)`}`,
+        'Bang thong',
+        `${server.bandwidth}x100Mbps ${server.bandwidth === 1 ? '(mien phi)' : `(${server.bandwidth - 1} tinh phi)`}`,
         formatCurrency(bandwidthCost)
       ]);
       
@@ -404,35 +414,79 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       // OS
       const osOptionPDF = osOptions.find(o => o.value === server.os);
       componentData.push([
-        'Hệ điều hành',
+        'He dieu hanh',
         osOptionPDF?.label || server.os,
-        osOptionPDF && !osOptionPDF.free ? formatCurrency(osOptionPDF.price || 0) : 'Miễn phí'
+        osOptionPDF && !osOptionPDF.free ? formatCurrency(osOptionPDF.price || 0) : 'Mien phi'
       ]);
       
       // Payment cycle
       const cycle = paymentCycles.find(c => c.months === server.paymentCycle);
       componentData.push([
-        'Chu kỳ thanh toán',
+        'Chu ky thanh toan',
         cycle?.label || '',
-        cycle && cycle.discount > 0 ? `Giảm ${cycle.discount}%` : 'Không giảm'
+        cycle && cycle.discount > 0 ? `Giam ${cycle.discount}%` : 'Khong giam'
       ]);
+      
+      // Voucher discount
+      if (server.voucherDiscount > 0) {
+        componentData.push([
+          'Voucher giam gia',
+          `${server.voucherDiscount}%`,
+          'Truoc VAT'
+        ]);
+      }
       
       autoTable(doc, {
         startY: yPosition,
-        head: [['Thành phần', 'Cấu hình', 'Đơn giá']],
+        head: [['Thanh phan', 'Cau hinh', 'Don gia']],
         body: componentData,
         theme: 'grid',
-        styles: { font: 'helvetica', fontSize: 9 },
+        styles: { font: 'times', fontSize: 9 },
         headStyles: { fillColor: [41, 128, 185], textColor: 255 },
         margin: { left: 15, right: 15 }
       });
       
       yPosition = (doc as any).lastAutoTable.finalY + 5;
       
-      // Server total
-      doc.setFont('helvetica', 'bold');
+      // Calculate breakdown for display
+      const cpuCostPDF = server.cpu * componentPricing.cpu.basePrice;
+      const ramCostPDF = server.ram * componentPricing.ram.basePrice;
+      const diskCostPDF = server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice);
+      const ipCostPDF = server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0;
+      const bandwidthCostPDF = server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0;
+      const backupCostPDF = server.backup * componentPricing.backup.basePrice;
+      const gpuOptionPDF = gpuOptions.find(g => g.value === server.gpu);
+      const gpuCostPDF = gpuOptionPDF ? gpuOptionPDF.price : 0;
+      const osOptionPDF2 = osOptions.find(o => o.value === server.os);
+      const osCostPDF = osOptionPDF2 && !osOptionPDF2.free ? (osOptionPDF2.price || 0) : 0;
+      const subtotalPDF = cpuCostPDF + ramCostPDF + diskCostPDF + ipCostPDF + bandwidthCostPDF + backupCostPDF + gpuCostPDF + osCostPDF;
+      const cyclePDF = paymentCycles.find(c => c.months === server.paymentCycle);
+      const discountPDF = cyclePDF ? cyclePDF.discount : 0;
+      const afterCycleDiscountPDF = subtotalPDF * (1 - discountPDF / 100);
+      const voucherAmountPDF = afterCycleDiscountPDF * server.voucherDiscount / 100;
+      const afterVoucherPDF = afterCycleDiscountPDF - voucherAmountPDF;
+      const vatAmountPDF = includeVAT ? afterVoucherPDF * 0.1 : 0;
+      const finalPricePDF = afterVoucherPDF + vatAmountPDF;
+      
+      // Server cost breakdown
+      doc.setFont('times', 'normal');
+      doc.setFontSize(10);
+      if (discountPDF > 0) {
+        doc.text(`Giam gia chu ky (${discountPDF}%): -${formatCurrency(subtotalPDF * discountPDF / 100)}`, 15, yPosition);
+        yPosition += 5;
+      }
+      if (server.voucherDiscount > 0) {
+        doc.text(`Voucher giam gia (${server.voucherDiscount}%): -${formatCurrency(voucherAmountPDF)}`, 15, yPosition);
+        yPosition += 5;
+      }
+      if (includeVAT) {
+        doc.text(`VAT (10%): +${formatCurrency(vatAmountPDF)}`, 15, yPosition);
+        yPosition += 5;
+      }
+      
+      doc.setFont('times', 'bold');
       doc.setFontSize(11);
-      doc.text(`Thành tiền: ${formatCurrency(calculateServerCost(server))}/tháng`, 15, yPosition);
+      doc.text(`Thanh tien: ${formatCurrency(finalPricePDF)}/thang ${includeVAT ? '(Da VAT)' : '(Chua VAT)'}`, 15, yPosition);
       yPosition += 10;
     });
     
@@ -447,25 +501,27 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     doc.line(15, yPosition, 195, yPosition);
     yPosition += 8;
     
-    doc.setFont('helvetica', 'bold');
+    doc.setFont('times', 'bold');
     doc.setFontSize(14);
-    doc.text(`TỔNG CỘNG: ${formatCurrency(calculateTotalCost())}/tháng`, 105, yPosition, { align: 'center' });
+    doc.text(`TONG CONG: ${formatCurrency(calculateTotalCost())}/thang ${includeVAT ? '(Da VAT)' : '(Chua VAT)'}`, 105, yPosition, { align: 'center' });
     yPosition += 12;
     
     // Terms and Notes
-    doc.setFont('helvetica', 'bold');
+    doc.setFont('times', 'bold');
     doc.setFontSize(11);
-    doc.text('Ghi chú:', 15, yPosition);
+    doc.text('Ghi chu:', 15, yPosition);
     yPosition += 6;
     
-    doc.setFont('helvetica', 'normal');
+    doc.setFont('times', 'normal');
     doc.setFontSize(9);
     const notes = [
-      '- Giá trên chưa bao gồm VAT (10%)',
-      '- IP đầu tiên và 100Mbps băng thông đầu tiên được miễn phí',
-      '- Miễn phí: SSL Certificate, Monitoring & Alert, 24/7 Support, Migration Service',
-      '- Thanh toán theo chu kỳ càng dài, chiết khấu càng cao (tối đa 36%)',
-      '- Báo giá có hiệu lực trong 30 ngày kể từ ngày phát hành'
+      includeVAT ? '- Gia tren da bao gom VAT (10%)' : '- Gia tren chua bao gom VAT (10%)',
+      '- IP dau tien va 100Mbps bang thong dau tien duoc mien phi',
+      '- Mien phi: SSL Certificate, Monitoring & Alert, 24/7 Support, Migration Service',
+      '- Thanh toan theo chu ky cang dai, chiet khau cang cao (toi da 36%)',
+      '- Voucher giam gia duoc ap dung truoc VAT',
+      '- Bao gia co hieu luc trong 30 ngay ke tu ngay phat hanh',
+      '- Dich vu bo sung: Server Management 1M VND/thang, Database Optimization 3M-5M VND/lan'
     ];
     
     notes.forEach(note => {
@@ -475,24 +531,24 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     
     // Payment Information
     yPosition += 5;
-    doc.setFont('helvetica', 'bold');
+    doc.setFont('times', 'bold');
     doc.setFontSize(11);
-    doc.text('Thông tin thanh toán:', 15, yPosition);
+    doc.text('Thong tin thanh toan:', 15, yPosition);
     yPosition += 6;
     
-    doc.setFont('helvetica', 'normal');
+    doc.setFont('times', 'normal');
     doc.setFontSize(9);
-    doc.text('Chủ tài khoản: CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 15, yPosition);
+    doc.text('Chu tai khoan: CONG TY CO PHAN DAU TU CONG NGHE STEP', 15, yPosition);
     yPosition += 5;
-    doc.text('Số tài khoản: 19132608991888', 15, yPosition);
+    doc.text('So tai khoan: 19132608991888', 15, yPosition);
     yPosition += 5;
-    doc.text('Ngân hàng: Techcombank – Chi nhánh Hoàng Quốc Việt – PGD Trần Thái Tông', 15, yPosition);
+    doc.text('Ngan hang: Techcombank - Chi nhanh Hoang Quoc Viet - PGD Tran Thai Tong', 15, yPosition);
     
     // Footer
     yPosition = 280;
-    doc.setFont('helvetica', 'italic');
+    doc.setFont('times', 'italic');
     doc.setFontSize(8);
-    doc.text('Trân trọng cảm ơn Quý khách hàng đã tin tưởng và lựa chọn dịch vụ của STEP!', 105, yPosition, { align: 'center' });
+    doc.text('Tran trong cam on Quy khach hang da tin tuong va lua chon dich vu cua STEP!', 105, yPosition, { align: 'center' });
     
     // Save PDF
     const fileName = `Bao-gia-Cloud-Server-${new Date().toISOString().split('T')[0]}.pdf`;
@@ -799,6 +855,26 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         </SelectContent>
                       </Select>
                     </div>
+
+                    {/* Voucher Discount */}
+                    <div className="space-y-3">
+                      <Label className="flex items-center gap-2 text-base font-semibold">
+                        <Calculator className="w-5 h-5 text-pink-500" />
+                        Voucher Giảm Giá (%)
+                      </Label>
+                      <Input
+                        type="number"
+                        value={server.voucherDiscount}
+                        onChange={(e) => updateServer(server.id, 'voucherDiscount', Math.max(0, Math.min(100, parseInt(e.target.value) || 0)))}
+                        min="0"
+                        max="100"
+                        className="text-center text-lg font-semibold"
+                        data-testid={`input-voucher-${server.id}`}
+                      />
+                      <div className="text-xs text-gray-500 text-center">
+                        Giảm giá trước VAT (0-100%)
+                      </div>
+                    </div>
                   </div>
 
                   {/* Real-time Cost Display */}
@@ -846,7 +922,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                             return osOption && !osOption.free ? formatCurrency(osOption.price || 0) : 'Miễn phí';
                           })()}</span>
                         </div>
-                        {server.paymentCycle > 1 && (() => {
+                        {(() => {
                           const cpuCost = server.cpu * componentPricing.cpu.basePrice;
                           const ramCost = server.ram * componentPricing.ram.basePrice;
                           const diskCost = server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice);
@@ -859,11 +935,32 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                           const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost;
                           const discountPercent = paymentCycles.find(c => c.months === server.paymentCycle)?.discount || 0;
                           const discountAmount = subtotal * discountPercent / 100;
+                          const afterCycleDiscount = subtotal - discountAmount;
+                          const voucherAmount = afterCycleDiscount * server.voucherDiscount / 100;
+                          const afterVoucher = afterCycleDiscount - voucherAmount;
+                          const vatAmount = includeVAT ? afterVoucher * 0.1 : 0;
+                          
                           return (
-                            <div className="flex justify-between text-green-600 font-medium">
-                              <span>Giảm giá ({discountPercent}%):</span>
-                              <span>-{formatCurrency(discountAmount)}</span>
-                            </div>
+                            <>
+                              {server.paymentCycle > 1 && (
+                                <div className="flex justify-between text-green-600 font-medium">
+                                  <span>Giảm giá chu kỳ ({discountPercent}%):</span>
+                                  <span>-{formatCurrency(discountAmount)}</span>
+                                </div>
+                              )}
+                              {server.voucherDiscount > 0 && (
+                                <div className="flex justify-between text-pink-600 font-medium">
+                                  <span>Voucher giảm giá ({server.voucherDiscount}%):</span>
+                                  <span>-{formatCurrency(voucherAmount)}</span>
+                                </div>
+                              )}
+                              {includeVAT && (
+                                <div className="flex justify-between text-orange-600 font-medium">
+                                  <span>VAT (10%):</span>
+                                  <span>+{formatCurrency(vatAmount)}</span>
+                                </div>
+                              )}
+                            </>
                           );
                         })()}
                       </div>
@@ -872,6 +969,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                       <div className="flex justify-between items-center">
                         <div className="text-lg font-semibold text-gray-800">
                           Tổng chi phí ({paymentCycles.find(c => c.months === server.paymentCycle)?.label})
+                          {!includeVAT && <span className="text-sm text-gray-500 ml-2">(Chưa VAT)</span>}
+                          {includeVAT && <span className="text-sm text-gray-500 ml-2">(Đã VAT)</span>}
                         </div>
                         <div className="text-2xl font-bold text-blue-600" data-testid={`total-cost-${server.id}`}>
                           {formatCurrency(calculateServerCost(server))}
@@ -888,18 +987,37 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-gray-50 p-6 rounded-lg">
-        <Button
-          onClick={addServer}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Thêm Server Mới
-        </Button>
+        <div className="flex items-center gap-4">
+          <Button
+            onClick={addServer}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+            data-testid="button-add-server"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Thêm Server Mới
+          </Button>
+          
+          <div className="flex items-center gap-3 px-4 py-2 bg-white rounded-lg border border-gray-200">
+            <Label htmlFor="vat-toggle" className="text-sm font-medium cursor-pointer">
+              Bao gồm VAT (10%)
+            </Label>
+            <Switch
+              id="vat-toggle"
+              checked={includeVAT}
+              onCheckedChange={setIncludeVAT}
+              data-testid="switch-vat"
+            />
+          </div>
+        </div>
 
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <p className="text-sm text-gray-600">Tổng chi phí ({servers.length} server)</p>
-            <p className="text-2xl font-bold text-blue-600">
+            <p className="text-sm text-gray-600">
+              Tổng chi phí ({servers.length} server) 
+              {!includeVAT && <span className="text-red-600 ml-1">(Chưa VAT)</span>}
+              {includeVAT && <span className="text-green-600 ml-1">(Đã VAT)</span>}
+            </p>
+            <p className="text-2xl font-bold text-blue-600" data-testid="total-cost-all">
               {formatCurrency(calculateTotalCost())}/tháng
             </p>
           </div>
@@ -907,6 +1025,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
           <Button
             onClick={generatePDFQuote}
             className="bg-green-600 hover:bg-green-700 text-white"
+            data-testid="button-export-pdf"
           >
             <Download className="w-4 h-4 mr-2" />
             Xuất Báo Giá PDF
@@ -1120,7 +1239,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         <h5 className="font-medium text-gray-800">Server Management</h5>
                         <p className="text-sm text-gray-600">Quản lý server toàn diện, cài đặt phần mềm</p>
                       </div>
-                      <span className="text-sm font-semibold text-blue-600">500K VND/tháng</span>
+                      <span className="text-sm font-semibold text-blue-600">1M VND/tháng</span>
                     </div>
                   </div>
                 </div>
@@ -1132,7 +1251,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         <h5 className="font-medium text-gray-800">Database Optimization</h5>
                         <p className="text-sm text-gray-600">Tối ưu hóa MySQL, PostgreSQL, MongoDB</p>
                       </div>
-                      <span className="text-sm font-semibold text-blue-600">300K VND/lần</span>
+                      <span className="text-sm font-semibold text-blue-600">3M - 5M VND/lần</span>
                     </div>
                   </div>
                 </div>
