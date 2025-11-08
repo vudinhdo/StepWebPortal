@@ -20,7 +20,6 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import QuoteBuilder from './quote-builder';
 
 // Pricing configuration based on the Cloud Server page
 const componentPricing = {
@@ -29,7 +28,7 @@ const componentPricing = {
   ssd: { unit: 'GB', basePrice: 3000, minQty: 1, maxQty: 10000 },
   hdd: { unit: 'GB', basePrice: 1000, minQty: 1, maxQty: 10000 },
   ipAddress: { unit: 'IP tĩnh', basePrice: 100000, minQty: 1, maxQty: 10 },
-  bandwidth: { unit: '100Mbps', basePrice: 100000, minQty: 1, maxQty: 100, step: 1 },
+  bandwidth: { unit: '100Mbps', basePrice: 100000, minQty: 1, maxQty: 100, step: 1, freeUnits: 1 },
   backup: { unit: 'GB', basePrice: 2000, minQty: 0, maxQty: 1000 }
 };
 
@@ -139,7 +138,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     const diskCost = server.disk * diskPrice;
     // IP pricing: First IP is free, from 2nd IP onwards: 100k/IP
     const ipCost = server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0;
-    const bandwidthCost = server.bandwidth * componentPricing.bandwidth.basePrice;
+    // Bandwidth pricing: First 100Mbps (1 unit) is free, from 200Mbps (2 units) onwards: 100k/100Mbps
+    const bandwidthCost = server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0;
     const backupCost = server.backup * componentPricing.backup.basePrice;
     const gpuOption = gpuOptions.find(gpu => gpu.value === server.gpu);
     const gpuCost = gpuOption ? gpuOption.price : 0;
@@ -201,9 +201,6 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
           Tùy chỉnh cấu hình server theo nhu cầu, hỗ trợ nhiều server với cấu hình khác nhau
         </p>
       </div>
-
-      {/* Quote Builder */}
-      <QuoteBuilder />
 
       {/* Server List */}
       <div className="space-y-6">
@@ -387,7 +384,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         data-testid={`input-bandwidth-${server.id}`}
                       />
                       <div className="text-xs text-gray-500 text-center">
-                        {formatCurrency(componentPricing.bandwidth.basePrice)}/100Mbps/tháng
+                        100Mbps đầu: miễn phí, từ 200Mbps: {formatCurrency(componentPricing.bandwidth.basePrice)}/100Mbps/tháng
                       </div>
                     </div>
 
@@ -490,8 +487,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                       </div>
                       <div className="space-y-2 text-sm text-gray-600">
                         <div className="flex justify-between">
-                          <span>Bandwidth: {server.bandwidth}x100Mbps</span>
-                          <span>{formatCurrency(server.bandwidth * componentPricing.bandwidth.basePrice)}</span>
+                          <span>Bandwidth: {server.bandwidth}x100Mbps {server.bandwidth === 1 ? '(miễn phí)' : `(${server.bandwidth - 1} tính phí)`}</span>
+                          <span>{formatCurrency(server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0)}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Backup: {server.backup} GB</span>
@@ -501,12 +498,24 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                           <span>GPU: {gpuOptions.find(g => g.value === server.gpu)?.label}</span>
                           <span>{formatCurrency(gpuOptions.find(g => g.value === server.gpu)?.price || 0)}</span>
                         </div>
-                        {server.paymentCycle > 1 && (
-                          <div className="flex justify-between text-green-600 font-medium">
-                            <span>Giảm giá ({paymentCycles.find(c => c.months === server.paymentCycle)?.discount}%):</span>
-                            <span>-{formatCurrency((server.cpu * componentPricing.cpu.basePrice + server.ram * componentPricing.ram.basePrice + server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice) + server.ipAddress * componentPricing.ipAddress.basePrice + server.bandwidth * componentPricing.bandwidth.basePrice + server.backup * componentPricing.backup.basePrice + (gpuOptions.find(g => g.value === server.gpu)?.price || 0)) * (paymentCycles.find(c => c.months === server.paymentCycle)?.discount || 0) / 100)}</span>
-                          </div>
-                        )}
+                        {server.paymentCycle > 1 && (() => {
+                          const cpuCost = server.cpu * componentPricing.cpu.basePrice;
+                          const ramCost = server.ram * componentPricing.ram.basePrice;
+                          const diskCost = server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice);
+                          const ipCost = server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0;
+                          const bandwidthCost = server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0;
+                          const backupCost = server.backup * componentPricing.backup.basePrice;
+                          const gpuCost = gpuOptions.find(g => g.value === server.gpu)?.price || 0;
+                          const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost;
+                          const discountPercent = paymentCycles.find(c => c.months === server.paymentCycle)?.discount || 0;
+                          const discountAmount = subtotal * discountPercent / 100;
+                          return (
+                            <div className="flex justify-between text-green-600 font-medium">
+                              <span>Giảm giá ({discountPercent}%):</span>
+                              <span>-{formatCurrency(discountAmount)}</span>
+                            </div>
+                          );
+                        })()}
                       </div>
                     </div>
                     <div className="border-t pt-4 mt-4">
@@ -642,9 +651,9 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                       <Globe className="w-4 h-4 text-orange-500" />
                       <span className="font-semibold text-sm">IP Tĩnh</span>
                     </div>
-                    <p className="text-sm text-gray-600">{server.ipAddress} IP</p>
+                    <p className="text-sm text-gray-600">{server.ipAddress} IP {server.ipAddress === 1 ? '(miễn phí)' : ''}</p>
                     <p className="text-xs text-green-600 font-medium">
-                      {formatCurrency(server.ipAddress * componentPricing.ipAddress.basePrice)}
+                      {formatCurrency(server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0)}
                     </p>
                   </motion.div>
 
@@ -659,9 +668,9 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                       <Network className="w-4 h-4 text-cyan-500" />
                       <span className="font-semibold text-sm">Băng Thông</span>
                     </div>
-                    <p className="text-sm text-gray-600">{server.bandwidth} Mbps</p>
+                    <p className="text-sm text-gray-600">{server.bandwidth}x100Mbps {server.bandwidth === 1 ? '(miễn phí)' : ''}</p>
                     <p className="text-xs text-green-600 font-medium">
-                      {formatCurrency(server.bandwidth * componentPricing.bandwidth.basePrice)}
+                      {formatCurrency(server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0)}
                     </p>
                   </motion.div>
 
