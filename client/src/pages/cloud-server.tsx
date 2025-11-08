@@ -34,6 +34,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import ServerConfigurator from '@/components/server-configurator';
 
 // Problems with traditional servers
 const problems = [
@@ -821,6 +822,9 @@ export default function CloudServer() {
           </div>
         </div>
       </section>
+
+      {/* Interactive Server Configurator */}
+      <ServerConfigurator />
 
       {/* Migration & Support Section */}
       <section className="py-20 bg-gray-50">
