@@ -22,6 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { RobotoRegularBase64, RobotoBoldBase64 } from '@/fonts/roboto-fonts';
 
 // Pricing configuration based on the Cloud Server page
 const componentPricing = {
@@ -307,35 +308,41 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     const doc = new jsPDF();
     const currentDate = new Date().toLocaleDateString('vi-VN');
     
+    // Add Vietnamese fonts
+    doc.addFileToVFS("Roboto-Regular.ttf", RobotoRegularBase64);
+    doc.addFont("Roboto-Regular.ttf", "Roboto", "normal");
+    doc.addFileToVFS("Roboto-Bold.ttf", RobotoBoldBase64);
+    doc.addFont("Roboto-Bold.ttf", "Roboto", "bold");
+    
     // Header - Company Info
     doc.setFontSize(18);
-    doc.setFont('times', 'bold');
-    doc.text('CONG TY CO PHAN DAU TU CONG NGHE STEP', 105, 20, { align: 'center' });
+    doc.setFont('Roboto', 'bold');
+    doc.text('CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 105, 20, { align: 'center' });
     
     doc.setFontSize(10);
-    doc.setFont('times', 'normal');
-    doc.text('Dia chi: Xom 9, Khu 3, Xa Quoc Oai, Thanh pho Ha Noi', 105, 28, { align: 'center' });
-    doc.text('Van phong: So 99 Hoang Ngan - Phuong Nhan Chinh - Quan Thanh Xuan - Tp.Ha Noi', 105, 33, { align: 'center' });
+    doc.setFont('Roboto', 'normal');
+    doc.text('Địa chỉ: Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội', 105, 28, { align: 'center' });
+    doc.text('Văn phòng: Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội', 105, 33, { align: 'center' });
     doc.text('Hotline: 0985.636.289 | Email: info@step.com.vn | Website: step.com.vn', 105, 38, { align: 'center' });
     doc.text('MST: 0108230633', 105, 43, { align: 'center' });
     
     // Title
     doc.setFontSize(16);
-    doc.setFont('times', 'bold');
-    doc.text('BAO GIA CLOUD SERVER', 105, 55, { align: 'center' });
+    doc.setFont('Roboto', 'bold');
+    doc.text('BÁO GIÁ CLOUD SERVER', 105, 55, { align: 'center' });
     
     // Date
     doc.setFontSize(10);
-    doc.setFont('times', 'italic');
-    doc.text(`Ngay: ${currentDate}`, 105, 62, { align: 'center' });
+    doc.setFont('Roboto', 'normal');
+    doc.text(`Ngày: ${currentDate}`, 105, 62, { align: 'center' });
     
     // Customer Info Section
     doc.setFontSize(11);
-    doc.setFont('times', 'bold');
-    doc.text('Kinh gui: Quy khach hang', 15, 75);
+    doc.setFont('Roboto', 'bold');
+    doc.text('Kính gửi: Quý khách hàng', 15, 75);
     
-    doc.setFont('times', 'normal');
-    doc.text('STEP xin gui toi Quy khach hang bao gia dich vu Cloud Server nhu sau:', 15, 82);
+    doc.setFont('Roboto', 'normal');
+    doc.text('STEP xin gửi tới Quý khách hàng báo giá dịch vụ Cloud Server như sau:', 15, 82);
     
     let yPosition = 90;
     
@@ -347,7 +354,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         yPosition = 20;
       }
       
-      doc.setFont('times', 'bold');
+      doc.setFont('Roboto', 'bold');
       doc.setFontSize(12);
       doc.text(`${index + 1}. ${server.name}`, 15, yPosition);
       yPosition += 8;
@@ -371,7 +378,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       
       // Disk
       componentData.push([
-        `O cung ${server.diskType.toUpperCase()}`,
+        `Ổ cứng ${server.diskType.toUpperCase()}`,
         `${server.disk} GB`,
         formatCurrency(server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice))
       ]);
@@ -379,16 +386,16 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       // IP
       const ipCost = server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0;
       componentData.push([
-        'IP Tinh',
-        `${server.ipAddress} IP ${server.ipAddress === 1 ? '(mien phi)' : `(${server.ipAddress - 1} tinh phi)`}`,
+        'IP Tĩnh',
+        `${server.ipAddress} IP ${server.ipAddress === 1 ? '(miễn phí)' : `(${server.ipAddress - 1} tính phí)`}`,
         formatCurrency(ipCost)
       ]);
       
       // Bandwidth
       const bandwidthCost = server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0;
       componentData.push([
-        'Bang thong',
-        `${server.bandwidth}x100Mbps ${server.bandwidth === 1 ? '(mien phi)' : `(${server.bandwidth - 1} tinh phi)`}`,
+        'Băng thông',
+        `${server.bandwidth}x100Mbps ${server.bandwidth === 1 ? '(miễn phí)' : `(${server.bandwidth - 1} tính phí)`}`,
         formatCurrency(bandwidthCost)
       ]);
       
@@ -414,35 +421,35 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       // OS
       const osOptionPDF = osOptions.find(o => o.value === server.os);
       componentData.push([
-        'He dieu hanh',
+        'Hệ điều hành',
         osOptionPDF?.label || server.os,
-        osOptionPDF && !osOptionPDF.free ? formatCurrency(osOptionPDF.price || 0) : 'Mien phi'
+        osOptionPDF && !osOptionPDF.free ? formatCurrency(osOptionPDF.price || 0) : 'Miễn phí'
       ]);
       
       // Payment cycle
       const cycle = paymentCycles.find(c => c.months === server.paymentCycle);
       componentData.push([
-        'Chu ky thanh toan',
+        'Chu kỳ thanh toán',
         cycle?.label || '',
-        cycle && cycle.discount > 0 ? `Giam ${cycle.discount}%` : 'Khong giam'
+        cycle && cycle.discount > 0 ? `Giảm ${cycle.discount}%` : 'Không giảm'
       ]);
       
       // Voucher discount
       if (server.voucherDiscount > 0) {
         componentData.push([
-          'Voucher giam gia',
+          'Voucher giảm giá',
           `${server.voucherDiscount}%`,
-          'Truoc VAT'
+          'Trước VAT'
         ]);
       }
       
       autoTable(doc, {
         startY: yPosition,
-        head: [['Thanh phan', 'Cau hinh', 'Don gia']],
+        head: [['Thành phần', 'Cấu hình', 'Đơn giá']],
         body: componentData,
         theme: 'grid',
-        styles: { font: 'times', fontSize: 9 },
-        headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+        styles: { font: 'Roboto', fontSize: 9 },
+        headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold' },
         margin: { left: 15, right: 15 }
       });
       
@@ -469,14 +476,14 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       const finalPricePDF = afterVoucherPDF + vatAmountPDF;
       
       // Server cost breakdown
-      doc.setFont('times', 'normal');
+      doc.setFont('Roboto', 'normal');
       doc.setFontSize(10);
       if (discountPDF > 0) {
-        doc.text(`Giam gia chu ky (${discountPDF}%): -${formatCurrency(subtotalPDF * discountPDF / 100)}`, 15, yPosition);
+        doc.text(`Giảm giá chu kỳ (${discountPDF}%): -${formatCurrency(subtotalPDF * discountPDF / 100)}`, 15, yPosition);
         yPosition += 5;
       }
       if (server.voucherDiscount > 0) {
-        doc.text(`Voucher giam gia (${server.voucherDiscount}%): -${formatCurrency(voucherAmountPDF)}`, 15, yPosition);
+        doc.text(`Voucher giảm giá (${server.voucherDiscount}%): -${formatCurrency(voucherAmountPDF)}`, 15, yPosition);
         yPosition += 5;
       }
       if (includeVAT) {
@@ -484,9 +491,9 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         yPosition += 5;
       }
       
-      doc.setFont('times', 'bold');
+      doc.setFont('Roboto', 'bold');
       doc.setFontSize(11);
-      doc.text(`Thanh tien: ${formatCurrency(finalPricePDF)}/thang ${includeVAT ? '(Da VAT)' : '(Chua VAT)'}`, 15, yPosition);
+      doc.text(`Thành tiền: ${formatCurrency(finalPricePDF)}/tháng ${includeVAT ? '(Đã VAT)' : '(Chưa VAT)'}`, 15, yPosition);
       yPosition += 10;
     });
     
@@ -501,27 +508,27 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     doc.line(15, yPosition, 195, yPosition);
     yPosition += 8;
     
-    doc.setFont('times', 'bold');
+    doc.setFont('Roboto', 'bold');
     doc.setFontSize(14);
-    doc.text(`TONG CONG: ${formatCurrency(calculateTotalCost())}/thang ${includeVAT ? '(Da VAT)' : '(Chua VAT)'}`, 105, yPosition, { align: 'center' });
+    doc.text(`TỔNG CỘNG: ${formatCurrency(calculateTotalCost())}/tháng ${includeVAT ? '(Đã VAT)' : '(Chưa VAT)'}`, 105, yPosition, { align: 'center' });
     yPosition += 12;
     
     // Terms and Notes
-    doc.setFont('times', 'bold');
+    doc.setFont('Roboto', 'bold');
     doc.setFontSize(11);
-    doc.text('Ghi chu:', 15, yPosition);
+    doc.text('Ghi chú:', 15, yPosition);
     yPosition += 6;
     
-    doc.setFont('times', 'normal');
+    doc.setFont('Roboto', 'normal');
     doc.setFontSize(9);
     const notes = [
-      includeVAT ? '- Gia tren da bao gom VAT (10%)' : '- Gia tren chua bao gom VAT (10%)',
-      '- IP dau tien va 100Mbps bang thong dau tien duoc mien phi',
-      '- Mien phi: SSL Certificate, Monitoring & Alert, 24/7 Support, Migration Service',
-      '- Thanh toan theo chu ky cang dai, chiet khau cang cao (toi da 36%)',
-      '- Voucher giam gia duoc ap dung truoc VAT',
-      '- Bao gia co hieu luc trong 30 ngay ke tu ngay phat hanh',
-      '- Dich vu bo sung: Server Management 1M VND/thang, Database Optimization 3M-5M VND/lan'
+      includeVAT ? '- Giá trên đã bao gồm VAT (10%)' : '- Giá trên chưa bao gồm VAT (10%)',
+      '- IP đầu tiên và 100Mbps băng thông đầu tiên được miễn phí',
+      '- Miễn phí: SSL Certificate, Monitoring & Alert, 24/7 Support, Migration Service',
+      '- Thanh toán theo chu kỳ càng dài, chiết khấu càng cao (tối đa 36%)',
+      '- Voucher giảm giá được áp dụng trước VAT',
+      '- Báo giá có hiệu lực trong 30 ngày kể từ ngày phát hành',
+      '- Dịch vụ bổ sung: Server Management 1M VND/tháng, Database Optimization 3M-5M VND/lần'
     ];
     
     notes.forEach(note => {
@@ -531,24 +538,24 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     
     // Payment Information
     yPosition += 5;
-    doc.setFont('times', 'bold');
+    doc.setFont('Roboto', 'bold');
     doc.setFontSize(11);
-    doc.text('Thong tin thanh toan:', 15, yPosition);
+    doc.text('Thông tin thanh toán:', 15, yPosition);
     yPosition += 6;
     
-    doc.setFont('times', 'normal');
+    doc.setFont('Roboto', 'normal');
     doc.setFontSize(9);
-    doc.text('Chu tai khoan: CONG TY CO PHAN DAU TU CONG NGHE STEP', 15, yPosition);
+    doc.text('Chủ tài khoản: CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 15, yPosition);
     yPosition += 5;
-    doc.text('So tai khoan: 19132608991888', 15, yPosition);
+    doc.text('Số tài khoản: 19132608991888', 15, yPosition);
     yPosition += 5;
-    doc.text('Ngan hang: Techcombank - Chi nhanh Hoang Quoc Viet - PGD Tran Thai Tong', 15, yPosition);
+    doc.text('Ngân hàng: Techcombank - Chi nhánh Hoàng Quốc Việt - PGD Trần Thái Tông', 15, yPosition);
     
     // Footer
     yPosition = 280;
-    doc.setFont('times', 'italic');
+    doc.setFont('Roboto', 'normal');
     doc.setFontSize(8);
-    doc.text('Tran trong cam on Quy khach hang da tin tuong va lua chon dich vu cua STEP!', 105, yPosition, { align: 'center' });
+    doc.text('Trân trọng cảm ơn Quý khách hàng đã tin tưởng và lựa chọn dịch vụ của STEP!', 105, yPosition, { align: 'center' });
     
     // Save PDF
     const fileName = `Bao-gia-Cloud-Server-${new Date().toISOString().split('T')[0]}.pdf`;
