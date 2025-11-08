@@ -137,7 +137,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     const ramCost = server.ram * componentPricing.ram.basePrice;
     const diskPrice = server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice;
     const diskCost = server.disk * diskPrice;
-    const ipCost = server.ipAddress * componentPricing.ipAddress.basePrice;
+    // IP pricing: First IP is free, from 2nd IP onwards: 100k/IP
+    const ipCost = server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0;
     const bandwidthCost = server.bandwidth * componentPricing.bandwidth.basePrice;
     const backupCost = server.backup * componentPricing.backup.basePrice;
     const gpuOption = gpuOptions.find(gpu => gpu.value === server.gpu);
@@ -366,7 +367,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         data-testid={`input-ip-${server.id}`}
                       />
                       <div className="text-xs text-gray-500 text-center">
-                        {formatCurrency(componentPricing.ipAddress.basePrice)}/IP/tháng
+                        1 IP đầu: miễn phí, từ IP thứ 2: {formatCurrency(componentPricing.ipAddress.basePrice)}/IP/tháng
                       </div>
                     </div>
 
@@ -483,8 +484,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                           <span>{formatCurrency(server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice))}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>IP: {server.ipAddress} địa chỉ</span>
-                          <span>{formatCurrency(server.ipAddress * componentPricing.ipAddress.basePrice)}</span>
+                          <span>IP: {server.ipAddress} địa chỉ {server.ipAddress === 1 ? '(miễn phí)' : `(${server.ipAddress - 1} tính phí)`}</span>
+                          <span>{formatCurrency(server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0)}</span>
                         </div>
                       </div>
                       <div className="space-y-2 text-sm text-gray-600">
