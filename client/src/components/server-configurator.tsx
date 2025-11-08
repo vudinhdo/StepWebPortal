@@ -20,6 +20,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 // Pricing configuration based on the Cloud Server page
 const componentPricing = {
@@ -166,28 +168,212 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
   };
 
   const generatePDFQuote = () => {
-    const quoteData = {
-      servers,
-      totalCost: calculateTotalCost(),
-      generatedAt: new Date().toISOString()
-    };
+    const doc = new jsPDF();
+    const currentDate = new Date().toLocaleDateString('vi-VN');
     
-    console.log('Generating PDF quote...', quoteData);
+    // Header - Company Info
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 105, 20, { align: 'center' });
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Địa chỉ: Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội', 105, 28, { align: 'center' });
+    doc.text('Văn phòng: Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội', 105, 33, { align: 'center' });
+    doc.text('Hotline: 0985.636.289 | Email: info@step.com.vn | Website: step.com.vn', 105, 38, { align: 'center' });
+    doc.text('MST: 0108230633', 105, 43, { align: 'center' });
+    
+    // Title
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('BÁO GIÁ CLOUD SERVER', 105, 55, { align: 'center' });
+    
+    // Date
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'italic');
+    doc.text(`Ngày: ${currentDate}`, 105, 62, { align: 'center' });
+    
+    // Customer Info Section
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Kính gửi: Quý khách hàng', 15, 75);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.text('STEP xin gửi tới Quý khách hàng báo giá dịch vụ Cloud Server như sau:', 15, 82);
+    
+    let yPosition = 90;
+    
+    // Server Details
+    servers.forEach((server, index) => {
+      // Check if we need a new page
+      if (yPosition > 250) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text(`${index + 1}. ${server.name}`, 15, yPosition);
+      yPosition += 8;
+      
+      // Component details table
+      const componentData: any[] = [];
+      
+      // CPU
+      componentData.push([
+        'CPU',
+        `${server.cpu} Core`,
+        formatCurrency(server.cpu * componentPricing.cpu.basePrice)
+      ]);
+      
+      // RAM
+      componentData.push([
+        'RAM',
+        `${server.ram} GB`,
+        formatCurrency(server.ram * componentPricing.ram.basePrice)
+      ]);
+      
+      // Disk
+      componentData.push([
+        `Ổ cứng ${server.diskType.toUpperCase()}`,
+        `${server.disk} GB`,
+        formatCurrency(server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice))
+      ]);
+      
+      // IP
+      const ipCost = server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0;
+      componentData.push([
+        'IP Tĩnh',
+        `${server.ipAddress} IP ${server.ipAddress === 1 ? '(miễn phí)' : `(${server.ipAddress - 1} tính phí)`}`,
+        formatCurrency(ipCost)
+      ]);
+      
+      // Bandwidth
+      const bandwidthCost = server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0;
+      componentData.push([
+        'Băng thông',
+        `${server.bandwidth}x100Mbps ${server.bandwidth === 1 ? '(miễn phí)' : `(${server.bandwidth - 1} tính phí)`}`,
+        formatCurrency(bandwidthCost)
+      ]);
+      
+      // Backup
+      if (server.backup > 0) {
+        componentData.push([
+          'Backup',
+          `${server.backup} GB`,
+          formatCurrency(server.backup * componentPricing.backup.basePrice)
+        ]);
+      }
+      
+      // GPU
+      if (server.gpu !== 'none') {
+        const gpuOption = gpuOptions.find(g => g.value === server.gpu);
+        componentData.push([
+          'GPU',
+          gpuOption?.label || '',
+          formatCurrency(gpuOption?.price || 0)
+        ]);
+      }
+      
+      // OS
+      componentData.push([
+        'Hệ điều hành',
+        server.os,
+        'Miễn phí'
+      ]);
+      
+      // Payment cycle
+      const cycle = paymentCycles.find(c => c.months === server.paymentCycle);
+      componentData.push([
+        'Chu kỳ thanh toán',
+        cycle?.label || '',
+        cycle && cycle.discount > 0 ? `Giảm ${cycle.discount}%` : 'Không giảm'
+      ]);
+      
+      autoTable(doc, {
+        startY: yPosition,
+        head: [['Thành phần', 'Cấu hình', 'Đơn giá']],
+        body: componentData,
+        theme: 'grid',
+        styles: { font: 'helvetica', fontSize: 9 },
+        headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+        margin: { left: 15, right: 15 }
+      });
+      
+      yPosition = (doc as any).lastAutoTable.finalY + 5;
+      
+      // Server total
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text(`Thành tiền: ${formatCurrency(calculateServerCost(server))}/tháng`, 15, yPosition);
+      yPosition += 10;
+    });
+    
+    // Grand Total
+    if (yPosition > 240) {
+      doc.addPage();
+      yPosition = 20;
+    }
+    
+    doc.setDrawColor(41, 128, 185);
+    doc.setLineWidth(0.5);
+    doc.line(15, yPosition, 195, yPosition);
+    yPosition += 8;
+    
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text(`TỔNG CỘNG: ${formatCurrency(calculateTotalCost())}/tháng`, 105, yPosition, { align: 'center' });
+    yPosition += 12;
+    
+    // Terms and Notes
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text('Ghi chú:', 15, yPosition);
+    yPosition += 6;
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    const notes = [
+      '- Giá trên chưa bao gồm VAT (10%)',
+      '- IP đầu tiên và 100Mbps băng thông đầu tiên được miễn phí',
+      '- Miễn phí: SSL Certificate, Monitoring & Alert, 24/7 Support, Migration Service',
+      '- Thanh toán theo chu kỳ càng dài, chiết khấu càng cao (tối đa 36%)',
+      '- Báo giá có hiệu lực trong 30 ngày kể từ ngày phát hành'
+    ];
+    
+    notes.forEach(note => {
+      doc.text(note, 15, yPosition);
+      yPosition += 5;
+    });
+    
+    // Payment Information
+    yPosition += 5;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text('Thông tin thanh toán:', 15, yPosition);
+    yPosition += 6;
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.text('Chủ tài khoản: CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 15, yPosition);
+    yPosition += 5;
+    doc.text('Số tài khoản: 19132608991888', 15, yPosition);
+    yPosition += 5;
+    doc.text('Ngân hàng: Techcombank – Chi nhánh Hoàng Quốc Việt – PGD Trần Thái Tông', 15, yPosition);
+    
+    // Footer
+    yPosition = 280;
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(8);
+    doc.text('Trân trọng cảm ơn Quý khách hàng đã tin tưởng và lựa chọn dịch vụ của STEP!', 105, yPosition, { align: 'center' });
+    
+    // Save PDF
+    const fileName = `Bao-gia-Cloud-Server-${new Date().toISOString().split('T')[0]}.pdf`;
+    doc.save(fileName);
     
     if (onQuoteGenerated) {
       onQuoteGenerated(servers);
     }
-    
-    // Create downloadable JSON for now (would be PDF in production)
-    const dataStr = JSON.stringify(quoteData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = `cloud-server-quote-${new Date().toISOString().split('T')[0]}.json`;
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
   };
 
   return (
@@ -564,140 +750,6 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         </div>
       </div>
 
-      {/* Cost Breakdown with Drag-and-Drop Configuration */}
-      <div className="bg-white rounded-lg shadow-md border border-gray-200">
-        <div className="p-6 border-b border-gray-200">
-          <h3 className="text-xl font-semibold flex items-center gap-2">
-            <Calculator className="w-5 h-5" />
-            Chi Tiết Báo Giá - Kéo Thả Cấu Hình
-          </h3>
-          <p className="text-sm text-gray-600 mt-2">Kéo thả các thành phần để tùy chỉnh cấu hình server của bạn</p>
-        </div>
-        <div className="p-6">
-          <div className="space-y-6">
-            {servers.map((server, serverIndex) => (
-              <div key={server.id} className="border-2 border-dashed border-blue-300 rounded-lg p-4 bg-blue-50">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="font-bold text-lg text-gray-800 flex items-center gap-2">
-                    <Server className="w-5 h-5 text-blue-600" />
-                    {server.name}
-                  </h4>
-                  <span className="text-xl font-bold text-blue-600">
-                    {formatCurrency(calculateServerCost(server))}/tháng
-                  </span>
-                </div>
-                
-                {/* Draggable Configuration Components */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                  {/* CPU Component */}
-                  <motion.div
-                    drag
-                    dragSnapToOrigin
-                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
-                    className="bg-white rounded-lg p-3 border border-blue-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Cpu className="w-4 h-4 text-blue-500" />
-                      <span className="font-semibold text-sm">CPU</span>
-                    </div>
-                    <p className="text-sm text-gray-600">{server.cpu} Core</p>
-                    <p className="text-xs text-green-600 font-medium">
-                      {formatCurrency(server.cpu * componentPricing.cpu.basePrice)}
-                    </p>
-                  </motion.div>
-
-                  {/* RAM Component */}
-                  <motion.div
-                    drag
-                    dragSnapToOrigin
-                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
-                    className="bg-white rounded-lg p-3 border border-green-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <HardDrive className="w-4 h-4 text-green-500" />
-                      <span className="font-semibold text-sm">RAM</span>
-                    </div>
-                    <p className="text-sm text-gray-600">{server.ram} GB</p>
-                    <p className="text-xs text-green-600 font-medium">
-                      {formatCurrency(server.ram * componentPricing.ram.basePrice)}
-                    </p>
-                  </motion.div>
-
-                  {/* Disk Component */}
-                  <motion.div
-                    drag
-                    dragSnapToOrigin
-                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
-                    className="bg-white rounded-lg p-3 border border-purple-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <HardDrive className="w-4 h-4 text-purple-500" />
-                      <span className="font-semibold text-sm">{server.diskType.toUpperCase()}</span>
-                    </div>
-                    <p className="text-sm text-gray-600">{server.disk} GB</p>
-                    <p className="text-xs text-green-600 font-medium">
-                      {formatCurrency(server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice))}
-                    </p>
-                  </motion.div>
-
-                  {/* IP Component */}
-                  <motion.div
-                    drag
-                    dragSnapToOrigin
-                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
-                    className="bg-white rounded-lg p-3 border border-orange-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Globe className="w-4 h-4 text-orange-500" />
-                      <span className="font-semibold text-sm">IP Tĩnh</span>
-                    </div>
-                    <p className="text-sm text-gray-600">{server.ipAddress} IP {server.ipAddress === 1 ? '(miễn phí)' : ''}</p>
-                    <p className="text-xs text-green-600 font-medium">
-                      {formatCurrency(server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0)}
-                    </p>
-                  </motion.div>
-
-                  {/* Bandwidth Component */}
-                  <motion.div
-                    drag
-                    dragSnapToOrigin
-                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
-                    className="bg-white rounded-lg p-3 border border-cyan-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Network className="w-4 h-4 text-cyan-500" />
-                      <span className="font-semibold text-sm">Băng Thông</span>
-                    </div>
-                    <p className="text-sm text-gray-600">{server.bandwidth}x100Mbps {server.bandwidth === 1 ? '(miễn phí)' : ''}</p>
-                    <p className="text-xs text-green-600 font-medium">
-                      {formatCurrency(server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0)}
-                    </p>
-                  </motion.div>
-
-                  {/* GPU Component */}
-                  {server.gpu !== 'none' && (
-                    <motion.div
-                      drag
-                      dragSnapToOrigin
-                      whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
-                      className="bg-white rounded-lg p-3 border border-yellow-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        <Zap className="w-4 h-4 text-yellow-500" />
-                        <span className="font-semibold text-sm">GPU</span>
-                      </div>
-                      <p className="text-sm text-gray-600">{gpuOptions.find(g => g.value === server.gpu)?.label}</p>
-                      <p className="text-xs text-green-600 font-medium">
-                        {formatCurrency(gpuOptions.find(g => g.value === server.gpu)?.price || 0)}
-                      </p>
-                    </motion.div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* Additional Services Details */}
       <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-md border border-blue-200">
