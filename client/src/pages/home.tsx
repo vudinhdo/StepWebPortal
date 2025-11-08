@@ -59,27 +59,27 @@ import vcp5Logo from "@assets/stock_images/vmware_certification_4f1a6bf4.jpg";
 import ccnaLogo from "@assets/stock_images/cisco_certification__13915deb.jpg";
 import cehLogo from "@assets/stock_images/cybersecurity_certif_5ea69690.jpg";
 
-// Import partner and customer logos
-import vmwareLogo from "@assets/stock_images/vmware_certification_4f1a6bf4.jpg";
-import fptLogo from "@assets/stock_images/fpt_corporation_viet_91eece03.jpg";
-import cmcLogo from "@assets/stock_images/cmc_corporation_viet_35804eb7.jpg";
-import vnptLogo from "@assets/stock_images/vnpt_vietnam_posts_t_032c7d01.jpg";
-import viettelLogo from "@assets/stock_images/viettel_telecommunic_72d49b25.jpg";
-import dellLogo from "@assets/stock_images/dell_technologies_lo_bc3bc408.jpg";
-import hpeLogo from "@assets/stock_images/hpe_hewlett_packard__01582d42.jpg";
-import ciscoLogo from "@assets/stock_images/cisco_certification__13915deb.jpg";
+// Import partner logos - Updated with new professional images
+import vmwareLogo from "@assets/stock_images/vmware_virtualizatio_4e77266f.jpg";
+import fptLogo from "@assets/stock_images/fpt_corporation_viet_926d1f68.jpg";
+import cmcLogo from "@assets/stock_images/cmc_corporation_viet_34b4e34d.jpg";
+import vnptLogo from "@assets/stock_images/vnpt_vietnam_posts_t_c3d1f76d.jpg";
+import viettelLogo from "@assets/stock_images/viettel_group_vietna_303d937f.jpg";
+import dellLogo from "@assets/stock_images/dell_technologies_en_8555b6a8.jpg";
+import hpeLogo from "@assets/stock_images/hpe_hewlett_packard__82f242d2.jpg";
+import ciscoLogo from "@assets/stock_images/cisco_systems_networ_b8098198.jpg";
 
-// Import customer logos
-import vetcLogo from "@assets/stock_images/vetc_vietnam_express_75e5b865.jpg";
-import palVietnamLogo from "@assets/stock_images/pal_vietnam_company__ff591243.jpg";
-import vien103Logo from "@assets/stock_images/vien_103_vietnam_mil_a3f914e2.jpg";
-import vingroupLogo from "@assets/stock_images/vingroup_vietnam_cor_d70643af.jpg";
-import vinamilkLogo from "@assets/stock_images/vinamilk_vietnam_dai_2715613b.jpg";
-import vietcombankLogo from "@assets/stock_images/vietcombank_vietnam__02b63e66.jpg";
-import grabLogo from "@assets/stock_images/grab_vietnam_ride_ha_7b32abec.jpg";
-import momoLogo from "@assets/stock_images/momo_vietnam_fintech_d5b848db.jpg";
-import medlatecLogo from "@assets/stock_images/medlatec_medical_cen_eca53331.jpg";
-import bsgLogo from "@assets/stock_images/bsg_vietnam_company__bf28746d.jpg";
+// Import customer logos - Updated with new professional images
+import vetcLogo from "@assets/stock_images/vetc_vietnam_express_8513f498.jpg";
+import palVietnamLogo from "@assets/stock_images/pal_airlines_vietnam_d9d91cef.jpg";
+import vien103Logo from "@assets/stock_images/vietnam_military_hos_96e6ad9b.jpg";
+import vingroupLogo from "@assets/stock_images/vingroup_vietnam_con_f971853b.jpg";
+import vinamilkLogo from "@assets/stock_images/vinamilk_vietnam_dai_0281e91d.jpg";
+import vietcombankLogo from "@assets/stock_images/vietcombank_vietnam__e6d5fee3.jpg";
+import grabLogo from "@assets/stock_images/grab_southeast_asia__16de0484.jpg";
+import momoLogo from "@assets/stock_images/momo_vietnam_digital_8b2de65d.jpg";
+import medlatecLogo from "@assets/stock_images/medlatec_vietnam_med_7589bff1.jpg";
+import bsgLogo from "@assets/stock_images/bsg_business_solutio_8f8c53ad.jpg";
 
 // Fallback images
 import customersPartnersImage from "@assets/image_1758666058304.png";
