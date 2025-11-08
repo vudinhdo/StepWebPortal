@@ -47,13 +47,119 @@ const paymentCycles = [
 // Popular GPU options with pricing
 const gpuOptions = [
   { value: 'none', label: 'Không cần GPU', price: 0 },
-  { value: 'rtx4060', label: 'NVIDIA RTX 4060', price: 2500000 },
-  { value: 'rtx4070', label: 'NVIDIA RTX 4070', price: 3500000 },
-  { value: 'rtx4080', label: 'NVIDIA RTX 4080', price: 5000000 },
-  { value: 'rtx4090', label: 'NVIDIA RTX 4090', price: 7500000 },
-  { value: 'a5000', label: 'NVIDIA RTX A5000', price: 6000000 },
-  { value: 'a6000', label: 'NVIDIA RTX A6000', price: 8500000 },
-  { value: 'h100', label: 'NVIDIA H100', price: 15000000 }
+  { value: 'rtx3060', label: 'NVIDIA RTX 3060 (12GB)', price: 1800000 },
+  { value: 'rtx3070', label: 'NVIDIA RTX 3070 (8GB)', price: 2200000 },
+  { value: 'rtx3080', label: 'NVIDIA RTX 3080 (10GB)', price: 3000000 },
+  { value: 'rtx3090', label: 'NVIDIA RTX 3090 (24GB)', price: 4500000 },
+  { value: 'rtx4060', label: 'NVIDIA RTX 4060 (8GB)', price: 2500000 },
+  { value: 'rtx4070', label: 'NVIDIA RTX 4070 (12GB)', price: 3500000 },
+  { value: 'rtx4080', label: 'NVIDIA RTX 4080 (16GB)', price: 5000000 },
+  { value: 'rtx4090', label: 'NVIDIA RTX 4090 (24GB)', price: 7500000 },
+  { value: 'a4000', label: 'NVIDIA RTX A4000 (16GB)', price: 5000000 },
+  { value: 'a5000', label: 'NVIDIA RTX A5000 (24GB)', price: 6000000 },
+  { value: 'a6000', label: 'NVIDIA RTX A6000 (48GB)', price: 8500000 },
+  { value: 'h100', label: 'NVIDIA H100 (80GB) - AI/ML', price: 15000000 },
+  { value: 't4', label: 'NVIDIA Tesla T4 (16GB)', price: 3500000 },
+  { value: 'v100', label: 'NVIDIA Tesla V100 (32GB)', price: 8000000 }
+];
+
+// Popular Operating Systems
+const osOptions = [
+  { value: 'ubuntu-22.04', label: 'Ubuntu 22.04 LTS', category: 'Linux', free: true },
+  { value: 'ubuntu-20.04', label: 'Ubuntu 20.04 LTS', category: 'Linux', free: true },
+  { value: 'centos-8', label: 'CentOS Stream 8', category: 'Linux', free: true },
+  { value: 'centos-9', label: 'CentOS Stream 9', category: 'Linux', free: true },
+  { value: 'rocky-8', label: 'Rocky Linux 8', category: 'Linux', free: true },
+  { value: 'rocky-9', label: 'Rocky Linux 9', category: 'Linux', free: true },
+  { value: 'almalinux-8', label: 'AlmaLinux 8', category: 'Linux', free: true },
+  { value: 'almalinux-9', label: 'AlmaLinux 9', category: 'Linux', free: true },
+  { value: 'debian-11', label: 'Debian 11 (Bullseye)', category: 'Linux', free: true },
+  { value: 'debian-12', label: 'Debian 12 (Bookworm)', category: 'Linux', free: true },
+  { value: 'fedora-38', label: 'Fedora 38', category: 'Linux', free: true },
+  { value: 'windows-2019', label: 'Windows Server 2019', category: 'Windows', free: false, price: 500000 },
+  { value: 'windows-2022', label: 'Windows Server 2022', category: 'Windows', free: false, price: 600000 }
+];
+
+// Package Templates for quick configuration
+const packageTemplates = [
+  {
+    name: 'Basic - Startup',
+    description: 'Phù hợp cho website nhỏ, blog cá nhân',
+    cpu: 2,
+    ram: 4,
+    disk: 40,
+    diskType: 'ssd' as const,
+    ipAddress: 1,
+    bandwidth: 1,
+    backup: 0,
+    gpu: 'none',
+    os: 'ubuntu-22.04'
+  },
+  {
+    name: 'Pro - Business',
+    description: 'Cho doanh nghiệp vừa, ứng dụng web',
+    cpu: 4,
+    ram: 8,
+    disk: 100,
+    diskType: 'ssd' as const,
+    ipAddress: 1,
+    bandwidth: 2,
+    backup: 50,
+    gpu: 'none',
+    os: 'ubuntu-22.04'
+  },
+  {
+    name: 'Enterprise - High Performance',
+    description: 'Hệ thống lớn, nhiều traffic',
+    cpu: 8,
+    ram: 16,
+    disk: 200,
+    diskType: 'ssd' as const,
+    ipAddress: 2,
+    bandwidth: 5,
+    backup: 100,
+    gpu: 'none',
+    os: 'ubuntu-22.04'
+  },
+  {
+    name: 'AI/ML - Deep Learning',
+    description: 'Huấn luyện AI, Machine Learning',
+    cpu: 16,
+    ram: 64,
+    disk: 500,
+    diskType: 'ssd' as const,
+    ipAddress: 1,
+    bandwidth: 3,
+    backup: 200,
+    gpu: 'rtx4090',
+    os: 'ubuntu-22.04'
+  },
+  {
+    name: 'Gaming Server',
+    description: 'Server game online, streaming',
+    cpu: 8,
+    ram: 32,
+    disk: 300,
+    diskType: 'ssd' as const,
+    ipAddress: 1,
+    bandwidth: 10,
+    backup: 100,
+    gpu: 'rtx4070',
+    os: 'windows-2022'
+  },
+  {
+    name: 'Database Server',
+    description: 'MySQL, PostgreSQL, MongoDB',
+    cpu: 8,
+    ram: 32,
+    disk: 500,
+    diskType: 'ssd' as const,
+    ipAddress: 1,
+    bandwidth: 3,
+    backup: 500,
+    gpu: 'none',
+    os: 'ubuntu-22.04'
+  }
 ];
 
 interface ServerConfig {
@@ -89,7 +195,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       backup: 0,
       gpu: 'none',
       paymentCycle: 1,
-      os: 'Ubuntu 22.04'
+      os: 'ubuntu-22.04'
     }
   ]);
 
@@ -106,9 +212,26 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       backup: 0,
       gpu: 'none',
       paymentCycle: 1,
-      os: 'Ubuntu 22.04'
+      os: 'ubuntu-22.04'
     };
     setServers([...servers, newServer]);
+  };
+
+  const applyTemplate = (serverId: string, template: typeof packageTemplates[0]) => {
+    setServers(servers.map(server => 
+      server.id === serverId ? {
+        ...server,
+        cpu: template.cpu,
+        ram: template.ram,
+        disk: template.disk,
+        diskType: template.diskType,
+        ipAddress: template.ipAddress,
+        bandwidth: template.bandwidth,
+        backup: template.backup,
+        gpu: template.gpu,
+        os: template.os
+      } : server
+    ));
   };
 
   const removeServer = (id: string) => {
@@ -145,8 +268,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     const backupCost = server.backup * componentPricing.backup.basePrice;
     const gpuOption = gpuOptions.find(gpu => gpu.value === server.gpu);
     const gpuCost = gpuOption ? gpuOption.price : 0;
+    // OS pricing: Windows Server has license cost, Linux is free
+    const osOption = osOptions.find(os => os.value === server.os);
+    const osCost = osOption && !osOption.free ? (osOption.price || 0) : 0;
     
-    const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost;
+    const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost;
     
     // Apply payment cycle discount
     const cycle = paymentCycles.find(c => c.months === server.paymentCycle);
@@ -276,10 +402,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       }
       
       // OS
+      const osOptionPDF = osOptions.find(o => o.value === server.os);
       componentData.push([
         'Hệ điều hành',
-        server.os,
-        'Miễn phí'
+        osOptionPDF?.label || server.os,
+        osOptionPDF && !osOptionPDF.free ? formatCurrency(osOptionPDF.price || 0) : 'Miễn phí'
       ]);
       
       // Payment cycle
@@ -386,6 +513,37 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         <p className="text-lg text-gray-600">
           Tùy chỉnh cấu hình server theo nhu cầu, hỗ trợ nhiều server với cấu hình khác nhau
         </p>
+      </div>
+
+      {/* Package Templates - Quick Setup */}
+      <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 border-2 border-purple-200">
+        <h3 className="text-xl font-semibold mb-4 flex items-center gap-2 text-purple-800">
+          <Zap className="w-6 h-6" />
+          Chọn Nhanh Cấu Hình Mẫu
+        </h3>
+        <p className="text-sm text-gray-600 mb-4">Chọn một trong các gói mẫu phổ biến để tự động điền cấu hình, sau đó bạn có thể tùy chỉnh thêm</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {packageTemplates.map((template, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ scale: 1.02, boxShadow: "0 10px 20px rgba(0,0,0,0.15)" }}
+              className="bg-white rounded-lg p-4 border-2 border-purple-200 hover:border-purple-400 transition-all cursor-pointer"
+              onClick={() => servers[0] && applyTemplate(servers[0].id, template)}
+            >
+              <h4 className="font-bold text-lg text-gray-800 mb-2">{template.name}</h4>
+              <p className="text-sm text-gray-600 mb-3">{template.description}</p>
+              <div className="grid grid-cols-2 gap-2 text-xs text-gray-700">
+                <div><strong>CPU:</strong> {template.cpu} Core</div>
+                <div><strong>RAM:</strong> {template.ram} GB</div>
+                <div><strong>Disk:</strong> {template.disk} GB {template.diskType.toUpperCase()}</div>
+                <div><strong>BW:</strong> {template.bandwidth}x100Mbps</div>
+                {template.gpu !== 'none' && (
+                  <div className="col-span-2"><strong>GPU:</strong> {gpuOptions.find(g => g.value === template.gpu)?.label}</div>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       {/* Server List */}
@@ -633,14 +791,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                           <SelectValue placeholder="Chọn hệ điều hành" />
                         </SelectTrigger>
                         <SelectContent position="popper" side="bottom" align="start">
-                          <SelectItem key={`${server.id}-ubuntu-22`} value="Ubuntu 22.04">Ubuntu 22.04 LTS</SelectItem>
-                          <SelectItem key={`${server.id}-ubuntu-20`} value="Ubuntu 20.04">Ubuntu 20.04 LTS</SelectItem>
-                          <SelectItem key={`${server.id}-centos-8`} value="CentOS 8">CentOS 8</SelectItem>
-                          <SelectItem key={`${server.id}-centos-7`} value="CentOS 7">CentOS 7</SelectItem>
-                          <SelectItem key={`${server.id}-debian-12`} value="Debian 12">Debian 12</SelectItem>
-                          <SelectItem key={`${server.id}-debian-11`} value="Debian 11">Debian 11</SelectItem>
-                          <SelectItem key={`${server.id}-win-2022`} value="Windows Server 2022">Windows Server 2022</SelectItem>
-                          <SelectItem key={`${server.id}-win-2019`} value="Windows Server 2019">Windows Server 2019</SelectItem>
+                          {osOptions.map((os) => (
+                            <SelectItem key={`${server.id}-${os.value}`} value={os.value}>
+                              {os.label} {os.free ? '(Miễn phí)' : `(+${formatCurrency(os.price || 0)}/tháng)`}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </div>
@@ -684,6 +839,13 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                           <span>GPU: {gpuOptions.find(g => g.value === server.gpu)?.label}</span>
                           <span>{formatCurrency(gpuOptions.find(g => g.value === server.gpu)?.price || 0)}</span>
                         </div>
+                        <div className="flex justify-between">
+                          <span>OS: {osOptions.find(o => o.value === server.os)?.label || server.os}</span>
+                          <span>{(() => {
+                            const osOption = osOptions.find(o => o.value === server.os);
+                            return osOption && !osOption.free ? formatCurrency(osOption.price || 0) : 'Miễn phí';
+                          })()}</span>
+                        </div>
                         {server.paymentCycle > 1 && (() => {
                           const cpuCost = server.cpu * componentPricing.cpu.basePrice;
                           const ramCost = server.ram * componentPricing.ram.basePrice;
@@ -692,7 +854,9 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                           const bandwidthCost = server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0;
                           const backupCost = server.backup * componentPricing.backup.basePrice;
                           const gpuCost = gpuOptions.find(g => g.value === server.gpu)?.price || 0;
-                          const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost;
+                          const osOption = osOptions.find(o => o.value === server.os);
+                          const osCost = osOption && !osOption.free ? (osOption.price || 0) : 0;
+                          const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost;
                           const discountPercent = paymentCycles.find(c => c.months === server.paymentCycle)?.discount || 0;
                           const discountAmount = subtotal * discountPercent / 100;
                           return (
@@ -750,6 +914,140 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         </div>
       </div>
 
+      {/* Chi Tiết Báo Giá - Kéo Thả Cấu Hình */}
+      <div className="bg-white rounded-lg shadow-md border border-gray-200">
+        <div className="p-6 border-b border-gray-200">
+          <h3 className="text-xl font-semibold flex items-center gap-2">
+            <Calculator className="w-5 h-5" />
+            Chi Tiết Báo Giá - Kéo Thả Cấu Hình
+          </h3>
+          <p className="text-sm text-gray-600 mt-2">Kéo thả các thành phần để xem cấu hình server của bạn</p>
+        </div>
+        <div className="p-6">
+          <div className="space-y-6">
+            {servers.map((server, serverIndex) => (
+              <div key={server.id} className="border-2 border-dashed border-blue-300 rounded-lg p-4 bg-blue-50">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-bold text-lg text-gray-800 flex items-center gap-2">
+                    <Server className="w-5 h-5 text-blue-600" />
+                    {server.name}
+                  </h4>
+                  <span className="text-xl font-bold text-blue-600">
+                    {formatCurrency(calculateServerCost(server))}/tháng
+                  </span>
+                </div>
+                
+                {/* Draggable Configuration Components */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                  {/* CPU Component */}
+                  <motion.div
+                    drag
+                    dragSnapToOrigin
+                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                    className="bg-white rounded-lg p-3 border border-blue-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Cpu className="w-4 h-4 text-blue-500" />
+                      <span className="font-semibold text-sm">CPU</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{server.cpu} Core</p>
+                    <p className="text-xs text-green-600 font-medium">
+                      {formatCurrency(server.cpu * componentPricing.cpu.basePrice)}
+                    </p>
+                  </motion.div>
+
+                  {/* RAM Component */}
+                  <motion.div
+                    drag
+                    dragSnapToOrigin
+                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                    className="bg-white rounded-lg p-3 border border-green-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <HardDrive className="w-4 h-4 text-green-500" />
+                      <span className="font-semibold text-sm">RAM</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{server.ram} GB</p>
+                    <p className="text-xs text-green-600 font-medium">
+                      {formatCurrency(server.ram * componentPricing.ram.basePrice)}
+                    </p>
+                  </motion.div>
+
+                  {/* Disk Component */}
+                  <motion.div
+                    drag
+                    dragSnapToOrigin
+                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                    className="bg-white rounded-lg p-3 border border-purple-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <HardDrive className="w-4 h-4 text-purple-500" />
+                      <span className="font-semibold text-sm">{server.diskType.toUpperCase()}</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{server.disk} GB</p>
+                    <p className="text-xs text-green-600 font-medium">
+                      {formatCurrency(server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice))}
+                    </p>
+                  </motion.div>
+
+                  {/* IP Component */}
+                  <motion.div
+                    drag
+                    dragSnapToOrigin
+                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                    className="bg-white rounded-lg p-3 border border-orange-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Globe className="w-4 h-4 text-orange-500" />
+                      <span className="font-semibold text-sm">IP Tĩnh</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{server.ipAddress} IP {server.ipAddress === 1 ? '(miễn phí)' : ''}</p>
+                    <p className="text-xs text-green-600 font-medium">
+                      {formatCurrency(server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0)}
+                    </p>
+                  </motion.div>
+
+                  {/* Bandwidth Component */}
+                  <motion.div
+                    drag
+                    dragSnapToOrigin
+                    whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                    className="bg-white rounded-lg p-3 border border-cyan-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Network className="w-4 h-4 text-cyan-500" />
+                      <span className="font-semibold text-sm">Băng Thông</span>
+                    </div>
+                    <p className="text-sm text-gray-600">{server.bandwidth}x100Mbps {server.bandwidth === 1 ? '(miễn phí)' : ''}</p>
+                    <p className="text-xs text-green-600 font-medium">
+                      {formatCurrency(server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0)}
+                    </p>
+                  </motion.div>
+
+                  {/* GPU Component */}
+                  {server.gpu !== 'none' && (
+                    <motion.div
+                      drag
+                      dragSnapToOrigin
+                      whileDrag={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.2)" }}
+                      className="bg-white rounded-lg p-3 border border-yellow-200 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <Zap className="w-4 h-4 text-yellow-500" />
+                        <span className="font-semibold text-sm">GPU</span>
+                      </div>
+                      <p className="text-sm text-gray-600">{gpuOptions.find(g => g.value === server.gpu)?.label}</p>
+                      <p className="text-xs text-green-600 font-medium">
+                        {formatCurrency(gpuOptions.find(g => g.value === server.gpu)?.price || 0)}
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Additional Services Details */}
       <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-md border border-blue-200">
