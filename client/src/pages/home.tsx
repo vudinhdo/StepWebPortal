@@ -51,39 +51,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-// Import individual certification logos
-import mctLogo from "@assets/stock_images/microsoft_certificat_e5e70f9e.jpg";
-import lpiLogo from "@assets/stock_images/linux_certification__34496d8e.jpg";
-import safeticaLogo from "@assets/stock_images/it_certification_pro_ef9b1fe4.jpg";
-import vcp5Logo from "@assets/stock_images/vmware_certification_4f1a6bf4.jpg";
-import ccnaLogo from "@assets/stock_images/cisco_certification__13915deb.jpg";
-import cehLogo from "@assets/stock_images/cybersecurity_certif_5ea69690.jpg";
-
-// Import partner logos - Updated with new professional images
-import vmwareLogo from "@assets/stock_images/vmware_virtualizatio_4e77266f.jpg";
-import fptLogo from "@assets/stock_images/fpt_corporation_viet_926d1f68.jpg";
-import cmcLogo from "@assets/stock_images/cmc_corporation_viet_34b4e34d.jpg";
-import vnptLogo from "@assets/stock_images/vnpt_vietnam_posts_t_c3d1f76d.jpg";
-import viettelLogo from "@assets/stock_images/viettel_group_vietna_303d937f.jpg";
-import dellLogo from "@assets/stock_images/dell_technologies_en_8555b6a8.jpg";
-import hpeLogo from "@assets/stock_images/hpe_hewlett_packard__82f242d2.jpg";
-import ciscoLogo from "@assets/stock_images/cisco_systems_networ_b8098198.jpg";
-
-// Import customer logos - Updated with new professional images
-import vetcLogo from "@assets/stock_images/vetc_vietnam_express_8513f498.jpg";
-import palVietnamLogo from "@assets/stock_images/pal_airlines_vietnam_d9d91cef.jpg";
-import vien103Logo from "@assets/stock_images/vietnam_military_hos_96e6ad9b.jpg";
-import vingroupLogo from "@assets/stock_images/vingroup_vietnam_con_f971853b.jpg";
-import vinamilkLogo from "@assets/stock_images/vinamilk_vietnam_dai_0281e91d.jpg";
-import vietcombankLogo from "@assets/stock_images/vietcombank_vietnam__e6d5fee3.jpg";
-import grabLogo from "@assets/stock_images/grab_southeast_asia__16de0484.jpg";
-import momoLogo from "@assets/stock_images/momo_vietnam_digital_8b2de65d.jpg";
-import medlatecLogo from "@assets/stock_images/medlatec_vietnam_med_7589bff1.jpg";
-import bsgLogo from "@assets/stock_images/bsg_business_solutio_8f8c53ad.jpg";
-
-// Fallback images
-import customersPartnersImage from "@assets/image_1758666058304.png";
-
 // IT Challenges for Vietnamese businesses
 const itChallenges = [
   {
@@ -202,37 +169,37 @@ const coreServices = [
 
 // Technical Certifications
 const technicalCertifications = [
-  { name: "MCT", fullName: "Microsoft Certificate Windows Server", color: "bg-blue-500", logo: mctLogo },
-  { name: "Linux LPI", fullName: "Linux Professional Institute", color: "bg-orange-500", logo: lpiLogo },
-  { name: "DLP Safetica", fullName: "Data Loss Prevention của hãng Safetica", color: "bg-green-500", logo: safeticaLogo },
-  { name: "VCP5", fullName: "VMware Certified Professional", color: "bg-purple-500", logo: vcp5Logo },
-  { name: "Cisco CCNA", fullName: "Cisco Certified Network Associate", color: "bg-cyan-500", logo: ccnaLogo },
-  { name: "CEH", fullName: "Certified Ethical Hacker (Master in Hacking)", color: "bg-red-500", logo: cehLogo }
+  { name: "MCT", fullName: "Microsoft Certificate Windows Server", color: "bg-blue-500" },
+  { name: "Linux LPI", fullName: "Linux Professional Institute", color: "bg-orange-500" },
+  { name: "DLP Safetica", fullName: "Data Loss Prevention của hãng Safetica", color: "bg-green-500" },
+  { name: "VCP5", fullName: "VMware Certified Professional", color: "bg-purple-500" },
+  { name: "Cisco CCNA", fullName: "Cisco Certified Network Associate", color: "bg-cyan-500" },
+  { name: "CEH", fullName: "Certified Ethical Hacker (Master in Hacking)", color: "bg-red-500" }
 ];
 
 // Service Partners and Customers
 const servicePartners = [
-  { name: "VMware", logo: vmwareLogo },
-  { name: "FPT Corporation", logo: fptLogo },
-  { name: "CMC Corporation", logo: cmcLogo },
-  { name: "VNPT", logo: vnptLogo },
-  { name: "Viettel", logo: viettelLogo },
-  { name: "Dell Technologies", logo: dellLogo },
-  { name: "HPE", logo: hpeLogo },
-  { name: "Cisco", logo: ciscoLogo }
+  { name: "VMware" },
+  { name: "FPT Corporation" },
+  { name: "CMC Corporation" },
+  { name: "VNPT" },
+  { name: "Viettel" },
+  { name: "Dell Technologies" },
+  { name: "HPE" },
+  { name: "Cisco" }
 ];
 
 const customers = [
-  { name: "VETC", logo: vetcLogo },
-  { name: "PAL Vietnam", logo: palVietnamLogo },
-  { name: "Viện 103 - Bệnh Viện Quân Y", logo: vien103Logo },
-  { name: "VinGroup", logo: vingroupLogo },
-  { name: "Vinamilk", logo: vinamilkLogo },
-  { name: "Vietcombank", logo: vietcombankLogo },
-  { name: "Grab Vietnam", logo: grabLogo },
-  { name: "MoMo", logo: momoLogo },
-  { name: "Medlatec", logo: medlatecLogo },
-  { name: "BSG Corporation", logo: bsgLogo }
+  { name: "VETC" },
+  { name: "PAL Vietnam" },
+  { name: "Viện 103 - Bệnh Viện Quân Y" },
+  { name: "VinGroup" },
+  { name: "Vinamilk" },
+  { name: "Vietcombank" },
+  { name: "Grab Vietnam" },
+  { name: "MoMo" },
+  { name: "Medlatec" },
+  { name: "BSG Corporation" }
 ];
 
 // Testimonials
@@ -618,16 +585,9 @@ export default function Home() {
                   className="group"
                   data-testid={`cert-card-${index}`}
                 >
-                  <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white overflow-hidden">
-                    <CardContent className="p-6 text-center">
-                      <div className="mb-4 overflow-hidden rounded-lg">
-                        <img 
-                          src={cert.logo} 
-                          alt={cert.name}
-                          className="w-full h-24 object-contain group-hover:scale-110 transition-transform duration-300"
-                        />
-                      </div>
-                      <h3 className="text-sm font-bold text-gray-800 mb-2">{cert.name}</h3>
+                  <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-purple-50 to-indigo-50 overflow-hidden">
+                    <CardContent className="p-6 text-center flex flex-col items-center justify-center min-h-[140px]">
+                      <h3 className="text-lg font-bold text-gray-800 mb-2">{cert.name}</h3>
                       <p className="text-xs text-gray-600">{cert.fullName}</p>
                     </CardContent>
                   </Card>
@@ -665,14 +625,10 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.05 }}
                     viewport={{ once: true }}
-                    className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all flex items-center justify-center"
+                    className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg p-6 shadow-md hover:shadow-lg transition-all flex items-center justify-center min-h-[100px]"
                     data-testid={`partner-logo-${index}`}
                   >
-                    <img 
-                      src={partner.logo} 
-                      alt={partner.name}
-                      className="max-w-full h-16 object-contain grayscale hover:grayscale-0 transition-all"
-                    />
+                    <p className="text-center font-semibold text-gray-800 text-sm">{partner.name}</p>
                   </motion.div>
                 ))}
               </div>
@@ -688,14 +644,10 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.05 }}
                     viewport={{ once: true }}
-                    className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all flex items-center justify-center"
+                    className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 shadow-md hover:shadow-lg transition-all flex items-center justify-center min-h-[80px]"
                     data-testid={`customer-logo-${index}`}
                   >
-                    <img 
-                      src={customer.logo} 
-                      alt={customer.name}
-                      className="max-w-full h-12 object-contain grayscale hover:grayscale-0 transition-all"
-                    />
+                    <p className="text-center font-semibold text-gray-800 text-xs">{customer.name}</p>
                   </motion.div>
                 ))}
               </div>
