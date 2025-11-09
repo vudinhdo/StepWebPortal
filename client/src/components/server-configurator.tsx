@@ -237,10 +237,6 @@ interface ServerConfig {
   additionalServices: string[]; // Array of selected additional service IDs
 }
 
-interface SelectedOtherService {
-  id: string;
-  quantity: number;
-}
 
 interface CustomerInfo {
   fullName: string;
@@ -281,7 +277,6 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     company: '',
     taxCode: ''
   });
-  const [selectedOtherServices, setSelectedOtherServices] = useState<SelectedOtherService[]>([]);
 
   const addServer = () => {
     const newServer: ServerConfig = {
@@ -394,23 +389,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     return finalPrice;
   };
 
-  const calculateOtherServicesCost = () => {
-    const subtotal = selectedOtherServices.reduce((total, selected) => {
-      const service = otherServices.find(s => s.id === selected.id);
-      if (service) {
-        return total + (service.basePrice * selected.quantity);
-      }
-      return total;
-    }, 0);
-    
-    // Apply VAT if enabled
-    return includeVAT ? subtotal * 1.1 : subtotal;
-  };
-
   const calculateTotalCost = () => {
-    const serversCost = servers.reduce((total, server) => total + calculateServerCost(server), 0);
-    const otherServicesCost = calculateOtherServicesCost();
-    return serversCost + otherServicesCost;
+    return servers.reduce((total, server) => total + calculateServerCost(server), 0);
   };
 
   const formatCurrency = (amount: number) => {
@@ -738,68 +718,6 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       yPosition += 10;
     });
     
-    // Other Services section (if any selected)
-    if (selectedOtherServices.length > 0) {
-      // Check if we need a new page
-      if (yPosition > 240) {
-        doc.addPage();
-        yPosition = 20;
-      }
-      
-      doc.setFont('Roboto', 'bold');
-      doc.setFontSize(12);
-      doc.text('DỊCH VỤ KHÁC', 15, yPosition);
-      yPosition += 8;
-      
-      const otherServicesData: any[] = [];
-      let otherServicesSubtotal = 0;
-      
-      selectedOtherServices.forEach(selected => {
-        const service = otherServices.find(s => s.id === selected.id);
-        if (service) {
-          const lineTotal = service.basePrice * selected.quantity;
-          otherServicesSubtotal += lineTotal;
-          otherServicesData.push([
-            service.label,
-            selected.quantity.toString(),
-            formatCurrency(service.basePrice),
-            formatCurrency(lineTotal)
-          ]);
-        }
-      });
-      
-      autoTable(doc, {
-        startY: yPosition,
-        head: [['Dịch vụ', 'Số lượng', 'Đơn giá', 'Thành tiền']],
-        body: otherServicesData,
-        theme: 'grid',
-        styles: { font: 'Roboto', fontSize: 9 },
-        headStyles: { fillColor: [156, 39, 176], textColor: 255, fontStyle: 'bold' },
-        margin: { left: 15, right: 15 }
-      });
-      
-      yPosition = (doc as any).lastAutoTable.finalY + 5;
-      
-      // Other services cost summary
-      doc.setFont('Roboto', 'normal');
-      doc.setFontSize(10);
-      const otherServicesVAT = includeVAT ? otherServicesSubtotal * 0.1 : 0;
-      const otherServicesTotal = otherServicesSubtotal + otherServicesVAT;
-      
-      doc.text(`Tạm tính: ${formatCurrency(otherServicesSubtotal)}`, 15, yPosition);
-      yPosition += 5;
-      
-      if (includeVAT) {
-        doc.text(`VAT (10%): +${formatCurrency(otherServicesVAT)}`, 15, yPosition);
-        yPosition += 5;
-      }
-      
-      doc.setFont('Roboto', 'bold');
-      doc.setFontSize(11);
-      doc.text(`Tổng dịch vụ khác: ${formatCurrency(otherServicesTotal)} ${includeVAT ? '(Đã VAT)' : '(Chưa VAT)'}`, 15, yPosition);
-      yPosition += 10;
-    }
-    
     // Grand Total
     if (yPosition > 240) {
       doc.addPage();
@@ -910,15 +828,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 6:</strong> Thêm các dịch vụ khác của STEP nếu cần (Hosting, Email, Domain) ở cuối trang</p>
+                <p><strong>Bước 6:</strong> Nếu cần nhiều server, nhấn "Thêm Server Mới" và lặp lại các bước trên</p>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 7:</strong> Nếu cần nhiều server, nhấn "Thêm Server Mới" và lặp lại các bước trên</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 8:</strong> Nhấn "Xuất Báo Giá PDF" để tải báo giá chi tiết với đầy đủ thông tin</p>
+                <p><strong>Bước 7:</strong> Nhấn "Xuất Báo Giá PDF" để tải báo giá chi tiết với đầy đủ thông tin</p>
               </div>
             </div>
           </div>
@@ -1264,51 +1178,87 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                     </div>
 
                     {/* GPU Selection */}
-                    <div className="space-y-3 col-span-full md:col-span-2">
+                    <div className="space-y-3 col-span-full">
                       <Label className="flex items-center gap-2 text-base font-semibold">
                         <Zap className="w-5 h-5 text-yellow-500" />
-                        GPU
+                        GPU (Chọn 1 loại)
                       </Label>
-                      <Select
-                        key={`gpu-select-${server.id}`}
-                        value={server.gpu}
-                        onValueChange={(value) => updateServer(server.id, 'gpu', value)}
-                      >
-                        <SelectTrigger className="w-full" data-testid={`select-gpu-${server.id}`}>
-                          <SelectValue placeholder="Chọn GPU" />
-                        </SelectTrigger>
-                        <SelectContent position="popper" side="bottom" align="start">
-                          {gpuOptions.map((gpu) => (
-                            <SelectItem key={`${server.id}-${gpu.value}`} value={gpu.value}>
-                              {gpu.label} {gpu.price > 0 && `(+${formatCurrency(gpu.price)}/tháng)`}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-96 overflow-y-auto p-2 bg-gray-50 rounded-lg">
+                        {gpuOptions.map((gpu) => {
+                          const isSelected = server.gpu === gpu.value;
+                          return (
+                            <div
+                              key={`gpu-${server.id}-${gpu.value}`}
+                              onClick={() => updateServer(server.id, 'gpu', gpu.value)}
+                              className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                isSelected 
+                                  ? 'border-yellow-500 bg-yellow-100' 
+                                  : 'border-gray-300 bg-white hover:border-yellow-400'
+                              }`}
+                              data-testid={`checkbox-gpu-${gpu.value}-${server.id}`}
+                            >
+                              <div className="flex items-start gap-3">
+                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 flex-shrink-0 ${
+                                  isSelected ? 'border-yellow-600 bg-yellow-600' : 'border-gray-300 bg-white'
+                                }`}>
+                                  {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+                                </div>
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-800 text-sm">{gpu.label}</div>
+                                  {gpu.price > 0 && (
+                                    <div className="text-xs text-yellow-700 mt-1">+{formatCurrency(gpu.price)}/tháng</div>
+                                  )}
+                                  {gpu.price === 0 && (
+                                    <div className="text-xs text-green-600 mt-1">Miễn phí</div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
 
                     {/* OS Selection */}
-                    <div className="space-y-3 col-span-full md:col-span-1">
+                    <div className="space-y-3 col-span-full">
                       <Label className="flex items-center gap-2 text-base font-semibold">
                         <Server className="w-5 h-5 text-gray-500" />
-                        Operating System
+                        Operating System (Chọn 1 loại)
                       </Label>
-                      <Select
-                        key={`os-select-${server.id}`}
-                        value={server.os}
-                        onValueChange={(value) => updateServer(server.id, 'os', value)}
-                      >
-                        <SelectTrigger className="w-full" data-testid={`select-os-${server.id}`}>
-                          <SelectValue placeholder="Chọn hệ điều hành" />
-                        </SelectTrigger>
-                        <SelectContent position="popper" side="bottom" align="start">
-                          {osOptions.map((os) => (
-                            <SelectItem key={`${server.id}-${os.value}`} value={os.value}>
-                              {os.label} {os.free ? '(Miễn phí)' : `(+${formatCurrency(os.price || 0)}/tháng)`}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 p-2 bg-gray-50 rounded-lg">
+                        {osOptions.map((os) => {
+                          const isSelected = server.os === os.value;
+                          return (
+                            <div
+                              key={`os-${server.id}-${os.value}`}
+                              onClick={() => updateServer(server.id, 'os', os.value)}
+                              className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                isSelected 
+                                  ? 'border-blue-500 bg-blue-100' 
+                                  : 'border-gray-300 bg-white hover:border-blue-400'
+                              }`}
+                              data-testid={`checkbox-os-${os.value}-${server.id}`}
+                            >
+                              <div className="flex items-start gap-3">
+                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 flex-shrink-0 ${
+                                  isSelected ? 'border-blue-600 bg-blue-600' : 'border-gray-300 bg-white'
+                                }`}>
+                                  {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+                                </div>
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-800 text-sm">{os.label}</div>
+                                  {os.free && (
+                                    <div className="text-xs text-green-600 mt-1">Miễn phí</div>
+                                  )}
+                                  {!os.free && os.price && (
+                                    <div className="text-xs text-blue-700 mt-1">+{formatCurrency(os.price)}/tháng</div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
 
                     {/* Voucher Discount */}
@@ -1380,100 +1330,144 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                       <Calculator className="w-5 h-5" />
                       Chi Tiết Tính Giá
                     </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2 text-sm text-gray-600">
-                        <div className="flex justify-between">
-                          <span>CPU: {server.cpu} core</span>
-                          <span>{formatCurrency(server.cpu * componentPricing.cpu.basePrice)}</span>
+                    
+                    {/* Server Components */}
+                    <div className="mb-4">
+                      <h5 className="font-semibold text-gray-700 mb-2 text-sm">Cấu hình Server:</h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2 text-sm text-gray-600">
+                          <div className="flex justify-between">
+                            <span>CPU: {server.cpu} core</span>
+                            <span>{formatCurrency(server.cpu * componentPricing.cpu.basePrice)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>RAM: {server.ram} GB</span>
+                            <span>{formatCurrency(server.ram * componentPricing.ram.basePrice)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Disk: {server.disk} GB ({server.diskType.toUpperCase()})</span>
+                            <span>{formatCurrency(server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice))}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>IP: {server.ipAddress} địa chỉ {server.ipAddress === 1 ? '(miễn phí)' : `(${server.ipAddress - 1} tính phí)`}</span>
+                            <span>{formatCurrency(server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0)}</span>
+                          </div>
                         </div>
-                        <div className="flex justify-between">
-                          <span>RAM: {server.ram} GB</span>
-                          <span>{formatCurrency(server.ram * componentPricing.ram.basePrice)}</span>
+                        <div className="space-y-2 text-sm text-gray-600">
+                          <div className="flex justify-between">
+                            <span>Bandwidth: {server.bandwidth}x100Mbps {server.bandwidth === 1 ? '(miễn phí)' : `(${server.bandwidth - 1} tính phí)`}</span>
+                            <span>{formatCurrency(server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Backup: {server.backup} GB</span>
+                            <span>{formatCurrency(server.backup * componentPricing.backup.basePrice)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>GPU: {gpuOptions.find(g => g.value === server.gpu)?.label}</span>
+                            <span>{formatCurrency(gpuOptions.find(g => g.value === server.gpu)?.price || 0)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>OS: {osOptions.find(o => o.value === server.os)?.label || server.os}</span>
+                            <span>{(() => {
+                              const osOption = osOptions.find(o => o.value === server.os);
+                              return osOption && !osOption.free ? formatCurrency(osOption.price || 0) : 'Miễn phí';
+                            })()}</span>
+                          </div>
                         </div>
-                        <div className="flex justify-between">
-                          <span>Disk: {server.disk} GB ({server.diskType.toUpperCase()})</span>
-                          <span>{formatCurrency(server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice))}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>IP: {server.ipAddress} địa chỉ {server.ipAddress === 1 ? '(miễn phí)' : `(${server.ipAddress - 1} tính phí)`}</span>
-                          <span>{formatCurrency(server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0)}</span>
-                        </div>
-                      </div>
-                      <div className="space-y-2 text-sm text-gray-600">
-                        <div className="flex justify-between">
-                          <span>Bandwidth: {server.bandwidth}x100Mbps {server.bandwidth === 1 ? '(miễn phí)' : `(${server.bandwidth - 1} tính phí)`}</span>
-                          <span>{formatCurrency(server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Backup: {server.backup} GB</span>
-                          <span>{formatCurrency(server.backup * componentPricing.backup.basePrice)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>GPU: {gpuOptions.find(g => g.value === server.gpu)?.label}</span>
-                          <span>{formatCurrency(gpuOptions.find(g => g.value === server.gpu)?.price || 0)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>OS: {osOptions.find(o => o.value === server.os)?.label || server.os}</span>
-                          <span>{(() => {
-                            const osOption = osOptions.find(o => o.value === server.os);
-                            return osOption && !osOption.free ? formatCurrency(osOption.price || 0) : 'Miễn phí';
-                          })()}</span>
-                        </div>
-                        {(() => {
-                          const cpuCost = server.cpu * componentPricing.cpu.basePrice;
-                          const ramCost = server.ram * componentPricing.ram.basePrice;
-                          const diskCost = server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice);
-                          const ipCost = server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0;
-                          const bandwidthCost = server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0;
-                          const backupCost = server.backup * componentPricing.backup.basePrice;
-                          const gpuCost = gpuOptions.find(g => g.value === server.gpu)?.price || 0;
-                          const osOption = osOptions.find(o => o.value === server.os);
-                          const osCost = osOption && !osOption.free ? (osOption.price || 0) : 0;
-                          
-                          // Additional services cost (monthly recurring only)
-                          const additionalServicesCost = server.additionalServices.reduce((total, serviceId) => {
-                            const service = additionalServices.find(s => s.id === serviceId);
-                            if (service && service.unit.includes('/tháng')) {
-                              return total + service.price;
-                            }
-                            return total;
-                          }, 0);
-                          
-                          const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost + additionalServicesCost;
-                          const voucherAmount = subtotal * server.voucherDiscount / 100;
-                          const afterVoucher = subtotal - voucherAmount;
-                          const vatAmount = includeVAT ? afterVoucher * 0.1 : 0;
-                          
-                          return (
-                            <>
-                              {server.voucherDiscount > 0 && (
-                                <div className="flex justify-between text-pink-600 font-medium">
-                                  <span>Voucher giảm giá ({server.voucherDiscount}%):</span>
-                                  <span>-{formatCurrency(voucherAmount)}</span>
-                                </div>
-                              )}
-                              {includeVAT && (
-                                <div className="flex justify-between text-orange-600 font-medium">
-                                  <span>VAT (10%):</span>
-                                  <span>+{formatCurrency(vatAmount)}</span>
-                                </div>
-                              )}
-                            </>
-                          );
-                        })()}
                       </div>
                     </div>
-                    <div className="border-t pt-4 mt-4">
-                      <div className="flex justify-between items-center">
-                        <div className="text-lg font-semibold text-gray-800">
-                          Tổng chi phí ({server.paymentCycle} tháng)
-                          {!includeVAT && <span className="text-sm text-gray-500 ml-2">(Chưa VAT)</span>}
-                          {includeVAT && <span className="text-sm text-gray-500 ml-2">(Đã VAT)</span>}
-                        </div>
-                        <div className="text-2xl font-bold text-blue-600" data-testid={`total-cost-${server.id}`}>
-                          {formatCurrency(calculateServerCost(server))}
+
+                    {/* Additional Services (if any) */}
+                    {server.additionalServices.length > 0 && (
+                      <div className="mb-4 pt-3 border-t border-gray-300">
+                        <h5 className="font-semibold text-gray-700 mb-2 text-sm">Dịch vụ bổ sung:</h5>
+                        <div className="space-y-2 text-sm text-gray-600">
+                          {server.additionalServices.map(serviceId => {
+                            const service = additionalServices.find(s => s.id === serviceId);
+                            if (!service) return null;
+                            const isMonthly = service.unit.includes('/tháng');
+                            return (
+                              <div key={serviceId} className="flex justify-between">
+                                <span className="flex items-center gap-2">
+                                  <span>{service.label}</span>
+                                  <span className="text-xs text-gray-500">({service.unit})</span>
+                                </span>
+                                <span className={isMonthly ? 'font-medium' : 'text-gray-500'}>
+                                  {formatCurrency(service.price)}
+                                  {!isMonthly && <span className="text-xs ml-1">(một lần)</span>}
+                                </span>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
+                    )}
+
+                    {/* Calculation Summary */}
+                    <div className="pt-3 border-t border-gray-300">
+                      {(() => {
+                        const cpuCost = server.cpu * componentPricing.cpu.basePrice;
+                        const ramCost = server.ram * componentPricing.ram.basePrice;
+                        const diskCost = server.disk * (server.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice);
+                        const ipCost = server.ipAddress > 1 ? (server.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0;
+                        const bandwidthCost = server.bandwidth > 1 ? (server.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0;
+                        const backupCost = server.backup * componentPricing.backup.basePrice;
+                        const gpuCost = gpuOptions.find(g => g.value === server.gpu)?.price || 0;
+                        const osOption = osOptions.find(o => o.value === server.os);
+                        const osCost = osOption && !osOption.free ? (osOption.price || 0) : 0;
+                        
+                        // Additional services cost (monthly recurring only)
+                        const additionalServicesCost = server.additionalServices.reduce((total, serviceId) => {
+                          const service = additionalServices.find(s => s.id === serviceId);
+                          if (service && service.unit.includes('/tháng')) {
+                            return total + service.price;
+                          }
+                          return total;
+                        }, 0);
+                        
+                        const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost + additionalServicesCost;
+                        const voucherAmount = subtotal * server.voucherDiscount / 100;
+                        const afterVoucher = subtotal - voucherAmount;
+                        const vatAmount = includeVAT ? afterVoucher * 0.1 : 0;
+                        
+                        return (
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between text-gray-700 font-medium">
+                              <span>Tạm tính (Server + Dịch vụ hàng tháng):</span>
+                              <span>{formatCurrency(subtotal)}</span>
+                            </div>
+                            {server.voucherDiscount > 0 && (
+                              <div className="flex justify-between text-pink-600 font-medium">
+                                <span>Voucher giảm giá ({server.voucherDiscount}%):</span>
+                                <span>-{formatCurrency(voucherAmount)}</span>
+                              </div>
+                            )}
+                            {includeVAT && (
+                              <div className="flex justify-between text-orange-600 font-medium">
+                                <span>VAT (10%):</span>
+                                <span>+{formatCurrency(vatAmount)}</span>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
+                    </div>
+
+                    <div className="border-t-2 border-blue-300 pt-4 mt-4">
+                      <div className="flex justify-between items-center">
+                        <div className="text-lg font-semibold text-gray-800">
+                          Tổng chi phí hàng tháng
+                          {!includeVAT && <span className="text-sm text-red-600 ml-2">(Chưa VAT)</span>}
+                          {includeVAT && <span className="text-sm text-green-600 ml-2">(Đã VAT)</span>}
+                        </div>
+                        <div className="text-2xl font-bold text-blue-600" data-testid={`total-cost-${server.id}`}>
+                          {formatCurrency(calculateServerCost(server))}/tháng
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-2">
+                        Chu kỳ thanh toán: {server.paymentCycle} tháng | 
+                        Tổng thanh toán: {formatCurrency(calculateServerCost(server) * server.paymentCycle)}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1483,88 +1477,6 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         </AnimatePresence>
       </div>
 
-      {/* Other Services from Website */}
-      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg shadow-md border-2 border-indigo-200">
-        <div className="p-6 border-b border-indigo-200 bg-indigo-100 rounded-t-lg">
-          <h3 className="text-xl font-semibold flex items-center gap-2 text-indigo-800">
-            <Globe className="w-6 h-6" />
-            Dịch Vụ Khác Từ STEP
-          </h3>
-          <p className="text-sm text-indigo-700 mt-2">Thêm các dịch vụ khác để hoàn thiện báo giá</p>
-        </div>
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {otherServices.map((service) => {
-              const existingService = selectedOtherServices.find(s => s.id === service.id);
-              const quantity = existingService?.quantity || 0;
-              return (
-                <div key={service.id} className="bg-white rounded-lg p-4 border-2 border-indigo-200 hover:border-indigo-400 transition-all">
-                  <div className="font-semibold text-gray-800 mb-2">{service.label}</div>
-                  <div className="text-sm text-gray-600 mb-3">{formatCurrency(service.basePrice)}{service.unit}</div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        const newQty = Math.max(0, quantity - 1);
-                        if (newQty === 0) {
-                          setSelectedOtherServices(selectedOtherServices.filter(s => s.id !== service.id));
-                        } else {
-                          setSelectedOtherServices(
-                            selectedOtherServices.map(s => s.id === service.id ? { ...s, quantity: newQty } : s)
-                          );
-                        }
-                      }}
-                      className="h-8 w-8 p-0"
-                      data-testid={`button-decrease-${service.id}`}
-                    >
-                      -
-                    </Button>
-                    <Input
-                      type="number"
-                      value={quantity}
-                      onChange={(e) => {
-                        const newQty = Math.max(0, parseInt(e.target.value) || 0);
-                        if (newQty === 0) {
-                          setSelectedOtherServices(selectedOtherServices.filter(s => s.id !== service.id));
-                        } else {
-                          if (existingService) {
-                            setSelectedOtherServices(
-                              selectedOtherServices.map(s => s.id === service.id ? { ...s, quantity: newQty } : s)
-                            );
-                          } else {
-                            setSelectedOtherServices([...selectedOtherServices, { id: service.id, quantity: newQty }]);
-                          }
-                        }
-                      }}
-                      className="h-8 w-16 text-center"
-                      min="0"
-                      data-testid={`input-quantity-${service.id}`}
-                    />
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        if (existingService) {
-                          setSelectedOtherServices(
-                            selectedOtherServices.map(s => s.id === service.id ? { ...s, quantity: quantity + 1 } : s)
-                          );
-                        } else {
-                          setSelectedOtherServices([...selectedOtherServices, { id: service.id, quantity: 1 }]);
-                        }
-                      }}
-                      className="h-8 w-8 p-0"
-                      data-testid={`button-increase-${service.id}`}
-                    >
-                      +
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-gray-50 p-6 rounded-lg">
