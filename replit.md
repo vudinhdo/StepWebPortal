@@ -37,7 +37,7 @@ Preferred communication style: Simple, everyday language.
 - **Private Email Server Page**: Dedicated page for private email server solutions (`/Sản Phẩm & Dịch Vụ/Email Server Riêng`).
 - **Hosting Services**: Nested structure for various hosting types (`/Sản Phẩm & Dịch Vụ/Hosting/`) including:
     - **NVME Hosting**: High-performance, developer-focused.
-    - **WordPress Hosting**: Optimized for WordPress users.
+    - **WordPress Hosting**: Comprehensive WordPress hosting solution with 18 packages (WP-Starter-1 to WP-Enterprise-6), from 50K/month to custom enterprise solutions. Features LiteSpeed server, LSCache, NVMe SSD, CloudLinux OS, Imunify360 security, multiple PHP versions, Cloudflare CDN, JetBackup, email hosting, 24/7 support. Includes technical features section, comparison table view, competitor comparison, testimonials, and 12-item FAQ.
     - **Laravel Hosting**: Tailored for PHP/Laravel developers with specific features.
     - **Reseller Hosting**: For businesses offering hosting services.
 - **Domain Services Landing Page**: Comprehensive page for domain registration, transfer, DNS management, and protection, featuring a domain search tool and pricing plans.

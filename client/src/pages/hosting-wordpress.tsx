@@ -24,7 +24,8 @@ import {
   Rocket,
   Award,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  X
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
