@@ -47,6 +47,12 @@ Preferred communication style: Simple, everyday language.
 - **4-Step Service Process**: Visual workflow from consultation to full operation services with arrow connectors and detailed descriptions.
 - **Detailed IT Services**: Specialized services including equipment rental, server maintenance, network security, warranty services, and IT training.
 - **Cloud Server Services**: Comprehensive cloud server solutions page (`/Cloud/Cloud Server`) featuring 6-tier package system (Basic 1/2, Pro 1/2, Enterprise 1/2) with component-based pricing structure. Includes interactive pricing calculator with payment cycle discounts (3-36 months: 3-36% off), detailed component pricing (CPU: 60k VND/core, RAM: 60k VND/GB, SSD: 3k VND/GB, HDD: 1k VND/GB, IP: 100k VND/IP, Bandwidth: 100k VND/100Mbps), complimentary services (SSL Certificate, Monitoring & Alert, 24/7 Support, Migration Service), and premium add-ons (Server Management, Database Optimization, Load Balancer, AI/ML Support).
+- **Server Configurator with Quote Generation**: Advanced cloud server configuration tool with:
+    - **User Instructions**: 6-step guided workflow to help users understand the configuration process
+    - **Customer Information Collection**: Form capturing customer details (name, phone, email*, company, tax code) with email validation requirement
+    - **Professional PDF Quote Generation**: Automated quote generation featuring STEP logo, customer information, detailed server specifications, pricing breakdown (with voucher discounts and VAT), payment cycle discounts, and STEP contact information. Uses embedded Vietnamese fonts (Roboto Regular & Bold) for proper diacritics rendering
+    - **Enhanced Pricing Features**: Voucher discount system (percentage-based, applied before VAT), VAT toggle (10%), updated service pricing (Server Management: 1M VND/month, Database Optimization: 3-5M VND/occurrence)
+    - **Calculation Order**: Subtotal → Payment Cycle Discount → Voucher Discount → VAT (if enabled)
 
 ## External Dependencies
 
