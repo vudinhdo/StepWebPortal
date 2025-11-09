@@ -43,15 +43,14 @@ const componentPricing = {
   backup: { unit: 'GB', basePrice: 2000, minQty: 0, maxQty: 1000 }
 };
 
-// Payment cycle discounts
-const paymentCycles = [
-  { months: 1, label: '1 tháng', discount: 0 },
-  { months: 3, label: '3 tháng', discount: 3 },
-  { months: 6, label: '6 tháng', discount: 6 },
-  { months: 12, label: '12 tháng', discount: 12 },
-  { months: 24, label: '24 tháng', discount: 24 },
-  { months: 36, label: '36 tháng', discount: 36 }
-];
+// Payment cycle discount calculation
+// Discount is calculated based on number of months: min(months, 36)% discount
+// Examples: 1 month = 1%, 6 months = 6%, 12 months = 12%, 36+ months = 36%
+const calculatePaymentCycleDiscount = (months: number): number => {
+  if (months < 1) return 0;
+  if (months > 60) return 36; // Cap at 60 months but max discount is 36%
+  return Math.min(months, 36); // Linear discount up to 36%
+};
 
 // Popular GPU options with pricing
 const gpuOptions = [
@@ -87,6 +86,56 @@ const osOptions = [
   { value: 'fedora-38', label: 'Fedora 38', category: 'Linux', free: true },
   { value: 'windows-2019', label: 'Windows Server 2019', category: 'Windows', free: false, price: 500000 },
   { value: 'windows-2022', label: 'Windows Server 2022', category: 'Windows', free: false, price: 600000 }
+];
+
+// Additional Paid Services (can be selected per server)
+const additionalServices = [
+  { 
+    id: 'serverManagement', 
+    label: 'Server Management', 
+    description: 'Quản lý server toàn diện, cài đặt phần mềm',
+    price: 1000000,
+    unit: '/tháng'
+  },
+  { 
+    id: 'dbOptimization', 
+    label: 'Database Optimization', 
+    description: 'Tối ưu hóa MySQL, PostgreSQL, MongoDB',
+    price: 3000000,
+    unit: '/lần (one-time)'
+  },
+  { 
+    id: 'migration', 
+    label: 'Migration Service', 
+    description: 'Chuyển đổi website/dữ liệu từ hosting khác',
+    price: 1000000,
+    unit: '/site (one-time)'
+  },
+  { 
+    id: 'loadBalancer', 
+    label: 'Load Balancer', 
+    description: 'Cân bằng tải cho traffic cao',
+    price: 2000000,
+    unit: '/tháng'
+  },
+  { 
+    id: 'aiSupport', 
+    label: 'AI/ML Support', 
+    description: 'Tư vấn setup TensorFlow, PyTorch, CUDA',
+    price: 1500000,
+    unit: '/tháng'
+  }
+];
+
+// Other Services from website (can be added to quote)
+const otherServices = [
+  { id: 'nvmeHosting', label: 'NVME Hosting', basePrice: 200000, unit: '/tháng' },
+  { id: 'wpHosting', label: 'WordPress Hosting', basePrice: 150000, unit: '/tháng' },
+  { id: 'laravelHosting', label: 'Laravel Hosting', basePrice: 250000, unit: '/tháng' },
+  { id: 'email365', label: 'Email 365', basePrice: 80000, unit: '/user/tháng' },
+  { id: 'emailWorkspace', label: 'Email Workspace', basePrice: 150000, unit: '/user/tháng' },
+  { id: 'domainReg', label: 'Đăng ký tên miền .com', basePrice: 300000, unit: '/năm' },
+  { id: 'domainVn', label: 'Đăng ký tên miền .vn', basePrice: 500000, unit: '/năm' }
 ];
 
 // Package Templates for quick configuration
@@ -185,6 +234,12 @@ interface ServerConfig {
   paymentCycle: number;
   os: string;
   voucherDiscount: number;
+  additionalServices: string[]; // Array of selected additional service IDs
+}
+
+interface SelectedOtherService {
+  id: string;
+  quantity: number;
 }
 
 interface CustomerInfo {
@@ -214,7 +269,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       gpu: 'none',
       paymentCycle: 1,
       os: 'ubuntu-22.04',
-      voucherDiscount: 0
+      voucherDiscount: 0,
+      additionalServices: []
     }
   ]);
   const [includeVAT, setIncludeVAT] = useState(false);
@@ -225,6 +281,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     company: '',
     taxCode: ''
   });
+  const [selectedOtherServices, setSelectedOtherServices] = useState<SelectedOtherService[]>([]);
 
   const addServer = () => {
     const newServer: ServerConfig = {
@@ -240,7 +297,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       gpu: 'none',
       paymentCycle: 1,
       os: 'ubuntu-22.04',
-      voucherDiscount: 0
+      voucherDiscount: 0,
+      additionalServices: []
     };
     setServers([...servers, newServer]);
   };
@@ -284,6 +342,21 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     }
   };
 
+  const toggleAdditionalService = (serverId: string, serviceId: string) => {
+    setServers(servers.map(server => {
+      if (server.id === serverId) {
+        const hasService = server.additionalServices.includes(serviceId);
+        return {
+          ...server,
+          additionalServices: hasService
+            ? server.additionalServices.filter(id => id !== serviceId)
+            : [...server.additionalServices, serviceId]
+        };
+      }
+      return server;
+    }));
+  };
+
   const calculateServerCost = (server: ServerConfig) => {
     const cpuCost = server.cpu * componentPricing.cpu.basePrice;
     const ramCost = server.ram * componentPricing.ram.basePrice;
@@ -300,11 +373,20 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     const osOption = osOptions.find(os => os.value === server.os);
     const osCost = osOption && !osOption.free ? (osOption.price || 0) : 0;
     
-    const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost;
+    // Additional services cost (monthly recurring only)
+    const additionalServicesCost = server.additionalServices.reduce((total, serviceId) => {
+      const service = additionalServices.find(s => s.id === serviceId);
+      // Only add monthly services to monthly cost
+      if (service && service.unit.includes('/tháng')) {
+        return total + service.price;
+      }
+      return total;
+    }, 0);
+    
+    const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost + additionalServicesCost;
     
     // Apply payment cycle discount
-    const cycle = paymentCycles.find(c => c.months === server.paymentCycle);
-    const discount = cycle ? cycle.discount : 0;
+    const discount = calculatePaymentCycleDiscount(server.paymentCycle);
     const discountedPrice = subtotal * (1 - discount / 100);
     
     // Apply voucher discount (before VAT)
@@ -316,8 +398,23 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     return finalPrice;
   };
 
+  const calculateOtherServicesCost = () => {
+    const subtotal = selectedOtherServices.reduce((total, selected) => {
+      const service = otherServices.find(s => s.id === selected.id);
+      if (service) {
+        return total + (service.basePrice * selected.quantity);
+      }
+      return total;
+    }, 0);
+    
+    // Apply VAT if enabled
+    return includeVAT ? subtotal * 1.1 : subtotal;
+  };
+
   const calculateTotalCost = () => {
-    return servers.reduce((total, server) => total + calculateServerCost(server), 0);
+    const serversCost = servers.reduce((total, server) => total + calculateServerCost(server), 0);
+    const otherServicesCost = calculateOtherServicesCost();
+    return serversCost + otherServicesCost;
   };
 
   const formatCurrency = (amount: number) => {
@@ -511,11 +608,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       ]);
       
       // Payment cycle
-      const cycle = paymentCycles.find(c => c.months === server.paymentCycle);
+      const discount = calculatePaymentCycleDiscount(server.paymentCycle);
       componentData.push([
         'Chu kỳ thanh toán',
-        cycle?.label || '',
-        cycle && cycle.discount > 0 ? `Giảm ${cycle.discount}%` : 'Không giảm'
+        `${server.paymentCycle} tháng`,
+        discount > 0 ? `Giảm ${discount}%` : 'Không giảm'
       ]);
       
       // Voucher discount
@@ -551,8 +648,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       const osOptionPDF2 = osOptions.find(o => o.value === server.os);
       const osCostPDF = osOptionPDF2 && !osOptionPDF2.free ? (osOptionPDF2.price || 0) : 0;
       const subtotalPDF = cpuCostPDF + ramCostPDF + diskCostPDF + ipCostPDF + bandwidthCostPDF + backupCostPDF + gpuCostPDF + osCostPDF;
-      const cyclePDF = paymentCycles.find(c => c.months === server.paymentCycle);
-      const discountPDF = cyclePDF ? cyclePDF.discount : 0;
+      const discountPDF = calculatePaymentCycleDiscount(server.paymentCycle);
       const afterCycleDiscountPDF = subtotalPDF * (1 - discountPDF / 100);
       const voucherAmountPDF = afterCycleDiscountPDF * server.voucherDiscount / 100;
       const afterVoucherPDF = afterCycleDiscountPDF - voucherAmountPDF;
@@ -683,7 +779,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 4:</strong> Chọn chu kỳ thanh toán để được giảm giá (càng dài càng ưu đãi)</p>
+                <p><strong>Bước 4:</strong> Nhập chu kỳ thanh toán (1-60 tháng) để nhận giảm giá tự động (tối đa 36%)</p>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
@@ -691,7 +787,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 6:</strong> Nhấn "Xuất Báo Giá PDF" để tải báo giá chi tiết</p>
+                <p><strong>Bước 6:</strong> Nếu cần thêm server, nhấn nút "Thêm Server Mới" ở cuối trang</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <p><strong>Bước 7:</strong> Nhấn "Xuất Báo Giá PDF" để tải báo giá chi tiết cho tất cả server</p>
               </div>
             </div>
           </div>
@@ -879,28 +979,32 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                 
                 <div className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Payment Cycle Selection */}
+                    {/* Payment Cycle Input */}
                     <div className="space-y-3 col-span-full">
                       <Label className="flex items-center gap-2 text-base font-semibold">
                         <Calendar className="w-5 h-5 text-purple-500" />
-                        Chu kỳ thanh toán
+                        Chu kỳ thanh toán (tháng)
                       </Label>
-                      <Select
-                        key={`payment-cycle-select-${server.id}`}
-                        value={server.paymentCycle.toString()}
-                        onValueChange={(value) => updateServer(server.id, 'paymentCycle', parseInt(value))}
-                      >
-                        <SelectTrigger className="w-full" data-testid={`select-payment-cycle-${server.id}`}>
-                          <SelectValue placeholder="Chọn chu kỳ thanh toán" />
-                        </SelectTrigger>
-                        <SelectContent position="popper" side="bottom" align="start">
-                          {paymentCycles.map((cycle) => (
-                            <SelectItem key={`${server.id}-cycle-${cycle.months}`} value={cycle.months.toString()}>
-                              {cycle.label} {cycle.discount > 0 && `(-${cycle.discount}%)`}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <Input
+                        type="number"
+                        value={server.paymentCycle}
+                        onChange={(e) => updateServer(server.id, 'paymentCycle', Math.min(60, Math.max(1, parseInt(e.target.value) || 1)))}
+                        min="1"
+                        max="60"
+                        className="text-center text-lg font-semibold"
+                        data-testid={`input-payment-cycle-${server.id}`}
+                      />
+                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                        <p className="text-sm text-purple-800 font-medium mb-1">
+                          💰 Giảm giá theo chu kỳ: {calculatePaymentCycleDiscount(server.paymentCycle)}%
+                        </p>
+                        <p className="text-xs text-purple-600">
+                          Giảm giá tăng tuyến tính: 1 tháng = 1%, tối đa 36% (từ 36 tháng trở lên)
+                        </p>
+                        <p className="text-xs text-purple-600 mt-1">
+                          Ví dụ: 6 tháng = 6%, 12 tháng = 12%, 24 tháng = 24%, 36+ tháng = 36%
+                        </p>
+                      </div>
                     </div>
 
                     {/* CPU Configuration */}
@@ -1104,6 +1208,48 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                     </div>
                   </div>
 
+                  {/* Additional Services Selection */}
+                  <div className="col-span-full mt-6">
+                    <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-lg p-6 border-2 border-amber-200">
+                      <h4 className="font-semibold text-amber-900 mb-4 flex items-center gap-2">
+                        <Shield className="w-5 h-5" />
+                        Dịch Vụ Bổ Sung (Tùy chọn)
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {additionalServices.map((service) => {
+                          const isSelected = server.additionalServices.includes(service.id);
+                          return (
+                            <div
+                              key={service.id}
+                              onClick={() => toggleAdditionalService(server.id, service.id)}
+                              className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                isSelected 
+                                  ? 'border-amber-500 bg-amber-100' 
+                                  : 'border-amber-200 bg-white hover:border-amber-400'
+                              }`}
+                              data-testid={`checkbox-service-${service.id}-${server.id}`}
+                            >
+                              <div className="flex items-start gap-3">
+                                <div className={`w-5 h-5 rounded border-2 flex items-center justify-center mt-0.5 flex-shrink-0 ${
+                                  isSelected ? 'border-amber-600 bg-amber-600' : 'border-gray-300 bg-white'
+                                }`}>
+                                  {isSelected && <CheckCircle className="w-4 h-4 text-white" />}
+                                </div>
+                                <div className="flex-1">
+                                  <div className="font-semibold text-gray-800 flex items-center justify-between">
+                                    <span>{service.label}</span>
+                                    <span className="text-sm text-amber-700">{formatCurrency(service.price)}{service.unit}</span>
+                                  </div>
+                                  <p className="text-xs text-gray-600 mt-1">{service.description}</p>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Real-time Cost Display */}
                   <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-blue-200">
                     <h4 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
@@ -1160,7 +1306,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                           const osOption = osOptions.find(o => o.value === server.os);
                           const osCost = osOption && !osOption.free ? (osOption.price || 0) : 0;
                           const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost;
-                          const discountPercent = paymentCycles.find(c => c.months === server.paymentCycle)?.discount || 0;
+                          const discountPercent = calculatePaymentCycleDiscount(server.paymentCycle);
                           const discountAmount = subtotal * discountPercent / 100;
                           const afterCycleDiscount = subtotal - discountAmount;
                           const voucherAmount = afterCycleDiscount * server.voucherDiscount / 100;
@@ -1195,7 +1341,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                     <div className="border-t pt-4 mt-4">
                       <div className="flex justify-between items-center">
                         <div className="text-lg font-semibold text-gray-800">
-                          Tổng chi phí ({paymentCycles.find(c => c.months === server.paymentCycle)?.label})
+                          Tổng chi phí ({server.paymentCycle} tháng)
                           {!includeVAT && <span className="text-sm text-gray-500 ml-2">(Chưa VAT)</span>}
                           {includeVAT && <span className="text-sm text-gray-500 ml-2">(Đã VAT)</span>}
                         </div>
@@ -1210,6 +1356,89 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
             </motion.div>
           ))}
         </AnimatePresence>
+      </div>
+
+      {/* Other Services from Website */}
+      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg shadow-md border-2 border-indigo-200">
+        <div className="p-6 border-b border-indigo-200 bg-indigo-100 rounded-t-lg">
+          <h3 className="text-xl font-semibold flex items-center gap-2 text-indigo-800">
+            <Globe className="w-6 h-6" />
+            Dịch Vụ Khác Từ STEP
+          </h3>
+          <p className="text-sm text-indigo-700 mt-2">Thêm các dịch vụ khác để hoàn thiện báo giá</p>
+        </div>
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {otherServices.map((service) => {
+              const existingService = selectedOtherServices.find(s => s.id === service.id);
+              const quantity = existingService?.quantity || 0;
+              return (
+                <div key={service.id} className="bg-white rounded-lg p-4 border-2 border-indigo-200 hover:border-indigo-400 transition-all">
+                  <div className="font-semibold text-gray-800 mb-2">{service.label}</div>
+                  <div className="text-sm text-gray-600 mb-3">{formatCurrency(service.basePrice)}{service.unit}</div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        const newQty = Math.max(0, quantity - 1);
+                        if (newQty === 0) {
+                          setSelectedOtherServices(selectedOtherServices.filter(s => s.id !== service.id));
+                        } else {
+                          setSelectedOtherServices(
+                            selectedOtherServices.map(s => s.id === service.id ? { ...s, quantity: newQty } : s)
+                          );
+                        }
+                      }}
+                      className="h-8 w-8 p-0"
+                      data-testid={`button-decrease-${service.id}`}
+                    >
+                      -
+                    </Button>
+                    <Input
+                      type="number"
+                      value={quantity}
+                      onChange={(e) => {
+                        const newQty = Math.max(0, parseInt(e.target.value) || 0);
+                        if (newQty === 0) {
+                          setSelectedOtherServices(selectedOtherServices.filter(s => s.id !== service.id));
+                        } else {
+                          if (existingService) {
+                            setSelectedOtherServices(
+                              selectedOtherServices.map(s => s.id === service.id ? { ...s, quantity: newQty } : s)
+                            );
+                          } else {
+                            setSelectedOtherServices([...selectedOtherServices, { id: service.id, quantity: newQty }]);
+                          }
+                        }
+                      }}
+                      className="h-8 w-16 text-center"
+                      min="0"
+                      data-testid={`input-quantity-${service.id}`}
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        if (existingService) {
+                          setSelectedOtherServices(
+                            selectedOtherServices.map(s => s.id === service.id ? { ...s, quantity: quantity + 1 } : s)
+                          );
+                        } else {
+                          setSelectedOtherServices([...selectedOtherServices, { id: service.id, quantity: 1 }]);
+                        }
+                      }}
+                      className="h-8 w-8 p-0"
+                      data-testid={`button-increase-${service.id}`}
+                    >
+                      +
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {/* Action Buttons */}
