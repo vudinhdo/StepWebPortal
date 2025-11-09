@@ -433,7 +433,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     const img = new Image();
     await new Promise<void>((resolve) => {
       img.onload = () => {
-        doc.addImage(img, 'PNG', 15, 10, 40, 15);
+        doc.addImage(img, 'PNG', 15, 8, 60, 22);
         resolve();
       };
       img.onerror = () => {

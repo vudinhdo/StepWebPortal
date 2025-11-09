@@ -50,6 +50,7 @@ import ServerConfigurator from "@/components/server-configurator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 // IT Challenges for Vietnamese businesses
 const itChallenges = [
@@ -705,6 +706,153 @@ export default function Home() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+                Câu Hỏi Thường Gặp (FAQ) – Dành Cho CEO/CTO/DEV Việt
+              </h2>
+              <p className="text-lg text-gray-600">
+                Giải đáp các thắc mắc phổ biến từ doanh nghiệp Việt Nam
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg shadow-lg p-8"
+            >
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1" data-testid="faq-item-1">
+                  <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-blue-600">
+                    Cloud Server là gì? Khác gì so với VPS và Cloud Hosting?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Cloud Server là giải pháp máy chủ ảo hoạt động trên hạ tầng điện toán đám mây, cho phép bạn tùy chỉnh cấu hình hoàn toàn (CPU, RAM, SSD) theo nhu cầu. 
+                    Khác với VPS truyền thống (dùng chung tài nguyên vật lý cố định), Cloud Server tận dụng nhiều server vật lý phân tán, 
+                    đảm bảo hiệu năng cao và khả năng mở rộng linh hoạt hơn. So với Cloud Hosting (thường giới hạn cho website), 
+                    Cloud Server cho phép cài đặt bất kỳ ứng dụng nào và kiểm soát toàn bộ môi trường server.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-2" data-testid="faq-item-2">
+                  <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-blue-600">
+                    Cloud Server STEP có datacenter ở đâu? Độ trễ như thế nào?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Chúng tôi có datacenter tại Hà Nội và TP. Hồ Chí Minh, đảm bảo độ trễ cực thấp {'(<10ms)'} cho người dùng tại Việt Nam. 
+                    Với hạ tầng mạng tier 3+ và kết nối đa nhà mạng (VNPT, Viettel, FPT), cloud server của STEP mang lại tốc độ truy cập nhanh, 
+                    ổn định cho cả ứng dụng web và mobile.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-3" data-testid="faq-item-3">
+                  <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-blue-600">
+                    Tôi có thể tự nâng cấp cấu hình Cloud Server không? Mất bao lâu?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Có! Bạn có thể nâng cấp CPU, RAM, SSD bất cứ lúc nào qua dashboard quản lý. 
+                    Quá trình nâng cấp thường chỉ mất từ 5-10 phút, với downtime tối thiểu (hoặc không downtime nếu dùng chế độ hot-upgrade). 
+                    Đây là lợi thế lớn của Cloud Server so với server vật lý truyền thống, giúp doanh nghiệp linh hoạt scale theo nhu cầu kinh doanh.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-4" data-testid="faq-item-4">
+                  <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-blue-600">
+                    Cloud Server có tuân thủ quy định về lưu trữ dữ liệu tại Việt Nam không?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Hoàn toàn tuân thủ! Dữ liệu được lưu trữ 100% tại datacenter trong nước, đáp ứng Nghị định 53/2022/NĐ-CP về bảo vệ dữ liệu cá nhân. 
+                    Chúng tôi áp dụng mã hóa dữ liệu theo tiêu chuẩn AES-256, backup tự động hàng ngày và có chính sách bảo mật nghiêm ngặt, 
+                    phù hợp cho các ngành tài chính, y tế, giáo dục yêu cầu cao về compliance.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-5" data-testid="faq-item-5">
+                  <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-blue-600">
+                    Làm thế nào để migrate từ nhà cung cấp khác (AWS, Azure, Google Cloud)?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    STEP cung cấp dịch vụ migration miễn phí với đội ngũ kỹ thuật Việt Nam hỗ trợ 1-1. 
+                    Quy trình migration bao gồm: (1) Đánh giá hạ tầng hiện tại, (2) Lập kế hoạch migration chi tiết, 
+                    (3) Thực hiện migration với zero downtime, (4) Testing và optimize sau khi chuyển đổi. 
+                    Dữ liệu được backup đầy đủ trong suốt quá trình, đảm bảo an toàn 100%.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-6" data-testid="faq-item-6">
+                  <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-blue-600">
+                    Cloud Server có hỗ trợ GPU cho AI/ML không? Giá cả như thế nào?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Có! Chúng tôi cung cấp Dedicated GPU (NVIDIA Tesla T4, V100, A100) phù hợp cho training model AI/ML, deep learning, rendering. 
+                    Giá thuê GPU linh hoạt theo giờ hoặc tháng, rẻ hơn 30-50% so với AWS/GCP. 
+                    Đặc biệt, bạn có thể kết hợp với dịch vụ tư vấn AI/ML của STEP để tối ưu hóa chi phí và hiệu suất training.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-7" data-testid="faq-item-7">
+                  <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-blue-600">
+                    Uptime SLA của Cloud Server là bao nhiêu? Có bồi thường không?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    STEP cam kết SLA uptime 99.99% (tương đương downtime {'<4.5'} phút/tháng). 
+                    Nếu không đạt SLA, bạn sẽ nhận được bồi thường theo tỷ lệ: 99.9-99.99% hoàn 10% phí tháng, 
+                    99-99.9% hoàn 25%, dưới 99% hoàn 50%. Hệ thống monitoring 24/7 và đội ngũ oncall sẵn sàng xử lý sự cố trong vòng 15 phút.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-8" data-testid="faq-item-8">
+                  <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-blue-600">
+                    Tôi có thể thanh toán Cloud Server bằng cách nào?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Chúng tôi hỗ trợ đa dạng phương thức thanh toán phù hợp với thị trường Việt: 
+                    (1) Chuyển khoản ngân hàng (có chiết khấu 2-5% khi thanh toán trước 6-12 tháng), 
+                    (2) Thẻ tín dụng/ghi nợ quốc tế (Visa, Mastercard), 
+                    (3) Ví điện tử Việt Nam (MoMo, VNPay, ZaloPay). 
+                    Doanh nghiệp có thể xuất hóa đơn VAT đỏ đầy đủ theo yêu cầu.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-9" data-testid="faq-item-9">
+                  <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-blue-600">
+                    Cloud Server có backup tự động không? Tôi có thể tự backup được không?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Cloud Server của STEP tích hợp backup tự động hàng ngày (giữ lại 7 bản gần nhất), lưu trữ ở datacenter riêng biệt. 
+                    Bạn cũng có thể tự tạo snapshot bất kỳ lúc nào qua dashboard hoặc API. 
+                    Việc restore từ backup chỉ mất 5-10 phút. Ngoài ra, chúng tôi khuyến nghị sử dụng thêm giải pháp backup offsite 
+                    (như S3-compatible object storage) cho dữ liệu quan trọng.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-10" data-testid="faq-item-10">
+                  <AccordionTrigger className="text-left font-semibold text-gray-800 hover:text-blue-600">
+                    Tôi cần hỗ trợ kỹ thuật, STEP support như thế nào?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Đội ngũ support STEP làm việc 24/7/365 qua nhiều kênh: (1) Hotline: 0985.636.289, 
+                    (2) Live chat trên website, (3) Email: support@step.vn, (4) Zalo OA: @step.vn. 
+                    Thời gian phản hồi cam kết: {'<15'} phút cho issue critical, {'<2'} giờ cho issue thường. 
+                    Gói Enterprise được assign riêng Account Manager để tư vấn 1-1. 
+                    Tất cả support đều bằng tiếng Việt, không qua bot hay outsource nước ngoài.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </motion.div>
           </div>
         </section>
 
