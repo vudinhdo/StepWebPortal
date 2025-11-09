@@ -608,12 +608,12 @@ export default function HostingNVME() {
               
               <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 Hosting NVMe Siêu Tốc – 
-                <span className="text-blue-500"> Load < 0.5s, IOPS 3M!</span>
+                <span className="text-blue-500"> Load &lt; 0.5s, IOPS 3M!</span>
               </h1>
               
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                 Công nghệ NVMe SSD tốc độ cao nhất thị trường với IOPS từ 10K đến 3M, 
-                latency < 100µs, backup tự động, bảo mật toàn diện. Từ 80K/tháng - 
+                latency &lt; 100µs, backup tự động, bảo mật toàn diện. Từ 80K/tháng - 
                 Phù hợp mọi quy mô từ blog cá nhân đến enterprise platforms.
               </p>
 
