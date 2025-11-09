@@ -565,11 +565,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         ]);
       }
       
-      // GPU
+      // Dedicated GPU
       if (server.gpu !== 'none') {
         const gpuOption = gpuOptions.find(g => g.value === server.gpu);
         componentData.push([
-          'GPU',
+          'Dedicated GPU',
           gpuOption?.label || '',
           formatCurrency(gpuOption?.price || 0)
         ]);
@@ -816,7 +816,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 3:</strong> Điều chỉnh CPU, RAM, Disk, IP, Bandwidth, GPU, OS theo nhu cầu</p>
+                <p><strong>Bước 3:</strong> Điều chỉnh CPU, RAM, Disk, IP, Bandwidth, Dedicated GPU, OS theo nhu cầu</p>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
@@ -962,7 +962,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                 <div><strong>Disk:</strong> {template.disk} GB {template.diskType.toUpperCase()}</div>
                 <div><strong>BW:</strong> {template.bandwidth}x100Mbps</div>
                 {template.gpu !== 'none' && (
-                  <div className="col-span-2"><strong>GPU:</strong> {gpuOptions.find(g => g.value === template.gpu)?.label}</div>
+                  <div className="col-span-2"><strong>Dedicated GPU:</strong> {gpuOptions.find(g => g.value === template.gpu)?.label}</div>
                 )}
               </div>
             </motion.div>
@@ -1181,7 +1181,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                     <div className="space-y-3 col-span-full">
                       <Label className="flex items-center gap-2 text-base font-semibold">
                         <Zap className="w-5 h-5 text-yellow-500" />
-                        GPU (Chọn 1 loại)
+                        Dedicated GPU (Chọn 1 loại)
                       </Label>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-96 overflow-y-auto p-2 bg-gray-50 rounded-lg">
                         {gpuOptions.map((gpu) => {
@@ -1363,7 +1363,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                             <span>{formatCurrency(server.backup * componentPricing.backup.basePrice)}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>GPU: {gpuOptions.find(g => g.value === server.gpu)?.label}</span>
+                            <span>Dedicated GPU: {gpuOptions.find(g => g.value === server.gpu)?.label}</span>
                             <span>{formatCurrency(gpuOptions.find(g => g.value === server.gpu)?.price || 0)}</span>
                           </div>
                           <div className="flex justify-between">
@@ -1646,7 +1646,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <Zap className="w-4 h-4 text-yellow-500" />
-                        <span className="font-semibold text-sm">GPU</span>
+                        <span className="font-semibold text-sm">Dedicated GPU</span>
                       </div>
                       <p className="text-sm text-gray-600">{gpuOptions.find(g => g.value === server.gpu)?.label}</p>
                       <p className="text-xs text-green-600 font-medium">
