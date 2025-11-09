@@ -43,14 +43,7 @@ const componentPricing = {
   backup: { unit: 'GB', basePrice: 2000, minQty: 0, maxQty: 1000 }
 };
 
-// Payment cycle discount calculation
-// Discount is calculated based on number of months: min(months, 36)% discount
-// Examples: 1 month = 1%, 6 months = 6%, 12 months = 12%, 36+ months = 36%
-const calculatePaymentCycleDiscount = (months: number): number => {
-  if (months < 1) return 0;
-  if (months > 60) return 36; // Cap at 60 months but max discount is 36%
-  return Math.min(months, 36); // Linear discount up to 36%
-};
+// Payment cycle discount has been removed - no automatic discount based on months
 
 // Popular GPU options with pricing
 const gpuOptions = [
@@ -385,12 +378,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     
     const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost + additionalServicesCost;
     
-    // Apply payment cycle discount
-    const discount = calculatePaymentCycleDiscount(server.paymentCycle);
-    const discountedPrice = subtotal * (1 - discount / 100);
-    
     // Apply voucher discount (before VAT)
-    const afterVoucherPrice = discountedPrice * (1 - server.voucherDiscount / 100);
+    const afterVoucherPrice = subtotal * (1 - server.voucherDiscount / 100);
     
     // Apply VAT if enabled (10%)
     const finalPrice = includeVAT ? afterVoucherPrice * 1.1 : afterVoucherPrice;
