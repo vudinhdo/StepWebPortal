@@ -890,31 +890,35 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
             <div className="space-y-2 text-gray-700">
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 1:</strong> Điền thông tin khách hàng vào form bên dưới (email là bắt buộc)</p>
+                <p><strong>Bước 1:</strong> Điền thông tin khách hàng (email là bắt buộc để xuất báo giá PDF)</p>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 2:</strong> Chọn gói cấu hình mẫu phù hợp hoặc tùy chỉnh chi tiết từng thành phần</p>
+                <p><strong>Bước 2:</strong> Chọn gói cấu hình mẫu hoặc tùy chỉnh chi tiết từng thành phần server</p>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 3:</strong> Điều chỉnh CPU, RAM, Disk, IP, Bandwidth theo nhu cầu</p>
+                <p><strong>Bước 3:</strong> Điều chỉnh CPU, RAM, Disk, IP, Bandwidth, GPU, OS theo nhu cầu</p>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 4:</strong> Nhập chu kỳ thanh toán (1-60 tháng) để nhận giảm giá tự động (tối đa 36%)</p>
+                <p><strong>Bước 4:</strong> Chọn dịch vụ bổ sung cho từng server (Server Management, Database Optimization, Website Speed Optimization, Load Balancer, AI/ML Support, Migration Service)</p>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 5:</strong> Nhập mã voucher (nếu có) và bật VAT nếu cần</p>
+                <p><strong>Bước 5:</strong> Nhập chu kỳ thanh toán (1-60 tháng), mã voucher (nếu có), và bật VAT nếu cần</p>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 6:</strong> Nếu cần thêm server, nhấn nút "Thêm Server Mới" ở cuối trang</p>
+                <p><strong>Bước 6:</strong> Thêm các dịch vụ khác của STEP nếu cần (Hosting, Email, Domain) ở cuối trang</p>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 7:</strong> Nhấn "Xuất Báo Giá PDF" để tải báo giá chi tiết cho tất cả server</p>
+                <p><strong>Bước 7:</strong> Nếu cần nhiều server, nhấn "Thêm Server Mới" và lặp lại các bước trên</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <p><strong>Bước 8:</strong> Nhấn "Xuất Báo Giá PDF" để tải báo giá chi tiết với đầy đủ thông tin</p>
               </div>
             </div>
           </div>
