@@ -13,7 +13,14 @@ import {
   Copy,
   Calculator,
   Calendar,
-  Shield
+  Shield,
+  User,
+  Mail,
+  Phone,
+  Building,
+  FileText,
+  Info,
+  CheckCircle
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +30,7 @@ import { Switch } from "@/components/ui/switch";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { RobotoRegularBase64, RobotoBoldBase64 } from '@/fonts/roboto-fonts';
+import stepLogo from "@assets/logo step_1753193285585.png";
 
 // Pricing configuration based on the Cloud Server page
 const componentPricing = {
@@ -179,6 +187,14 @@ interface ServerConfig {
   voucherDiscount: number;
 }
 
+interface CustomerInfo {
+  fullName: string;
+  phone: string;
+  email: string;
+  company: string;
+  taxCode: string;
+}
+
 interface ServerConfiguratorProps {
   onQuoteGenerated?: (servers: ServerConfig[]) => void;
 }
@@ -202,6 +218,13 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     }
   ]);
   const [includeVAT, setIncludeVAT] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
+    fullName: '',
+    phone: '',
+    email: '',
+    company: '',
+    taxCode: ''
+  });
 
   const addServer = () => {
     const newServer: ServerConfig = {
@@ -304,7 +327,13 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     }).format(amount);
   };
 
-  const generatePDFQuote = () => {
+  const generatePDFQuote = async () => {
+    // Validate customer email
+    if (!customerInfo.email || !customerInfo.email.includes('@')) {
+      alert('Vui lòng nhập email hợp lệ trước khi xuất báo giá!');
+      return;
+    }
+    
     const doc = new jsPDF();
     const currentDate = new Date().toLocaleDateString('vi-VN');
     
@@ -314,37 +343,92 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     doc.addFileToVFS("Roboto-Bold.ttf", RobotoBoldBase64);
     doc.addFont("Roboto-Bold.ttf", "Roboto", "bold");
     
-    // Header - Company Info
-    doc.setFontSize(18);
-    doc.setFont('Roboto', 'bold');
-    doc.text('CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 105, 20, { align: 'center' });
+    // Load and add STEP logo
+    const img = new Image();
+    await new Promise<void>((resolve) => {
+      img.onload = () => {
+        doc.addImage(img, 'PNG', 15, 10, 40, 15);
+        resolve();
+      };
+      img.onerror = () => {
+        console.error('Failed to load logo image');
+        resolve(); // Continue without logo if it fails to load
+      };
+      img.src = stepLogo; // Set src after handlers are registered
+    });
     
-    doc.setFontSize(10);
+    // Header - Company Info
+    doc.setFontSize(16);
+    doc.setFont('Roboto', 'bold');
+    doc.text('CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 105, 18, { align: 'center' });
+    
+    doc.setFontSize(9);
     doc.setFont('Roboto', 'normal');
-    doc.text('Địa chỉ: Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội', 105, 28, { align: 'center' });
-    doc.text('Văn phòng: Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội', 105, 33, { align: 'center' });
-    doc.text('Hotline: 0985.636.289 | Email: info@step.com.vn | Website: step.com.vn', 105, 38, { align: 'center' });
-    doc.text('MST: 0108230633', 105, 43, { align: 'center' });
+    doc.text('Địa chỉ: Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội', 105, 25, { align: 'center' });
+    doc.text('Văn phòng: Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội', 105, 30, { align: 'center' });
+    doc.text('Hotline: 0985.636.289 | Email: info@step.com.vn | Website: step.com.vn', 105, 35, { align: 'center' });
+    doc.text('MST: 0108230633', 105, 40, { align: 'center' });
+    
+    // Divider line
+    doc.setDrawColor(41, 128, 185);
+    doc.setLineWidth(0.5);
+    doc.line(15, 45, 195, 45);
     
     // Title
     doc.setFontSize(16);
     doc.setFont('Roboto', 'bold');
-    doc.text('BÁO GIÁ CLOUD SERVER', 105, 55, { align: 'center' });
+    doc.text('BÁO GIÁ CLOUD SERVER', 105, 53, { align: 'center' });
     
     // Date
     doc.setFontSize(10);
     doc.setFont('Roboto', 'normal');
-    doc.text(`Ngày: ${currentDate}`, 105, 62, { align: 'center' });
+    doc.text(`Ngày: ${currentDate}`, 105, 60, { align: 'center' });
+    
+    let yPosition = 68;
     
     // Customer Info Section
-    doc.setFontSize(11);
-    doc.setFont('Roboto', 'bold');
-    doc.text('Kính gửi: Quý khách hàng', 15, 75);
+    if (customerInfo.fullName || customerInfo.email || customerInfo.company) {
+      doc.setFontSize(11);
+      doc.setFont('Roboto', 'bold');
+      doc.text('THÔNG TIN KHÁCH HÀNG', 15, yPosition);
+      yPosition += 6;
+      
+      doc.setFont('Roboto', 'normal');
+      doc.setFontSize(10);
+      
+      if (customerInfo.fullName) {
+        doc.text(`Họ tên: ${customerInfo.fullName}`, 15, yPosition);
+        yPosition += 5;
+      }
+      if (customerInfo.email) {
+        doc.text(`Email: ${customerInfo.email}`, 15, yPosition);
+        yPosition += 5;
+      }
+      if (customerInfo.phone) {
+        doc.text(`Điện thoại: ${customerInfo.phone}`, 15, yPosition);
+        yPosition += 5;
+      }
+      if (customerInfo.company) {
+        doc.text(`Công ty: ${customerInfo.company}`, 15, yPosition);
+        yPosition += 5;
+      }
+      if (customerInfo.taxCode) {
+        doc.text(`Mã số thuế: ${customerInfo.taxCode}`, 15, yPosition);
+        yPosition += 5;
+      }
+      
+      yPosition += 3;
+    } else {
+      doc.setFontSize(11);
+      doc.setFont('Roboto', 'bold');
+      doc.text('Kính gửi: Quý khách hàng', 15, yPosition);
+      yPosition += 7;
+    }
     
     doc.setFont('Roboto', 'normal');
-    doc.text('STEP xin gửi tới Quý khách hàng báo giá dịch vụ Cloud Server như sau:', 15, 82);
+    doc.text('STEP xin gửi tới Quý khách hàng báo giá dịch vụ Cloud Server như sau:', 15, yPosition);
     
-    let yPosition = 90;
+    yPosition += 8;
     
     // Server Details
     servers.forEach((server, index) => {
@@ -576,6 +660,142 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         <p className="text-lg text-gray-600">
           Tùy chỉnh cấu hình server theo nhu cầu, hỗ trợ nhiều server với cấu hình khác nhau
         </p>
+      </div>
+
+      {/* User Instructions */}
+      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-6 border-2 border-blue-200">
+        <div className="flex items-start gap-3">
+          <Info className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+          <div className="space-y-3">
+            <h3 className="text-xl font-semibold text-blue-800">Hướng Dẫn Sử Dụng</h3>
+            <div className="space-y-2 text-gray-700">
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <p><strong>Bước 1:</strong> Điền thông tin khách hàng vào form bên dưới (email là bắt buộc)</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <p><strong>Bước 2:</strong> Chọn gói cấu hình mẫu phù hợp hoặc tùy chỉnh chi tiết từng thành phần</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <p><strong>Bước 3:</strong> Điều chỉnh CPU, RAM, Disk, IP, Bandwidth theo nhu cầu</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <p><strong>Bước 4:</strong> Chọn chu kỳ thanh toán để được giảm giá (càng dài càng ưu đãi)</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <p><strong>Bước 5:</strong> Nhập mã voucher (nếu có) và bật VAT nếu cần</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <p><strong>Bước 6:</strong> Nhấn "Xuất Báo Giá PDF" để tải báo giá chi tiết</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Customer Information Form */}
+      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg shadow-md border-2 border-green-200">
+        <div className="p-6 border-b border-green-200 bg-green-100 rounded-t-lg">
+          <h3 className="text-xl font-semibold flex items-center gap-2 text-green-800">
+            <User className="w-6 h-6" />
+            Thông Tin Khách Hàng
+          </h3>
+          <p className="text-sm text-green-700 mt-2">Vui lòng điền thông tin để nhận báo giá chính xác</p>
+        </div>
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Full Name */}
+            <div className="space-y-2">
+              <Label htmlFor="customer-name" className="flex items-center gap-2 text-base font-semibold">
+                <User className="w-4 h-4 text-green-600" />
+                Họ và tên
+              </Label>
+              <Input
+                id="customer-name"
+                data-testid="input-customer-name"
+                type="text"
+                value={customerInfo.fullName}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, fullName: e.target.value })}
+                placeholder="Nguyễn Văn A"
+                className="border-green-300 focus:border-green-500"
+              />
+            </div>
+
+            {/* Phone */}
+            <div className="space-y-2">
+              <Label htmlFor="customer-phone" className="flex items-center gap-2 text-base font-semibold">
+                <Phone className="w-4 h-4 text-green-600" />
+                Số điện thoại
+              </Label>
+              <Input
+                id="customer-phone"
+                data-testid="input-customer-phone"
+                type="tel"
+                value={customerInfo.phone}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                placeholder="0985.636.289"
+                className="border-green-300 focus:border-green-500"
+              />
+            </div>
+
+            {/* Email (Required) */}
+            <div className="space-y-2">
+              <Label htmlFor="customer-email" className="flex items-center gap-2 text-base font-semibold">
+                <Mail className="w-4 h-4 text-red-600" />
+                Email <span className="text-red-600">*</span>
+              </Label>
+              <Input
+                id="customer-email"
+                data-testid="input-customer-email"
+                type="email"
+                value={customerInfo.email}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+                placeholder="email@company.com"
+                className="border-green-300 focus:border-green-500"
+                required
+              />
+            </div>
+
+            {/* Company */}
+            <div className="space-y-2">
+              <Label htmlFor="customer-company" className="flex items-center gap-2 text-base font-semibold">
+                <Building className="w-4 h-4 text-green-600" />
+                Công ty
+              </Label>
+              <Input
+                id="customer-company"
+                data-testid="input-customer-company"
+                type="text"
+                value={customerInfo.company}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, company: e.target.value })}
+                placeholder="Công ty ABC"
+                className="border-green-300 focus:border-green-500"
+              />
+            </div>
+
+            {/* Tax Code */}
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="customer-tax-code" className="flex items-center gap-2 text-base font-semibold">
+                <FileText className="w-4 h-4 text-green-600" />
+                Mã số thuế
+              </Label>
+              <Input
+                id="customer-tax-code"
+                data-testid="input-customer-tax-code"
+                type="text"
+                value={customerInfo.taxCode}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, taxCode: e.target.value })}
+                placeholder="0108230633"
+                className="border-green-300 focus:border-green-500"
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Package Templates - Quick Setup */}
