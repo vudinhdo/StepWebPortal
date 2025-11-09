@@ -631,6 +631,68 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       
       yPosition = (doc as any).lastAutoTable.finalY + 5;
       
+      // Additional Services table (if any selected)
+      if (server.additionalServices.length > 0) {
+        // Check if we need a new page
+        if (yPosition > 240) {
+          doc.addPage();
+          yPosition = 20;
+        }
+        
+        const additionalServicesData: any[] = [];
+        let oneTimeTotal = 0;
+        let monthlyTotal = 0;
+        
+        server.additionalServices.forEach(serviceId => {
+          const service = additionalServices.find(s => s.id === serviceId);
+          if (service) {
+            const isMonthly = service.unit.includes('/tháng');
+            additionalServicesData.push([
+              service.label,
+              service.description,
+              formatCurrency(service.price),
+              service.unit
+            ]);
+            
+            if (isMonthly) {
+              monthlyTotal += service.price;
+            } else {
+              oneTimeTotal += service.price;
+            }
+          }
+        });
+        
+        doc.setFont('Roboto', 'bold');
+        doc.setFontSize(11);
+        doc.text('Dịch vụ bổ sung:', 15, yPosition);
+        yPosition += 5;
+        
+        autoTable(doc, {
+          startY: yPosition,
+          head: [['Dịch vụ', 'Mô tả', 'Giá', 'Đơn vị']],
+          body: additionalServicesData,
+          theme: 'grid',
+          styles: { font: 'Roboto', fontSize: 9 },
+          headStyles: { fillColor: [76, 175, 80], textColor: 255, fontStyle: 'bold' },
+          margin: { left: 15, right: 15 }
+        });
+        
+        yPosition = (doc as any).lastAutoTable.finalY + 5;
+        
+        // Show breakdown of one-time vs monthly
+        doc.setFont('Roboto', 'normal');
+        doc.setFontSize(9);
+        if (oneTimeTotal > 0) {
+          doc.text(`  • Phí khởi tạo (một lần): ${formatCurrency(oneTimeTotal)}`, 15, yPosition);
+          yPosition += 4;
+        }
+        if (monthlyTotal > 0) {
+          doc.text(`  • Phí hàng tháng: ${formatCurrency(monthlyTotal)}`, 15, yPosition);
+          yPosition += 4;
+        }
+        yPosition += 3;
+      }
+      
       // Calculate breakdown for display
       const cpuCostPDF = server.cpu * componentPricing.cpu.basePrice;
       const ramCostPDF = server.ram * componentPricing.ram.basePrice;
@@ -676,6 +738,68 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       yPosition += 10;
     });
     
+    // Other Services section (if any selected)
+    if (selectedOtherServices.length > 0) {
+      // Check if we need a new page
+      if (yPosition > 240) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      
+      doc.setFont('Roboto', 'bold');
+      doc.setFontSize(12);
+      doc.text('DỊCH VỤ KHÁC', 15, yPosition);
+      yPosition += 8;
+      
+      const otherServicesData: any[] = [];
+      let otherServicesSubtotal = 0;
+      
+      selectedOtherServices.forEach(selected => {
+        const service = otherServices.find(s => s.id === selected.id);
+        if (service) {
+          const lineTotal = service.basePrice * selected.quantity;
+          otherServicesSubtotal += lineTotal;
+          otherServicesData.push([
+            service.label,
+            selected.quantity.toString(),
+            formatCurrency(service.basePrice),
+            formatCurrency(lineTotal)
+          ]);
+        }
+      });
+      
+      autoTable(doc, {
+        startY: yPosition,
+        head: [['Dịch vụ', 'Số lượng', 'Đơn giá', 'Thành tiền']],
+        body: otherServicesData,
+        theme: 'grid',
+        styles: { font: 'Roboto', fontSize: 9 },
+        headStyles: { fillColor: [156, 39, 176], textColor: 255, fontStyle: 'bold' },
+        margin: { left: 15, right: 15 }
+      });
+      
+      yPosition = (doc as any).lastAutoTable.finalY + 5;
+      
+      // Other services cost summary
+      doc.setFont('Roboto', 'normal');
+      doc.setFontSize(10);
+      const otherServicesVAT = includeVAT ? otherServicesSubtotal * 0.1 : 0;
+      const otherServicesTotal = otherServicesSubtotal + otherServicesVAT;
+      
+      doc.text(`Tạm tính: ${formatCurrency(otherServicesSubtotal)}`, 15, yPosition);
+      yPosition += 5;
+      
+      if (includeVAT) {
+        doc.text(`VAT (10%): +${formatCurrency(otherServicesVAT)}`, 15, yPosition);
+        yPosition += 5;
+      }
+      
+      doc.setFont('Roboto', 'bold');
+      doc.setFontSize(11);
+      doc.text(`Tổng dịch vụ khác: ${formatCurrency(otherServicesTotal)} ${includeVAT ? '(Đã VAT)' : '(Chưa VAT)'}`, 15, yPosition);
+      yPosition += 10;
+    }
+    
     // Grand Total
     if (yPosition > 240) {
       doc.addPage();
@@ -703,11 +827,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     const notes = [
       includeVAT ? '- Giá trên đã bao gồm VAT (10%)' : '- Giá trên chưa bao gồm VAT (10%)',
       '- IP đầu tiên và 100Mbps băng thông đầu tiên được miễn phí',
-      '- Miễn phí: SSL Certificate, Monitoring & Alert, 24/7 Support, Migration Service',
-      '- Thanh toán theo chu kỳ càng dài, chiết khấu càng cao (tối đa 36%)',
+      '- Miễn phí: SSL Certificate, Monitoring & Alert, 24/7 Support',
+      '- Chu kỳ thanh toán linh hoạt từ 1-60 tháng',
       '- Voucher giảm giá được áp dụng trước VAT',
       '- Báo giá có hiệu lực trong 30 ngày kể từ ngày phát hành',
-      '- Dịch vụ bổ sung: Server Management 1M VND/tháng, Database Optimization 3M-5M VND/lần'
+      '- Dịch vụ bổ sung bao gồm cả phí khởi tạo (một lần) và phí hàng tháng'
     ];
     
     notes.forEach(note => {
