@@ -1505,40 +1505,43 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       </div>
 
 
-      {/* Action Buttons */}
-      <div className="bg-gray-50 p-4 md:p-6 rounded-lg space-y-4">
-        {/* VAT Toggle and Summary - Top Section */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
-          <div className="flex items-center gap-3 px-4 py-2 bg-white rounded-lg border border-gray-200 w-full sm:w-auto justify-center">
-            <Label htmlFor="vat-toggle" className="text-sm font-medium cursor-pointer">
-              Bao gồm VAT (10%)
-            </Label>
-            <Switch
-              id="vat-toggle"
-              checked={includeVAT}
-              onCheckedChange={setIncludeVAT}
-              data-testid="switch-vat"
-            />
+      {/* Summary and Actions */}
+      <div className="bg-gray-50 p-4 md:p-6 rounded-lg">
+        <div className="flex flex-col gap-4">
+          {/* VAT Toggle */}
+          <div className="flex justify-center sm:justify-start">
+            <div className="flex items-center gap-3 px-4 py-2 bg-white rounded-lg border border-gray-200">
+              <Label htmlFor="vat-toggle" className="text-sm font-medium cursor-pointer">
+                Bao gồm VAT (10%)
+              </Label>
+              <Switch
+                id="vat-toggle"
+                checked={includeVAT}
+                onCheckedChange={setIncludeVAT}
+                data-testid="switch-vat"
+              />
+            </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-            <div className="text-center sm:text-right w-full sm:w-auto">
+          {/* Total Cost and PDF Export */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+            <div className="text-center sm:text-left w-full sm:w-auto">
               <p className="text-sm text-gray-600">
                 Tổng chi phí ({servers.length} server) 
                 {!includeVAT && <span className="text-red-600 ml-1">(Chưa VAT)</span>}
                 {includeVAT && <span className="text-green-600 ml-1">(Đã VAT)</span>}
               </p>
-              <p className="text-2xl font-bold text-blue-600" data-testid="total-cost-all">
+              <p className="text-2xl md:text-3xl font-bold text-blue-600" data-testid="total-cost-all">
                 {formatCurrency(calculateTotalCost())}/tháng
               </p>
             </div>
             
             <Button
               onClick={generatePDFQuote}
-              className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
+              className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto text-base py-6"
               data-testid="button-export-pdf"
             >
-              <Download className="w-4 h-4 mr-2" />
+              <Download className="w-5 h-5 mr-2" />
               Xuất Báo Giá PDF
             </Button>
           </div>
@@ -1569,7 +1572,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                 </div>
                 
                 {/* Draggable Configuration Components */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
                   {/* CPU Component */}
                   <motion.div
                     drag
@@ -1826,6 +1829,18 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Add New Server Button - Repositioned */}
+      <div className="flex justify-center">
+        <Button
+          onClick={addServer}
+          className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto sm:min-w-[200px] text-base py-6"
+          data-testid="button-add-server"
+        >
+          <Plus className="w-5 h-5 mr-2" />
+          Thêm Server Mới
+        </Button>
       </div>
     </div>
   );
