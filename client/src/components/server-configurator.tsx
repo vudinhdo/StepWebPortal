@@ -30,7 +30,6 @@ import { Switch } from "@/components/ui/switch";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { RobotoRegularBase64, RobotoBoldBase64 } from '@/fonts/roboto-fonts';
-import stepLogo from "@assets/logo step_1753193285585.png";
 
 // Pricing configuration based on the Cloud Server page
 const componentPricing = {
@@ -429,20 +428,6 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     doc.addFileToVFS("Roboto-Bold.ttf", RobotoBoldBase64);
     doc.addFont("Roboto-Bold.ttf", "Roboto", "bold");
     
-    // Load and add STEP logo (smaller size for better fit)
-    const img = new Image();
-    await new Promise<void>((resolve) => {
-      img.onload = () => {
-        doc.addImage(img, 'PNG', 15, 10, 45, 17);
-        resolve();
-      };
-      img.onerror = () => {
-        console.error('Failed to load logo image');
-        resolve(); // Continue without logo if it fails to load
-      };
-      img.src = stepLogo; // Set src after handlers are registered
-    });
-    
     // Header - Company Info
     doc.setFontSize(16);
     doc.setFont('Roboto', 'bold');
@@ -782,15 +767,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     
     doc.setFont('Roboto', 'normal');
     doc.setFontSize(9);
-    doc.text('Tên người thụ hưởng: Công Ty Cổ Phần Đầu Tư Công Nghệ Step', 15, yPosition);
+    doc.text('• Chủ tài khoản : Công Ty Cổ Phần Đầu Tư Công Nghệ Step', 15, yPosition);
     yPosition += 5;
-    doc.text('Số tài khoản: 6223399', 15, yPosition);
+    doc.text('• Số tài khoản : 6223399', 15, yPosition);
     yPosition += 5;
-    doc.text('Ngân hàng: Ngân hàng Thương mại Cổ phần Hàng Hải Việt Nam', 15, yPosition);
-    yPosition += 5;
-    doc.text('Số Điện Thoại Liên Hệ: 0985636289', 15, yPosition);
-    yPosition += 5;
-    doc.text('Mã Số Thuế (MST): 0108230633', 15, yPosition);
+    doc.text('• Ngân hàng : Ngân hàng Thương mại Cổ phần Hàng Hải Việt Nam', 15, yPosition);
     
     // Footer
     yPosition = 280;
