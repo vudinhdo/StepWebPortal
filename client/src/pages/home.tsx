@@ -832,9 +832,9 @@ export default function Home() {
                     Cloud Server có backup tự động không? Tôi có thể tự backup được không?
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 leading-relaxed">
-                    Cloud Server của STEP tích hợp backup tự động hàng ngày (giữ lại 7 bản gần nhất), lưu trữ ở datacenter riêng biệt. 
+                    Cloud Server của STEP tích hợp backup tự động 3 bản/tuần, giữ lại 3 bản gần nhất, lưu trữ ở datacenter riêng biệt. 
                     Bạn cũng có thể tự tạo snapshot bất kỳ lúc nào qua dashboard hoặc API. 
-                    Việc restore từ backup chỉ mất 5-10 phút. Ngoài ra, chúng tôi khuyến nghị sử dụng thêm giải pháp backup offsite 
+                    Thời gian restore từ 10 phút trở lên tùy dung lượng. Ngoài ra, chúng tôi khuyến nghị sử dụng thêm giải pháp backup offsite 
                     (như S3-compatible object storage) cho dữ liệu quan trọng.
                   </AccordionContent>
                 </AccordionItem>

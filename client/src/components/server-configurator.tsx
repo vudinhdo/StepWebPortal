@@ -429,11 +429,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     doc.addFileToVFS("Roboto-Bold.ttf", RobotoBoldBase64);
     doc.addFont("Roboto-Bold.ttf", "Roboto", "bold");
     
-    // Load and add STEP logo
+    // Load and add STEP logo (smaller size for better fit)
     const img = new Image();
     await new Promise<void>((resolve) => {
       img.onload = () => {
-        doc.addImage(img, 'PNG', 15, 8, 60, 22);
+        doc.addImage(img, 'PNG', 15, 10, 45, 17);
         resolve();
       };
       img.onerror = () => {
@@ -446,14 +446,14 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     // Header - Company Info
     doc.setFontSize(16);
     doc.setFont('Roboto', 'bold');
-    doc.text('CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 105, 18, { align: 'center' });
+    doc.text('CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 105, 20, { align: 'center' });
     
     doc.setFontSize(9);
     doc.setFont('Roboto', 'normal');
-    doc.text('Địa chỉ: Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội', 105, 25, { align: 'center' });
-    doc.text('Văn phòng: Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội', 105, 30, { align: 'center' });
-    doc.text('Hotline: 0985.636.289 | Email: info@step.com.vn | Website: step.com.vn', 105, 35, { align: 'center' });
-    doc.text('MST: 0108230633', 105, 40, { align: 'center' });
+    doc.text('Địa chỉ: Xóm 9, Khu 3, Xã Quốc Oai, Hà Nội', 105, 27, { align: 'center' });
+    doc.text('Văn phòng: Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp. Hà Nội', 105, 32, { align: 'center' });
+    doc.text('Email: info@step.com.vn | Website: http://step.com.vn/', 105, 37, { align: 'center' });
+    doc.text('MST: 0108230633', 105, 42, { align: 'center' });
     
     // Divider line
     doc.setDrawColor(41, 128, 185);
@@ -777,16 +777,20 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     yPosition += 5;
     doc.setFont('Roboto', 'bold');
     doc.setFontSize(11);
-    doc.text('Thông tin thanh toán:', 15, yPosition);
+    doc.text('TÀI KHOẢN NHẬN THANH TOÁN', 15, yPosition);
     yPosition += 6;
     
     doc.setFont('Roboto', 'normal');
     doc.setFontSize(9);
-    doc.text('Chủ tài khoản: CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP', 15, yPosition);
+    doc.text('Tên người thụ hưởng: Công Ty Cổ Phần Đầu Tư Công Nghệ Step', 15, yPosition);
     yPosition += 5;
-    doc.text('Số tài khoản: 19132608991888', 15, yPosition);
+    doc.text('Số tài khoản: 6223399', 15, yPosition);
     yPosition += 5;
-    doc.text('Ngân hàng: Techcombank - Chi nhánh Hoàng Quốc Việt - PGD Trần Thái Tông', 15, yPosition);
+    doc.text('Ngân hàng: Ngân hàng Thương mại Cổ phần Hàng Hải Việt Nam', 15, yPosition);
+    yPosition += 5;
+    doc.text('Số Điện Thoại Liên Hệ: 0985636289', 15, yPosition);
+    yPosition += 5;
+    doc.text('Mã Số Thuế (MST): 0108230633', 15, yPosition);
     
     // Footer
     yPosition = 280;
