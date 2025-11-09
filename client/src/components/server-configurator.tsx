@@ -1506,18 +1506,10 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
 
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-gray-50 p-6 rounded-lg">
-        <div className="flex items-center gap-4">
-          <Button
-            onClick={addServer}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-            data-testid="button-add-server"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Thêm Server Mới
-          </Button>
-          
-          <div className="flex items-center gap-3 px-4 py-2 bg-white rounded-lg border border-gray-200">
+      <div className="bg-gray-50 p-4 md:p-6 rounded-lg space-y-4">
+        {/* VAT Toggle and Summary - Top Section */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+          <div className="flex items-center gap-3 px-4 py-2 bg-white rounded-lg border border-gray-200 w-full sm:w-auto justify-center">
             <Label htmlFor="vat-toggle" className="text-sm font-medium cursor-pointer">
               Bao gồm VAT (10%)
             </Label>
@@ -1528,28 +1520,28 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
               data-testid="switch-vat"
             />
           </div>
-        </div>
 
-        <div className="flex items-center gap-4">
-          <div className="text-right">
-            <p className="text-sm text-gray-600">
-              Tổng chi phí ({servers.length} server) 
-              {!includeVAT && <span className="text-red-600 ml-1">(Chưa VAT)</span>}
-              {includeVAT && <span className="text-green-600 ml-1">(Đã VAT)</span>}
-            </p>
-            <p className="text-2xl font-bold text-blue-600" data-testid="total-cost-all">
-              {formatCurrency(calculateTotalCost())}/tháng
-            </p>
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <div className="text-center sm:text-right w-full sm:w-auto">
+              <p className="text-sm text-gray-600">
+                Tổng chi phí ({servers.length} server) 
+                {!includeVAT && <span className="text-red-600 ml-1">(Chưa VAT)</span>}
+                {includeVAT && <span className="text-green-600 ml-1">(Đã VAT)</span>}
+              </p>
+              <p className="text-2xl font-bold text-blue-600" data-testid="total-cost-all">
+                {formatCurrency(calculateTotalCost())}/tháng
+              </p>
+            </div>
+            
+            <Button
+              onClick={generatePDFQuote}
+              className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
+              data-testid="button-export-pdf"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Xuất Báo Giá PDF
+            </Button>
           </div>
-          
-          <Button
-            onClick={generatePDFQuote}
-            className="bg-green-600 hover:bg-green-700 text-white"
-            data-testid="button-export-pdf"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Xuất Báo Giá PDF
-          </Button>
         </div>
       </div>
 
