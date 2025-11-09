@@ -117,6 +117,13 @@ const additionalServices = [
     description: 'Tư vấn setup TensorFlow, PyTorch, CUDA',
     price: 1500000,
     unit: '/tháng'
+  },
+  { 
+    id: 'websiteOptimization', 
+    label: 'Dịch vụ tư vấn tối ưu tốc độ website', 
+    description: 'Phân tích và tối ưu hóa performance website',
+    price: 500000,
+    unit: '/lần (one-time)'
   }
 ];
 
@@ -597,11 +604,10 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       ]);
       
       // Payment cycle
-      const discount = calculatePaymentCycleDiscount(server.paymentCycle);
       componentData.push([
         'Chu kỳ thanh toán',
         `${server.paymentCycle} tháng`,
-        discount > 0 ? `Giảm ${discount}%` : 'Không giảm'
+        ''
       ]);
       
       // Voucher discount
@@ -636,21 +642,25 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       const gpuCostPDF = gpuOptionPDF ? gpuOptionPDF.price : 0;
       const osOptionPDF2 = osOptions.find(o => o.value === server.os);
       const osCostPDF = osOptionPDF2 && !osOptionPDF2.free ? (osOptionPDF2.price || 0) : 0;
-      const subtotalPDF = cpuCostPDF + ramCostPDF + diskCostPDF + ipCostPDF + bandwidthCostPDF + backupCostPDF + gpuCostPDF + osCostPDF;
-      const discountPDF = calculatePaymentCycleDiscount(server.paymentCycle);
-      const afterCycleDiscountPDF = subtotalPDF * (1 - discountPDF / 100);
-      const voucherAmountPDF = afterCycleDiscountPDF * server.voucherDiscount / 100;
-      const afterVoucherPDF = afterCycleDiscountPDF - voucherAmountPDF;
+      
+      // Additional services cost (monthly recurring only)
+      const additionalServicesCostPDF = server.additionalServices.reduce((total, serviceId) => {
+        const service = additionalServices.find(s => s.id === serviceId);
+        if (service && service.unit.includes('/tháng')) {
+          return total + service.price;
+        }
+        return total;
+      }, 0);
+      
+      const subtotalPDF = cpuCostPDF + ramCostPDF + diskCostPDF + ipCostPDF + bandwidthCostPDF + backupCostPDF + gpuCostPDF + osCostPDF + additionalServicesCostPDF;
+      const voucherAmountPDF = subtotalPDF * server.voucherDiscount / 100;
+      const afterVoucherPDF = subtotalPDF - voucherAmountPDF;
       const vatAmountPDF = includeVAT ? afterVoucherPDF * 0.1 : 0;
       const finalPricePDF = afterVoucherPDF + vatAmountPDF;
       
       // Server cost breakdown
       doc.setFont('Roboto', 'normal');
       doc.setFontSize(10);
-      if (discountPDF > 0) {
-        doc.text(`Giảm giá chu kỳ (${discountPDF}%): -${formatCurrency(subtotalPDF * discountPDF / 100)}`, 15, yPosition);
-        yPosition += 5;
-      }
       if (server.voucherDiscount > 0) {
         doc.text(`Voucher giảm giá (${server.voucherDiscount}%): -${formatCurrency(voucherAmountPDF)}`, 15, yPosition);
         yPosition += 5;
@@ -984,14 +994,11 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                         data-testid={`input-payment-cycle-${server.id}`}
                       />
                       <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                        <p className="text-sm text-purple-800 font-medium mb-1">
-                          💰 Giảm giá theo chu kỳ: {calculatePaymentCycleDiscount(server.paymentCycle)}%
-                        </p>
-                        <p className="text-xs text-purple-600">
-                          Giảm giá tăng tuyến tính: 1 tháng = 1%, tối đa 36% (từ 36 tháng trở lên)
+                        <p className="text-sm text-purple-800 font-medium">
+                          📅 Chu kỳ thanh toán linh hoạt từ 1-60 tháng
                         </p>
                         <p className="text-xs text-purple-600 mt-1">
-                          Ví dụ: 6 tháng = 6%, 12 tháng = 12%, 24 tháng = 24%, 36+ tháng = 36%
+                          Chọn chu kỳ thanh toán phù hợp với nhu cầu của bạn
                         </p>
                       </div>
                     </div>
@@ -1294,22 +1301,23 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                           const gpuCost = gpuOptions.find(g => g.value === server.gpu)?.price || 0;
                           const osOption = osOptions.find(o => o.value === server.os);
                           const osCost = osOption && !osOption.free ? (osOption.price || 0) : 0;
-                          const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost;
-                          const discountPercent = calculatePaymentCycleDiscount(server.paymentCycle);
-                          const discountAmount = subtotal * discountPercent / 100;
-                          const afterCycleDiscount = subtotal - discountAmount;
-                          const voucherAmount = afterCycleDiscount * server.voucherDiscount / 100;
-                          const afterVoucher = afterCycleDiscount - voucherAmount;
+                          
+                          // Additional services cost (monthly recurring only)
+                          const additionalServicesCost = server.additionalServices.reduce((total, serviceId) => {
+                            const service = additionalServices.find(s => s.id === serviceId);
+                            if (service && service.unit.includes('/tháng')) {
+                              return total + service.price;
+                            }
+                            return total;
+                          }, 0);
+                          
+                          const subtotal = cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost + osCost + additionalServicesCost;
+                          const voucherAmount = subtotal * server.voucherDiscount / 100;
+                          const afterVoucher = subtotal - voucherAmount;
                           const vatAmount = includeVAT ? afterVoucher * 0.1 : 0;
                           
                           return (
                             <>
-                              {server.paymentCycle > 1 && (
-                                <div className="flex justify-between text-green-600 font-medium">
-                                  <span>Giảm giá chu kỳ ({discountPercent}%):</span>
-                                  <span>-{formatCurrency(discountAmount)}</span>
-                                </div>
-                              )}
                               {server.voucherDiscount > 0 && (
                                 <div className="flex justify-between text-pink-600 font-medium">
                                   <span>Voucher giảm giá ({server.voucherDiscount}%):</span>
