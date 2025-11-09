@@ -78,7 +78,9 @@ const osOptions = [
   { value: 'debian-12', label: 'Debian 12 (Bookworm)', category: 'Linux', free: true },
   { value: 'fedora-38', label: 'Fedora 38', category: 'Linux', free: true },
   { value: 'windows-2019', label: 'Windows Server 2019', category: 'Windows', free: false, price: 500000 },
-  { value: 'windows-2022', label: 'Windows Server 2022', category: 'Windows', free: false, price: 600000 }
+  { value: 'windows-2022', label: 'Windows Server 2022', category: 'Windows', free: false, price: 600000 },
+  { value: 'windows-trial', label: 'Windows Server Trial (180 ngày)', category: 'Windows Trial', free: true },
+  { value: 'custom', label: 'Khác (Tự nhập)', category: 'Custom', free: true }
 ];
 
 // Additional Paid Services (can be selected per server)
@@ -233,6 +235,7 @@ interface ServerConfig {
   gpu: string;
   paymentCycle: number;
   os: string;
+  customOS: string; // Custom OS name when os === 'custom'
   voucherDiscount: number;
   additionalServices: string[]; // Array of selected additional service IDs
 }
@@ -265,6 +268,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       gpu: 'none',
       paymentCycle: 1,
       os: 'ubuntu-22.04',
+      customOS: '',
       voucherDiscount: 0,
       additionalServices: []
     }
@@ -292,6 +296,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       gpu: 'none',
       paymentCycle: 1,
       os: 'ubuntu-22.04',
+      customOS: '',
       voucherDiscount: 0,
       additionalServices: []
     };
@@ -310,7 +315,8 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         bandwidth: template.bandwidth,
         backup: template.backup,
         gpu: template.gpu,
-        os: template.os
+        os: template.os,
+        customOS: '' // Reset custom OS when applying template
       } : server
     ));
   };
@@ -404,6 +410,13 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     // Validate customer email
     if (!customerInfo.email || !customerInfo.email.includes('@')) {
       alert('Vui lòng nhập email hợp lệ trước khi xuất báo giá!');
+      return;
+    }
+    
+    // Validate custom OS entries
+    const serversWithEmptyCustomOS = servers.filter(s => s.os === 'custom' && !s.customOS.trim());
+    if (serversWithEmptyCustomOS.length > 0) {
+      alert('Vui lòng nhập tên hệ điều hành cho các server đã chọn "Khác (Tự nhập)"!');
       return;
     }
     
@@ -577,9 +590,12 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
       
       // OS
       const osOptionPDF = osOptions.find(o => o.value === server.os);
+      const osLabelPDF = server.os === 'custom' 
+        ? (server.customOS || 'Hệ điều hành tùy chỉnh')
+        : (osOptionPDF?.label || server.os);
       componentData.push([
         'Hệ điều hành',
-        osOptionPDF?.label || server.os,
+        osLabelPDF,
         osOptionPDF && !osOptionPDF.free ? formatCurrency(osOptionPDF.price || 0) : 'Miễn phí'
       ]);
       
@@ -1259,6 +1275,27 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                           );
                         })}
                       </div>
+                      
+                      {/* Custom OS Input - Only shown when "Khác (Tự nhập)" is selected */}
+                      {server.os === 'custom' && (
+                        <div className="mt-4 p-4 bg-blue-50 border-2 border-blue-300 rounded-lg">
+                          <Label className="flex items-center gap-2 text-sm font-semibold text-blue-800 mb-2">
+                            <Info className="w-4 h-4" />
+                            Nhập tên hệ điều hành tùy chỉnh
+                          </Label>
+                          <Input
+                            type="text"
+                            value={server.customOS}
+                            onChange={(e) => updateServer(server.id, 'customOS', e.target.value)}
+                            placeholder="Ví dụ: Ubuntu 24.04, CentOS 7, Alpine Linux..."
+                            className="text-sm"
+                            data-testid={`input-custom-os-${server.id}`}
+                          />
+                          <p className="text-xs text-gray-600 mt-2">
+                            Hệ điều hành tùy chỉnh luôn miễn phí
+                          </p>
+                        </div>
+                      )}
                     </div>
 
                     {/* Voucher Discount */}
@@ -1367,7 +1404,12 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                             <span>{formatCurrency(gpuOptions.find(g => g.value === server.gpu)?.price || 0)}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>OS: {osOptions.find(o => o.value === server.os)?.label || server.os}</span>
+                            <span>OS: {(() => {
+                              if (server.os === 'custom') {
+                                return server.customOS || 'Hệ điều hành tùy chỉnh';
+                              }
+                              return osOptions.find(o => o.value === server.os)?.label || server.os;
+                            })()}</span>
                             <span>{(() => {
                               const osOption = osOptions.find(o => o.value === server.os);
                               return osOption && !osOption.free ? formatCurrency(osOption.price || 0) : 'Miễn phí';
