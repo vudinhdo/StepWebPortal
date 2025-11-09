@@ -17,8 +17,8 @@ Preferred communication style: Simple, everyday language.
 - **State Management**: React Query for server state.
 - **Form Handling**: React Hook Form with Zod validation.
 - **Animations**: Framer Motion for smooth page transitions, component animations, and interactive elements.
-- **Key UI Components**: Header (mega menu), Hero, Services grid, Statistics, Testimonials, Resources (blog), Footer, ContactForm, Blog (public & admin), Performance Benchmarking, Personalization system, Tooltip system, FAQ section (homepage and Cloud Server page).
-- **Design Principles**: Mobile-first, responsive design, accessibility (ARIA labels, keyboard navigation), optimized images, custom SVG icons with brand colors, Inter font.
+- **Key UI Components**: Header (mega menu), Hero, Services grid, Statistics, Testimonials, Resources (blog), Footer, ContactForm, Blog (public & admin), Performance Benchmarking, Personalization system, Tooltip system, FAQ section (homepage and Cloud Server page), ServerConfigurator with mobile-optimized layout.
+- **Design Principles**: Mobile-first, responsive design, accessibility (ARIA labels, keyboard navigation), optimized images, custom SVG icons with brand colors, Inter font, large touch targets for mobile (py-6 buttons), responsive breakpoints for optimal viewing across devices.
 
 ### Backend
 - **Runtime**: Node.js with Express.js framework.
