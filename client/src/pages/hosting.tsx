@@ -35,6 +35,7 @@ import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import hostingIllustration from "@assets/generated_images/Cloud_hosting_infrastructure_illustration_24b95542.png";
 
 export default function Hosting() {
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
@@ -724,38 +725,52 @@ export default function Hosting() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative"
             >
-              <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 text-green-400 font-mono text-sm">
-                <div className="flex items-center mb-6">
-                  <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span className="text-gray-400 ml-4">cPanel Dashboard</span>
-                </div>
+              <div className="relative rounded-2xl shadow-2xl overflow-hidden">
+                <img 
+                  src={hostingIllustration} 
+                  alt="Hạ tầng Hosting hiện đại - Server STEP"
+                  className="w-full h-auto object-cover rounded-2xl"
+                />
                 
-                <div className="space-y-2 mb-6">
-                  <div><span className="text-blue-400">$</span> cat /etc/os-release</div>
-                  <div className="text-gray-500">NAME="AlmaLinux"</div>
-                  <div className="text-green-500">VERSION="9.3 (Shamrock Pampas Cat)"</div>
-                  <div><span className="text-blue-400">$</span> /usr/local/lsws/bin/lshttpd -v</div>
-                  <div className="text-purple-400">LiteSpeed/6.2.2 Enterprise</div>
-                  <div><span className="text-blue-400">$</span> imunify360-agent version</div>
-                  <div className="text-cyan-400">Imunify360 v7.10.4 (licensed)</div>
+                {/* Overlay badges */}
+                <div className="absolute top-6 left-6 right-6 space-y-3">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
+                        <span className="font-semibold text-gray-900">Server Status</span>
+                      </div>
+                      <span className="text-green-600 font-bold">Online ✓</span>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-blue-500/95 backdrop-blur-sm rounded-lg p-4 shadow-lg text-white">
+                    <div className="font-bold mb-1">⚡ Tốc độ LiteSpeed</div>
+                    <div className="text-sm">Nhanh gấp 10x Apache</div>
+                  </div>
+                  
+                  <div className="bg-gradient-to-r from-green-500 to-emerald-500 backdrop-blur-sm rounded-lg p-4 shadow-lg text-white">
+                    <div className="font-bold mb-1">🛡️ Bảo mật Imunify360</div>
+                    <div className="text-sm">Chặn 100% DDoS & Malware</div>
+                  </div>
                 </div>
 
-                <div className="border-t border-gray-700 pt-4">
-                  <div className="text-gray-400 text-xs mb-2">System Status:</div>
-                  <div className="space-y-1 text-xs">
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Web Server:</span>
-                      <span className="text-green-400">LiteSpeed ✓</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Security Suite:</span>
-                      <span className="text-blue-400">Imunify360 ✓</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">WAF Status:</span>
-                      <span className="text-purple-400">Active ✓</span>
+                {/* Bottom stats */}
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="bg-gray-900/95 backdrop-blur-sm rounded-lg p-4 shadow-lg">
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div>
+                        <div className="text-2xl font-bold text-green-400">99.99%</div>
+                        <div className="text-xs text-gray-300">Uptime</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-blue-400">18</div>
+                        <div className="text-xs text-gray-300">Gói Hosting</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-purple-400">24/7</div>
+                        <div className="text-xs text-gray-300">Support</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -776,10 +791,13 @@ export default function Hosting() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Tính Năng Kỹ Thuật Enterprise-Grade
+              🔧 12 Tính Năng Công Nghệ Đỉnh Cao
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Công nghệ và bản quyền cao cấp nhất đảm bảo hiệu suất, bảo mật, và độ tin cậy tối đa
+              Sử dụng <strong className="text-blue-600">phần mềm bản quyền chính hãng</strong> từ các hãng lớn nhất thế giới, 
+              đảm bảo website của bạn chạy <strong className="text-green-600">nhanh</strong>, 
+              <strong className="text-red-600"> bảo mật tuyệt đối</strong>, 
+              và <strong className="text-purple-600">hoạt động ổn định 24/7</strong>
             </p>
           </motion.div>
 
