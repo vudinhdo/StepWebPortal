@@ -584,73 +584,137 @@ export default function Hosting() {
               transition={{ duration: 0.8 }}
             >
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4">
+                <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mr-4 animate-pulse">
                   <Server className="text-white w-6 h-6" />
                 </div>
-                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                  🏆 Enterprise-Grade Hosting Platform
+                <span className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">
+                  🔥 SIÊU PHẨM HOSTING - GIẢM 30% - 7 NGÀY DUY NHẤT!
                 </span>
               </div>
               
-              <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                Hosting Siêu Tốc – 
-                <span className="text-blue-500"> cPanel + LiteSpeed!</span>
+              <h1 className="text-5xl font-black text-gray-900 mb-6 leading-tight">
+                KHÁM PHÁ 18 GÓI HOSTING 
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"> "SIÊU PHẨM"</span>
+                <br />
+                <span className="text-red-500">TỪ 50K/THÁNG</span> – ĐÁNH BẬT MỌI ĐỐI THỦ!
               </h1>
               
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                18 gói hosting từ cơ bản đến enterprise với <strong>cPanel bản quyền</strong>, 
-                <strong>AlmaLinux OS</strong>, <strong>LiteSpeed Enterprise</strong>, 
-                <strong>Imunify360</strong>, và <strong>WAF hoàn thiện</strong>. 
-                Từ 50K/tháng - Phù hợp mọi quy mô!
-              </p>
+              <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border-l-4 border-blue-500 rounded-lg p-6 mb-8">
+                <p className="text-lg text-gray-800 leading-relaxed">
+                  <strong className="text-blue-600">🚀 Nhanh như chớp, bảo mật như pháo đài, giá rẻ đến khó tin!</strong><br />
+                  Chỉ từ <span className="text-2xl font-bold text-red-600">50.000Đ/tháng</span>, bạn đã sở hữu ngay:
+                </p>
+                <ul className="mt-4 space-y-2 text-gray-700">
+                  <li className="flex items-start">
+                    <span className="text-blue-500 font-bold mr-2">🔥</span>
+                    <span><strong>cPanel bản quyền chính hãng</strong> – Quản lý dễ như chơi, kéo thả là xong!</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-orange-500 font-bold mr-2">🚀</span>
+                    <span><strong>AlmaLinux + LiteSpeed Enterprise</strong> – Tốc độ load <strong className="text-red-600">nhanh gấp 10 lần</strong> Apache!</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-500 font-bold mr-2">🛡️</span>
+                    <span><strong>Imunify360 + WAF ModSecurity</strong> – Chặn 100% DDoS, malware, brute-force tự động!</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-purple-500 font-bold mr-2">⚡</span>
+                    <span><strong>NVMe SSD RAID 10</strong> – Uptime <strong className="text-green-600">99.99%</strong> + Tặng SSL + Cloudflare CDN!</span>
+                  </li>
+                </ul>
+              </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div className="bg-white rounded-lg p-4 shadow-md">
-                  <div className="text-2xl font-bold text-blue-500">cPanel</div>
-                  <div className="text-sm text-gray-600">Licensed</div>
+              {/* Package Categories */}
+              <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border-2 border-blue-100">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">📦 PHÙ HỢP MỌI QUY MÔ – BẠN CHỌN, STEP LO!</h3>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="flex items-start space-x-3">
+                    <span className="text-2xl">👉</span>
+                    <div>
+                      <div className="font-bold text-blue-600">Gói Cơ bản (50K)</div>
+                      <div className="text-sm text-gray-600">Blog, landing page, shop nhỏ</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <span className="text-2xl">👉</span>
+                    <div>
+                      <div className="font-bold text-purple-600">Gói Business (150K–350K)</div>
+                      <div className="text-sm text-gray-600">Website doanh nghiệp, e-commerce vừa</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <span className="text-2xl">👉</span>
+                    <div>
+                      <div className="font-bold text-red-600">Gói Enterprise (750K+)</div>
+                      <div className="text-sm text-gray-600">Portal lớn, hệ thống nhiều subdomain</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="bg-white rounded-lg p-4 shadow-md">
-                  <div className="text-2xl font-bold text-blue-500">99.99%</div>
-                  <div className="text-sm text-gray-600">Uptime</div>
-                </div>
-                <div className="bg-white rounded-lg p-4 shadow-md">
-                  <div className="text-2xl font-bold text-blue-500">24/7</div>
-                  <div className="text-sm text-gray-600">Support</div>
-                </div>
-                <div className="bg-white rounded-lg p-4 shadow-md">
-                  <div className="text-2xl font-bold text-blue-500">18</div>
-                  <div className="text-sm text-gray-600">Gói Hosting</div>
+              </div>
+
+              {/* Special Offers */}
+              <div className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-xl p-6 mb-8">
+                <h3 className="text-xl font-bold text-orange-900 mb-4">🎁 ƯU ĐÃI ĐẶC BIỆT KHI ĐĂNG KÝ NGAY:</h3>
+                <div className="grid md:grid-cols-2 gap-3 text-gray-800">
+                  <div className="flex items-start">
+                    <span className="text-green-500 font-bold mr-2">✅</span>
+                    <span><strong className="text-red-600">Giảm 30% năm đầu</strong> (chỉ áp dụng 7 ngày tới)</span>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="text-green-500 font-bold mr-2">✅</span>
+                    <span><strong>Miễn phí chuyển hosting</strong> từ nhà cung cấp khác (chỉ 2 giờ hoàn tất)</span>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="text-green-500 font-bold mr-2">✅</span>
+                    <span><strong>Hỗ trợ 24/7/365</strong> qua Zalo OA + ticket + hotline <strong>0985.636.289</strong></span>
+                  </div>
+                  <div className="flex items-start">
+                    <span className="text-green-500 font-bold mr-2">✅</span>
+                    <span><strong className="text-blue-600">Dùng thử 30 ngày – Không hài lòng hoàn 200% tiền!</strong></span>
+                  </div>
                 </div>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <Button 
                   size="lg"
-                  className="bg-blue-500 hover:bg-blue-600 px-8 py-6 text-lg font-semibold"
+                  className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 px-8 py-6 text-lg font-bold shadow-xl"
                   data-testid="button-view-packages"
                   onClick={() => {
                     document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                 >
-                  Xem Bảng Giá 18 Gói Hosting
+                  🔥 Xem Bảng Giá 18 Gói SIÊU PHẨM
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 
                 <Button 
                   variant="outline"
                   size="lg"
-                  className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-8 py-6 text-lg"
+                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-6 text-lg font-bold"
                   data-testid="button-contact"
                   onClick={() => window.location.href = '/contact'}
                 >
-                  Tư Vấn Miễn Phí
+                  📞 Hotline: 0985.636.289
                 </Button>
+              </div>
+
+              <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-4 mb-6">
+                <div className="flex items-start">
+                  <span className="text-2xl mr-3">⚠️</span>
+                  <div>
+                    <p className="font-bold text-red-900">ĐỪNG ĐỂ WEBSITE CHẬM = MẤT KHÁCH!</p>
+                    <p className="text-sm text-red-700 mt-1">
+                      <strong className="text-red-900">50K/tháng</strong> – Doanh nghiệp bạn đáng giá hơn thế! 
+                      Click ngay để xem bảng giá chi tiết 18 gói + đặt hàng chỉ 60 giây!
+                    </p>
+                  </div>
+                </div>
               </div>
               
               <div className="flex items-center text-sm text-gray-600">
                 <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                <span>30 ngày hoàn tiền • Migration miễn phí • 10,000+ websites tin dùng</span>
+                <span><strong>STEP – Hosting Việt Nam, tốc độ thế giới!</strong> • 10,000+ websites tin dùng</span>
               </div>
             </motion.div>
 
