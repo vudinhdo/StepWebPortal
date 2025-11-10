@@ -36,6 +36,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import hostingIllustration from "@assets/generated_images/Cloud_hosting_infrastructure_illustration_24b95542.png";
+import promotionalOffersImg from "@assets/generated_images/Hosting_promotional_offers_illustration_1de919a8.png";
+import performanceSpeedImg from "@assets/generated_images/Website_performance_and_speed_8da3197b.png";
 
 export default function Hosting() {
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
@@ -571,14 +573,14 @@ export default function Hosting() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-20 overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
+      <section className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-12 sm:py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-20 hidden sm:block">
           <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full filter blur-3xl"></div>
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-300 rounded-full filter blur-3xl"></div>
         </div>
         
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -593,7 +595,7 @@ export default function Hosting() {
                 </span>
               </div>
               
-              <h1 className="text-5xl font-black text-gray-900 mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-6 leading-tight">
                 KHÁM PHÁ 18 GÓI HOSTING 
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"> "SIÊU PHẨM"</span>
                 <br />
@@ -624,106 +626,13 @@ export default function Hosting() {
                   </li>
                 </ul>
               </div>
-
-              {/* Package Categories */}
-              <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border-2 border-blue-100">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">📦 PHÙ HỢP MỌI QUY MÔ – BẠN CHỌN, STEP LO!</h3>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="flex items-start space-x-3">
-                    <span className="text-2xl">👉</span>
-                    <div>
-                      <div className="font-bold text-blue-600">Gói Cơ bản (50K)</div>
-                      <div className="text-sm text-gray-600">Blog, landing page, shop nhỏ</div>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <span className="text-2xl">👉</span>
-                    <div>
-                      <div className="font-bold text-purple-600">Gói Business (150K–350K)</div>
-                      <div className="text-sm text-gray-600">Website doanh nghiệp, e-commerce vừa</div>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <span className="text-2xl">👉</span>
-                    <div>
-                      <div className="font-bold text-red-600">Gói Enterprise (750K+)</div>
-                      <div className="text-sm text-gray-600">Portal lớn, hệ thống nhiều subdomain</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Special Offers */}
-              <div className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-xl p-6 mb-8">
-                <h3 className="text-xl font-bold text-orange-900 mb-4">🎁 ƯU ĐÃI ĐẶC BIỆT KHI ĐĂNG KÝ NGAY:</h3>
-                <div className="grid md:grid-cols-2 gap-3 text-gray-800">
-                  <div className="flex items-start">
-                    <span className="text-green-500 font-bold mr-2">✅</span>
-                    <span><strong className="text-red-600">Giảm 30% năm đầu</strong> (chỉ áp dụng 7 ngày tới)</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="text-green-500 font-bold mr-2">✅</span>
-                    <span><strong>Miễn phí chuyển hosting</strong> từ nhà cung cấp khác (chỉ 2 giờ hoàn tất)</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="text-green-500 font-bold mr-2">✅</span>
-                    <span><strong>Hỗ trợ 24/7/365</strong> qua Zalo OA + ticket + hotline <strong>0985.636.289</strong></span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="text-green-500 font-bold mr-2">✅</span>
-                    <span><strong className="text-blue-600">Dùng thử 30 ngày – Không hài lòng hoàn 200% tiền!</strong></span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <Button 
-                  size="lg"
-                  className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 px-8 py-6 text-lg font-bold shadow-xl"
-                  data-testid="button-view-packages"
-                  onClick={() => {
-                    document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  🔥 Xem Bảng Giá 18 Gói SIÊU PHẨM
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-                
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-6 text-lg font-bold"
-                  data-testid="button-contact"
-                  onClick={() => window.location.href = '/contact'}
-                >
-                  📞 Hotline: 0985.636.289
-                </Button>
-              </div>
-
-              <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-4 mb-6">
-                <div className="flex items-start">
-                  <span className="text-2xl mr-3">⚠️</span>
-                  <div>
-                    <p className="font-bold text-red-900">ĐỪNG ĐỂ WEBSITE CHẬM = MẤT KHÁCH!</p>
-                    <p className="text-sm text-red-700 mt-1">
-                      <strong className="text-red-900">50K/tháng</strong> – Doanh nghiệp bạn đáng giá hơn thế! 
-                      Click ngay để xem bảng giá chi tiết 18 gói + đặt hàng chỉ 60 giây!
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex items-center text-sm text-gray-600">
-                <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                <span><strong>STEP – Hosting Việt Nam, tốc độ thế giới!</strong> • 10,000+ websites tin dùng</span>
-              </div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
+              className="relative hidden lg:block"
             >
               <div className="relative rounded-2xl shadow-2xl overflow-hidden">
                 <img 
@@ -780,6 +689,135 @@ export default function Hosting() {
         </div>
       </section>
 
+      {/* Package Categories & Special Offers Section */}
+      <section className="py-12 bg-white overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            {/* Package Categories */}
+            <div className="bg-white rounded-xl shadow-lg p-8 mb-8 border-2 border-blue-100">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">📦 PHÙ HỢP MỌI QUY MÔ – BẠN CHỌN, STEP LO!</h3>
+              <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div className="flex items-start space-x-3">
+                  <span className="text-3xl">👉</span>
+                  <div>
+                    <div className="font-bold text-blue-600 text-lg">Gói Cơ bản (50K)</div>
+                    <div className="text-sm text-gray-600">Blog, landing page, shop nhỏ</div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <span className="text-3xl">👉</span>
+                  <div>
+                    <div className="font-bold text-purple-600 text-lg">Gói Business (150K–350K)</div>
+                    <div className="text-sm text-gray-600">Website doanh nghiệp, e-commerce vừa</div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <span className="text-3xl">👉</span>
+                  <div>
+                    <div className="font-bold text-red-600 text-lg">Gói Enterprise (750K+)</div>
+                    <div className="text-sm text-gray-600">Portal lớn, hệ thống nhiều subdomain</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Special Offers */}
+            <div className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-xl p-4 sm:p-8 mb-8">
+              <div className="grid lg:grid-cols-[1.5fr_1fr] gap-6 lg:gap-8 items-center max-w-6xl mx-auto">
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-orange-900 mb-4 sm:mb-6">🎁 ƯU ĐÃI ĐẶC BIỆT KHI ĐĂNG KÝ NGAY:</h3>
+                  <div className="space-y-3 sm:space-y-4 text-gray-800">
+                    <div className="flex items-start">
+                      <span className="text-green-500 font-bold mr-2 sm:mr-3 text-lg sm:text-xl">✅</span>
+                      <span className="text-sm sm:text-lg"><strong className="text-red-600">Giảm 30% năm đầu</strong> (chỉ áp dụng 7 ngày tới)</span>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-green-500 font-bold mr-2 sm:mr-3 text-lg sm:text-xl">✅</span>
+                      <span className="text-sm sm:text-lg"><strong>Miễn phí chuyển hosting</strong> từ nhà cung cấp khác (chỉ 2 giờ hoàn tất)</span>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-green-500 font-bold mr-2 sm:mr-3 text-lg sm:text-xl">✅</span>
+                      <span className="text-sm sm:text-lg"><strong>Hỗ trợ 24/7/365</strong> qua Zalo OA + ticket + hotline <strong>0985.636.289</strong></span>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-green-500 font-bold mr-2 sm:mr-3 text-lg sm:text-xl">✅</span>
+                      <span className="text-sm sm:text-lg"><strong className="text-blue-600">Dùng thử 30 ngày – Không hài lòng hoàn 200% tiền!</strong></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="hidden lg:flex justify-center items-center">
+                  <img 
+                    src={promotionalOffersImg} 
+                    alt="Ưu đãi đặc biệt - Hosting STEP"
+                    className="w-full h-auto max-w-md rounded-xl shadow-2xl"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center">
+              <Button 
+                size="lg"
+                className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 px-10 py-7 text-xl font-bold shadow-xl"
+                data-testid="button-view-packages"
+                onClick={() => {
+                  document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                🔥 Xem Bảng Giá 18 Gói SIÊU PHẨM
+                <ArrowRight className="ml-2 h-6 w-6" />
+              </Button>
+              
+              <Button 
+                variant="outline"
+                size="lg"
+                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-10 py-7 text-xl font-bold"
+                data-testid="button-contact"
+                onClick={() => window.location.href = '/contact'}
+              >
+                📞 Hotline: 0985.636.289
+              </Button>
+            </div>
+
+            {/* Urgency Warning */}
+            <div className="bg-red-50 border-l-4 border-red-500 rounded-xl p-4 sm:p-6 shadow-lg max-w-5xl mx-auto">
+              <div className="grid lg:grid-cols-[1fr_auto] gap-4 sm:gap-6 items-center">
+                <div className="flex items-start">
+                  <span className="text-2xl sm:text-3xl mr-3 sm:mr-4">⚠️</span>
+                  <div>
+                    <p className="font-bold text-red-900 text-lg sm:text-2xl mb-1 sm:mb-2">ĐỪNG ĐỂ WEBSITE CHẬM = MẤT KHÁCH!</p>
+                    <p className="text-sm sm:text-base text-red-700">
+                      <strong className="text-red-900 text-base sm:text-lg">50K/tháng</strong> – Doanh nghiệp bạn đáng giá hơn thế! 
+                      Click ngay để xem bảng giá chi tiết 18 gói + đặt hàng chỉ 60 giây!
+                    </p>
+                  </div>
+                </div>
+                <div className="hidden lg:flex items-center justify-center">
+                  <img 
+                    src={performanceSpeedImg} 
+                    alt="Tốc độ Website - Performance"
+                    className="w-40 h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Trust Badge */}
+            <div className="flex items-center justify-center text-base text-gray-600 mt-8">
+              <CheckCircle className="h-6 w-6 text-green-500 mr-2" />
+              <span><strong>STEP – Hosting Việt Nam, tốc độ thế giới!</strong> • 10,000+ websites tin dùng</span>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Technical Features Section */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-6">
@@ -823,8 +861,8 @@ export default function Hosting() {
       </section>
 
       {/* Packages Section */}
-      <section id="packages" className="py-20 bg-white">
-        <div className="container mx-auto px-6">
+      <section id="packages" className="py-20 bg-white overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -995,10 +1033,10 @@ export default function Hosting() {
             </>
           ) : (
             /* Table View */
-            <div className="overflow-x-auto">
-              <div className="inline-block min-w-full align-middle">
+            <div className="overflow-x-auto -mx-4 sm:mx-0">
+              <div className="inline-block min-w-full align-middle px-4 sm:px-0">
                 <div className="overflow-hidden shadow-xl ring-1 ring-black ring-opacity-5 rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-300">
+                  <table className="min-w-[800px] w-full divide-y divide-gray-300">
                     <thead className="bg-blue-500 sticky top-0 z-10">
                       <tr>
                         <th className="py-4 px-6 text-left text-sm font-semibold text-white">Gói</th>
@@ -1078,8 +1116,8 @@ export default function Hosting() {
       </section>
 
       {/* Competitor Comparison */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
+      <section className="py-20 bg-gray-50 overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1095,8 +1133,8 @@ export default function Hosting() {
             </p>
           </motion.div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-xl shadow-xl overflow-hidden">
+          <div className="max-w-4xl mx-auto overflow-x-auto">
+            <div className="bg-white rounded-xl shadow-xl min-w-[600px]">
               <table className="w-full">
                 <thead className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
                   <tr>
