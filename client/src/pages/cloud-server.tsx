@@ -825,7 +825,9 @@ export default function CloudServer() {
       </section>
 
       {/* Interactive Server Configurator */}
-      <ServerConfigurator />
+      <section id="server-configurator" className="py-20 bg-gray-50">
+        <ServerConfigurator />
+      </section>
 
       {/* Migration & Support Section */}
       <section className="py-20 bg-gray-50">

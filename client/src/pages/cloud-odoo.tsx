@@ -37,6 +37,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import ServerConfigurator from "@/components/server-configurator";
 
 export default function CloudOdoo() {
   const [formData, setFormData] = useState({
@@ -1054,6 +1055,11 @@ export default function CloudOdoo() {
             </div>
           </motion.div>
         </div>
+      </section>
+
+      {/* Server Configuration Section */}
+      <section id="server-configurator" className="py-20 bg-gray-50">
+        <ServerConfigurator />
       </section>
       
       <Footer />
