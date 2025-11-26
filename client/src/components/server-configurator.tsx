@@ -1077,23 +1077,43 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                       <span className="text-lg font-bold text-blue-600">
                         {formatCurrency(calculateServerCost(server))}/tháng
                       </span>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => duplicateServer(server.id)}
-                        className="h-8 w-8 p-0"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </Button>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => duplicateServer(server.id)}
+                              className="h-8 w-8 p-0"
+                              data-testid={`button-duplicate-server-${server.id}`}
+                            >
+                              <Copy className="w-4 h-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent side="bottom">
+                            <p>Nhân đôi cấu hình server này</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                       {servers.length > 1 && (
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => removeServer(server.id)}
-                          className="h-8 w-8 p-0"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => removeServer(server.id)}
+                                className="h-8 w-8 p-0"
+                                data-testid={`button-remove-server-${server.id}`}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom">
+                              <p>Xóa server này khỏi báo giá</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       )}
                     </div>
                   </div>
@@ -1131,6 +1151,21 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                       <Label className="flex items-center gap-2 text-base font-semibold">
                         <Cpu className="w-5 h-5 text-blue-500" />
                         CPU (Cores)
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Info className="w-4 h-4 text-gray-400 cursor-help" />
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="max-w-xs">
+                              <p className="font-medium mb-1">Gợi ý cấu hình CPU:</p>
+                              <ul className="text-xs space-y-1">
+                                <li>1-2 cores: Website nhỏ, blog</li>
+                                <li>4-8 cores: E-commerce, CRM</li>
+                                <li>16+ cores: AI/ML, Big Data</li>
+                              </ul>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </Label>
                       <Input
                         type="number"
@@ -1151,6 +1186,21 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                       <Label className="flex items-center gap-2 text-base font-semibold">
                         <Zap className="w-5 h-5 text-green-500" />
                         RAM (GB)
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Info className="w-4 h-4 text-gray-400 cursor-help" />
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="max-w-xs">
+                              <p className="font-medium mb-1">Gợi ý cấu hình RAM:</p>
+                              <ul className="text-xs space-y-1">
+                                <li>2-4GB: Website tĩnh, blog</li>
+                                <li>8-16GB: CMS, e-commerce</li>
+                                <li>32GB+: Database lớn, AI</li>
+                              </ul>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </Label>
                       <Input
                         type="number"
@@ -1171,6 +1221,20 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                       <Label className="flex items-center gap-2 text-base font-semibold">
                         <HardDrive className="w-5 h-5 text-purple-500" />
                         Disk Storage (GB)
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Info className="w-4 h-4 text-gray-400 cursor-help" />
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="max-w-xs">
+                              <p className="font-medium mb-1">So sánh SSD vs HDD:</p>
+                              <ul className="text-xs space-y-1">
+                                <li><b>SSD</b>: Nhanh gấp 10x, phù hợp DB, web</li>
+                                <li><b>HDD</b>: Rẻ hơn 3x, phù hợp backup, lưu trữ</li>
+                              </ul>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </Label>
                       <div className="flex items-center space-x-3">
                         <Label className="text-sm font-medium">SSD</Label>
