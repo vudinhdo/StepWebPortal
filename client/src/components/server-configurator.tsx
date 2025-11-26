@@ -29,6 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { RobotoRegularBase64, RobotoBoldBase64 } from '@/fonts/roboto-fonts';
@@ -296,6 +297,34 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     if (value <= threshold.green) return 'bg-green-50 border-green-300';
     if (value <= threshold.yellow) return 'bg-yellow-50 border-yellow-300';
     return 'bg-red-50 border-red-300';
+  };
+
+  // Helper function to get tier label
+  const getTierLabel = (value: number, type: 'cpu' | 'ram' | 'disk' | 'bandwidth') => {
+    const thresholds = {
+      cpu: { green: 4, yellow: 8 },
+      ram: { green: 8, yellow: 16 },
+      disk: { green: 100, yellow: 500 },
+      bandwidth: { green: 2, yellow: 5 }
+    };
+    const threshold = thresholds[type];
+    if (value <= threshold.green) return { text: 'Cơ bản', color: 'text-green-600 bg-green-100' };
+    if (value <= threshold.yellow) return { text: 'Trung bình', color: 'text-yellow-600 bg-yellow-100' };
+    return { text: 'Cao cấp', color: 'text-red-600 bg-red-100' };
+  };
+
+  // Calculate template price
+  const calculateTemplatePrice = (template: typeof packageTemplates[0]) => {
+    const cpuCost = template.cpu * componentPricing.cpu.basePrice;
+    const ramCost = template.ram * componentPricing.ram.basePrice;
+    const diskPrice = template.diskType === 'ssd' ? componentPricing.ssd.basePrice : componentPricing.hdd.basePrice;
+    const diskCost = template.disk * diskPrice;
+    const ipCost = template.ipAddress > 1 ? (template.ipAddress - 1) * componentPricing.ipAddress.basePrice : 0;
+    const bandwidthCost = template.bandwidth > 1 ? (template.bandwidth - 1) * componentPricing.bandwidth.basePrice : 0;
+    const backupCost = template.backup * componentPricing.backup.basePrice;
+    const gpuOption = gpuOptions.find(gpu => gpu.value === template.gpu);
+    const gpuCost = gpuOption ? gpuOption.price : 0;
+    return cpuCost + ramCost + diskCost + ipCost + bandwidthCost + backupCost + gpuCost;
   };
 
   const addServer = () => {
@@ -806,56 +835,61 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
+    <div className="max-w-7xl mx-auto p-4 md:p-6">
       {/* Header */}
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">
-          🔧 Tự Xây Dựng Cấu Hình Cloud Server
+      <div className="text-center mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          Tự Xây Dựng Cấu Hình Cloud Server
         </h2>
-        <p className="text-lg text-gray-600">
-          Tùy chỉnh cấu hình server theo nhu cầu, hỗ trợ nhiều server với cấu hình khác nhau
+        <p className="text-sm md:text-base text-gray-600">
+          Tùy chỉnh cấu hình server theo nhu cầu của bạn
         </p>
       </div>
 
-      {/* User Instructions */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-6 border-2 border-blue-200">
-        <div className="flex items-start gap-3">
-          <Info className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
-          <div className="space-y-3">
-            <h3 className="text-xl font-semibold text-blue-800">Hướng Dẫn Sử Dụng</h3>
-            <div className="space-y-2 text-gray-700">
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 1:</strong> Điền thông tin khách hàng (email là bắt buộc để xuất báo giá PDF)</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 2:</strong> Chọn gói cấu hình mẫu hoặc tùy chỉnh chi tiết từng thành phần server</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 3:</strong> Điều chỉnh CPU, RAM, Disk, IP, Bandwidth, Dedicated GPU, OS theo nhu cầu</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 4:</strong> Chọn dịch vụ bổ sung cho từng server (Server Management, Database Optimization, Website Speed Optimization, Load Balancer, AI/ML Support, Migration Service)</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 5:</strong> Nhập chu kỳ thanh toán (1-60 tháng), mã voucher (nếu có), và bật VAT nếu cần</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 6:</strong> Nếu cần nhiều server, nhấn "Thêm Server Mới" và lặp lại các bước trên</p>
-              </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <p><strong>Bước 7:</strong> Nhấn "Xuất Báo Giá PDF" để tải báo giá chi tiết với đầy đủ thông tin</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Main Layout: 2 columns on desktop, 1 column on mobile */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Main Content Area */}
+        <div className="flex-1 min-w-0">
+          {/* Tabs Navigation */}
+          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)} className="w-full">
+            <TabsList className="w-full grid grid-cols-4 mb-6 h-auto">
+              <TabsTrigger value="customer" className="text-xs md:text-sm py-2 md:py-3 flex flex-col md:flex-row items-center gap-1">
+                <User className="w-4 h-4" />
+                <span className="hidden sm:inline">Khách hàng</span>
+                <span className="sm:hidden">KH</span>
+              </TabsTrigger>
+              <TabsTrigger value="basic" className="text-xs md:text-sm py-2 md:py-3 flex flex-col md:flex-row items-center gap-1">
+                <Server className="w-4 h-4" />
+                <span className="hidden sm:inline">Cấu hình</span>
+                <span className="sm:hidden">CH</span>
+              </TabsTrigger>
+              <TabsTrigger value="advanced" className="text-xs md:text-sm py-2 md:py-3 flex flex-col md:flex-row items-center gap-1">
+                <Zap className="w-4 h-4" />
+                <span className="hidden sm:inline">Nâng cao</span>
+                <span className="sm:hidden">NC</span>
+              </TabsTrigger>
+              <TabsTrigger value="summary" className="text-xs md:text-sm py-2 md:py-3 flex flex-col md:flex-row items-center gap-1">
+                <Calculator className="w-4 h-4" />
+                <span className="hidden sm:inline">Tổng kết</span>
+                <span className="sm:hidden">TK</span>
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Tab 1: Customer Information */}
+            <TabsContent value="customer" className="space-y-6">
+              {/* Quick Guide - Collapsible on mobile */}
+              <details className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border-2 border-blue-200">
+                <summary className="p-4 cursor-pointer font-semibold text-blue-800 flex items-center gap-2">
+                  <Info className="w-5 h-5" />
+                  Hướng Dẫn Nhanh (nhấn để mở)
+                </summary>
+                <div className="px-4 pb-4 space-y-2 text-sm text-gray-700">
+                  <p>1. Điền thông tin khách hàng (email bắt buộc)</p>
+                  <p>2. Chọn gói mẫu hoặc tùy chỉnh cấu hình</p>
+                  <p>3. Thêm dịch vụ bổ sung nếu cần</p>
+                  <p>4. Xuất báo giá PDF</p>
+                </div>
+              </details>
 
       {/* Customer Information Form */}
       <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg shadow-md border-2 border-green-200">
@@ -952,43 +986,69 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
                 placeholder="0108230633"
                 className="border-green-300 focus:border-green-500"
               />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Package Templates - Quick Setup */}
-      <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 border-2 border-purple-200">
-        <h3 className="text-xl font-semibold mb-4 flex items-center gap-2 text-purple-800">
-          <Zap className="w-6 h-6" />
-          Chọn Nhanh Cấu Hình Mẫu
-        </h3>
-        <p className="text-sm text-gray-600 mb-4">Chọn một trong các gói mẫu phổ biến để tự động điền cấu hình, sau đó bạn có thể tùy chỉnh thêm</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {packageTemplates.map((template, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.02, boxShadow: "0 10px 20px rgba(0,0,0,0.15)" }}
-              className="bg-white rounded-lg p-4 border-2 border-purple-200 hover:border-purple-400 transition-all cursor-pointer"
-              onClick={() => servers[0] && applyTemplate(servers[0].id, template)}
-            >
-              <h4 className="font-bold text-lg text-gray-800 mb-2">{template.name}</h4>
-              <p className="text-sm text-gray-600 mb-3">{template.description}</p>
-              <div className="grid grid-cols-2 gap-2 text-xs text-gray-700">
-                <div><strong>CPU:</strong> {template.cpu} Core</div>
-                <div><strong>RAM:</strong> {template.ram} GB</div>
-                <div><strong>Disk:</strong> {template.disk} GB {template.diskType.toUpperCase()}</div>
-                <div><strong>BW:</strong> {template.bandwidth}x100Mbps</div>
-                {template.gpu !== 'none' && (
-                  <div className="col-span-2"><strong>Dedicated GPU:</strong> {gpuOptions.find(g => g.value === template.gpu)?.label}</div>
-                )}
+              {/* Quick Presets with Pricing - Inside Customer Tab */}
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 md:p-6 border-2 border-purple-200">
+                <h3 className="text-lg md:text-xl font-semibold mb-4 flex items-center gap-2 text-purple-800">
+                  <Zap className="w-5 h-5 md:w-6 md:h-6" />
+                  Chọn Nhanh Gói Mẫu
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+                  {packageTemplates.map((template, index) => {
+                    const price = calculateTemplatePrice(template);
+                    return (
+                      <motion.div
+                        key={index}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="bg-white rounded-lg p-3 md:p-4 border-2 border-purple-200 hover:border-purple-400 transition-all cursor-pointer"
+                        onClick={() => {
+                          if (servers[0]) {
+                            applyTemplate(servers[0].id, template);
+                            setActiveTab('basic');
+                          }
+                        }}
+                        data-testid={`preset-${template.name.toLowerCase().replace(/\s+/g, '-')}`}
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-bold text-sm md:text-base text-gray-800">{template.name}</h4>
+                          <span className="text-xs md:text-sm font-bold text-purple-600 whitespace-nowrap">
+                            {formatCurrency(price)}/th
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-600 mb-2">{template.description}</p>
+                        <div className="flex flex-wrap gap-1 text-xs">
+                          <span className={`px-2 py-0.5 rounded ${getTierLabel(template.cpu, 'cpu').color}`}>
+                            {template.cpu} CPU
+                          </span>
+                          <span className={`px-2 py-0.5 rounded ${getTierLabel(template.ram, 'ram').color}`}>
+                            {template.ram}GB RAM
+                          </span>
+                          <span className={`px-2 py-0.5 rounded ${getTierLabel(template.disk, 'disk').color}`}>
+                            {template.disk}GB {template.diskType.toUpperCase()}
+                          </span>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
 
-      {/* Server List */}
+              {/* Navigation Button */}
+              <div className="flex justify-end">
+                <Button onClick={() => setActiveTab('basic')} className="bg-blue-600 hover:bg-blue-700">
+                  Tiếp tục cấu hình <span className="ml-2">→</span>
+                </Button>
+              </div>
+            </TabsContent>
+
+            {/* Tab 2: Basic Configuration */}
+            <TabsContent value="basic" className="space-y-6">
+              {/* Server List */}
       <div className="space-y-6">
         <AnimatePresence>
           {servers.map((server) => (
@@ -1827,37 +1887,283 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
             </div>
           </div>
 
-          {/* Service Level Agreement */}
-          <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <h4 className="font-semibold text-yellow-800 mb-2">📋 Cam Kết Dịch Vụ (SLA)</h4>
-            <div className="grid md:grid-cols-3 gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                <span className="text-yellow-700">Uptime: 99.9%</span>
+              {/* Service Level Agreement */}
+              <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <h4 className="font-semibold text-yellow-800 mb-2">Cam Kết Dịch Vụ (SLA)</h4>
+                <div className="grid md:grid-cols-3 gap-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                    <span className="text-yellow-700">Uptime: 99.9%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                    <span className="text-yellow-700">Response Time: &lt; 5 phút</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                    <span className="text-yellow-700">Hoàn tiền 100%</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                <span className="text-yellow-700">Response Time: &lt; 5 phút</span>
+            </div>
+          </div>
+
+              {/* Add Server Button */}
+              <div className="flex justify-center">
+                <Button
+                  onClick={addServer}
+                  className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto sm:min-w-[200px] text-base py-6"
+                  data-testid="button-add-server"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Thêm Server Mới
+                </Button>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                <span className="text-yellow-700">Hoàn tiền 100% nếu không đạt SLA</span>
+
+              {/* Navigation Buttons */}
+              <div className="flex justify-between">
+                <Button variant="outline" onClick={() => setActiveTab('customer')}>
+                  <span className="mr-2">←</span> Quay lại
+                </Button>
+                <Button onClick={() => setActiveTab('advanced')} className="bg-blue-600 hover:bg-blue-700">
+                  Nâng cao <span className="ml-2">→</span>
+                </Button>
+              </div>
+            </TabsContent>
+
+            {/* Tab 3: Advanced Options */}
+            <TabsContent value="advanced" className="space-y-6">
+              <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-lg p-6 border-2 border-amber-200">
+                <h4 className="font-semibold text-amber-900 mb-4 flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  Dịch Vụ Bổ Sung (Tùy chọn)
+                </h4>
+                <p className="text-sm text-gray-600 mb-4">Các dịch vụ hỗ trợ chuyên sâu cho server của bạn</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {additionalServices.map((service) => {
+                    const isSelected = servers[0]?.additionalServices.includes(service.id);
+                    return (
+                      <div
+                        key={service.id}
+                        onClick={() => servers[0] && toggleAdditionalService(servers[0].id, service.id)}
+                        className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                          isSelected 
+                            ? 'border-amber-500 bg-amber-100' 
+                            : 'border-amber-200 bg-white hover:border-amber-400'
+                        }`}
+                        data-testid={`checkbox-service-${service.id}`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center mt-0.5 flex-shrink-0 ${
+                            isSelected ? 'border-amber-600 bg-amber-600' : 'border-gray-300 bg-white'
+                          }`}>
+                            {isSelected && <CheckCircle className="w-4 h-4 text-white" />}
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-800 flex items-center justify-between">
+                              <span className="text-sm">{service.label}</span>
+                              <span className="text-xs text-amber-700">{formatCurrency(service.price)}{service.unit}</span>
+                            </div>
+                            <p className="text-xs text-gray-600 mt-1">{service.description}</p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Navigation Buttons */}
+              <div className="flex justify-between">
+                <Button variant="outline" onClick={() => setActiveTab('basic')}>
+                  <span className="mr-2">←</span> Quay lại
+                </Button>
+                <Button onClick={() => setActiveTab('summary')} className="bg-green-600 hover:bg-green-700">
+                  Xem tổng kết <span className="ml-2">→</span>
+                </Button>
+              </div>
+            </TabsContent>
+
+            {/* Tab 4: Summary */}
+            <TabsContent value="summary" className="space-y-6">
+              {/* VAT Toggle */}
+              <div className="flex justify-center">
+                <div className="flex items-center gap-3 px-4 py-2 bg-white rounded-lg border border-gray-200">
+                  <Label htmlFor="vat-toggle-tab" className="text-sm font-medium cursor-pointer">
+                    Bao gồm VAT (10%)
+                  </Label>
+                  <Switch
+                    id="vat-toggle-tab"
+                    checked={includeVAT}
+                    onCheckedChange={setIncludeVAT}
+                    data-testid="switch-vat-summary"
+                  />
+                </div>
+              </div>
+
+              {/* Total Summary */}
+              <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-lg p-6 border-2 border-blue-200">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                  <Calculator className="w-6 h-6" />
+                  Tổng Kết Báo Giá
+                </h3>
+                
+                {servers.map((server) => (
+                  <div key={server.id} className="mb-4 p-4 bg-white rounded-lg border border-gray-200">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-semibold">{server.name}</span>
+                      <span className="text-lg font-bold text-blue-600">
+                        {formatCurrency(calculateServerCost(server))}/tháng
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2 text-xs">
+                      <span className={`px-2 py-1 rounded ${getTierLabel(server.cpu, 'cpu').color}`}>
+                        {server.cpu} CPU
+                      </span>
+                      <span className={`px-2 py-1 rounded ${getTierLabel(server.ram, 'ram').color}`}>
+                        {server.ram}GB RAM
+                      </span>
+                      <span className={`px-2 py-1 rounded ${getTierLabel(server.disk, 'disk').color}`}>
+                        {server.disk}GB {server.diskType.toUpperCase()}
+                      </span>
+                      {server.gpu !== 'none' && (
+                        <span className="px-2 py-1 rounded bg-yellow-100 text-yellow-700">
+                          GPU: {gpuOptions.find(g => g.value === server.gpu)?.label}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                <div className="border-t-2 border-blue-300 pt-4 mt-4">
+                  <div className="flex justify-between items-center">
+                    <div className="text-lg font-semibold text-gray-800">
+                      Tổng chi phí ({servers.length} server)
+                      {!includeVAT && <span className="text-sm text-red-600 ml-2">(Chưa VAT)</span>}
+                      {includeVAT && <span className="text-sm text-green-600 ml-2">(Đã VAT)</span>}
+                    </div>
+                    <div className="text-2xl font-bold text-blue-600" data-testid="total-cost-summary">
+                      {formatCurrency(calculateTotalCost())}/tháng
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Export PDF Button */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button variant="outline" onClick={() => setActiveTab('basic')}>
+                  <span className="mr-2">←</span> Chỉnh sửa cấu hình
+                </Button>
+                <Button
+                  onClick={generatePDFQuote}
+                  className="bg-green-600 hover:bg-green-700 text-white text-base py-6"
+                  data-testid="button-export-pdf"
+                >
+                  <Download className="w-5 h-5 mr-2" />
+                  Xuất Báo Giá PDF
+                </Button>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Sticky Pricing Sidebar - Hidden on mobile */}
+        <div className="hidden lg:block lg:w-80 lg:flex-shrink-0">
+          <div className="lg:sticky lg:top-6 space-y-4">
+            {/* Pricing Summary Card */}
+            <div className="bg-white rounded-lg shadow-lg border-2 border-blue-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 text-white">
+                <h3 className="font-bold text-lg flex items-center gap-2">
+                  <DollarSign className="w-5 h-5" />
+                  Tổng Chi Phí
+                </h3>
+              </div>
+              <div className="p-4 space-y-3">
+                {servers.map((server) => (
+                  <div key={server.id} className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600 truncate max-w-[120px]">{server.name}</span>
+                    <span className="font-semibold text-blue-600">
+                      {formatCurrency(calculateServerCost(server))}
+                    </span>
+                  </div>
+                ))}
+                <div className="border-t pt-3 mt-3">
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold text-gray-800">Hàng tháng:</span>
+                    <span className="text-xl font-bold text-blue-600">
+                      {formatCurrency(calculateTotalCost())}
+                    </span>
+                  </div>
+                  {!includeVAT && (
+                    <p className="text-xs text-red-500 text-right mt-1">Chưa bao gồm VAT</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Resource Tier Legend */}
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <h4 className="font-semibold text-gray-700 mb-3 text-sm">Mức Độ Cấu Hình</h4>
+              <div className="space-y-2 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded bg-green-400"></span>
+                  <span className="text-gray-600">Cơ bản - Tiết kiệm</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded bg-yellow-400"></span>
+                  <span className="text-gray-600">Trung bình - Phổ biến</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded bg-red-400"></span>
+                  <span className="text-gray-600">Cao cấp - Hiệu năng</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <h4 className="font-semibold text-gray-700 mb-3 text-sm">Hành Động Nhanh</h4>
+              <div className="space-y-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full text-xs"
+                  onClick={addServer}
+                >
+                  <Plus className="w-3 h-3 mr-1" />
+                  Thêm Server
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full text-xs"
+                  onClick={generatePDFQuote}
+                >
+                  <Download className="w-3 h-3 mr-1" />
+                  Xuất PDF
+                </Button>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Add New Server Button - Repositioned */}
-      <div className="flex justify-center">
-        <Button
-          onClick={addServer}
-          className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto sm:min-w-[200px] text-base py-6"
-          data-testid="button-add-server"
-        >
-          <Plus className="w-5 h-5 mr-2" />
-          Thêm Server Mới
-        </Button>
+      {/* Mobile-only: Floating Price Display */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-blue-200 shadow-lg p-3 z-50">
+        <div className="flex items-center justify-between max-w-md mx-auto">
+          <div>
+            <p className="text-xs text-gray-500">Tổng chi phí</p>
+            <p className="text-lg font-bold text-blue-600">{formatCurrency(calculateTotalCost())}/th</p>
+          </div>
+          <Button 
+            size="sm" 
+            onClick={generatePDFQuote}
+            className="bg-green-600 hover:bg-green-700"
+          >
+            <Download className="w-4 h-4 mr-1" />
+            Xuất PDF
+          </Button>
+        </div>
       </div>
     </div>
   );

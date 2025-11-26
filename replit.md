@@ -51,16 +51,24 @@ Preferred communication style: Simple, everyday language.
 - **FAQ Section**: Comprehensive 10-question FAQ using Accordion component, displayed on both homepage (/) and Cloud Server page (/Cloud/Cloud Server). Covers Cloud Server basics, datacenter locations, scalability, compliance, migration, GPU/AI support, SLA uptime, payment methods, backup options (3 bản/tuần, giữ lại 3 bản gần nhất, restore từ 10 phút trở lên tùy dung lượng), and 24/7 support channels.
 - **Server Configurator with Quote Generation**: Advanced cloud server configuration tool integrated across ALL Cloud service pages (`/cloud`, `/Cloud/Cloud Odoo`, `/Cloud/Cloud Server`) with:
     - **Page Integration**: ServerConfigurator component appears on all three Cloud service pages wrapped in section#server-configurator with py-20 bg-gray-50 styling
-    - **User Instructions**: 7-step guided workflow to help users understand the configuration process
+    - **Tabbed Interface (UX Optimized)**: 4-tab navigation system for streamlined configuration workflow:
+        - **Tab 1 - Customer (Khách hàng)**: Customer info form + Quick Presets with visible pricing + Collapsible guide
+        - **Tab 2 - Basic Config (Cấu hình)**: Server configuration (CPU, RAM, Disk, IP, Bandwidth, GPU, OS) + Add/Duplicate/Remove servers
+        - **Tab 3 - Advanced (Nâng cao)**: Additional Services selection with toggle cards
+        - **Tab 4 - Summary (Tổng kết)**: Cost breakdown, server specs with tier badges, VAT toggle, PDF export
+    - **Sticky Pricing Sidebar**: Desktop-only (lg:) right column showing real-time cost breakdown, tier legend, and quick action buttons
+    - **Mobile-Optimized Layout**: Floating price bar at bottom on mobile, responsive tab labels (abbreviated on small screens), collapsible sections
+    - **Color-coded Resource Tiers**: Visual indicators for resource levels - Green (basic/economy), Yellow (medium/popular), Red (high-end/performance) applied to CPU, RAM, Disk badges
+    - **Quick Presets with Pricing**: Template cards showing calculated monthly price, clicking applies preset and navigates to config tab
     - **Customer Information Collection**: Form capturing customer details (name, phone, email*, company, tax code) with email validation requirement
     - **Flexible Payment Cycles**: 1-60 months input (no automatic discounts)
     - **GPU Selection**: Checkbox-based selection with "Dedicated GPU" labeling (14 options including NVIDIA RTX 3060-4090, Tesla T4/V100, RTX A4000-A6000, H100)
     - **Operating System Selection**: Checkbox-based single-selection including Ubuntu, CentOS, Rocky Linux, AlmaLinux, Windows Server (Trial 180-day free), Debian, Fedora, and custom OS input option ("Khác - Tự nhập")
     - **Additional Services Per Server**: 6 services including Server Management (1M VND/month), Database Optimization (3M VND/occurrence), Migration Service (1M VND/site), Load Balancer (2M VND/month), AI/ML Support (1.5M VND/month), and Website Speed Optimization (500k VND/occurrence - one-time fee)
-    - **Other Services Selection**: Ability to add other STEP services (Hosting, Email, Domain) with quantity selection
     - **Professional PDF Quote Generation**: Automated quote generation featuring official company information (MST: 0108230633, địa chỉ, email: info@step.com.vn, website: http://step.com.vn/), customer information, detailed server specifications with component table (including Dedicated GPU and OS with trial/custom labels), additional services table (showing one-time vs monthly fees separately), other services section (with subtotal, VAT, and total), voucher discounts, VAT calculation, and simplified bank account details footer (3 bullet points: Chủ tài khoản, Số tài khoản: 6223399, Ngân hàng: Hàng Hải Việt Nam). Uses embedded Vietnamese fonts (Roboto Regular & Bold) for proper diacritics rendering. Custom OS validation prevents PDF generation if OS set to "custom" but customOS field is empty/whitespace. PDF button has data-testid="button-export-pdf"
     - **Enhanced Pricing Features**: Voucher discount system (percentage-based, applied before VAT), VAT toggle (10%)
     - **Calculation Order**: Subtotal → Voucher Discount → VAT (if enabled)
+    - **Helper Functions**: getTierLabel() for resource tier colors, calculateTemplatePrice() for preset pricing display
 
 ## External Dependencies
 
