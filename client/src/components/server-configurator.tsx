@@ -1763,153 +1763,85 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
         </div>
       </div>
 
-      {/* Additional Services Details */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-md border border-blue-200">
-        <div className="p-6 border-b border-blue-200 bg-blue-100 rounded-t-lg">
-          <h3 className="text-xl font-semibold flex items-center gap-2 text-blue-800">
-            <Server className="w-6 h-6" />
-            Chi Tiết Dịch Vụ Bổ Sung
-          </h3>
-          <p className="text-sm text-blue-600 mt-2">Các dịch vụ đi kèm miễn phí và có tính phí</p>
-        </div>
-        <div className="p-6">
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Free Services */}
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-green-700 flex items-center gap-2">
-                <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-                Dịch Vụ Miễn Phí Đi Kèm
+      {/* Collapsible Additional Services Details */}
+      <Collapsible className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-md border border-blue-200">
+        <CollapsibleTrigger className="w-full p-4 md:p-6 flex items-center justify-between hover:bg-blue-100/50 transition-colors rounded-t-lg">
+          <div className="flex items-center gap-3">
+            <Server className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
+            <div className="text-left">
+              <h3 className="text-base md:text-xl font-semibold text-blue-800">Chi Tiết Dịch Vụ Bổ Sung</h3>
+              <p className="text-xs md:text-sm text-blue-600">Nhấn để xem các dịch vụ miễn phí và có tính phí</p>
+            </div>
+          </div>
+          <ChevronDown className="w-5 h-5 text-blue-600 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+        </CollapsibleTrigger>
+        <CollapsibleContent className="p-4 md:p-6 pt-0 border-t border-blue-200">
+          <div className="grid md:grid-cols-2 gap-6 pt-4">
+            {/* Free Services - Compact */}
+            <div className="space-y-3">
+              <h4 className="text-sm md:text-base font-semibold text-green-700 flex items-center gap-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                Miễn Phí Đi Kèm
               </h4>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                  <div>
-                    <h5 className="font-medium text-gray-800">Backup Tự Động Hàng Ngày</h5>
-                    <p className="text-sm text-gray-600">Sao lưu dữ liệu tự động 24/7, khôi phục nhanh chóng</p>
+              <div className="space-y-2">
+                {[
+                  { title: 'Backup Tự Động', desc: 'Sao lưu 24/7' },
+                  { title: 'SSL Certificate', desc: 'Let\'s Encrypt' },
+                  { title: 'Monitoring 24/7', desc: 'Email/SMS Alert' },
+                  { title: 'DDoS Protection', desc: 'Lên đến 10Gbps' },
+                  { title: 'Hỗ Trợ 24/7', desc: 'Không giới hạn' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2 p-2 bg-white rounded-lg border border-green-200 text-sm">
+                    <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                    <span className="font-medium text-gray-800">{item.title}</span>
+                    <span className="text-gray-500 text-xs">- {item.desc}</span>
                   </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                  <div>
-                    <h5 className="font-medium text-gray-800">SSL Certificate Miễn Phí</h5>
-                    <p className="text-sm text-gray-600">Chứng chỉ SSL Let's Encrypt tự động gia hạn</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                  <div>
-                    <h5 className="font-medium text-gray-800">Monitoring & Alert</h5>
-                    <p className="text-sm text-gray-600">Giám sát server 24/7, cảnh báo qua email/SMS</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                  <div>
-                    <h5 className="font-medium text-gray-800">Firewall & DDoS Protection</h5>
-                    <p className="text-sm text-gray-600">Bảo vệ chống tấn công DDoS lên đến 10Gbps</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                  <div>
-                    <h5 className="font-medium text-gray-800">Hỗ Trợ Kỹ Thuật 24/7</h5>
-                    <p className="text-sm text-gray-600">Team kỹ thuật Việt Nam hỗ trợ không giới hạn</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* Paid Services */}
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-blue-700 flex items-center gap-2">
-                <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
-                Dịch Vụ Bổ Sung (Có Phí)
+            {/* Paid Services - Compact */}
+            <div className="space-y-3">
+              <h4 className="text-sm md:text-base font-semibold text-blue-700 flex items-center gap-2">
+                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                Có Phí Bổ Sung
               </h4>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h5 className="font-medium text-gray-800">Server Management</h5>
-                        <p className="text-sm text-gray-600">Quản lý server toàn diện, cài đặt phần mềm</p>
-                      </div>
-                      <span className="text-sm font-semibold text-blue-600">1M VND/tháng</span>
+              <div className="space-y-2">
+                {[
+                  { title: 'Server Management', price: '1M/th' },
+                  { title: 'DB Optimization', price: '3-5M/lần' },
+                  { title: 'Migration Service', price: '1M/site' },
+                  { title: 'Load Balancer', price: '2M/th' },
+                  { title: 'AI/ML Support', price: '1.5M/th' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-2 bg-white rounded-lg border border-blue-200 text-sm">
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                      <span className="font-medium text-gray-800">{item.title}</span>
                     </div>
+                    <span className="text-blue-600 font-semibold text-xs">{item.price}</span>
                   </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h5 className="font-medium text-gray-800">Database Optimization</h5>
-                        <p className="text-sm text-gray-600">Tối ưu hóa MySQL, PostgreSQL, MongoDB</p>
-                      </div>
-                      <span className="text-sm font-semibold text-blue-600">3M - 5M VND/lần</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h5 className="font-medium text-gray-800">Migration Service</h5>
-                        <p className="text-sm text-gray-600">Chuyển đổi website/dữ liệu từ hosting khác</p>
-                      </div>
-                      <span className="text-sm font-semibold text-blue-600">1M VND/site</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h5 className="font-medium text-gray-800">Load Balancer</h5>
-                        <p className="text-sm text-gray-600">Cân bằng tải cho traffic cao</p>
-                      </div>
-                      <span className="text-sm font-semibold text-blue-600">2M VND/tháng</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h5 className="font-medium text-gray-800">AI/ML Support</h5>
-                        <p className="text-sm text-gray-600">Tư vấn setup TensorFlow, PyTorch, CUDA</p>
-                      </div>
-                      <span className="text-sm font-semibold text-blue-600">1.5M VND/tháng</span>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
 
-              {/* Service Level Agreement */}
-              <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <h4 className="font-semibold text-yellow-800 mb-2">Cam Kết Dịch Vụ (SLA)</h4>
-                <div className="grid md:grid-cols-3 gap-4 text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                    <span className="text-yellow-700">Uptime: 99.9%</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                    <span className="text-yellow-700">Response Time: &lt; 5 phút</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                    <span className="text-yellow-700">Hoàn tiền 100%</span>
-                  </div>
-                </div>
-              </div>
+          {/* SLA Badge - Compact */}
+          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs md:text-sm">
+              <span className="flex items-center gap-1 text-yellow-700">
+                <Shield className="w-4 h-4" /> Uptime 99.9%
+              </span>
+              <span className="flex items-center gap-1 text-yellow-700">
+                <Zap className="w-4 h-4" /> Response &lt;5 phút
+              </span>
+              <span className="flex items-center gap-1 text-yellow-700">
+                <CheckCircle className="w-4 h-4" /> Hoàn tiền 100%
+              </span>
             </div>
           </div>
+        </CollapsibleContent>
+      </Collapsible>
 
               {/* Add Server Button with Tooltip */}
               <div className="flex justify-center">
