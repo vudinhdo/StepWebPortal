@@ -30,6 +30,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { RobotoRegularBase64, RobotoBoldBase64 } from '@/fonts/roboto-fonts';
@@ -1908,16 +1911,26 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
             </div>
           </div>
 
-              {/* Add Server Button */}
+              {/* Add Server Button with Tooltip */}
               <div className="flex justify-center">
-                <Button
-                  onClick={addServer}
-                  className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto sm:min-w-[200px] text-base py-6"
-                  data-testid="button-add-server"
-                >
-                  <Plus className="w-5 h-5 mr-2" />
-                  Thêm Server Mới
-                </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={addServer}
+                        className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto sm:min-w-[200px] text-base py-6"
+                        data-testid="button-add-server"
+                      >
+                        <Plus className="w-5 h-5 mr-2" />
+                        Thêm Server Mới
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs p-3 bg-gray-900 text-white">
+                      <p className="font-semibold mb-1">Thêm server mới vào báo giá</p>
+                      <p className="text-xs text-gray-300">Mỗi server có thể có cấu hình riêng (CPU, RAM, Disk, GPU...). Phù hợp khi cần nhiều server cho hệ thống phân tán hoặc load balancing.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
 
               {/* Navigation Buttons */}
