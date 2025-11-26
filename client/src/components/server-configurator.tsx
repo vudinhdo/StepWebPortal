@@ -20,7 +20,9 @@ import {
   Building,
   FileText,
   Info,
-  CheckCircle
+  CheckCircle,
+  TrendingUp,
+  DollarSign
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -273,6 +275,7 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     }
   ]);
   const [includeVAT, setIncludeVAT] = useState(false);
+  const [activeTab, setActiveTab] = useState<'customer' | 'basic' | 'advanced' | 'summary'>('customer');
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
     fullName: '',
     phone: '',
@@ -280,6 +283,20 @@ export default function ServerConfigurator({ onQuoteGenerated }: ServerConfigura
     company: '',
     taxCode: ''
   });
+
+  // Helper function to get color tier for resources
+  const getResourceColor = (value: number, type: 'cpu' | 'ram' | 'disk' | 'bandwidth') => {
+    const thresholds = {
+      cpu: { green: 4, yellow: 8 },
+      ram: { green: 8, yellow: 16 },
+      disk: { green: 100, yellow: 500 },
+      bandwidth: { green: 2, yellow: 5 }
+    };
+    const threshold = thresholds[type];
+    if (value <= threshold.green) return 'bg-green-50 border-green-300';
+    if (value <= threshold.yellow) return 'bg-yellow-50 border-yellow-300';
+    return 'bg-red-50 border-red-300';
+  };
 
   const addServer = () => {
     const newServer: ServerConfig = {
