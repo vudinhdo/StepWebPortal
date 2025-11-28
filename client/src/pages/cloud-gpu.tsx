@@ -732,9 +732,28 @@ export default function CloudGPU() {
         </div>
       </section>
 
-      {/* Server Configurator Section */}
-      <section id="server-configurator" className="py-20 bg-gray-100">
-        <ServerConfigurator />
+      {/* Server Configurator Section - với dark wrapper */}
+      <section id="server-configurator" className="py-20 bg-gray-950">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                Cấu Hình GPU Cloud Server
+              </span>
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Tùy chỉnh cấu hình server GPU theo nhu cầu của bạn - từ inference nhẹ đến training LLMs quy mô lớn
+            </p>
+          </motion.div>
+        </div>
+        <div className="bg-gray-50 rounded-t-3xl pt-8">
+          <ServerConfigurator />
+        </div>
       </section>
 
       {/* CTA Section */}
