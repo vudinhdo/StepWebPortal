@@ -149,7 +149,7 @@ export default function MobileMegaMenu() {
                       href={
                         // Cloud links
                         category.id === 'cloud' && item.name === 'Cloud Server' ? '/Cloud/CloudServer' :
-                        category.id === 'cloud' && item.name === 'Cloud Odoo' ? '/Cloud/Cloud Odoo' :
+                        category.id === 'cloud' && item.name === 'Cloud Odoo' ? '/Cloud/CloudOdoo' :
                         category.id === 'cloud' && item.name === 'Cloud GPU' ? '/Cloud/Cloud GPU' :
                         category.id === 'cloud' && item.name === 'Cloud AMD' ? '/Cloud/Cloud AMD' :
                         // Hosting links
