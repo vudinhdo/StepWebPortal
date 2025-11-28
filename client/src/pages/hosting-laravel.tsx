@@ -32,18 +32,24 @@ import {
   ChevronUp,
   Code,
   Package,
-  Cpu
+  Cpu,
+  Layers,
+  Workflow,
+  Timer,
+  HelpCircle
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+
+const LARAVEL_RED = "#FF2D20";
 
 export default function HostingLaravel() {
-  const [showAllPackages, setShowAllPackages] = useState(false);
-  const [compareView, setCompareView] = useState(false);
+  const [selectedTier, setSelectedTier] = useState("all");
 
-  // 18 Laravel Hosting Packages - From Starter to Enterprise
   const packages = [
     {
       id: 1,
@@ -70,7 +76,8 @@ export default function HostingLaravel() {
       cron: "Basic Cron",
       backup: "Weekly",
       support: "Email 24h",
-      suitable: "Blog cá nhân/Portfolio đơn giản"
+      suitable: "Blog cá nhân/Portfolio đơn giản",
+      features: ["PHP 8.1+", "Composer", "SSH"]
     },
     {
       id: 2,
@@ -97,7 +104,8 @@ export default function HostingLaravel() {
       cron: "Basic Cron",
       backup: "Weekly",
       support: "Email 24h",
-      suitable: "Dev thử nghiệm/Personal Project"
+      suitable: "Dev thử nghiệm/Personal Project",
+      features: ["PHP 8.1+", "Composer", "SSH", "Git"]
     },
     {
       id: 3,
@@ -124,7 +132,8 @@ export default function HostingLaravel() {
       cron: "Advanced Cron",
       backup: "Weekly",
       support: "Email 12h",
-      suitable: "Freelancer/Small Projects"
+      suitable: "Freelancer/Small Projects",
+      features: ["PHP 8.1+", "Composer", "SSH", "Git", "Artisan"]
     },
     {
       id: 4,
@@ -152,7 +161,8 @@ export default function HostingLaravel() {
       backup: "Daily",
       support: "Chat 8h",
       suitable: "Business Website/Startup MVP",
-      popular: true
+      popular: true,
+      features: ["PHP 8.1+", "Composer", "SSH", "Git", "Redis", "Queue Workers"]
     },
     {
       id: 5,
@@ -179,7 +189,8 @@ export default function HostingLaravel() {
       cron: "Advanced Cron",
       backup: "Daily",
       support: "Chat/Phone 4h",
-      suitable: "SME/Agency Projects"
+      suitable: "SME/Agency Projects",
+      features: ["PHP 8.1+", "Composer", "SSH", "Git", "CI/CD", "Redis", "Queue Workers"]
     },
     {
       id: 6,
@@ -206,7 +217,8 @@ export default function HostingLaravel() {
       cron: "Advanced Cron",
       backup: "Daily + On-demand",
       support: "Priority 2h",
-      suitable: "Multiple Projects/Agency"
+      suitable: "Multiple Projects/Agency",
+      features: ["PHP 8.1+", "Composer", "SSH", "Git", "CI/CD", "Redis", "Horizon"]
     },
     {
       id: 7,
@@ -233,7 +245,8 @@ export default function HostingLaravel() {
       cron: "Advanced Scheduler",
       backup: "Daily + Hourly",
       support: "Priority 1h",
-      suitable: "Developer Teams/High-traffic Apps"
+      suitable: "Developer Teams/High-traffic Apps",
+      features: ["PHP Multi-version", "Composer 2", "SSH", "Git", "CI/CD", "Redis", "Memcached", "Horizon", "Supervisor"]
     },
     {
       id: 8,
@@ -260,7 +273,8 @@ export default function HostingLaravel() {
       cron: "Advanced Scheduler",
       backup: "Hourly",
       support: "Dedicated Support",
-      suitable: "Production Apps/SaaS Platform"
+      suitable: "Production Apps/SaaS Platform",
+      features: ["PHP Multi-version", "Composer 2", "SSH", "SFTP", "Advanced CI/CD", "Redis Cluster", "Horizon Pro"]
     },
     {
       id: 9,
@@ -287,7 +301,8 @@ export default function HostingLaravel() {
       cron: "Custom Scheduler",
       backup: "Real-time",
       support: "24/7 Dedicated",
-      suitable: "Enterprise Development Teams"
+      suitable: "Enterprise Development Teams",
+      features: ["PHP Multi-version", "Composer 2", "Root SSH", "Advanced CI/CD", "Redis Cluster", "Custom Horizon"]
     },
     {
       id: 10,
@@ -314,7 +329,8 @@ export default function HostingLaravel() {
       cron: "Custom Scheduler",
       backup: "Real-time + GEO",
       support: "24/7 Premium",
-      suitable: "Large Organizations/Multi-brand"
+      suitable: "Large Organizations/Multi-brand",
+      features: ["PHP Multi-version", "Composer 2", "Full Access", "Enterprise CI/CD", "Redis HA", "Horizon Enterprise"]
     },
     {
       id: 11,
@@ -341,7 +357,8 @@ export default function HostingLaravel() {
       cron: "Custom Scheduler",
       backup: "Real-time + Multi-region",
       support: "24/7 Premium + DevOps",
-      suitable: "SaaS Platforms/High-traffic"
+      suitable: "SaaS Platforms/High-traffic",
+      features: ["PHP Multi-version", "Root Access", "Enterprise CI/CD", "Redis HA", "Multi-region Backup"]
     },
     {
       id: 12,
@@ -368,7 +385,8 @@ export default function HostingLaravel() {
       cron: "Custom Scheduler",
       backup: "Real-time + Multi-region",
       support: "24/7 Premium + Architect",
-      suitable: "Enterprise/Mission-critical Apps"
+      suitable: "Enterprise/Mission-critical Apps",
+      features: ["Custom PHP Stack", "Root Access", "Custom CI/CD", "Redis Multi-zone", "Custom Queue"]
     },
     {
       id: 13,
@@ -395,7 +413,9 @@ export default function HostingLaravel() {
       cron: "Enterprise Scheduler",
       backup: "Real-time + Global CDN",
       support: "24/7 Enterprise + Architect",
-      suitable: "Large Corporations/Financial"
+      suitable: "Large Corporations/Financial",
+      enterprise: true,
+      features: ["Custom Stack", "Private Registry", "Audit Logs", "Custom Pipeline", "Redis Enterprise"]
     },
     {
       id: 14,
@@ -422,7 +442,9 @@ export default function HostingLaravel() {
       cron: "Enterprise Scheduler",
       backup: "Real-time + Multi-cloud",
       support: "24/7 Enterprise + CTO",
-      suitable: "Multi-national Corps/E-commerce"
+      suitable: "Multi-national Corps/E-commerce",
+      enterprise: true,
+      features: ["Custom Stack", "DevSecOps", "Security Audit", "Multi-cloud", "Redis Enterprise HA"]
     },
     {
       id: 15,
@@ -449,7 +471,9 @@ export default function HostingLaravel() {
       cron: "Custom Orchestration",
       backup: "Real-time + Disaster Recovery",
       support: "24/7 White-glove + CTO",
-      suitable: "Banking/Healthcare/Government"
+      suitable: "Banking/Healthcare/Government",
+      enterprise: true,
+      features: ["Microservices", "Compliance", "DevSecOps", "Disaster Recovery", "Multi-region Redis"]
     },
     {
       id: 16,
@@ -476,7 +500,9 @@ export default function HostingLaravel() {
       cron: "Custom Orchestration",
       backup: "Real-time + Multi-site DR",
       support: "24/7 White-glove + Solutions Architect",
-      suitable: "Global SaaS/Fintech"
+      suitable: "Global SaaS/Fintech",
+      enterprise: true,
+      features: ["Kubernetes", "Zero-Trust", "Advanced Security", "Global Cluster", "Multi-site DR"]
     },
     {
       id: 17,
@@ -503,7 +529,9 @@ export default function HostingLaravel() {
       cron: "Custom Orchestration",
       backup: "Real-time + Global DR",
       support: "24/7 Concierge + Engineering Team",
-      suitable: "Fortune 500/Critical Infrastructure"
+      suitable: "Fortune 500/Critical Infrastructure",
+      enterprise: true,
+      features: ["Service Mesh", "Hardened Security", "Global HA", "Multi-region Queue", "Global DR"]
     },
     {
       id: 18,
@@ -531,89 +559,147 @@ export default function HostingLaravel() {
       backup: "Custom DR Solution",
       support: "24/7 Dedicated Engineering Team",
       suitable: "Custom Enterprise Solutions",
-      enterprise: true
+      enterprise: true,
+      features: ["Custom Everything", "Dedicated Team", "Custom Infrastructure"]
     }
   ];
 
-  const displayedPackages = showAllPackages ? packages : packages.slice(0, 6);
+  const tiers = ["all", "Starter", "Business", "Professional", "Advanced", "Enterprise"];
+  
+  const getFilteredPackages = () => {
+    if (selectedTier === "all") {
+      return packages.slice(0, 6);
+    }
+    return packages.filter(pkg => pkg.tier === selectedTier);
+  };
 
-  // Technical Features specific to Laravel
-  const technicalFeatures = [
+  const getTierColor = (tier: string) => {
+    switch(tier) {
+      case "Starter": return "bg-green-100 text-green-800 border-green-300";
+      case "Business": return "bg-blue-100 text-blue-800 border-blue-300";
+      case "Professional": return "bg-purple-100 text-purple-800 border-purple-300";
+      case "Advanced": return "bg-orange-100 text-orange-800 border-orange-300";
+      case "Enterprise": return "bg-yellow-100 text-yellow-800 border-yellow-300";
+      default: return "bg-gray-100 text-gray-800 border-gray-300";
+    }
+  };
+
+  const getFeatureBadgeStyle = (feature: string) => {
+    if (feature.includes("Redis") || feature.includes("Queue") || feature.includes("Horizon")) {
+      return "bg-[#FF2D20]/10 text-[#FF2D20] border-[#FF2D20]/30";
+    }
+    if (feature.includes("SSH") || feature.includes("Git") || feature.includes("CI/CD")) {
+      return "bg-blue-100 text-blue-700 border-blue-300";
+    }
+    if (feature.includes("PHP") || feature.includes("Composer") || feature.includes("Artisan")) {
+      return "bg-purple-100 text-purple-700 border-purple-300";
+    }
+    return "bg-gray-100 text-gray-700 border-gray-300";
+  };
+
+  const technicalFeatureGroups = [
     {
-      icon: Code2,
-      title: "PHP 8.1+ Support",
-      description: "Hỗ trợ đầy đủ PHP 8.1, 8.2, 8.3 với JIT compiler, typed properties, và performance improvements. Tương thích hoàn hảo với Laravel 9, 10, 11."
+      title: "🚀 Deployment & DevOps",
+      icon: Rocket,
+      features: [
+        {
+          icon: Terminal,
+          title: "Full SSH Access",
+          description: "SSH/SFTP access đầy đủ để chạy Artisan commands, database migrations, queue workers, và deployment scripts. Root access cho Enterprise tiers."
+        },
+        {
+          icon: GitBranch,
+          title: "Git + CI/CD Integration",
+          description: "Git integration với GitHub, GitLab, Bitbucket. CI/CD pipelines tự động với GitHub Actions, Jenkins, hoặc custom scripts cho continuous deployment."
+        },
+        {
+          icon: Package,
+          title: "Composer & Dependencies",
+          description: "Composer 2 pre-installed, hỗ trợ private repositories, package caching để install dependencies nhanh chóng. Compatible với Packagist và custom registries."
+        }
+      ]
     },
     {
-      icon: Package,
-      title: "Composer & Dependencies",
-      description: "Composer 2 pre-installed, hỗ trợ private repositories, package caching để install dependencies nhanh chóng. Compatible với Packagist và custom registries."
-    },
-    {
-      icon: Terminal,
-      title: "Full SSH Access",
-      description: "SSH/SFTP access đầy đủ để chạy Artisan commands, database migrations, queue workers, và deployment scripts. Root access cho Enterprise tiers."
-    },
-    {
-      icon: GitBranch,
-      title: "Git + CI/CD Integration",
-      description: "Git integration với GitHub, GitLab, Bitbucket. CI/CD pipelines tự động với GitHub Actions, Jenkins, hoặc custom scripts cho continuous deployment."
-    },
-    {
-      icon: Database,
-      title: "Redis & Memcached",
-      description: "Redis cache server cho session storage, query caching, và Laravel Horizon. Memcached support cho distributed caching systems với high availability."
-    },
-    {
-      icon: Monitor,
-      title: "Queue Workers & Horizon",
-      description: "Laravel Horizon dashboard, Supervisor process manager, multiple queue workers, failed job handling, và real-time monitoring cho background tasks."
-    },
-    {
-      icon: Settings,
-      title: "Advanced Cron Scheduler",
-      description: "Laravel Task Scheduler support, custom cron jobs, scheduled commands, và automated maintenance tasks. Log monitoring và error notifications."
-    },
-    {
-      icon: Cloud,
-      title: "NVMe SSD Storage",
-      description: "High-performance NVMe SSD storage với tốc độ đọc/ghi vượt trội. Ideal cho Laravel applications với large file storage và media management."
-    },
-    {
-      icon: Shield,
-      title: "Security & Firewall",
-      description: "Imunify360 protection, ModSecurity WAF, DDoS mitigation, malware scanning, và SSL certificates. Secure .env file management và secrets protection."
-    },
-    {
+      title: "⚡ Caching & Performance",
       icon: Zap,
-      title: "LiteSpeed Web Server",
-      description: "LiteSpeed LSAPI cho PHP, HTTP/3 support, built-in caching, và performance optimization. Nhanh hơn Apache/Nginx cho Laravel applications."
+      features: [
+        {
+          icon: Database,
+          title: "Redis & Memcached",
+          description: "Redis cache server cho session storage, query caching, và Laravel Horizon. Memcached support cho distributed caching systems với high availability."
+        },
+        {
+          icon: Zap,
+          title: "LiteSpeed Web Server",
+          description: "LiteSpeed LSAPI cho PHP, HTTP/3 support, built-in caching, và performance optimization. Nhanh hơn Apache/Nginx cho Laravel applications."
+        },
+        {
+          icon: Cloud,
+          title: "NVMe SSD Storage",
+          description: "High-performance NVMe SSD storage với tốc độ đọc/ghi vượt trội. Ideal cho Laravel applications với large file storage và media management."
+        }
+      ]
     },
     {
-      icon: RefreshCw,
-      title: "Auto Backup & Recovery",
-      description: "Automated daily/hourly backups, JetBackup integration, point-in-time recovery, và off-site storage. One-click restore cho database và files."
+      title: "🔄 Queue & Background Jobs",
+      icon: Workflow,
+      features: [
+        {
+          icon: Monitor,
+          title: "Queue Workers & Horizon",
+          description: "Laravel Horizon dashboard, Supervisor process manager, multiple queue workers, failed job handling, và real-time monitoring cho background tasks."
+        },
+        {
+          icon: Settings,
+          title: "Advanced Cron Scheduler",
+          description: "Laravel Task Scheduler support, custom cron jobs, scheduled commands, và automated maintenance tasks. Log monitoring và error notifications."
+        },
+        {
+          icon: Timer,
+          title: "Real-time Processing",
+          description: "WebSocket support, broadcasting events, real-time notifications. Pusher compatible hoặc self-hosted với Laravel Echo Server."
+        }
+      ]
     },
     {
-      icon: HeadphonesIcon,
-      title: "24/7 Expert Support",
-      description: "Laravel-savvy support team 24/7 qua chat, phone, email. Priority support cho production issues, deployment assistance, và performance tuning."
+      title: "🔒 Security & Backup",
+      icon: Shield,
+      features: [
+        {
+          icon: Shield,
+          title: "Security & Firewall",
+          description: "Imunify360 protection, ModSecurity WAF, DDoS mitigation, malware scanning, và SSL certificates. Secure .env file management và secrets protection."
+        },
+        {
+          icon: RefreshCw,
+          title: "Auto Backup & Recovery",
+          description: "Automated daily/hourly backups, JetBackup integration, point-in-time recovery, và off-site storage. One-click restore cho database và files."
+        },
+        {
+          icon: Code2,
+          title: "PHP 8.1+ Support",
+          description: "Hỗ trợ đầy đủ PHP 8.1, 8.2, 8.3 với JIT compiler, typed properties, và performance improvements. Tương thích hoàn hảo với Laravel 9, 10, 11."
+        },
+        {
+          icon: HeadphonesIcon,
+          title: "24/7 Expert Support",
+          description: "Laravel-savvy support team 24/7 qua chat, phone, email. Priority support cho production issues, deployment assistance, và performance tuning."
+        }
+      ]
     }
   ];
 
-  // Competitor Comparison
   const competitorComparison = [
-    { metric: "Response Time", step: "< 200ms (avg)", competitor: "500ms - 2s" },
-    { metric: "Uptime SLA", step: "99.99% - 99.999%", competitor: "99.5% - 99.9%" },
-    { metric: "SSH/Git Access", step: "Full SSH + Git Integration", competitor: "Limited or No SSH" },
-    { metric: "Queue Workers", step: "Horizon + Supervisor", competitor: "Basic Queue Only" },
-    { metric: "CI/CD Support", step: "GitHub Actions + Jenkins", competitor: "Manual Deployment" },
-    { metric: "Backup Frequency", step: "Hourly + Real-time", competitor: "Daily or Weekly" },
-    { metric: "PHP Versions", step: "Multi-version 8.1-8.3", competitor: "Single PHP version" },
-    { metric: "Support Quality", step: "Laravel Experts 24/7", competitor: "General Support" }
+    { metric: "Response Time", step: "< 200ms (avg)", competitor: "500ms - 2s", highlight: false },
+    { metric: "Uptime SLA", step: "99.99% - 99.999%", competitor: "99.5% - 99.9%", highlight: false },
+    { metric: "SSH/Git Access", step: "Full SSH + Git Integration", competitor: "Limited or No SSH", highlight: true },
+    { metric: "Queue Workers", step: "Horizon + Supervisor", competitor: "Basic Queue Only", highlight: true },
+    { metric: "CI/CD Support", step: "GitHub Actions + Jenkins", competitor: "Manual Deployment", highlight: true },
+    { metric: "Backup Frequency", step: "Hourly + Real-time", competitor: "Daily or Weekly", highlight: false },
+    { metric: "PHP Versions", step: "Multi-version 8.1-8.3", competitor: "Single PHP version", highlight: false },
+    { metric: "Support Quality", step: "Laravel Experts 24/7", competitor: "General Support", highlight: false }
   ];
 
-  // Testimonials
   const testimonials = [
     {
       name: "Anh Tuấn Anh",
@@ -621,7 +707,8 @@ export default function HostingLaravel() {
       company: "Tech Startup Hà Nội",
       rating: 5,
       text: "SSH access và Git integration giúp tôi deploy Laravel app chỉ trong vài phút. Redis cache làm app nhanh hơn hẳn so với hosting cũ. Support team hiểu rõ Laravel, giúp optimize database queries rất tốt!",
-      avatar: "👨‍💻"
+      avatar: "👨‍💻",
+      highlight: "SSH + Git Deploy"
     },
     {
       name: "Chị Minh Hương",
@@ -629,7 +716,8 @@ export default function HostingLaravel() {
       company: "Agency Hồ Chí Minh",
       rating: 5,
       text: "Horizon dashboard hoạt động mượt mà, queue workers xử lý email và jobs cực ổn định. CI/CD pipeline tự động deploy khi push code lên GitHub - tiết kiệm thời gian deployment đáng kể cho team chúng tôi!",
-      avatar: "👩‍💻"
+      avatar: "👩‍💻",
+      highlight: "Horizon + CI/CD"
     },
     {
       name: "Anh Đức Minh",
@@ -637,124 +725,190 @@ export default function HostingLaravel() {
       company: "E-commerce Platform",
       rating: 5,
       text: "Performance vượt trội với NVMe SSD và LiteSpeed server. Composer install nhanh, artisan migrate smooth. Backup tự động giúp yên tâm khi làm việc với production database. Highly recommended cho Laravel developers!",
-      avatar: "🚀"
+      avatar: "🚀",
+      highlight: "NVMe + Performance"
     }
   ];
 
-  // FAQ
-  const faqs = [
+  const faqGroups = [
     {
-      question: "Laravel Hosting khác gì Web Hosting thông thường?",
-      answer: "Laravel Hosting được tối ưu hóa đặc biệt cho Laravel framework với PHP 8+, Composer pre-installed, SSH access để chạy Artisan commands, Git integration, Redis cache, Queue workers (Horizon), và advanced cron scheduler. Web hosting thông thường thường không có các features developer-specific này và performance không được tối ưu cho Laravel applications."
+      title: "🚀 Deployment & Setup",
+      icon: Rocket,
+      faqs: [
+        {
+          question: "Laravel Hosting khác gì Web Hosting thông thường?",
+          answer: "Laravel Hosting được tối ưu hóa đặc biệt cho Laravel framework với PHP 8+, Composer pre-installed, SSH access để chạy Artisan commands, Git integration, Redis cache, Queue workers (Horizon), và advanced cron scheduler. Web hosting thông thường thường không có các features developer-specific này và performance không được tối ưu cho Laravel applications."
+        },
+        {
+          question: "Tôi có thể deploy bao nhiêu Laravel applications?",
+          answer: "Tùy vào gói: Starter tiers hỗ trợ 1-2 apps, Business tiers 3-8 apps, Professional tiers 10-25 apps, Advanced và Enterprise tiers không giới hạn số lượng Laravel applications. Mỗi app có thể có riêng database, .env configuration, và queue workers."
+        },
+        {
+          question: "Có hỗ trợ di chuyển Laravel app từ hosting khác không?",
+          answer: "Có! Chúng tôi hỗ trợ migrate miễn phí Laravel applications từ hosting khác, bao gồm transfer files, database, .env configuration, và setup queue workers. Team sẽ đảm bảo zero downtime và test kỹ trước khi chuyển DNS. Contact support để schedule migration."
+        },
+        {
+          question: "Có hỗ trợ CI/CD pipelines cho automated deployment không?",
+          answer: "Business tiers: Git integration + basic deployment hooks. Professional tiers: GitHub Actions, GitLab CI, Jenkins integration. Advanced/Enterprise: Custom CI/CD pipelines với automated testing, staging environments, blue-green deployments, và rollback capabilities. Support Docker, Kubernetes orchestration."
+        }
+      ]
     },
     {
-      question: "Tôi có thể deploy bao nhiêu Laravel applications?",
-      answer: "Tùy vào gói: Starter tiers hỗ trợ 1-2 apps, Business tiers 3-8 apps, Professional tiers 10-25 apps, Advanced và Enterprise tiers không giới hạn số lượng Laravel applications. Mỗi app có thể có riêng database, .env configuration, và queue workers."
+      title: "🔄 Queue & Background Jobs",
+      icon: Workflow,
+      faqs: [
+        {
+          question: "Có hỗ trợ Laravel Horizon và Queue Workers không?",
+          answer: "Business tiers trở lên hỗ trợ Queue Workers với Supervisor process manager. Professional tiers có Laravel Horizon dashboard với monitoring, failed job handling, và metrics. Enterprise tiers có custom queue infrastructure với multi-region workers và advanced orchestration."
+        },
+        {
+          question: "SSH access có giới hạn gì không?",
+          answer: "Starter tiers: SSH access cơ bản để chạy Artisan và Composer. Business/Professional: Full SSH với SFTP, Git hooks, và custom scripts. Advanced/Enterprise: Root access với audit logging, security hardening, và compliance tools. Tất cả tiers đều allow chạy artisan migrate, queue:work, schedule:run."
+        }
+      ]
     },
     {
-      question: "Có hỗ trợ di chuyển Laravel app từ hosting khác không?",
-      answer: "Có! Chúng tôi hỗ trợ migrate miễn phí Laravel applications từ hosting khác, bao gồm transfer files, database, .env configuration, và setup queue workers. Team sẽ đảm bảo zero downtime và test kỹ trước khi chuyển DNS. Contact support để schedule migration."
+      title: "💾 Database & Storage",
+      icon: Database,
+      faqs: [
+        {
+          question: "Chính sách backup cho Laravel applications như thế nào?",
+          answer: "Starter tiers: Weekly backups. Business tiers: Daily backups. Professional tiers: Hourly backups. Advanced/Enterprise: Real-time backups + multi-region replication. Tất cả gói đều support JetBackup cho one-click restore cả database và files. Backup retention từ 7 đến 90 ngày tùy gói."
+        },
+        {
+          question: "Tôi cần bao nhiêu resources cho Laravel app của mình?",
+          answer: "Starter (0.5-1 vCore, 512MB-1.5GB RAM): Blog, portfolio, low-traffic apps. Business (2-3 vCores, 2-4GB RAM): Business websites, startups, moderate traffic. Professional (4-8 vCores, 6-12GB RAM): High-traffic apps, SaaS platforms. Advanced/Enterprise (10+ vCores, 16GB+ RAM): Large-scale apps, microservices, mission-critical systems. Contact sales để capacity planning."
+        }
+      ]
     },
     {
-      question: "Có thể nâng cấp hoặc hạ cấp gói hosting không?",
-      answer: "Có thể upgrade/downgrade bất cứ lúc nào. Upgrade có hiệu lực ngay lập tức, downgrade áp dụng từ kỳ billing tiếp theo. Resources (CPU, RAM, Storage) và features (Redis, Queue workers, CI/CD) sẽ được điều chỉnh theo gói mới. Data được giữ nguyên 100%."
+      title: "🌐 Server & Network",
+      icon: Globe,
+      faqs: [
+        {
+          question: "Server đặt ở đâu? Có ảnh hưởng latency không?",
+          answer: "Servers đặt tại Vietnam data centers (Hà Nội, Hồ Chí Minh) với low latency cho users Việt Nam (< 20ms). Enterprise tiers support multi-region deployment (Singapore, Tokyo, USA) với global load balancing và CDN integration cho international traffic."
+        },
+        {
+          question: "Có giới hạn băng thông hoặc traffic không?",
+          answer: "Tất cả gói đều unlimited bandwidth cho HTTP/HTTPS traffic. Không giới hạn số lượng requests, API calls, hoặc database queries. Enterprise tiers có dedicated bandwidth và QoS policies để đảm bảo performance ổn định cho high-traffic applications."
+        }
+      ]
     },
     {
-      question: "Chính sách backup cho Laravel applications như thế nào?",
-      answer: "Starter tiers: Weekly backups. Business tiers: Daily backups. Professional tiers: Hourly backups. Advanced/Enterprise: Real-time backups + multi-region replication. Tất cả gói đều support JetBackup cho one-click restore cả database và files. Backup retention từ 7 đến 90 ngày tùy gói."
-    },
-    {
-      question: "Có hỗ trợ Laravel Horizon và Queue Workers không?",
-      answer: "Business tiers trở lên hỗ trợ Queue Workers với Supervisor process manager. Professional tiers có Laravel Horizon dashboard với monitoring, failed job handling, và metrics. Enterprise tiers có custom queue infrastructure với multi-region workers và advanced orchestration."
-    },
-    {
-      question: "SSH access có giới hạn gì không?",
-      answer: "Starter tiers: SSH access cơ bản để chạy Artisan và Composer. Business/Professional: Full SSH với SFTP, Git hooks, và custom scripts. Advanced/Enterprise: Root access với audit logging, security hardening, và compliance tools. Tất cả tiers đều allow chạy artisan migrate, queue:work, schedule:run."
-    },
-    {
-      question: "Server đặt ở đâu? Có ảnh hưởng latency không?",
-      answer: "Servers đặt tại Vietnam data centers (Hà Nội, Hồ Chí Minh) với low latency cho users Việt Nam (< 20ms). Enterprise tiers support multi-region deployment (Singapore, Tokyo, USA) với global load balancing và CDN integration cho international traffic."
-    },
-    {
-      question: "Có giới hạn băng thông hoặc traffic không?",
-      answer: "Tất cả gói đều unlimited bandwidth cho HTTP/HTTPS traffic. Không giới hạn số lượng requests, API calls, hoặc database queries. Enterprise tiers có dedicated bandwidth và QoS policies để đảm bảo performance ổn định cho high-traffic applications."
-    },
-    {
-      question: "Chính sách hoàn tiền như thế nào?",
-      answer: "30 ngày money-back guarantee cho tất cả gói. Nếu không hài lòng trong 30 ngày đầu, hoàn 100% phí đã trả, không cần lý do. Đối với Enterprise contracts, có thể negotiate custom SLA và refund terms tùy theo yêu cầu doanh nghiệp."
-    },
-    {
-      question: "Có hỗ trợ CI/CD pipelines cho automated deployment không?",
-      answer: "Business tiers: Git integration + basic deployment hooks. Professional tiers: GitHub Actions, GitLab CI, Jenkins integration. Advanced/Enterprise: Custom CI/CD pipelines với automated testing, staging environments, blue-green deployments, và rollback capabilities. Support Docker, Kubernetes orchestration."
-    },
-    {
-      question: "Tôi cần bao nhiêu resources cho Laravel app của mình?",
-      answer: "Starter (0.5-1 vCore, 512MB-1.5GB RAM): Blog, portfolio, low-traffic apps. Business (2-3 vCores, 2-4GB RAM): Business websites, startups, moderate traffic. Professional (4-8 vCores, 6-12GB RAM): High-traffic apps, SaaS platforms. Advanced/Enterprise (10+ vCores, 16GB+ RAM): Large-scale apps, microservices, mission-critical systems. Contact sales để capacity planning."
+      title: "💰 Billing & Support",
+      icon: HelpCircle,
+      faqs: [
+        {
+          question: "Có thể nâng cấp hoặc hạ cấp gói hosting không?",
+          answer: "Có thể upgrade/downgrade bất cứ lúc nào. Upgrade có hiệu lực ngay lập tức, downgrade áp dụng từ kỳ billing tiếp theo. Resources (CPU, RAM, Storage) và features (Redis, Queue workers, CI/CD) sẽ được điều chỉnh theo gói mới. Data được giữ nguyên 100%."
+        },
+        {
+          question: "Chính sách hoàn tiền như thế nào?",
+          answer: "30 ngày money-back guarantee cho tất cả gói. Nếu không hài lòng trong 30 ngày đầu, hoàn 100% phí đã trả, không cần lý do. Đối với Enterprise contracts, có thể negotiate custom SLA và refund terms tùy theo yêu cầu doanh nghiệp."
+        }
+      ]
     }
+  ];
+
+  const developerFeatures = [
+    { icon: Terminal, label: "SSH Access", description: "Artisan commands" },
+    { icon: GitBranch, label: "Git Integration", description: "Push to deploy" },
+    { icon: Package, label: "Composer 2", description: "Fast installs" },
+    { icon: Code, label: "PHP 8.3", description: "Latest features" }
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" data-testid="page-hosting-laravel">
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-red-50 via-white to-red-50 py-20 overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-red-300 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-orange-300 rounded-full filter blur-3xl"></div>
+      {/* Hero Section - Laravel Themed */}
+      <section className="relative py-16 md:py-24 overflow-hidden" style={{ background: `linear-gradient(135deg, ${LARAVEL_RED}08 0%, white 50%, ${LARAVEL_RED}05 100%)` }} data-testid="section-hero">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 md:w-[500px] md:h-[500px] rounded-full opacity-10" style={{ background: LARAVEL_RED }}></div>
+          <div className="absolute -bottom-20 -left-20 w-60 h-60 md:w-96 md:h-96 rounded-full opacity-10" style={{ background: LARAVEL_RED }}></div>
         </div>
         
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
+              className="order-2 lg:order-1"
             >
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mr-4">
-                  <Code2 className="text-white w-6 h-6" />
-                </div>
-                <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
-                  Laravel Framework Hosting
-                </span>
+              {/* Laravel Optimized Badge */}
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <motion.div 
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="inline-flex items-center px-4 py-2 rounded-full font-semibold text-white shadow-lg"
+                  style={{ background: LARAVEL_RED }}
+                  data-testid="badge-laravel-optimized"
+                >
+                  <Code2 className="w-5 h-5 mr-2" />
+                  Laravel Optimized
+                </motion.div>
+                <Badge variant="outline" className="bg-white border-gray-300 text-gray-700" data-testid="badge-php-version">
+                  PHP 8.1 - 8.3
+                </Badge>
               </div>
               
-              <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight" data-testid="heading-hero">
                 Hosting Laravel Chuyên Nghiệp – 
-                <span className="text-red-500"> Deploy Nhanh, Scale Dễ Dàng!</span>
+                <span style={{ color: LARAVEL_RED }}> Deploy Nhanh, Scale Dễ Dàng!</span>
               </h1>
               
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-600 mb-6 leading-relaxed" data-testid="text-hero-description">
                 Hosting được tối ưu hóa đặc biệt cho Laravel với SSH access, Composer, Git, 
                 Redis cache, Queue workers (Horizon), và CI/CD integration. Từ 60K/tháng - 
                 Phù hợp cho mọi quy mô từ startup đến enterprise.
               </p>
 
+              {/* Developer Features Badges */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6" data-testid="grid-developer-features">
+                {developerFeatures.map((feature, idx) => (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + idx * 0.1 }}
+                    className="bg-white rounded-lg p-3 shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
+                    data-testid={`feature-badge-${idx}`}
+                  >
+                    <feature.icon className="w-5 h-5 mb-1" style={{ color: LARAVEL_RED }} />
+                    <div className="font-semibold text-gray-900 text-sm">{feature.label}</div>
+                    <div className="text-xs text-gray-500">{feature.description}</div>
+                  </motion.div>
+                ))}
+              </div>
+
               {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div className="bg-white rounded-lg p-4 shadow-md">
-                  <div className="text-2xl font-bold text-red-500">&lt; 200ms</div>
-                  <div className="text-sm text-gray-600">Response Time</div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6" data-testid="grid-stats">
+                <div className="bg-white rounded-lg p-3 shadow-md text-center">
+                  <div className="text-xl md:text-2xl font-bold" style={{ color: LARAVEL_RED }} data-testid="stat-response-time">&lt; 200ms</div>
+                  <div className="text-xs text-gray-600">Response Time</div>
                 </div>
-                <div className="bg-white rounded-lg p-4 shadow-md">
-                  <div className="text-2xl font-bold text-red-500">99.99%</div>
-                  <div className="text-sm text-gray-600">Uptime</div>
+                <div className="bg-white rounded-lg p-3 shadow-md text-center">
+                  <div className="text-xl md:text-2xl font-bold" style={{ color: LARAVEL_RED }} data-testid="stat-uptime">99.99%</div>
+                  <div className="text-xs text-gray-600">Uptime</div>
                 </div>
-                <div className="bg-white rounded-lg p-4 shadow-md">
-                  <div className="text-2xl font-bold text-red-500">24/7</div>
-                  <div className="text-sm text-gray-600">Expert Support</div>
+                <div className="bg-white rounded-lg p-3 shadow-md text-center">
+                  <div className="text-xl md:text-2xl font-bold" style={{ color: LARAVEL_RED }} data-testid="stat-support">24/7</div>
+                  <div className="text-xs text-gray-600">Expert Support</div>
                 </div>
-                <div className="bg-white rounded-lg p-4 shadow-md">
-                  <div className="text-2xl font-bold text-red-500">18</div>
-                  <div className="text-sm text-gray-600">Gói Hosting</div>
+                <div className="bg-white rounded-lg p-3 shadow-md text-center">
+                  <div className="text-xl md:text-2xl font-bold" style={{ color: LARAVEL_RED }} data-testid="stat-packages">18</div>
+                  <div className="text-xs text-gray-600">Gói Hosting</div>
                 </div>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row gap-3 mb-6">
                 <Button 
                   size="lg"
-                  className="bg-red-500 hover:bg-red-600 px-8 py-6 text-lg font-semibold"
+                  className="px-6 py-5 text-base font-semibold shadow-lg hover:shadow-xl transition-shadow"
+                  style={{ background: LARAVEL_RED }}
                   data-testid="button-view-packages"
                   onClick={() => {
                     document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
@@ -767,7 +921,8 @@ export default function HostingLaravel() {
                 <Button 
                   variant="outline"
                   size="lg"
-                  className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-8 py-6 text-lg"
+                  className="px-6 py-5 text-base border-2"
+                  style={{ borderColor: LARAVEL_RED, color: LARAVEL_RED }}
                   data-testid="button-contact"
                   onClick={() => window.location.href = '/contact'}
                 >
@@ -775,103 +930,113 @@ export default function HostingLaravel() {
                 </Button>
               </div>
               
-              <div className="flex items-center text-sm text-gray-600">
-                <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+              <div className="flex items-center text-sm text-gray-600" data-testid="text-trial-info">
+                <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
                 <span>14 ngày dùng thử miễn phí • Hoàn tiền 100% trong 30 ngày • 3,000+ Laravel developers tin dùng</span>
               </div>
             </motion.div>
 
+            {/* Terminal Preview */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
+              className="relative order-1 lg:order-2"
+              data-testid="terminal-preview"
             >
-              <div className="bg-gray-900 rounded-2xl shadow-2xl p-8 text-green-400 font-mono text-sm">
-                <div className="flex items-center mb-6">
+              <div className="bg-gray-900 rounded-2xl shadow-2xl p-4 md:p-6 text-green-400 font-mono text-xs md:text-sm overflow-hidden">
+                <div className="flex items-center mb-4 md:mb-6">
                   <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
                   <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span className="text-gray-400 ml-4">Laravel Terminal</span>
+                  <span className="text-gray-400 ml-4 text-xs">Laravel Terminal @ STEP Hosting</span>
                 </div>
                 
-                <div className="space-y-2 mb-6">
-                  <div><span className="text-blue-400">$</span> composer install</div>
-                  <div className="text-gray-500">Installing dependencies...</div>
-                  <div><span className="text-blue-400">$</span> php artisan migrate</div>
-                  <div className="text-gray-500">Migrating: 2024_01_01_create_users_table</div>
-                  <div><span className="text-blue-400">$</span> php artisan queue:work</div>
-                  <div className="text-gray-500">Processing jobs...</div>
-                  <div><span className="text-green-500">✓</span> Laravel app deployed successfully!</div>
-                  <div className="text-purple-400">App URL: https://your-app.step.com.vn</div>
+                <div className="space-y-1 md:space-y-2 mb-4 md:mb-6">
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                    <span className="text-blue-400">$</span> composer install --optimize-autoloader
+                  </motion.div>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-500">
+                    Installing dependencies... Done!
+                  </motion.div>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>
+                    <span className="text-blue-400">$</span> php artisan migrate --force
+                  </motion.div>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }} className="text-gray-500">
+                    Migrating: create_users_table... Done!
+                  </motion.div>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.7 }}>
+                    <span className="text-blue-400">$</span> php artisan horizon
+                  </motion.div>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }} className="text-gray-500">
+                    Horizon started successfully...
+                  </motion.div>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.3 }}>
+                    <span className="text-green-500">✓</span> Laravel app deployed successfully!
+                  </motion.div>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }} className="text-purple-400">
+                    🚀 App URL: https://your-app.step.com.vn
+                  </motion.div>
                 </div>
 
                 {/* Performance metrics */}
-                <div className="border-t border-gray-700 pt-4">
+                <motion.div 
+                  initial={{ opacity: 0 }} 
+                  animate={{ opacity: 1 }} 
+                  transition={{ delay: 2.9 }}
+                  className="border-t border-gray-700 pt-3 md:pt-4"
+                >
                   <div className="text-gray-400 text-xs mb-2">Performance Metrics:</div>
-                  <div className="space-y-1 text-xs">
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Response Time:</span>
-                      <span className="text-green-400">145ms</span>
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    <div className="bg-gray-800 rounded p-2">
+                      <div className="text-gray-500">Response</div>
+                      <div className="text-green-400 font-bold">145ms</div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Memory Usage:</span>
-                      <span className="text-blue-400">42 MB</span>
+                    <div className="bg-gray-800 rounded p-2">
+                      <div className="text-gray-500">Memory</div>
+                      <div className="text-blue-400 font-bold">42 MB</div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Queue Workers:</span>
-                      <span className="text-purple-400">Active (3)</span>
+                    <div className="bg-gray-800 rounded p-2">
+                      <div className="text-gray-500">Queue</div>
+                      <div className="text-purple-400 font-bold">3 Active</div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </div>
+
+              {/* Floating badges */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.5 }}
+                className="absolute -top-4 -right-4 bg-white rounded-lg shadow-lg p-2 border hidden md:block"
+                data-testid="badge-redis"
+              >
+                <div className="flex items-center text-xs">
+                  <Database className="w-4 h-4 mr-1" style={{ color: LARAVEL_RED }} />
+                  <span className="font-semibold">Redis Ready</span>
+                </div>
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.8 }}
+                className="absolute -bottom-4 -left-4 bg-white rounded-lg shadow-lg p-2 border hidden md:block"
+                data-testid="badge-horizon"
+              >
+                <div className="flex items-center text-xs">
+                  <Monitor className="w-4 h-4 mr-1" style={{ color: LARAVEL_RED }} />
+                  <span className="font-semibold">Horizon Support</span>
+                </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Technical Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Tính Năng Kỹ Thuật Laravel Hosting
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Tất cả công cụ và technologies cần thiết để phát triển và deploy Laravel applications chuyên nghiệp
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {technicalFeatures.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group hover:scale-105"
-              >
-                <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <feature.icon className="text-white w-6 h-6" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Packages Section */}
-      <section id="packages" className="py-20 bg-white">
-        <div className="container mx-auto px-6">
+      {/* Technical Features Section with Accordion Groups */}
+      <section className="py-16 md:py-20 bg-gray-50" data-testid="section-technical-features">
+        <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -879,75 +1044,137 @@ export default function HostingLaravel() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-testid="heading-technical-features">
+              Tính Năng Kỹ Thuật Laravel Hosting
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto" data-testid="text-technical-features-description">
+              Tất cả công cụ và technologies cần thiết để phát triển và deploy Laravel applications chuyên nghiệp
+            </p>
+          </motion.div>
+
+          <div className="max-w-5xl mx-auto">
+            <Accordion type="multiple" className="space-y-4" data-testid="accordion-technical-features">
+              {technicalFeatureGroups.map((group, groupIndex) => (
+                <AccordionItem 
+                  key={groupIndex} 
+                  value={`group-${groupIndex}`}
+                  className="bg-white rounded-xl shadow-md overflow-hidden border-0"
+                  data-testid={`accordion-item-${groupIndex}`}
+                >
+                  <AccordionTrigger className="px-6 py-5 hover:bg-gray-50 text-left" data-testid={`accordion-trigger-${groupIndex}`}>
+                    <div className="flex items-center">
+                      <span className="text-2xl mr-3">{group.title.split(' ')[0]}</span>
+                      <span className="font-semibold text-lg text-gray-900">{group.title.split(' ').slice(1).join(' ')}</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-6" data-testid={`accordion-content-${groupIndex}`}>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {group.features.map((feature, featureIndex) => (
+                        <motion.div
+                          key={featureIndex}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.4, delay: featureIndex * 0.1 }}
+                          viewport={{ once: true }}
+                          className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors"
+                          data-testid={`feature-card-${groupIndex}-${featureIndex}`}
+                        >
+                          <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: `${LARAVEL_RED}15` }}>
+                            <feature.icon className="w-5 h-5" style={{ color: LARAVEL_RED }} />
+                          </div>
+                          <h4 className="font-semibold text-gray-900 mb-2">{feature.title}</h4>
+                          <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+      </section>
+
+      {/* Packages Section with Tabs */}
+      <section id="packages" className="py-16 md:py-20 bg-white" data-testid="section-packages">
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-testid="heading-packages">
               18 Gói Laravel Hosting - Từ Startup Đến Enterprise
             </h2>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-lg text-gray-600 mb-8" data-testid="text-packages-description">
               Lựa chọn gói hosting phù hợp với quy mô dự án Laravel của bạn
             </p>
 
-            {/* View Toggle */}
-            <div className="flex justify-center gap-4 mb-8">
-              <Button
-                variant={!compareView ? "default" : "outline"}
-                onClick={() => setCompareView(false)}
-                className={!compareView ? "bg-red-500 hover:bg-red-600" : ""}
-                data-testid="button-grid-view"
-              >
-                <Server className="w-4 h-4 mr-2" />
-                Xem Dạng Cards
-              </Button>
-              <Button
-                variant={compareView ? "default" : "outline"}
-                onClick={() => setCompareView(true)}
-                className={compareView ? "bg-red-500 hover:bg-red-600" : ""}
-                data-testid="button-table-view"
-              >
-                <FileText className="w-4 h-4 mr-2" />
-                Bảng So Sánh Chi Tiết
-              </Button>
-            </div>
-          </motion.div>
+            {/* Tier Tabs */}
+            <Tabs value={selectedTier} onValueChange={setSelectedTier} className="w-full" data-testid="tabs-packages">
+              <TabsList className="flex flex-wrap justify-center gap-2 h-auto bg-transparent mb-8" data-testid="tabs-list">
+                {tiers.map((tier) => (
+                  <TabsTrigger 
+                    key={tier} 
+                    value={tier}
+                    className={`px-4 py-2 rounded-full border-2 transition-all data-[state=active]:text-white data-[state=active]:shadow-lg ${
+                      tier === "all" 
+                        ? "data-[state=active]:bg-gray-800 data-[state=active]:border-gray-800" 
+                        : ""
+                    }`}
+                    style={selectedTier === tier && tier !== "all" ? { background: LARAVEL_RED, borderColor: LARAVEL_RED } : {}}
+                    data-testid={`tab-${tier}`}
+                  >
+                    {tier === "all" ? "Tất Cả" : tier}
+                    {tier !== "all" && (
+                      <span className="ml-1 text-xs opacity-75">
+                        ({packages.filter(p => p.tier === tier).length})
+                      </span>
+                    )}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
 
-          {!compareView ? (
-            <>
-              {/* Grid View */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                {displayedPackages.map((pkg, index) => (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto" data-testid="grid-packages">
+                {getFilteredPackages().map((pkg, index) => (
                   <motion.div
                     key={pkg.id}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.05 }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
                     viewport={{ once: true }}
-                    className={`bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 relative ${
-                      pkg.popular ? 'ring-2 ring-red-500 scale-105' : ''
-                    } ${pkg.enterprise ? 'bg-gradient-to-br from-gray-900 to-gray-800 text-white' : ''}`}
+                    className={`bg-white rounded-xl p-5 shadow-lg hover:shadow-2xl transition-all duration-300 relative border-2 ${
+                      pkg.popular ? 'scale-105 z-10' : ''
+                    } ${pkg.enterprise ? 'bg-gradient-to-br from-gray-900 to-gray-800 text-white' : 'border-gray-100'}`}
+                    style={pkg.popular ? { borderColor: LARAVEL_RED } : {}}
+                    data-testid={`package-card-${pkg.id}`}
                   >
                     {pkg.popular && (
-                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span className="bg-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                      <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                        <span className="text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg" style={{ background: LARAVEL_RED }} data-testid={`badge-popular-${pkg.id}`}>
                           ⭐ Phổ Biến Nhất
                         </span>
                       </div>
                     )}
 
                     {pkg.enterprise && (
-                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
+                      <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                        <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-4 py-1 rounded-full text-sm font-bold shadow-lg" data-testid={`badge-enterprise-${pkg.id}`}>
                           👑 Enterprise
                         </span>
                       </div>
                     )}
 
-                    <div className="text-center mb-6">
-                      <div className={`text-sm font-medium mb-2 ${pkg.enterprise ? 'text-gray-300' : 'text-gray-500'}`}>
+                    <div className="text-center mb-4 pt-2">
+                      <Badge className={`mb-2 ${getTierColor(pkg.tier)}`} data-testid={`badge-tier-${pkg.id}`}>
                         {pkg.tier}
-                      </div>
-                      <h3 className={`text-2xl font-bold mb-2 ${pkg.enterprise ? 'text-white' : 'text-gray-900'}`}>
+                      </Badge>
+                      <h3 className={`text-xl font-bold mb-1 ${pkg.enterprise ? 'text-white' : 'text-gray-900'}`} data-testid={`text-package-name-${pkg.id}`}>
                         {pkg.name}
                       </h3>
-                      <div className={`text-3xl font-bold mb-2 ${pkg.enterprise ? 'text-yellow-400' : 'text-red-500'}`}>
+                      <div className={`text-2xl md:text-3xl font-bold mb-1 ${pkg.enterprise ? 'text-yellow-400' : ''}`} style={!pkg.enterprise ? { color: LARAVEL_RED } : {}} data-testid={`text-package-price-${pkg.id}`}>
                         {pkg.price === "Custom" ? "Liên hệ" : `${pkg.price} VNĐ`}
                       </div>
                       {pkg.price !== "Custom" && (
@@ -957,52 +1184,66 @@ export default function HostingLaravel() {
                       )}
                     </div>
 
-                    <div className="space-y-3 mb-6">
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">
-                          <span className="font-semibold">{pkg.storage}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">
-                          <span className="font-semibold">{pkg.cpu}</span> • {pkg.ram}
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">{pkg.websites}</div>
-                      </div>
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">{pkg.database}</div>
-                      </div>
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">{pkg.ssh}</div>
-                      </div>
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">{pkg.git}</div>
-                      </div>
+                    {/* Laravel Feature Badges */}
+                    <div className="flex flex-wrap gap-1 mb-4 justify-center" data-testid={`feature-badges-${pkg.id}`}>
+                      {pkg.features?.slice(0, 4).map((feature, fIdx) => (
+                        <span 
+                          key={fIdx} 
+                          className={`text-xs px-2 py-0.5 rounded-full border ${getFeatureBadgeStyle(feature)}`}
+                          data-testid={`feature-badge-${pkg.id}-${fIdx}`}
+                        >
+                          {feature}
+                        </span>
+                      ))}
                     </div>
 
-                    <div className={`text-center mb-6 p-3 rounded-lg ${pkg.enterprise ? 'bg-gray-800' : 'bg-gray-50'}`}>
-                      <p className={`text-sm ${pkg.enterprise ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <div className="space-y-2 mb-4 text-sm">
+                      <div className="flex items-start">
+                        <CheckCircle className={`w-4 h-4 mr-2 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
+                        <span className="font-medium">{pkg.storage}</span>
+                      </div>
+                      <div className="flex items-start">
+                        <CheckCircle className={`w-4 h-4 mr-2 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
+                        <span>{pkg.cpu} • {pkg.ram}</span>
+                      </div>
+                      <div className="flex items-start">
+                        <CheckCircle className={`w-4 h-4 mr-2 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
+                        <span>{pkg.websites}</span>
+                      </div>
+                      <div className="flex items-start">
+                        <CheckCircle className={`w-4 h-4 mr-2 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
+                        <span>{pkg.ssh}</span>
+                      </div>
+                      {pkg.redis !== "Không" && (
+                        <div className="flex items-start">
+                          <CheckCircle className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5" style={{ color: LARAVEL_RED }} />
+                          <span style={{ color: LARAVEL_RED }} className="font-medium">{pkg.redis}</span>
+                        </div>
+                      )}
+                      {pkg.queue !== "Không" && (
+                        <div className="flex items-start">
+                          <CheckCircle className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5" style={{ color: LARAVEL_RED }} />
+                          <span style={{ color: LARAVEL_RED }} className="font-medium">{pkg.queue}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className={`text-center mb-4 p-2 rounded-lg ${pkg.enterprise ? 'bg-gray-800' : 'bg-gray-50'}`}>
+                      <p className={`text-xs ${pkg.enterprise ? 'text-gray-300' : 'text-gray-600'}`} data-testid={`text-suitable-${pkg.id}`}>
                         <strong className={pkg.enterprise ? 'text-white' : ''}>Phù hợp:</strong> {pkg.suitable}
                       </p>
                     </div>
 
                     <Button 
-                      className={`w-full py-6 ${
+                      className={`w-full py-5 font-semibold ${
                         pkg.enterprise 
-                          ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-gray-900 font-bold'
+                          ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-gray-900'
                           : pkg.popular 
-                            ? 'bg-red-500 hover:bg-red-600'
+                            ? ''
                             : 'bg-gray-800 hover:bg-gray-700'
                       }`}
-                      data-testid={`button-select-${pkg.name}`}
+                      style={pkg.popular && !pkg.enterprise ? { background: LARAVEL_RED } : {}}
+                      data-testid={`button-select-${pkg.id}`}
                       onClick={() => window.location.href = '/contact'}
                     >
                       {pkg.enterprise ? 'Liên Hệ Tư Vấn' : 'Đăng Ký Ngay'}
@@ -1011,157 +1252,58 @@ export default function HostingLaravel() {
                 ))}
               </div>
 
-              {!showAllPackages && (
-                <div className="text-center mt-12">
+              {selectedTier === "all" && (
+                <div className="text-center mt-10">
                   <Button
                     size="lg"
                     variant="outline"
-                    onClick={() => setShowAllPackages(true)}
-                    className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-8 py-6"
-                    data-testid="button-show-all"
+                    onClick={() => setSelectedTier("Business")}
+                    className="border-2 px-8 py-5"
+                    style={{ borderColor: LARAVEL_RED, color: LARAVEL_RED }}
+                    data-testid="button-view-more-packages"
                   >
-                    Xem Thêm 12 Gói Laravel Hosting
+                    Xem Thêm Các Gói Hosting Khác
                     <ChevronDown className="ml-2 h-5 w-5" />
                   </Button>
                 </div>
               )}
-
-              {showAllPackages && (
-                <div className="text-center mt-12">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    onClick={() => {
-                      setShowAllPackages(false);
-                      document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-8 py-6"
-                    data-testid="button-show-less"
-                  >
-                    Thu Gọn
-                    <ChevronUp className="ml-2 h-5 w-5" />
-                  </Button>
-                </div>
-              )}
-            </>
-          ) : (
-            /* Table View */
-            <div className="overflow-x-auto">
-              <div className="inline-block min-w-full align-middle">
-                <div className="overflow-hidden shadow-xl ring-1 ring-black ring-opacity-5 rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-300">
-                    <thead className="bg-red-500 sticky top-0 z-10">
-                      <tr>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Gói</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Giá/tháng</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Storage</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">CPU/RAM</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Laravel Apps</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Database</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">SSH/Git</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Redis/Queue</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Backup</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Support</th>
-                        <th className="py-4 px-6 text-center text-sm font-semibold text-white">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 bg-white">
-                      {packages.map((pkg, index) => (
-                        <tr 
-                          key={pkg.id} 
-                          className={`hover:bg-gray-50 ${pkg.popular ? 'bg-red-50' : ''} ${pkg.enterprise ? 'bg-yellow-50' : ''}`}
-                        >
-                          <td className="py-4 px-6 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div>
-                                <div className="font-semibold text-gray-900">{pkg.name}</div>
-                                <div className="text-xs text-gray-500">{pkg.tier}</div>
-                              </div>
-                              {pkg.popular && <span className="ml-2 text-red-500">⭐</span>}
-                              {pkg.enterprise && <span className="ml-2">👑</span>}
-                            </div>
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap">
-                            <div className="font-bold text-red-500">
-                              {pkg.price === "Custom" ? "Liên hệ" : `${pkg.price} VNĐ`}
-                            </div>
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.storage}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            <div>{pkg.cpu}</div>
-                            <div className="text-xs text-gray-500">{pkg.ram}</div>
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.websites}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.database}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            <div>{pkg.ssh}</div>
-                            <div className="text-xs text-gray-500">{pkg.git}</div>
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            <div>{pkg.redis}</div>
-                            <div className="text-xs text-gray-500">{pkg.queue}</div>
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.backup}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.support}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-center">
-                            <Button
-                              size="sm"
-                              className={pkg.enterprise ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-red-500 hover:bg-red-600'}
-                              data-testid={`button-select-table-${pkg.name}`}
-                              onClick={() => window.location.href = '/contact'}
-                            >
-                              Chọn Gói
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
+            </Tabs>
+          </motion.div>
         </div>
       </section>
 
-      {/* Competitor Comparison */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
+      {/* Responsive Competitor Comparison */}
+      <section className="py-16 md:py-20 bg-gray-50" data-testid="section-competitor-comparison">
+        <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-testid="heading-comparison">
               So Sánh Laravel Hosting STEP Với Đối Thủ
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg text-gray-600" data-testid="text-comparison-description">
               Tại sao Laravel developers chọn STEP?
             </p>
           </motion.div>
 
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-xl shadow-xl overflow-hidden">
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-xl shadow-xl overflow-hidden" data-testid="comparison-table-desktop">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-red-500 to-red-600 text-white">
-                  <tr>
+                <thead style={{ background: `linear-gradient(135deg, ${LARAVEL_RED} 0%, #e53e3e 100%)` }}>
+                  <tr className="text-white">
                     <th className="py-4 px-6 text-left text-lg font-semibold">Tính Năng</th>
                     <th className="py-4 px-6 text-center text-lg font-semibold">
-                      STEP Laravel Hosting
+                      <div className="flex items-center justify-center">
+                        <Award className="w-5 h-5 mr-2" />
+                        STEP Laravel Hosting
+                      </div>
                     </th>
-                    <th className="py-4 px-6 text-center text-lg font-semibold">Đối Thủ</th>
+                    <th className="py-4 px-6 text-center text-lg font-semibold text-white/80">Đối Thủ</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -1170,18 +1312,24 @@ export default function HostingLaravel() {
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      transition={{ duration: 0.5, delay: index * 0.05 }}
                       viewport={{ once: true }}
-                      className="hover:bg-gray-50"
+                      className={`hover:bg-gray-50 ${item.highlight ? 'bg-red-50/50' : ''}`}
+                      data-testid={`comparison-row-${index}`}
                     >
-                      <td className="py-4 px-6 font-medium text-gray-900">{item.metric}</td>
+                      <td className="py-4 px-6 font-medium text-gray-900">
+                        {item.highlight && <span className="text-lg mr-2">⚡</span>}
+                        {item.metric}
+                      </td>
                       <td className="py-4 px-6 text-center">
-                        <span className="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold ${
+                          item.highlight ? 'text-white' : 'bg-green-100 text-green-800'
+                        }`} style={item.highlight ? { background: LARAVEL_RED } : {}}>
                           <CheckCircle className="w-4 h-4 mr-1" />
                           {item.step}
                         </span>
                       </td>
-                      <td className="py-4 px-6 text-center text-gray-600 text-sm">
+                      <td className="py-4 px-6 text-center text-gray-500 text-sm">
                         {item.competitor}
                       </td>
                     </motion.tr>
@@ -1189,29 +1337,64 @@ export default function HostingLaravel() {
                 </tbody>
               </table>
             </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4" data-testid="comparison-cards-mobile">
+              {competitorComparison.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  viewport={{ once: true }}
+                  className={`bg-white rounded-lg shadow-md p-4 ${item.highlight ? 'ring-2 ring-[#FF2D20]' : ''}`}
+                  data-testid={`comparison-card-${index}`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-semibold text-gray-900">
+                      {item.highlight && <span className="text-lg mr-1">⚡</span>}
+                      {item.metric}
+                    </span>
+                    {item.highlight && (
+                      <Badge className="text-white text-xs" style={{ background: LARAVEL_RED }}>Laravel Key</Badge>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-green-50 rounded-lg p-3 text-center">
+                      <div className="text-xs text-gray-500 mb-1">STEP</div>
+                      <div className="text-sm font-semibold text-green-700">{item.step}</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3 text-center">
+                      <div className="text-xs text-gray-500 mb-1">Đối Thủ</div>
+                      <div className="text-sm text-gray-600">{item.competitor}</div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
+      {/* Developer Testimonials */}
+      <section className="py-16 md:py-20 bg-white" data-testid="section-testimonials">
+        <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-testid="heading-testimonials">
               Laravel Developers Nói Gì Về STEP?
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg text-gray-600" data-testid="text-testimonials-description">
               Hơn 3,000+ Laravel developers tin dùng STEP Hosting
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
@@ -1219,10 +1402,18 @@ export default function HostingLaravel() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-gray-50 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-gray-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow relative"
+                data-testid={`testimonial-card-${index}`}
               >
-                <div className="flex items-center mb-6">
-                  <div className="text-4xl mr-4">{testimonial.avatar}</div>
+                {/* Highlight Badge */}
+                <div className="absolute -top-3 right-4">
+                  <Badge className="text-white text-xs" style={{ background: LARAVEL_RED }} data-testid={`testimonial-badge-${index}`}>
+                    {testimonial.highlight}
+                  </Badge>
+                </div>
+
+                <div className="flex items-center mb-4">
+                  <div className="text-4xl mr-3">{testimonial.avatar}</div>
                   <div>
                     <div className="font-semibold text-gray-900">{testimonial.name}</div>
                     <div className="text-sm text-gray-600">{testimonial.role}</div>
@@ -1230,13 +1421,13 @@ export default function HostingLaravel() {
                   </div>
                 </div>
 
-                <div className="flex mb-4">
+                <div className="flex mb-3">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
                   ))}
                 </div>
 
-                <p className="text-gray-700 italic leading-relaxed">
+                <p className="text-gray-700 text-sm italic leading-relaxed" data-testid={`testimonial-text-${index}`}>
                   "{testimonial.text}"
                 </p>
               </motion.div>
@@ -1245,65 +1436,82 @@ export default function HostingLaravel() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
+      {/* FAQ Section Grouped by Topic */}
+      <section className="py-16 md:py-20 bg-gray-50" data-testid="section-faq">
+        <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-testid="heading-faq">
               Câu Hỏi Thường Gặp
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg text-gray-600" data-testid="text-faq-description">
               Giải đáp mọi thắc mắc về Laravel Hosting
             </p>
           </motion.div>
 
-          <div className="max-w-4xl mx-auto">
-            <Accordion type="single" collapsible className="space-y-4">
-              {faqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`}
-                  className="bg-white rounded-lg shadow-md overflow-hidden"
-                >
-                  <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 text-left font-semibold text-gray-900">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6 py-4 text-gray-600 leading-relaxed">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+          <div className="max-w-4xl mx-auto space-y-6">
+            {faqGroups.map((group, groupIndex) => (
+              <motion.div
+                key={groupIndex}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: groupIndex * 0.1 }}
+                viewport={{ once: true }}
+                data-testid={`faq-group-${groupIndex}`}
+              >
+                <div className="flex items-center mb-4">
+                  <span className="text-2xl mr-3">{group.title.split(' ')[0]}</span>
+                  <h3 className="text-xl font-semibold text-gray-900">{group.title.split(' ').slice(1).join(' ')}</h3>
+                </div>
+                <Accordion type="single" collapsible className="space-y-3" data-testid={`faq-accordion-${groupIndex}`}>
+                  {group.faqs.map((faq, faqIndex) => (
+                    <AccordionItem 
+                      key={faqIndex} 
+                      value={`faq-${groupIndex}-${faqIndex}`}
+                      className="bg-white rounded-lg shadow-md overflow-hidden border-0"
+                      data-testid={`faq-item-${groupIndex}-${faqIndex}`}
+                    >
+                      <AccordionTrigger className="px-5 py-4 hover:bg-gray-50 text-left font-medium text-gray-900 text-sm md:text-base" data-testid={`faq-trigger-${groupIndex}-${faqIndex}`}>
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="px-5 pb-4 text-gray-600 text-sm leading-relaxed" data-testid={`faq-content-${groupIndex}-${faqIndex}`}>
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-br from-red-500 to-red-600">
-        <div className="container mx-auto px-6 text-center">
+      <section className="py-16 md:py-20" style={{ background: `linear-gradient(135deg, ${LARAVEL_RED} 0%, #c53030 100%)` }} data-testid="section-cta">
+        <div className="container mx-auto px-4 md:px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-white mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6" data-testid="heading-cta">
               Sẵn Sàng Deploy Laravel App Của Bạn?
             </h2>
-            <p className="text-xl text-red-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-red-100 mb-8 max-w-2xl mx-auto" data-testid="text-cta-description">
               Bắt đầu với 14 ngày dùng thử miễn phí. Không cần thẻ tín dụng. 
               Hoàn tiền 100% trong 30 ngày nếu không hài lòng.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg"
-                className="bg-white text-red-500 hover:bg-gray-100 px-8 py-6 text-lg font-semibold"
+                className="bg-white hover:bg-gray-100 px-8 py-6 text-base font-semibold shadow-lg"
+                style={{ color: LARAVEL_RED }}
                 data-testid="button-cta-register"
                 onClick={() => window.location.href = '/contact'}
               >
@@ -1313,7 +1521,7 @@ export default function HostingLaravel() {
               <Button 
                 size="lg"
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-red-500 px-8 py-6 text-lg font-semibold"
+                className="border-2 border-white text-white hover:bg-white px-8 py-6 text-base font-semibold"
                 data-testid="button-cta-contact"
                 onClick={() => window.location.href = '/contact'}
               >

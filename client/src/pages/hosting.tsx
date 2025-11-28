@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   Zap, 
@@ -28,29 +28,42 @@ import {
   BarChart3,
   ChevronDown,
   ChevronUp,
-  Cloud
+  Cloud,
+  X,
+  Check,
+  Building,
+  Briefcase,
+  User,
+  Settings
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import hostingIllustration from "@assets/generated_images/Cloud_hosting_infrastructure_illustration_24b95542.png";
-import promotionalOffersImg from "@assets/generated_images/Hosting_promotional_offers_illustration_1de919a8.png";
-import performanceSpeedImg from "@assets/generated_images/Website_performance_and_speed_8da3197b.png";
+
+const STEP_BLUE = "#0066FF";
 
 export default function Hosting() {
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
   const [showAllPackages, setShowAllPackages] = useState(false);
-  const [compareView, setCompareView] = useState(false);
+  const [isYearly, setIsYearly] = useState(false);
+  const [activeTab, setActiveTab] = useState("all");
 
-  // 18 General Hosting Packages - Technology Agnostic
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const hostingPackages = [
     {
       id: 1,
       name: "HT-Starter-1",
       tier: "Starter",
       price: "50.000",
+      yearlyPrice: "540.000",
       monthlyPrice: 50000,
       storage: "5 GB NVMe SSD",
       bandwidth: "50 GB",
@@ -71,6 +84,7 @@ export default function Hosting() {
       name: "HT-Starter-2",
       tier: "Starter",
       price: "90.000",
+      yearlyPrice: "972.000",
       monthlyPrice: 90000,
       storage: "10 GB NVMe SSD",
       bandwidth: "100 GB",
@@ -91,6 +105,7 @@ export default function Hosting() {
       name: "HT-Starter-3",
       tier: "Starter",
       price: "150.000",
+      yearlyPrice: "1.620.000",
       monthlyPrice: 150000,
       storage: "20 GB NVMe SSD",
       bandwidth: "200 GB",
@@ -111,6 +126,7 @@ export default function Hosting() {
       name: "HT-Business-1",
       tier: "Business",
       price: "250.000",
+      yearlyPrice: "2.700.000",
       monthlyPrice: 250000,
       storage: "40 GB NVMe SSD",
       bandwidth: "400 GB",
@@ -132,6 +148,7 @@ export default function Hosting() {
       name: "HT-Business-2",
       tier: "Business",
       price: "380.000",
+      yearlyPrice: "4.104.000",
       monthlyPrice: 380000,
       storage: "60 GB NVMe SSD",
       bandwidth: "600 GB",
@@ -152,6 +169,7 @@ export default function Hosting() {
       name: "HT-Business-3",
       tier: "Business",
       price: "520.000",
+      yearlyPrice: "5.616.000",
       monthlyPrice: 520000,
       storage: "100 GB NVMe SSD",
       bandwidth: "1 TB",
@@ -172,6 +190,7 @@ export default function Hosting() {
       name: "HT-Professional-1",
       tier: "Professional",
       price: "700.000",
+      yearlyPrice: "7.560.000",
       monthlyPrice: 700000,
       storage: "150 GB NVMe SSD",
       bandwidth: "1.5 TB",
@@ -192,6 +211,7 @@ export default function Hosting() {
       name: "HT-Professional-2",
       tier: "Professional",
       price: "950.000",
+      yearlyPrice: "10.260.000",
       monthlyPrice: 950000,
       storage: "250 GB NVMe SSD",
       bandwidth: "2.5 TB",
@@ -205,13 +225,15 @@ export default function Hosting() {
       ssl: "SSL Pro + EV",
       backup: "Hourly",
       support: "Dedicated Support",
-      suitable: "Professional teams/SaaS apps"
+      suitable: "Professional teams/SaaS apps",
+      popular: true
     },
     {
       id: 9,
       name: "HT-Professional-3",
       tier: "Professional",
       price: "1.250.000",
+      yearlyPrice: "13.500.000",
       monthlyPrice: 1250000,
       storage: "400 GB NVMe SSD",
       bandwidth: "4 TB",
@@ -229,9 +251,10 @@ export default function Hosting() {
     },
     {
       id: 10,
-      name: "HT-Advanced-1",
-      tier: "Advanced",
+      name: "HT-Enterprise-1",
+      tier: "Enterprise",
       price: "1.650.000",
+      yearlyPrice: "17.820.000",
       monthlyPrice: 1650000,
       storage: "600 GB NVMe SSD",
       bandwidth: "6 TB",
@@ -249,9 +272,10 @@ export default function Hosting() {
     },
     {
       id: 11,
-      name: "HT-Advanced-2",
-      tier: "Advanced",
+      name: "HT-Enterprise-2",
+      tier: "Enterprise",
       price: "2.200.000",
+      yearlyPrice: "23.760.000",
       monthlyPrice: 2200000,
       storage: "1 TB NVMe SSD",
       bandwidth: "10 TB",
@@ -269,9 +293,10 @@ export default function Hosting() {
     },
     {
       id: 12,
-      name: "HT-Advanced-3",
-      tier: "Advanced",
+      name: "HT-Enterprise-3",
+      tier: "Enterprise",
       price: "2.900.000",
+      yearlyPrice: "31.320.000",
       monthlyPrice: 2900000,
       storage: "1.5 TB NVMe SSD",
       bandwidth: "15 TB",
@@ -285,14 +310,16 @@ export default function Hosting() {
       ssl: "SSL Enterprise + EV",
       backup: "Real-time + Multi-region",
       support: "24/7 Premium + Architect",
-      suitable: "Enterprise/Mission-critical"
+      suitable: "Enterprise/Mission-critical",
+      enterprise: true
     },
     {
       id: 13,
-      name: "HT-Enterprise-1",
+      name: "HT-Enterprise-4",
       tier: "Enterprise",
-      price: "3.000.000",
-      monthlyPrice: 3000000,
+      price: "3.500.000",
+      yearlyPrice: "37.800.000",
+      monthlyPrice: 3500000,
       storage: "2 TB NVMe SSD",
       bandwidth: "20 TB",
       database: "Không giới hạn",
@@ -302,106 +329,6 @@ export default function Hosting() {
       cpu: "24 vCores",
       ram: "48 GB",
       websites: "Không giới hạn",
-      ssl: "SSL Enterprise Suite",
-      backup: "Real-time + Disaster Recovery",
-      support: "24/7 Enterprise + Architect",
-      suitable: "Large corporations/Financial"
-    },
-    {
-      id: 14,
-      name: "HT-Enterprise-2",
-      tier: "Enterprise",
-      price: "3.100.000",
-      monthlyPrice: 3100000,
-      storage: "2.5 TB NVMe SSD",
-      bandwidth: "25 TB",
-      database: "Không giới hạn",
-      email: "Không giới hạn",
-      domains: "Không giới hạn",
-      subdomains: "Không giới hạn",
-      cpu: "28 vCores",
-      ram: "56 GB",
-      websites: "Không giới hạn",
-      ssl: "SSL Enterprise Suite + Custom",
-      backup: "Real-time + Multi-cloud",
-      support: "24/7 Enterprise + CTO",
-      suitable: "Multi-national corps/Media"
-    },
-    {
-      id: 15,
-      name: "HT-Enterprise-3",
-      tier: "Enterprise",
-      price: "3.200.000",
-      monthlyPrice: 3200000,
-      storage: "3 TB NVMe SSD",
-      bandwidth: "30 TB",
-      database: "Không giới hạn",
-      email: "Không giới hạn",
-      domains: "Không giới hạn",
-      subdomains: "Không giới hạn",
-      cpu: "32 vCores",
-      ram: "64 GB",
-      websites: "Không giới hạn",
-      ssl: "Custom SSL Infrastructure",
-      backup: "Real-time + Global DR",
-      support: "24/7 White-glove + CTO",
-      suitable: "Banking/Healthcare/Government"
-    },
-    {
-      id: 16,
-      name: "HT-Enterprise-4",
-      tier: "Enterprise",
-      price: "3.300.000",
-      monthlyPrice: 3300000,
-      storage: "4 TB NVMe SSD",
-      bandwidth: "40 TB",
-      database: "Không giới hạn",
-      email: "Không giới hạn",
-      domains: "Không giới hạn",
-      subdomains: "Không giới hạn",
-      cpu: "36 vCores",
-      ram: "72 GB",
-      websites: "Không giới hạn",
-      ssl: "Custom SSL + Zero-Trust",
-      backup: "Real-time + Multi-site DR",
-      support: "24/7 White-glove + Solutions Team",
-      suitable: "Global platforms/Streaming"
-    },
-    {
-      id: 17,
-      name: "HT-Enterprise-5",
-      tier: "Enterprise",
-      price: "3.400.000",
-      monthlyPrice: 3400000,
-      storage: "5 TB NVMe SSD",
-      bandwidth: "50 TB",
-      database: "Không giới hạn",
-      email: "Không giới hạn",
-      domains: "Không giới hạn",
-      subdomains: "Không giới hạn",
-      cpu: "40 vCores",
-      ram: "80 GB",
-      websites: "Không giới hạn",
-      ssl: "Custom SSL + Advanced Protection",
-      backup: "Real-time + Global Multi-cloud",
-      support: "24/7 Concierge + Engineering Team",
-      suitable: "Fortune 500/Critical infrastructure"
-    },
-    {
-      id: 18,
-      name: "HT-Enterprise-6",
-      tier: "Enterprise",
-      price: "3.500.000",
-      monthlyPrice: 3500000,
-      storage: "6 TB NVMe SSD",
-      bandwidth: "60 TB",
-      database: "Không giới hạn",
-      email: "Không giới hạn",
-      domains: "Không giới hạn",
-      subdomains: "Không giới hạn",
-      cpu: "48 vCores",
-      ram: "96 GB",
-      websites: "Không giới hạn",
       ssl: "Custom Security Suite",
       backup: "Custom DR Solution",
       support: "24/7 Dedicated Engineering Team",
@@ -410,275 +337,353 @@ export default function Hosting() {
     }
   ];
 
-  const displayedPackages = showAllPackages ? hostingPackages : hostingPackages.slice(0, 6);
+  const tierConfig: Record<string, { color: string; bgColor: string; borderColor: string; icon: any }> = {
+    "Starter": { color: "text-gray-700", bgColor: "bg-gray-100", borderColor: "border-gray-300", icon: User },
+    "Business": { color: "text-[#0066FF]", bgColor: "bg-blue-50", borderColor: "border-[#0066FF]", icon: Briefcase },
+    "Professional": { color: "text-purple-600", bgColor: "bg-purple-50", borderColor: "border-purple-500", icon: Award },
+    "Enterprise": { color: "text-red-600", bgColor: "bg-red-50", borderColor: "border-red-500", icon: Building }
+  };
 
-  // Technical Features - Licensed Stack
-  const technicalFeatures = [
+  const getFilteredPackages = () => {
+    if (activeTab === "all") {
+      return showAllPackages ? hostingPackages : hostingPackages.slice(0, 6);
+    }
+    const filtered = hostingPackages.filter(pkg => pkg.tier === activeTab);
+    return showAllPackages ? filtered : filtered.slice(0, 4);
+  };
+
+  const featureGroups = [
     {
-      icon: Server,
-      title: "cPanel/WHM Licensed",
-      description: "cPanel control panel bản quyền với giao diện trực quan, quản lý unlimited accounts, 1-click installer cho 400+ apps, file manager, cron jobs, DNS zone editor, backup manager, và staging tools. WHM cho reseller hosting."
-    },
-    {
-      icon: Shield,
-      title: "AlmaLinux OS Licensed",
-      description: "AlmaLinux OS bản quyền - enterprise-grade Linux distribution, binary compatible với RHEL, hardened kernel, SELinux policies, automatic security updates, long-term support (10 years), và enterprise stability cho production workloads."
-    },
-    {
+      title: "Hiệu Suất Tối Đa",
       icon: Zap,
-      title: "LiteSpeed Enterprise Licensed",
-      description: "LiteSpeed Web Server Enterprise bản quyền thay Apache/Nginx, HTTP/3 support, Brotli compression, event-driven architecture với performance gấp 5-10x, LSCache built-in, anti-DDoS capabilities, và resource-efficient operation."
+      color: "from-blue-500 to-cyan-500",
+      features: [
+        {
+          icon: Server,
+          title: "cPanel/WHM Licensed",
+          description: "Control panel bản quyền với giao diện trực quan, quản lý unlimited accounts, 1-click installer cho 400+ apps."
+        },
+        {
+          icon: Zap,
+          title: "LiteSpeed Enterprise",
+          description: "Web Server Enterprise với HTTP/3, Brotli compression, performance gấp 5-10x Apache."
+        },
+        {
+          icon: Database,
+          title: "MySQL/MariaDB Optimized",
+          description: "MySQL 8.0+ với query caching, InnoDB optimization, connection pooling."
+        },
+        {
+          icon: BarChart3,
+          title: "Advanced Performance Tools",
+          description: "Redis/Memcached caching, HTTP/2 & HTTP/3, Brotli & Gzip compression."
+        }
+      ]
     },
     {
-      icon: Lock,
-      title: "Imunify360 Licensed",
-      description: "Imunify360 bản quyền - AI-powered security suite với proactive malware scanning, automatic patching, intrusion detection & prevention (IDS/IPS), reputation management, advanced firewall rules, và 24/7 SOC monitoring."
-    },
-    {
+      title: "Bảo Mật Toàn Diện",
       icon: Shield,
-      title: "WAF (Web Application Firewall)",
-      description: "ModSecurity WAF với OWASP Core Rule Set, layer-7 filtering, SQL injection prevention, XSS protection, bot mitigation, virtual patching, real-time threat intelligence feeds, và customizable security policies cho complete protection."
+      color: "from-green-500 to-emerald-500",
+      features: [
+        {
+          icon: Shield,
+          title: "AlmaLinux OS Licensed",
+          description: "Enterprise Linux, binary compatible với RHEL, hardened kernel, SELinux policies."
+        },
+        {
+          icon: Lock,
+          title: "Imunify360 Licensed",
+          description: "AI-powered security với proactive malware scanning, IDS/IPS, 24/7 SOC monitoring."
+        },
+        {
+          icon: Shield,
+          title: "WAF (Web Application Firewall)",
+          description: "ModSecurity WAF với OWASP Core Rule Set, SQL injection prevention, XSS protection."
+        },
+        {
+          icon: Cloud,
+          title: "Cloudflare CDN Integration",
+          description: "Global edge network (200+ datacenters), DDoS mitigation up to 100Gbps."
+        }
+      ]
     },
     {
-      icon: Database,
-      title: "MySQL/MariaDB Optimized",
-      description: "MySQL 8.0+ hoặc MariaDB 10.6+ với query caching, slow query logging, InnoDB optimization, connection pooling, replication support, automated backups, và performance tuning cho database-heavy applications."
-    },
-    {
-      icon: Cloud,
-      title: "Cloudflare CDN Integration",
-      description: "Cloudflare CDN free integration với global edge network (200+ datacenters), automatic caching, DDoS mitigation up to 100Gbps, SSL/TLS optimization, image optimization, HTTP/3 support, và bandwidth savings up to 60%."
-    },
-    {
-      icon: RefreshCw,
-      title: "JetBackup Automated",
-      description: "JetBackup system với automated backups (weekly/daily/hourly/real-time), incremental backups để tiết kiệm storage, off-site backup locations, one-click restore, backup rotation policies, và disaster recovery options."
-    },
-    {
-      icon: Code2,
-      title: "Multi-PHP Versions",
-      description: "PHP 7.4, 8.0, 8.1, 8.2, 8.3 support với PHP Selector, per-directory PHP version control, OPcache enabled, custom php.ini settings, extension management, và backward compatibility cho legacy applications."
-    },
-    {
-      icon: Activity,
-      title: "Resource Monitoring",
-      description: "Real-time resource monitoring dashboard với CPU/RAM/Disk usage graphs, bandwidth tracking, I/O statistics, process management, alerts & notifications via email/SMS, và historical data analysis cho capacity planning."
-    },
-    {
-      icon: BarChart3,
-      title: "Advanced Performance Tools",
-      description: "Redis/Memcached caching, HTTP/2 & HTTP/3 support, Brotli & Gzip compression, OPcache optimization, database query optimization, CDN integration, lazy loading, resource minification, và performance benchmarking tools."
-    },
-    {
+      title: "Hỗ Trợ & Backup",
       icon: HeadphonesIcon,
-      title: "24/7 Expert Support",
-      description: "Email/Chat/Phone support 24/7, average response time < 2 hours (Priority < 30 mins), technical expert team với hosting/server knowledge, free migration assistance, optimization consultations, và proactive monitoring alerts."
+      color: "from-purple-500 to-pink-500",
+      features: [
+        {
+          icon: RefreshCw,
+          title: "JetBackup Automated",
+          description: "Automated backups (weekly/daily/hourly/real-time), incremental backups, one-click restore."
+        },
+        {
+          icon: Code2,
+          title: "Multi-PHP Versions",
+          description: "PHP 7.4, 8.0, 8.1, 8.2, 8.3 support với PHP Selector, per-directory control."
+        },
+        {
+          icon: Activity,
+          title: "Resource Monitoring",
+          description: "Real-time dashboard với CPU/RAM/Disk usage, alerts via email/SMS."
+        },
+        {
+          icon: HeadphonesIcon,
+          title: "24/7 Expert Support",
+          description: "Email/Chat/Phone support 24/7, response time < 2 hours (Priority < 30 mins)."
+        }
+      ]
     }
   ];
 
-  // Competitor Comparison
   const competitorComparison = [
-    { metric: "Control Panel", step: "cPanel/WHM Licensed", competitor: "Custom/Limited panels" },
-    { metric: "Operating System", step: "AlmaLinux Enterprise (RHEL-based)", competitor: "Generic Linux or CentOS" },
-    { metric: "Web Server", step: "LiteSpeed Enterprise Licensed", competitor: "Apache/Nginx Free" },
-    { metric: "Security Suite", step: "Imunify360 + WAF (Licensed)", competitor: "Basic firewall only" },
-    { metric: "Backup System", step: "JetBackup Automated (Real-time)", competitor: "Weekly or Manual" },
-    { metric: "PHP Support", step: "PHP 7.4 - 8.3 Multi-version", competitor: "Single PHP version" },
-    { metric: "Support Response", step: "< 2h (Priority < 30min)", competitor: "24h - 72h" },
-    { metric: "Uptime SLA", step: "99.99% - 99.999%", competitor: "99.5% - 99.9%" }
+    { metric: "Control Panel", step: "cPanel/WHM Licensed", competitor: "Custom/Limited panels", stepGood: true },
+    { metric: "Operating System", step: "AlmaLinux Enterprise", competitor: "Generic Linux", stepGood: true },
+    { metric: "Web Server", step: "LiteSpeed Enterprise", competitor: "Apache/Nginx Free", stepGood: true },
+    { metric: "Security Suite", step: "Imunify360 + WAF", competitor: "Basic firewall only", stepGood: true },
+    { metric: "Backup System", step: "JetBackup Real-time", competitor: "Weekly or Manual", stepGood: true },
+    { metric: "PHP Support", step: "PHP 7.4 - 8.3", competitor: "Single PHP version", stepGood: true },
+    { metric: "Support Response", step: "< 2h (Priority < 30min)", competitor: "24h - 72h", stepGood: true },
+    { metric: "Uptime SLA", step: "99.99% - 99.999%", competitor: "99.5% - 99.9%", stepGood: true }
   ];
 
-  // Testimonials
   const testimonials = [
     {
-      name: "Anh Nguyễn Văn A",
+      name: "Nguyễn Văn Minh",
       role: "CEO",
-      company: "E-commerce Startup",
+      company: "TechStartup VN",
       rating: 5,
-      text: "Hosting STEP với cPanel và LiteSpeed làm website shop nhanh gấp 3 lần, conversion tăng 35%! Imunify360 bảo vệ khỏi malware attack, support team giải quyết vấn đề trong vài phút.",
-      avatar: "👨‍💼"
+      text: "Hosting STEP với cPanel và LiteSpeed làm website shop nhanh gấp 3 lần, conversion tăng 35%! Imunify360 bảo vệ khỏi malware attack.",
+      avatar: "NM",
+      logo: "🏢"
     },
     {
-      name: "Chị Trần Thị B",
+      name: "Trần Thị Hương",
       role: "Web Developer",
-      company: "Agency Hà Nội",
+      company: "Digital Agency HN",
       rating: 5,
-      text: "cPanel interface rất dễ sử dụng, multi-PHP versions giúp maintain cả legacy và modern apps. JetBackup cứu project khi có incident, restore chỉ mất 5 phút. Highly recommended!",
-      avatar: "👩‍💻"
+      text: "cPanel interface rất dễ sử dụng, multi-PHP versions giúp maintain cả legacy và modern apps. JetBackup cứu project khi có incident.",
+      avatar: "TH",
+      logo: "💻"
     },
     {
-      name: "Anh Lê Văn C",
+      name: "Lê Hoàng Nam",
       role: "System Admin",
-      company: "Corporate Website",
+      company: "Finance Corp",
       rating: 5,
-      text: "AlmaLinux stability + Imunify360 security + LiteSpeed performance = perfect combo cho production. WAF chặn 99% malicious traffic. Migrated 20+ sites without downtime!",
-      avatar: "🔧"
+      text: "AlmaLinux stability + Imunify360 security + LiteSpeed performance = perfect combo cho production. WAF chặn 99% malicious traffic.",
+      avatar: "LN",
+      logo: "🏦"
     }
   ];
 
-  // FAQ
-  const faqs = [
+  const faqGroups = [
     {
-      question: "cPanel là gì và tại sao nó quan trọng?",
-      answer: "cPanel là control panel phổ biến nhất thế giới, cung cấp giao diện đồ họa trực quan để quản lý hosting. Với cPanel, bạn có thể dễ dàng quản lý files, databases, emails, domains, SSL certificates, backups, cron jobs và install 400+ applications chỉ với vài click. cPanel licensed (bản quyền) đảm bảo updates, security patches, và support chính thức từ vendor."
+      title: "Về Control Panel & Công Nghệ",
+      icon: Settings,
+      faqs: [
+        {
+          question: "cPanel là gì và tại sao nó quan trọng?",
+          answer: "cPanel là control panel phổ biến nhất thế giới, cung cấp giao diện đồ họa trực quan để quản lý hosting. Với cPanel, bạn có thể dễ dàng quản lý files, databases, emails, domains, SSL certificates, backups, cron jobs và install 400+ applications chỉ với vài click."
+        },
+        {
+          question: "LiteSpeed Enterprise tốt hơn Apache/Nginx như thế nào?",
+          answer: "LiteSpeed Enterprise licensed nhanh hơn Apache 5-10 lần, hiệu quả hơn Nginx trong serving dynamic content. Built-in LSCache, HTTP/3 support native, event-driven architecture tiết kiệm resources."
+        },
+        {
+          question: "Multi-PHP versions support nghĩa là gì?",
+          answer: "Support PHP 7.4, 8.0, 8.1, 8.2, 8.3 đồng thời trên cùng hosting account. Mỗi website/directory có thể chọn PHP version riêng qua PHP Selector trong cPanel."
+        }
+      ]
     },
     {
-      question: "AlmaLinux khác gì CentOS/Ubuntu? Tại sao chọn AlmaLinux?",
-      answer: "AlmaLinux là enterprise Linux distribution, binary compatible với Red Hat Enterprise Linux (RHEL), được phát triển sau khi CentOS ngừng support. AlmaLinux cung cấp long-term support (10 years), security hardening, SELinux policies, enterprise stability, và regular security updates - lý tưởng cho production environments. Khác với Ubuntu/Debian, AlmaLinux focus vào stability thay vì bleeding-edge features."
+      title: "Về Bảo Mật & Backup",
+      icon: Shield,
+      faqs: [
+        {
+          question: "Imunify360 bảo vệ website khỏi những gì?",
+          answer: "Imunify360 là AI-powered security suite bảo vệ khỏi: malware, brute-force attacks, zero-day exploits, DDoS attacks, SQL injection, XSS attacks. Proactive Defense automatically patches vulnerabilities."
+        },
+        {
+          question: "WAF (Web Application Firewall) hoạt động như thế nào?",
+          answer: "WAF (ModSecurity) filter traffic ở layer 7, analyze HTTP/HTTPS requests trước khi đến web server. Block malicious requests dựa trên OWASP Core Rule Set."
+        },
+        {
+          question: "JetBackup khác gì backup thông thường?",
+          answer: "JetBackup là enterprise backup solution với incremental backups, automated schedules (hourly/daily/weekly/real-time), off-site backup locations, instant restore qua cPanel interface."
+        }
+      ]
     },
     {
-      question: "LiteSpeed Enterprise tốt hơn Apache/Nginx như thế nào?",
-      answer: "LiteSpeed Enterprise licensed nhanh hơn Apache 5-10 lần, hiệu quả hơn Nginx trong serving dynamic content. Built-in LSCache (tương đương Varnish), HTTP/3 support native, event-driven architecture tiết kiệm resources, anti-DDoS capabilities, và .htaccess compatible với Apache config. Performance improvements đặc biệt rõ rệt cho WordPress/PHP applications với high concurrent users."
-    },
-    {
-      question: "Imunify360 bảo vệ website khỏi những gì?",
-      answer: "Imunify360 là AI-powered security suite bảo vệ khỏi: malware (viruses, trojans, backdoors), brute-force attacks, zero-day exploits, DDoS attacks, SQL injection, XSS attacks, và suspicious file modifications. Proactive Defense automatically patches vulnerabilities, Reputation Management blocks malicious IPs, và 24/7 SOC monitoring với real-time threat intelligence. Auto-cleanup infected files."
-    },
-    {
-      question: "WAF (Web Application Firewall) hoạt động như thế nào?",
-      answer: "WAF (ModSecurity) filter traffic ở layer 7 (application layer), analyze HTTP/HTTPS requests trước khi đến web server. Block malicious requests dựa trên OWASP Core Rule Set, prevent SQL injection, XSS, file inclusion attacks, bot traffic, và brute-force attempts. Virtual patching bảo vệ vulnerabilities trong applications trước khi có official patches. Customize rules cho từng website."
-    },
-    {
-      question: "Có hỗ trợ migration miễn phí từ hosting cũ không?",
-      answer: "Có! Chúng tôi hỗ trợ migrate miễn phí websites, databases, emails từ hosting cũ (cPanel to cPanel or other panels). Team sẽ transfer files via SSH/FTP, import MySQL databases, configure DNS records, test thoroughly trước khi switch DNS. Zero downtime migration cho most cases. Contact support để schedule migration."
-    },
-    {
-      question: "Multi-PHP versions support nghĩa là gì?",
-      answer: "Support PHP 7.4, 8.0, 8.1, 8.2, 8.3 đồng thời trên cùng hosting account. Mỗi website/directory có thể chọn PHP version riêng qua PHP Selector trong cPanel, cho phép run legacy apps (PHP 7.4) và modern apps (PHP 8.3) cùng lúc. Switch PHP version không cần restart server, customize php.ini settings per site."
-    },
-    {
-      question: "JetBackup khác gì backup thông thường?",
-      answer: "JetBackup là enterprise backup solution với incremental backups (chỉ backup thay đổi, tiết kiệm storage), automated schedules (hourly/daily/weekly/real-time), off-site backup locations (separate servers), instant restore qua cPanel interface, snapshot backups, và retention policies flexible. Free backup storage không tính vào disk quota."
-    },
-    {
-      question: "Uptime SLA 99.99% có nghĩa là gì?",
-      answer: "99.99% uptime SLA = maximum 4.3 phút downtime mỗi tháng (52.6 phút/năm). 99.999% (five nines) = maximum 26 giây downtime/tháng. SLA guarantee compensation (service credits) nếu không đạt uptime commitment. Scheduled maintenance không tính vào downtime. Infrastructure monitoring 24/7 với automatic failover."
-    },
-    {
-      question: "Có thể upgrade/downgrade gói hosting không?",
-      answer: "Có thể upgrade/downgrade bất cứ lúc nào. Upgrade có hiệu lực ngay lập tức với instant resource provisioning, downgrade áp dụng từ kỳ billing tiếp theo. Data migration tự động, không mất files/databases/emails. Pro-rata billing cho upgrades mid-cycle. Contact support nếu cần assistance với complex migrations."
-    },
-    {
-      question: "Có giới hạn số lượng websites/databases không?",
-      answer: "Starter/Business tiers có limits theo gói (1-15 websites, 1-15 databases). Professional trở lên: Không giới hạn websites/databases, chỉ giới hạn bởi disk space và resource allocation. Addon domains, subdomains, parked domains đều được support. Mỗi website có thể có riêng database, email accounts, SSL certificates."
-    },
-    {
-      question: "Redis/Memcached caching có sẵn không?",
-      answer: "Business tiers trở lên hỗ trợ Redis (in-memory data store) cho object caching, session storage, và query result caching. Professional/Enterprise tiers có Memcached support cho distributed caching systems. LiteSpeed Cache (LSCache) built-in for all tiers với page caching, browser caching, và CDN integration. Free setup assistance từ support team."
+      title: "Về Gói Dịch Vụ & Hỗ Trợ",
+      icon: HeadphonesIcon,
+      faqs: [
+        {
+          question: "Có hỗ trợ migration miễn phí từ hosting cũ không?",
+          answer: "Có! Chúng tôi hỗ trợ migrate miễn phí websites, databases, emails từ hosting cũ. Team sẽ transfer files via SSH/FTP, import MySQL databases, configure DNS records."
+        },
+        {
+          question: "Uptime SLA 99.99% có nghĩa là gì?",
+          answer: "99.99% uptime SLA = maximum 4.3 phút downtime mỗi tháng. SLA guarantee compensation nếu không đạt uptime commitment. Infrastructure monitoring 24/7 với automatic failover."
+        },
+        {
+          question: "Có thể upgrade/downgrade gói hosting không?",
+          answer: "Có thể upgrade/downgrade bất cứ lúc nào. Upgrade có hiệu lực ngay lập tức, downgrade áp dụng từ kỳ billing tiếp theo. Data migration tự động, không mất files/databases/emails."
+        }
+      ]
     }
+  ];
+
+  const navSections = [
+    { id: "hero", label: "Tổng quan" },
+    { id: "packages", label: "Bảng giá" },
+    { id: "features", label: "Tính năng" },
+    { id: "comparison", label: "So sánh" },
+    { id: "testimonials", label: "Đánh giá" },
+    { id: "faq", label: "FAQ" }
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" data-testid="hosting-page">
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-12 sm:py-20 overflow-hidden">
-        <div className="absolute inset-0 opacity-20 hidden sm:block">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-300 rounded-full filter blur-3xl"></div>
+      {/* Sticky Navigation */}
+      <nav className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100 hidden md:block" data-testid="nav-sections">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center gap-8 py-3">
+            {navSections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => scrollToSection(section.id)}
+                className="text-sm font-medium text-gray-600 hover:text-[#0066FF] transition-colors"
+                data-testid={`nav-${section.id}`}
+              >
+                {section.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section - Clean Design with STEP Blue */}
+      <section id="hero" className="relative bg-gradient-to-br from-[#f0f7ff] via-white to-[#e6f2ff] py-16 md:py-24 overflow-hidden" data-testid="section-hero">
+        <div className="absolute inset-0 opacity-30 hidden md:block">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-[#0066FF]/20 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#0066FF]/10 rounded-full filter blur-3xl"></div>
         </div>
         
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6 }}
             >
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mr-4 animate-pulse">
-                  <Server className="text-white w-6 h-6" />
-                </div>
-                <span className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">
-                  🔥 SIÊU PHẨM HOSTING - GIẢM 30% - 7 NGÀY DUY NHẤT!
-                </span>
+              <div className="flex items-center gap-3 mb-6">
+                <Badge className="bg-[#0066FF] text-white px-4 py-1.5 text-sm font-semibold" data-testid="badge-promo">
+                  Giảm 30% năm đầu
+                </Badge>
+                <Badge variant="outline" className="border-green-500 text-green-600 px-3 py-1">
+                  Uptime 99.99%
+                </Badge>
               </div>
               
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-6 leading-tight">
-                KHÁM PHÁ 18 GÓI HOSTING 
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"> "SIÊU PHẨM"</span>
-                <br />
-                <span className="text-red-500">TỪ 50K/THÁNG</span> – ĐÁNH BẬT MỌI ĐỐI THỦ!
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight" data-testid="hero-title">
+                Hosting Chuyên Nghiệp
+                <span className="text-[#0066FF]"> Tốc Độ Vượt Trội</span>
               </h1>
               
-              <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border-l-4 border-blue-500 rounded-lg p-6 mb-8">
-                <p className="text-lg text-gray-800 leading-relaxed">
-                  <strong className="text-blue-600">🚀 Nhanh như chớp, bảo mật như pháo đài, giá rẻ đến khó tin!</strong><br />
-                  Chỉ từ <span className="text-2xl font-bold text-red-600">50.000Đ/tháng</span>, bạn đã sở hữu ngay:
-                </p>
-                <ul className="mt-4 space-y-2 text-gray-700">
-                  <li className="flex items-start">
-                    <span className="text-blue-500 font-bold mr-2">🔥</span>
-                    <span><strong>cPanel bản quyền chính hãng</strong> – Quản lý dễ như chơi, kéo thả là xong!</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-orange-500 font-bold mr-2">🚀</span>
-                    <span><strong>AlmaLinux + LiteSpeed Enterprise</strong> – Tốc độ load <strong className="text-red-600">nhanh gấp 10 lần</strong> Apache!</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 font-bold mr-2">🛡️</span>
-                    <span><strong>Imunify360 + WAF ModSecurity</strong> – Chặn 100% DDoS, malware, brute-force tự động!</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-purple-500 font-bold mr-2">⚡</span>
-                    <span><strong>NVMe SSD RAID 10</strong> – Uptime <strong className="text-green-600">99.99%</strong> + Tặng SSL + Cloudflare CDN!</span>
-                  </li>
-                </ul>
+              <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed max-w-xl" data-testid="hero-subtitle">
+                Hosting NVMe SSD với LiteSpeed Enterprise, cPanel bản quyền và bảo mật Imunify360. 
+                Chỉ từ <span className="font-bold text-[#0066FF]">50.000đ/tháng</span>.
+              </p>
+
+              {/* Key Benefits */}
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                {[
+                  { icon: Zap, text: "LiteSpeed 10x nhanh hơn" },
+                  { icon: Shield, text: "Imunify360 bảo vệ 24/7" },
+                  { icon: Server, text: "cPanel bản quyền" },
+                  { icon: Clock, text: "Support < 2 giờ" }
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-gray-700" data-testid={`benefit-${idx}`}>
+                    <div className="w-8 h-8 rounded-lg bg-[#0066FF]/10 flex items-center justify-center">
+                      <item.icon className="w-4 h-4 text-[#0066FF]" />
+                    </div>
+                    <span className="text-sm font-medium">{item.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <Button 
+                  size="lg"
+                  className="bg-[#0066FF] hover:bg-[#0052CC] text-white px-8 py-6 text-lg font-semibold shadow-lg shadow-blue-500/25"
+                  data-testid="button-hero-cta"
+                  onClick={() => scrollToSection('packages')}
+                >
+                  Xem Bảng Giá
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-[#0066FF] text-[#0066FF] hover:bg-[#0066FF] hover:text-white px-8 py-6 text-lg font-semibold"
+                  data-testid="button-hero-contact"
+                  onClick={() => window.location.href = '/contact'}
+                >
+                  Tư Vấn Miễn Phí
+                </Button>
+              </div>
+
+              {/* Trust Badges */}
+              <div className="flex flex-wrap items-center gap-4 pt-6 border-t border-gray-200" data-testid="trust-badges">
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <Award className="w-5 h-5 text-[#0066FF]" />
+                  <span>ISO 27001</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <Shield className="w-5 h-5 text-green-500" />
+                  <span>PCI DSS</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <CheckCircle className="w-5 h-5 text-[#0066FF]" />
+                  <span>10,000+ websites</span>
+                </div>
               </div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
               className="relative hidden lg:block"
             >
-              <div className="relative rounded-2xl shadow-2xl overflow-hidden">
+              <div className="relative rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
                 <img 
                   src={hostingIllustration} 
                   alt="Hạ tầng Hosting hiện đại - Server STEP"
                   className="w-full h-auto object-cover rounded-2xl"
+                  data-testid="hero-image"
                 />
                 
-                {/* Overlay badges */}
-                <div className="absolute top-6 left-6 right-6 space-y-3">
-                  <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-                        <span className="font-semibold text-gray-900">Server Status</span>
-                      </div>
-                      <span className="text-green-600 font-bold">Online ✓</span>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-blue-500/95 backdrop-blur-sm rounded-lg p-4 shadow-lg text-white">
-                    <div className="font-bold mb-1">⚡ Tốc độ LiteSpeed</div>
-                    <div className="text-sm">Nhanh gấp 10x Apache</div>
-                  </div>
-                  
-                  <div className="bg-gradient-to-r from-green-500 to-emerald-500 backdrop-blur-sm rounded-lg p-4 shadow-lg text-white">
-                    <div className="font-bold mb-1">🛡️ Bảo mật Imunify360</div>
-                    <div className="text-sm">Chặn 100% DDoS & Malware</div>
-                  </div>
-                </div>
-
-                {/* Bottom stats */}
+                {/* Overlay Stats */}
                 <div className="absolute bottom-6 left-6 right-6">
-                  <div className="bg-gray-900/95 backdrop-blur-sm rounded-lg p-4 shadow-lg">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-gray-100">
                     <div className="grid grid-cols-3 gap-4 text-center">
                       <div>
-                        <div className="text-2xl font-bold text-green-400">99.99%</div>
-                        <div className="text-xs text-gray-300">Uptime</div>
+                        <div className="text-2xl font-bold text-[#0066FF]">99.99%</div>
+                        <div className="text-xs text-gray-500">Uptime SLA</div>
                       </div>
                       <div>
-                        <div className="text-2xl font-bold text-blue-400">18</div>
-                        <div className="text-xs text-gray-300">Gói Hosting</div>
+                        <div className="text-2xl font-bold text-[#0066FF]">13</div>
+                        <div className="text-xs text-gray-500">Gói Hosting</div>
                       </div>
                       <div>
-                        <div className="text-2xl font-bold text-purple-400">24/7</div>
-                        <div className="text-xs text-gray-300">Support</div>
+                        <div className="text-2xl font-bold text-[#0066FF]">24/7</div>
+                        <div className="text-xs text-gray-500">Hỗ Trợ</div>
                       </div>
                     </div>
                   </div>
@@ -689,325 +694,192 @@ export default function Hosting() {
         </div>
       </section>
 
-      {/* Package Categories & Special Offers Section */}
-      <section className="py-12 bg-white overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6">
+      {/* Packages Section with Tabs */}
+      <section id="packages" className="py-16 md:py-24 bg-gray-50" data-testid="section-packages">
+        <div className="container mx-auto px-4 md:px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-          >
-            {/* Package Categories */}
-            <div className="bg-white rounded-xl shadow-lg p-8 mb-8 border-2 border-blue-100">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">📦 PHÙ HỢP MỌI QUY MÔ – BẠN CHỌN, STEP LO!</h3>
-              <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                <div className="flex items-start space-x-3">
-                  <span className="text-3xl">👉</span>
-                  <div>
-                    <div className="font-bold text-blue-600 text-lg">Gói Cơ bản (50K)</div>
-                    <div className="text-sm text-gray-600">Blog, landing page, shop nhỏ</div>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-3xl">👉</span>
-                  <div>
-                    <div className="font-bold text-purple-600 text-lg">Gói Business (150K–350K)</div>
-                    <div className="text-sm text-gray-600">Website doanh nghiệp, e-commerce vừa</div>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-3xl">👉</span>
-                  <div>
-                    <div className="font-bold text-red-600 text-lg">Gói Enterprise (750K+)</div>
-                    <div className="text-sm text-gray-600">Portal lớn, hệ thống nhiều subdomain</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Special Offers */}
-            <div className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-xl p-4 sm:p-8 mb-8">
-              <div className="grid lg:grid-cols-[1.5fr_1fr] gap-6 lg:gap-8 items-center max-w-6xl mx-auto">
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-orange-900 mb-4 sm:mb-6">🎁 ƯU ĐÃI ĐẶC BIỆT KHI ĐĂNG KÝ NGAY:</h3>
-                  <div className="space-y-3 sm:space-y-4 text-gray-800">
-                    <div className="flex items-start">
-                      <span className="text-green-500 font-bold mr-2 sm:mr-3 text-lg sm:text-xl">✅</span>
-                      <span className="text-sm sm:text-lg"><strong className="text-red-600">Giảm 30% năm đầu</strong> (chỉ áp dụng 7 ngày tới)</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-green-500 font-bold mr-2 sm:mr-3 text-lg sm:text-xl">✅</span>
-                      <span className="text-sm sm:text-lg"><strong>Miễn phí chuyển hosting</strong> từ nhà cung cấp khác (chỉ 2 giờ hoàn tất)</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-green-500 font-bold mr-2 sm:mr-3 text-lg sm:text-xl">✅</span>
-                      <span className="text-sm sm:text-lg"><strong>Hỗ trợ 24/7/365</strong> qua Zalo OA + ticket + hotline <strong>0985.636.289</strong></span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-green-500 font-bold mr-2 sm:mr-3 text-lg sm:text-xl">✅</span>
-                      <span className="text-sm sm:text-lg"><strong className="text-blue-600">Dùng thử 30 ngày – Không hài lòng hoàn 200% tiền!</strong></span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="hidden lg:flex justify-center items-center">
-                  <img 
-                    src={promotionalOffersImg} 
-                    alt="Ưu đãi đặc biệt - Hosting STEP"
-                    className="w-full h-auto max-w-md rounded-xl shadow-2xl"
-                  />
-                </div>
-              </div>
-            </div>
-            
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center">
-              <Button 
-                size="lg"
-                className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 px-10 py-7 text-xl font-bold shadow-xl"
-                data-testid="button-view-packages"
-                onClick={() => {
-                  document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              >
-                🔥 Xem Bảng Giá 18 Gói SIÊU PHẨM
-                <ArrowRight className="ml-2 h-6 w-6" />
-              </Button>
-              
-              <Button 
-                variant="outline"
-                size="lg"
-                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-10 py-7 text-xl font-bold"
-                data-testid="button-contact"
-                onClick={() => window.location.href = '/contact'}
-              >
-                📞 Hotline: 0985.636.289
-              </Button>
-            </div>
-
-            {/* Urgency Warning */}
-            <div className="bg-red-50 border-l-4 border-red-500 rounded-xl p-4 sm:p-6 shadow-lg max-w-5xl mx-auto">
-              <div className="grid lg:grid-cols-[1fr_auto] gap-4 sm:gap-6 items-center">
-                <div className="flex items-start">
-                  <span className="text-2xl sm:text-3xl mr-3 sm:mr-4">⚠️</span>
-                  <div>
-                    <p className="font-bold text-red-900 text-lg sm:text-2xl mb-1 sm:mb-2">ĐỪNG ĐỂ WEBSITE CHẬM = MẤT KHÁCH!</p>
-                    <p className="text-sm sm:text-base text-red-700">
-                      <strong className="text-red-900 text-base sm:text-lg">50K/tháng</strong> – Doanh nghiệp bạn đáng giá hơn thế! 
-                      Click ngay để xem bảng giá chi tiết 18 gói + đặt hàng chỉ 60 giây!
-                    </p>
-                  </div>
-                </div>
-                <div className="hidden lg:flex items-center justify-center">
-                  <img 
-                    src={performanceSpeedImg} 
-                    alt="Tốc độ Website - Performance"
-                    className="w-40 h-auto"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Trust Badge */}
-            <div className="flex items-center justify-center text-base text-gray-600 mt-8">
-              <CheckCircle className="h-6 w-6 text-green-500 mr-2" />
-              <span><strong>STEP – Hosting Việt Nam, tốc độ thế giới!</strong> • 10,000+ websites tin dùng</span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Technical Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              🔧 12 Tính Năng Công Nghệ Đỉnh Cao
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Sử dụng <strong className="text-blue-600">phần mềm bản quyền chính hãng</strong> từ các hãng lớn nhất thế giới, 
-              đảm bảo website của bạn chạy <strong className="text-green-600">nhanh</strong>, 
-              <strong className="text-red-600"> bảo mật tuyệt đối</strong>, 
-              và <strong className="text-purple-600">hoạt động ổn định 24/7</strong>
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {technicalFeatures.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group hover:scale-105"
-              >
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <feature.icon className="text-white w-6 h-6" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Packages Section */}
-      <section id="packages" className="py-20 bg-white overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              18 Gói Hosting - Từ Startup Đến Enterprise
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-testid="packages-title">
+              Chọn Gói Hosting Phù Hợp
             </h2>
-            <p className="text-xl text-gray-600 mb-8">
-              Lựa chọn gói hosting với resources và tính năng phù hợp cho website của bạn
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+              Từ blog cá nhân đến doanh nghiệp lớn, chúng tôi có gói phù hợp cho bạn
             </p>
 
-            {/* View Toggle */}
-            <div className="flex justify-center gap-4 mb-8">
-              <Button
-                variant={!compareView ? "default" : "outline"}
-                onClick={() => setCompareView(false)}
-                className={!compareView ? "bg-blue-500 hover:bg-blue-600" : ""}
-                data-testid="button-grid-view"
-              >
-                <Server className="w-4 h-4 mr-2" />
-                Xem Dạng Cards
-              </Button>
-              <Button
-                variant={compareView ? "default" : "outline"}
-                onClick={() => setCompareView(true)}
-                className={compareView ? "bg-blue-500 hover:bg-blue-600" : ""}
-                data-testid="button-table-view"
-              >
-                <FileText className="w-4 h-4 mr-2" />
-                Bảng So Sánh Chi Tiết
-              </Button>
+            {/* Monthly/Yearly Toggle */}
+            <div className="flex items-center justify-center gap-4 mb-8" data-testid="billing-toggle">
+              <span className={`text-sm font-medium ${!isYearly ? 'text-gray-900' : 'text-gray-500'}`}>Hàng tháng</span>
+              <Switch
+                checked={isYearly}
+                onCheckedChange={setIsYearly}
+                data-testid="switch-billing"
+              />
+              <span className={`text-sm font-medium ${isYearly ? 'text-gray-900' : 'text-gray-500'}`}>
+                Hàng năm
+                <Badge className="ml-2 bg-green-100 text-green-700 text-xs">Tiết kiệm 10%</Badge>
+              </span>
             </div>
           </motion.div>
 
-          {!compareView ? (
-            <>
-              {/* Grid View */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                {displayedPackages.map((pkg, index) => (
-                  <motion.div
-                    key={pkg.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.05 }}
-                    viewport={{ once: true }}
-                    className={`bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 relative ${
-                      pkg.popular ? 'ring-2 ring-blue-500 scale-105' : ''
-                    } ${pkg.enterprise ? 'bg-gradient-to-br from-gray-900 to-gray-800 text-white' : ''}`}
-                  >
-                    {pkg.popular && (
-                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                          ⭐ Phổ Biến Nhất
-                        </span>
-                      </div>
-                    )}
+          {/* Tier Tabs */}
+          <Tabs defaultValue="all" className="w-full" onValueChange={setActiveTab}>
+            <TabsList className="grid grid-cols-5 max-w-2xl mx-auto mb-8 h-auto p-1 bg-gray-100 rounded-xl" data-testid="tabs-tier">
+              <TabsTrigger 
+                value="all" 
+                className="py-3 text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg"
+                data-testid="tab-all"
+              >
+                Tất cả
+              </TabsTrigger>
+              <TabsTrigger 
+                value="Starter" 
+                className="py-3 text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-700 rounded-lg"
+                data-testid="tab-starter"
+              >
+                <User className="w-4 h-4 mr-1" />
+                Starter
+              </TabsTrigger>
+              <TabsTrigger 
+                value="Business" 
+                className="py-3 text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#0066FF] rounded-lg"
+                data-testid="tab-business"
+              >
+                <Briefcase className="w-4 h-4 mr-1" />
+                Business
+              </TabsTrigger>
+              <TabsTrigger 
+                value="Professional" 
+                className="py-3 text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-purple-600 rounded-lg"
+                data-testid="tab-professional"
+              >
+                <Award className="w-4 h-4 mr-1" />
+                Pro
+              </TabsTrigger>
+              <TabsTrigger 
+                value="Enterprise" 
+                className="py-3 text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-red-600 rounded-lg"
+                data-testid="tab-enterprise"
+              >
+                <Building className="w-4 h-4 mr-1" />
+                Enterprise
+              </TabsTrigger>
+            </TabsList>
 
-                    {pkg.enterprise && (
-                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
-                          👑 Enterprise
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="text-center mb-6">
-                      <div className={`text-sm font-medium mb-2 ${pkg.enterprise ? 'text-gray-300' : 'text-gray-500'}`}>
-                        {pkg.tier}
-                      </div>
-                      <h3 className={`text-2xl font-bold mb-2 ${pkg.enterprise ? 'text-white' : 'text-gray-900'}`}>
-                        {pkg.name}
-                      </h3>
-                      <div className={`text-3xl font-bold mb-2 ${pkg.enterprise ? 'text-yellow-400' : 'text-blue-500'}`}>
-                        {pkg.price === "Custom" ? "Liên hệ" : `${pkg.price} VNĐ`}
-                      </div>
-                      {pkg.price !== "Custom" && (
-                        <div className={`text-sm ${pkg.enterprise ? 'text-gray-400' : 'text-gray-500'}`}>
-                          /tháng
+            <TabsContent value={activeTab} className="mt-0">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                {getFilteredPackages().map((pkg, index) => {
+                  const config = tierConfig[pkg.tier];
+                  const TierIcon = config.icon;
+                  
+                  return (
+                    <motion.div
+                      key={pkg.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: index * 0.05 }}
+                      viewport={{ once: true }}
+                      className={`relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 ${
+                        pkg.popular ? 'border-[#0066FF] ring-2 ring-[#0066FF]/20' : 'border-gray-100 hover:border-gray-200'
+                      } ${pkg.enterprise ? 'bg-gradient-to-br from-gray-900 to-gray-800' : ''}`}
+                      data-testid={`package-card-${pkg.id}`}
+                    >
+                      {/* Popular Badge */}
+                      {pkg.popular && (
+                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                          <Badge className="bg-[#0066FF] text-white px-4 py-1 shadow-lg" data-testid={`badge-popular-${pkg.id}`}>
+                            <Star className="w-3 h-3 mr-1 fill-current" />
+                            Phổ biến nhất
+                          </Badge>
                         </div>
                       )}
-                    </div>
 
-                    <div className="space-y-3 mb-6">
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">
-                          <span className="font-semibold">{pkg.storage}</span>
+                      {/* Enterprise Badge */}
+                      {pkg.enterprise && (
+                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                          <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-4 py-1 shadow-lg font-bold" data-testid={`badge-enterprise-${pkg.id}`}>
+                            <Crown className="w-3 h-3 mr-1" />
+                            Enterprise
+                          </Badge>
+                        </div>
+                      )}
+
+                      {/* Tier Badge */}
+                      <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium mb-4 ${config.bgColor} ${config.color}`}>
+                        <TierIcon className="w-3 h-3" />
+                        {pkg.tier}
+                      </div>
+
+                      {/* Package Name & Price */}
+                      <h3 className={`text-xl font-bold mb-2 ${pkg.enterprise ? 'text-white' : 'text-gray-900'}`}>
+                        {pkg.name}
+                      </h3>
+                      <div className="mb-4">
+                        <div className={`text-3xl font-bold ${pkg.enterprise ? 'text-yellow-400' : 'text-[#0066FF]'}`}>
+                          {isYearly ? pkg.yearlyPrice : pkg.price} <span className="text-base font-normal">VNĐ</span>
+                        </div>
+                        <div className={`text-sm ${pkg.enterprise ? 'text-gray-400' : 'text-gray-500'}`}>
+                          /{isYearly ? 'năm' : 'tháng'}
                         </div>
                       </div>
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">
-                          <span className="font-semibold">{pkg.cpu}</span> • {pkg.ram}
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">{pkg.websites}</div>
-                      </div>
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">{pkg.database}</div>
-                      </div>
-                      <div className="flex items-start">
-                        <CheckCircle className={`w-5 h-5 mr-3 flex-shrink-0 mt-0.5 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
-                        <div className="text-sm">Backup: {pkg.backup}</div>
-                      </div>
-                    </div>
 
-                    <div className={`text-center mb-6 p-3 rounded-lg ${pkg.enterprise ? 'bg-gray-800' : 'bg-gray-50'}`}>
-                      <p className={`text-sm ${pkg.enterprise ? 'text-gray-300' : 'text-gray-600'}`}>
-                        <strong className={pkg.enterprise ? 'text-white' : ''}>Phù hợp:</strong> {pkg.suitable}
-                      </p>
-                    </div>
+                      {/* Features */}
+                      <div className="space-y-3 mb-6">
+                        {[
+                          { label: pkg.storage },
+                          { label: `${pkg.cpu} • ${pkg.ram}` },
+                          { label: pkg.websites },
+                          { label: pkg.bandwidth },
+                          { label: pkg.backup }
+                        ].map((feature, idx) => (
+                          <div key={idx} className="flex items-center gap-2">
+                            <CheckCircle className={`w-4 h-4 flex-shrink-0 ${pkg.enterprise ? 'text-yellow-400' : 'text-green-500'}`} />
+                            <span className={`text-sm ${pkg.enterprise ? 'text-gray-300' : 'text-gray-600'}`}>
+                              {feature.label}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
 
-                    <Button 
-                      className={`w-full py-6 ${
-                        pkg.enterprise 
-                          ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-gray-900 font-bold'
-                          : pkg.popular 
-                            ? 'bg-blue-500 hover:bg-blue-600'
-                            : 'bg-gray-800 hover:bg-gray-700'
-                      }`}
-                      data-testid={`button-select-${pkg.name}`}
-                      onClick={() => window.location.href = '/contact'}
-                    >
-                      {pkg.enterprise ? 'Liên Hệ Tư Vấn' : 'Đăng Ký Ngay'}
-                    </Button>
-                  </motion.div>
-                ))}
+                      {/* Suitable For */}
+                      <div className={`text-xs p-3 rounded-lg mb-4 ${pkg.enterprise ? 'bg-gray-700 text-gray-300' : 'bg-gray-50 text-gray-600'}`}>
+                        <span className="font-medium">Phù hợp:</span> {pkg.suitable}
+                      </div>
+
+                      {/* CTA Button */}
+                      <Button 
+                        className={`w-full py-5 font-semibold ${
+                          pkg.enterprise 
+                            ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-gray-900'
+                            : pkg.popular 
+                              ? 'bg-[#0066FF] hover:bg-[#0052CC]'
+                              : 'bg-gray-900 hover:bg-gray-800'
+                        }`}
+                        data-testid={`button-select-${pkg.id}`}
+                        onClick={() => window.location.href = '/contact'}
+                      >
+                        {pkg.enterprise ? 'Liên Hệ Tư Vấn' : 'Đăng Ký Ngay'}
+                      </Button>
+                    </motion.div>
+                  );
+                })}
               </div>
 
+              {/* Show More Button */}
               {!showAllPackages && (
                 <div className="text-center mt-12">
                   <Button
-                    size="lg"
                     variant="outline"
+                    size="lg"
                     onClick={() => setShowAllPackages(true)}
-                    className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-8 py-6"
-                    data-testid="button-show-all"
+                    className="border-[#0066FF] text-[#0066FF] hover:bg-[#0066FF] hover:text-white px-8 py-6"
+                    data-testid="button-show-more"
                   >
-                    Xem Thêm 12 Gói Hosting
+                    Xem thêm gói khác
                     <ChevronDown className="ml-2 h-5 w-5" />
                   </Button>
                 </div>
@@ -1016,178 +888,185 @@ export default function Hosting() {
               {showAllPackages && (
                 <div className="text-center mt-12">
                   <Button
-                    size="lg"
                     variant="outline"
+                    size="lg"
                     onClick={() => {
                       setShowAllPackages(false);
-                      document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
+                      scrollToSection('packages');
                     }}
-                    className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white px-8 py-6"
+                    className="border-[#0066FF] text-[#0066FF] hover:bg-[#0066FF] hover:text-white px-8 py-6"
                     data-testid="button-show-less"
                   >
-                    Thu Gọn
+                    Thu gọn
                     <ChevronUp className="ml-2 h-5 w-5" />
                   </Button>
                 </div>
               )}
-            </>
-          ) : (
-            /* Table View */
-            <div className="overflow-x-auto -mx-4 sm:mx-0">
-              <div className="inline-block min-w-full align-middle px-4 sm:px-0">
-                <div className="overflow-hidden shadow-xl ring-1 ring-black ring-opacity-5 rounded-lg">
-                  <table className="min-w-[800px] w-full divide-y divide-gray-300">
-                    <thead className="bg-blue-500 sticky top-0 z-10">
-                      <tr>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Gói</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Giá/tháng</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Storage</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">CPU/RAM</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Websites</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Database</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Bandwidth</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Backup</th>
-                        <th className="py-4 px-6 text-left text-sm font-semibold text-white">Support</th>
-                        <th className="py-4 px-6 text-center text-sm font-semibold text-white">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 bg-white">
-                      {hostingPackages.map((pkg, index) => (
-                        <tr 
-                          key={pkg.id} 
-                          className={`hover:bg-gray-50 ${pkg.popular ? 'bg-blue-50' : ''} ${pkg.enterprise ? 'bg-yellow-50' : ''}`}
-                        >
-                          <td className="py-4 px-6 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div>
-                                <div className="font-semibold text-gray-900">{pkg.name}</div>
-                                <div className="text-xs text-gray-500">{pkg.tier}</div>
-                              </div>
-                              {pkg.popular && <span className="ml-2 text-blue-500">⭐</span>}
-                              {pkg.enterprise && <span className="ml-2">👑</span>}
-                            </div>
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap">
-                            <div className="font-bold text-blue-500">
-                              {pkg.price === "Custom" ? "Liên hệ" : `${pkg.price} VNĐ`}
-                            </div>
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.storage}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            <div>{pkg.cpu}</div>
-                            <div className="text-xs text-gray-500">{pkg.ram}</div>
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.websites}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.database}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.bandwidth}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.backup}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-sm text-gray-600">
-                            {pkg.support}
-                          </td>
-                          <td className="py-4 px-6 whitespace-nowrap text-center">
-                            <Button
-                              size="sm"
-                              className={pkg.enterprise ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-blue-500 hover:bg-blue-600'}
-                              data-testid={`button-select-table-${pkg.name}`}
-                              onClick={() => window.location.href = '/contact'}
-                            >
-                              Chọn Gói
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
+            </TabsContent>
+          </Tabs>
         </div>
       </section>
 
-      {/* Competitor Comparison */}
-      <section className="py-20 bg-gray-50 overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6">
+      {/* Technical Features Section - Grouped with Accordions */}
+      <section id="features" className="py-16 md:py-24 bg-white" data-testid="section-features">
+        <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              So Sánh STEP Hosting Với Đối Thủ
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-testid="features-title">
+              Công Nghệ Đỉnh Cao
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Phần mềm bản quyền chính hãng, đảm bảo website chạy nhanh, bảo mật và ổn định 24/7
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {featureGroups.map((group, groupIndex) => (
+              <motion.div
+                key={groupIndex}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: groupIndex * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-gray-50 rounded-2xl p-6 border border-gray-100"
+                data-testid={`feature-group-${groupIndex}`}
+              >
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${group.color} flex items-center justify-center mb-4`}>
+                  <group.icon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">{group.title}</h3>
+                
+                <Accordion type="single" collapsible className="space-y-2">
+                  {group.features.map((feature, featureIndex) => (
+                    <AccordionItem 
+                      key={featureIndex} 
+                      value={`${groupIndex}-${featureIndex}`}
+                      className="bg-white rounded-lg border border-gray-100 overflow-hidden"
+                    >
+                      <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 text-left font-medium text-gray-900 text-sm" data-testid={`accordion-trigger-${groupIndex}-${featureIndex}`}>
+                        <div className="flex items-center gap-3">
+                          <feature.icon className="w-4 h-4 text-[#0066FF]" />
+                          {feature.title}
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="px-4 pb-3 text-sm text-gray-600">
+                        {feature.description}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Competitor Comparison - Responsive Cards on Mobile */}
+      <section id="comparison" className="py-16 md:py-24 bg-gray-50" data-testid="section-comparison">
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-testid="comparison-title">
+              So Sánh Với Đối Thủ
+            </h2>
+            <p className="text-lg text-gray-600">
               Tại sao khách hàng chọn STEP Hosting?
             </p>
           </motion.div>
 
-          <div className="max-w-4xl mx-auto overflow-x-auto">
-            <div className="bg-white rounded-xl shadow-xl min-w-[600px]">
-              <table className="w-full">
-                <thead className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+          {/* Desktop Table */}
+          <div className="hidden md:block max-w-4xl mx-auto">
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+              <table className="w-full" data-testid="comparison-table">
+                <thead className="bg-[#0066FF]">
                   <tr>
-                    <th className="py-4 px-6 text-left text-lg font-semibold">Tính Năng</th>
-                    <th className="py-4 px-6 text-center text-lg font-semibold">
-                      STEP Hosting
-                    </th>
-                    <th className="py-4 px-6 text-center text-lg font-semibold">Đối Thủ</th>
+                    <th className="py-4 px-6 text-left text-white font-semibold">Tính Năng</th>
+                    <th className="py-4 px-6 text-center text-white font-semibold">STEP Hosting</th>
+                    <th className="py-4 px-6 text-center text-white font-semibold">Đối Thủ</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-100">
                   {competitorComparison.map((item, index) => (
-                    <motion.tr
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      className="hover:bg-gray-50"
-                    >
+                    <tr key={index} className="hover:bg-gray-50" data-testid={`comparison-row-${index}`}>
                       <td className="py-4 px-6 font-medium text-gray-900">{item.metric}</td>
                       <td className="py-4 px-6 text-center">
-                        <span className="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
-                          <CheckCircle className="w-4 h-4 mr-1" />
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-medium">
+                          <Check className="w-4 h-4" />
                           {item.step}
-                        </span>
+                        </div>
                       </td>
-                      <td className="py-4 px-6 text-center text-gray-600 text-sm">
-                        {item.competitor}
+                      <td className="py-4 px-6 text-center">
+                        <div className="inline-flex items-center gap-2 text-gray-500 text-sm">
+                          <X className="w-4 h-4 text-red-400" />
+                          {item.competitor}
+                        </div>
                       </td>
-                    </motion.tr>
+                    </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
+
+          {/* Mobile Cards */}
+          <div className="md:hidden space-y-4" data-testid="comparison-cards-mobile">
+            {competitorComparison.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-xl p-4 shadow-md border border-gray-100"
+                data-testid={`comparison-card-${index}`}
+              >
+                <h4 className="font-semibold text-gray-900 mb-3">{item.metric}</h4>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between p-2 bg-green-50 rounded-lg">
+                    <span className="text-sm font-medium text-green-700">STEP</span>
+                    <div className="flex items-center gap-1 text-sm text-green-700">
+                      <Check className="w-4 h-4" />
+                      {item.step}
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                    <span className="text-sm text-gray-600">Đối thủ</span>
+                    <div className="flex items-center gap-1 text-sm text-gray-500">
+                      <X className="w-4 h-4 text-red-400" />
+                      {item.competitor}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
+      {/* Testimonials - Card Design with Logo Placeholders */}
+      <section id="testimonials" className="py-16 md:py-24 bg-white" data-testid="section-testimonials">
+        <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Khách Hàng Nói Gì Về STEP Hosting?
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-testid="testimonials-title">
+              Khách Hàng Nói Gì?
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg text-gray-600">
               Hơn 10,000+ websites tin dùng STEP Hosting
             </p>
           </motion.div>
@@ -1198,107 +1077,135 @@ export default function Hosting() {
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-gray-50 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow"
+                data-testid={`testimonial-card-${index}`}
               >
-                <div className="flex items-center mb-6">
-                  <div className="text-4xl mr-4">{testimonial.avatar}</div>
-                  <div>
-                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                    <div className="text-sm text-gray-600">{testimonial.role}</div>
-                    <div className="text-xs text-gray-500">{testimonial.company}</div>
+                {/* Company Logo Placeholder */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">
+                    {testimonial.logo}
+                  </div>
+                  <div className="flex gap-0.5">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                    ))}
                   </div>
                 </div>
 
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-
-                <p className="text-gray-700 italic leading-relaxed">
+                {/* Quote */}
+                <p className="text-gray-700 mb-6 leading-relaxed">
                   "{testimonial.text}"
                 </p>
+
+                {/* Author */}
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                  <div className="w-10 h-10 rounded-full bg-[#0066FF] flex items-center justify-center text-white font-semibold text-sm">
+                    {testimonial.avatar}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
+                    <div className="text-sm text-gray-500">{testimonial.role} • {testimonial.company}</div>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
+      {/* FAQ Section - Grouped by Topic */}
+      <section id="faq" className="py-16 md:py-24 bg-gray-50" data-testid="section-faq">
+        <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-testid="faq-title">
               Câu Hỏi Thường Gặp
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg text-gray-600">
               Giải đáp mọi thắc mắc về Hosting
             </p>
           </motion.div>
 
-          <div className="max-w-4xl mx-auto">
-            <Accordion type="single" collapsible className="space-y-4">
-              {faqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`}
-                  className="bg-white rounded-lg shadow-md overflow-hidden"
-                >
-                  <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 text-left font-semibold text-gray-900">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6 py-4 text-gray-600 leading-relaxed">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {faqGroups.map((group, groupIndex) => (
+              <motion.div
+                key={groupIndex}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: groupIndex * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100"
+                data-testid={`faq-group-${groupIndex}`}
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-lg bg-[#0066FF]/10 flex items-center justify-center">
+                    <group.icon className="w-5 h-5 text-[#0066FF]" />
+                  </div>
+                  <h3 className="font-bold text-gray-900">{group.title}</h3>
+                </div>
+
+                <Accordion type="single" collapsible className="space-y-2">
+                  {group.faqs.map((faq, faqIndex) => (
+                    <AccordionItem 
+                      key={faqIndex} 
+                      value={`faq-${groupIndex}-${faqIndex}`}
+                      className="border border-gray-100 rounded-lg overflow-hidden"
+                    >
+                      <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 text-left font-medium text-gray-900 text-sm" data-testid={`faq-trigger-${groupIndex}-${faqIndex}`}>
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="px-4 pb-3 text-sm text-gray-600 leading-relaxed">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-br from-blue-500 to-blue-600">
-        <div className="container mx-auto px-6 text-center">
+      <section className="py-16 md:py-24 bg-[#0066FF]" data-testid="section-cta-final">
+        <div className="container mx-auto px-4 md:px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Sẵn Sàng Bắt Đầu Với Hosting Enterprise?
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" data-testid="cta-title">
+              Sẵn Sàng Bắt Đầu?
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Nhận <strong>30 ngày hoàn tiền</strong> + <strong>migration miễn phí</strong>. 
-              Hơn 10,000+ website đã tin tưởng!
+              30 ngày hoàn tiền • Migration miễn phí • Hỗ trợ 24/7
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg"
-                className="bg-white text-blue-500 hover:bg-gray-100 px-8 py-6 text-lg font-semibold"
+                className="bg-white text-[#0066FF] hover:bg-gray-100 px-8 py-6 text-lg font-semibold shadow-lg"
                 data-testid="button-cta-register"
                 onClick={() => window.location.href = '/contact'}
               >
-                Đăng Ký Ngay - Miễn Phí 30 Ngày
+                Đăng Ký Ngay
                 <Rocket className="ml-2 h-5 w-5" />
               </Button>
               <Button 
                 size="lg"
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-blue-500 px-8 py-6 text-lg font-semibold"
+                className="border-2 border-white text-white hover:bg-white hover:text-[#0066FF] px-8 py-6 text-lg font-semibold"
                 data-testid="button-cta-contact"
                 onClick={() => window.location.href = '/contact'}
               >
-                Tư Vấn Miễn Phí
+                Liên Hệ Tư Vấn
               </Button>
             </div>
           </motion.div>
