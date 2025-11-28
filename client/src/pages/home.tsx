@@ -123,7 +123,7 @@ const coreServices = [
     title: "Cloud Server",
     description: "Máy chủ đám mây cao cấp với CPU, RAM, SSD tùy chọn. GPU computing cho AI/ML. Thanh toán linh hoạt theo tháng.",
     features: ["Pay-as-you-go", "GPU cho AI/ML", "Auto-scale", "Backup tự động"],
-    link: "/Cloud/Cloud Server",
+    link: "/Cloud/CloudServer",
     stepColor: "step-cloud"
   },
   {

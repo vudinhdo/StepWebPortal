@@ -71,7 +71,7 @@ function Router() {
         <Route path="/Sản Phẩm & Dịch Vụ/Microsoft" component={MicrosoftServices} />
         <Route path="/cloud" component={Cloud} />
         <Route path="/Cloud/Cloud Odoo" component={CloudOdoo} />
-        <Route path="/Cloud/Cloud Server" component={CloudServer} />
+        <Route path="/Cloud/CloudServer" component={CloudServer} />
         <Route path="/Cloud/Cloud GPU" component={CloudGPU} />
         <Route path="/gcp" component={GCP} />
         <Route path="/google-cloud-platform" component={GCP} />
