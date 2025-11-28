@@ -795,7 +795,33 @@ export default function CloudGPU() {
         </div>
       </section>
 
-      <Footer />
+      {/* Add padding for mobile sticky CTA */}
+      <div className="pb-24 md:pb-0">
+        <Footer />
+      </div>
+
+      {/* Mobile Sticky CTA Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-md border-t border-gray-800 p-4 md:hidden z-50">
+        <div className="flex gap-3">
+          <Button
+            className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white py-3 rounded-xl text-sm font-semibold"
+            onClick={() => document.getElementById('server-configurator')?.scrollIntoView({ behavior: 'smooth' })}
+            data-testid="mobile-cta-configure"
+          >
+            <Cpu className="w-4 h-4 mr-1" />
+            Cấu Hình GPU
+          </Button>
+          <Button
+            variant="outline"
+            className="flex-1 border-purple-500/50 text-purple-300 hover:bg-purple-500/10 py-3 rounded-xl text-sm font-semibold"
+            onClick={() => document.getElementById('gpu-packages')?.scrollIntoView({ behavior: 'smooth' })}
+            data-testid="mobile-cta-packages"
+          >
+            <Sparkles className="w-4 h-4 mr-1" />
+            Xem Gói GPU
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
