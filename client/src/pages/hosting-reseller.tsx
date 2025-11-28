@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import PerformanceBenchmark from "@/components/performance-benchmark";
-import EmailPopup from "@/components/email-popup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -32,13 +31,6 @@ import {
 } from "lucide-react";
 
 export default function HostingReseller() {
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupData, setPopupData] = useState({
-    email: "",
-    name: "",
-    phone: ""
-  });
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -50,30 +42,6 @@ export default function HostingReseller() {
 
   const [formStep, setFormStep] = useState(1);
   const totalSteps = 2;
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const popupShown = localStorage.getItem('reseller-popup-dismissed');
-      if (!popupShown) {
-        setShowPopup(true);
-      }
-    }, 15000);
-
-    const handleScroll = () => {
-      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      const popupShown = localStorage.getItem('reseller-popup-dismissed');
-      if (scrollPercent >= 60 && !popupShown) {
-        setShowPopup(true);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   const benefits = [
     {
@@ -186,19 +154,6 @@ export default function HostingReseller() {
     }
     console.log('Form submitted:', formData);
     alert('Cảm ơn bạn! Chúng tôi sẽ liên hệ trong vòng 24h để setup reseller account.');
-  };
-
-  const handlePopupSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Popup submitted:', popupData);
-    localStorage.setItem('reseller-popup-dismissed', 'true');
-    setShowPopup(false);
-    alert('Cảm ơn! Mã giảm giá và hướng dẫn kinh doanh đã được gửi qua email.');
-  };
-
-  const closePopup = () => {
-    localStorage.setItem('reseller-popup-dismissed', 'true');
-    setShowPopup(false);
   };
 
   return (
@@ -801,108 +756,7 @@ export default function HostingReseller() {
           </motion.div>
         </div>
       </section>
-
-      {/* Improved Popup - Less intrusive, better design */}
-      <AnimatePresence>
-        {showPopup && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm"
-            onClick={(e) => e.target === e.currentTarget && closePopup()}
-            data-testid="popup-overlay"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              transition={{ type: "spring", duration: 0.5 }}
-              className="bg-white rounded-2xl p-6 sm:p-8 shadow-2xl max-w-md w-full relative overflow-hidden"
-              data-testid="popup-content"
-            >
-              {/* Purple gradient accent */}
-              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#8B5CF6] to-purple-600" />
-              
-              {/* Close button - More visible */}
-              <button
-                onClick={closePopup}
-                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors"
-                data-testid="button-popup-close"
-              >
-                <X className="h-5 w-5" />
-              </button>
-
-              <div className="text-center mb-6 pt-2">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#8B5CF6] to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                  <Gift className="text-white w-8 h-8" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                  Ưu Đãi Đặc Biệt Cho Reseller!
-                </h3>
-                <p className="text-gray-600 text-sm sm:text-base">
-                  Nhận mã giảm <span className="font-bold text-[#8B5CF6]">25%</span> cho gói Reseller đầu tiên + 
-                  E-book "10 Bí Quyết Kinh Doanh Hosting 2025"
-                </p>
-              </div>
-
-              <form onSubmit={handlePopupSubmit} className="space-y-4" data-testid="form-popup">
-                <div>
-                  <Input
-                    type="email"
-                    placeholder="Email của bạn *"
-                    value={popupData.email}
-                    onChange={(e) => setPopupData({...popupData, email: e.target.value})}
-                    required
-                    className="py-5 border-2 border-gray-200 focus:border-[#8B5CF6]"
-                    data-testid="input-popup-email"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <Input
-                    placeholder="Tên (tùy chọn)"
-                    value={popupData.name}
-                    onChange={(e) => setPopupData({...popupData, name: e.target.value})}
-                    className="py-5 border-2 border-gray-200"
-                    data-testid="input-popup-name"
-                  />
-                  <Input
-                    type="tel"
-                    placeholder="SĐT (tùy chọn)"
-                    value={popupData.phone}
-                    onChange={(e) => setPopupData({...popupData, phone: e.target.value})}
-                    className="py-5 border-2 border-gray-200"
-                    data-testid="input-popup-phone"
-                  />
-                </div>
-                <Button 
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-[#8B5CF6] to-purple-600 hover:from-[#7C3AED] hover:to-purple-700 py-5 text-base font-semibold shadow-lg"
-                  data-testid="button-popup-submit"
-                >
-                  <Gift className="mr-2 h-5 w-5" />
-                  Nhận Ưu Đãi Ngay
-                </Button>
-              </form>
-
-              <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-500">
-                <Clock className="h-4 w-4" />
-                <span>Ưu đãi có hiệu lực trong 24h</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Email Popup - Show after 15 seconds */}
-      <EmailPopup
-        discount="25%"
-        title="💼 Ưu Đãi Reseller Hosting!"
-        description="Đăng ký email để nhận mã giảm giá 25% gói reseller + e-book kinh doanh hosting miễn phí!"
-        buttonText="Nhận Mã Giảm Giá"
-        storageKey="reseller-popup-shown"
-      />
-
+      
       <Footer />
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { 
   Mail, 
@@ -26,19 +26,12 @@ import {
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import PerformanceBenchmark from "@/components/performance-benchmark";
-import EmailPopup from "@/components/email-popup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Microsoft365() {
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupData, setPopupData] = useState({
-    email: "",
-    name: "",
-    phone: ""
-  });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -46,33 +39,6 @@ export default function Microsoft365() {
     projectDescription: "",
     package: ""
   });
-
-  const handleEmailSubmit = async (email: string) => {
-    console.log('Email submitted for Microsoft 365:', email);
-    // Integration with email service would go here
-    await new Promise(resolve => setTimeout(resolve, 1000));
-  };
-
-  // Show popup after 10 seconds or 50% scroll
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPopup(true);
-    }, 10000);
-
-    const handleScroll = () => {
-      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      if (scrollPercent >= 50) {
-        setShowPopup(true);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   const benefits = [
     {
@@ -199,14 +165,6 @@ export default function Microsoft365() {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Main form data:', formData);
-    // Handle form submission
-    // Contact form removed - navigate to /contact page
-  };
-
-  const handlePopupSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Popup form data:', popupData);
-    setShowPopup(false);
   };
 
   return (
@@ -536,81 +494,6 @@ export default function Microsoft365() {
       </section>
 
       <Footer />
-
-
-      {/* Email Popup */}
-      {showPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-2xl p-8 max-w-md w-full relative"
-          >
-            <button 
-              onClick={() => setShowPopup(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-              data-testid="button-close-popup"
-            >
-              <X className="h-6 w-6" />
-            </button>
-            
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Building className="h-8 w-8 text-blue-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                💼 Ưu Đãi Microsoft 365!
-              </h3>
-              <p className="text-gray-600">
-                Nhận 17% giảm giá năm đầu + setup support miễn phí cho doanh nghiệp!
-              </p>
-            </div>
-            
-            <form onSubmit={handlePopupSubmit} className="space-y-4">
-              <Input
-                type="text"
-                placeholder="Họ tên *"
-                value={popupData.name}
-                onChange={(e) => setPopupData({...popupData, name: e.target.value})}
-                required
-                data-testid="input-popup-name"
-              />
-              <Input
-                type="email"
-                placeholder="Email *"
-                value={popupData.email}
-                onChange={(e) => setPopupData({...popupData, email: e.target.value})}
-                required
-                data-testid="input-popup-email"
-              />
-              <Input
-                type="tel"
-                placeholder="Số điện thoại *"
-                value={popupData.phone}
-                onChange={(e) => setPopupData({...popupData, phone: e.target.value})}
-                required
-                data-testid="input-popup-phone"
-              />
-              <Button 
-                type="submit" 
-                className="w-full bg-blue-600 hover:bg-blue-700"
-                data-testid="button-popup-submit"
-              >
-                Nhận Ưu Đãi Ngay
-              </Button>
-            </form>
-          </motion.div>
-        </div>
-      )}
-
-      {/* Email Popup Component - for consistent experience */}
-      <EmailPopup
-        discount="17% Off"
-        title="💼 Ưu Đãi Microsoft 365!"
-        description="Đăng ký email để nhận 17% giảm giá năm đầu + setup support miễn phí cho Teams và Office!"
-        buttonText="Nhận Giảm Giá 17%"
-        storageKey="microsoft365_email_popup_shown"
-      />
     </div>
   );
 }

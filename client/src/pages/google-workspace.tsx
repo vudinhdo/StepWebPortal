@@ -26,7 +26,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import PersonalizationPopup from "@/components/personalization-popup";
 
 export default function GoogleWorkspace() {
   const [formData, setFormData] = useState({
@@ -211,8 +210,7 @@ export default function GoogleWorkspace() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <PersonalizationPopup storageKey="google-workspace-personalization" />
-      
+            
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

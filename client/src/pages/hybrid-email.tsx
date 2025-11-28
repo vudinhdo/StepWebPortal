@@ -29,7 +29,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import PersonalizationPopup from "@/components/personalization-popup";
 
 export default function HybridEmail() {
   const [formData, setFormData] = useState({
@@ -217,8 +216,7 @@ export default function HybridEmail() {
 
   return (
     <div className="min-h-screen bg-white">
-      <PersonalizationPopup storageKey="hybrid-email-personalization" />
-      <Header />
+            <Header />
       
       <main className="pt-20">
         {/* Hero Section */}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Mail, 
@@ -19,127 +19,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-
-// Email popup component
-const EmailPopup = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const { toast } = useToast();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name || 'Email Subscriber',
-          email,
-          phone: phone || '',
-          company: '',
-          service: 'Email Enterprise - Popup',
-          message: 'Đăng ký nhận khuyến mãi 30% Google Workspace và e-book bảo mật email'
-        })
-      });
-
-      if (response.ok) {
-        toast({
-          title: "Đăng ký thành công!",
-          description: "Bạn sẽ nhận được mã giảm giá 30% và e-book bảo mật email trong 5 phút.",
-        });
-        onClose();
-      }
-    } catch (error) {
-      toast({
-        title: "Lỗi",
-        description: "Có lỗi xảy ra, vui lòng thử lại.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  if (!isVisible) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9, x: 100 }}
-        animate={{ opacity: 1, scale: 1, x: 0 }}
-        exit={{ opacity: 0, scale: 0.9, x: 100 }}
-        className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 relative"
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-        >
-          <X size={24} />
-        </button>
-
-        <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-r from-[hsl(207,100%,40%)] to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="text-white" size={32} />
-          </div>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">
-            Nhận Khuyến Mãi Đặc Biệt & Khuyến Nghị Bảo Mật Email Miễn Phí Ngay!
-          </h3>
-          <p className="text-sm text-gray-600">
-            Chỉ cần điền email để nhận mã <strong className="text-[hsl(207,100%,40%)]">giảm 30%</strong> cho gói Google Workspace đầu tiên, 
-            kèm e-book <strong>"5 Mẹo Bảo Mật Email Doanh Nghiệp 2025"</strong>
-          </p>
-          <div className="bg-red-50 text-red-600 text-xs font-semibold py-1 px-3 rounded-full inline-block mt-2">
-            ⏰ Chỉ trong 48h!
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Input
-              type="email"
-              placeholder="Email của bạn *"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full"
-            />
-          </div>
-          <div>
-            <Input
-              type="text"
-              placeholder="Tên (tùy chọn)"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full"
-            />
-          </div>
-          <div>
-            <Input
-              type="tel"
-              placeholder="Số điện thoại (tùy chọn)"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full"
-            />
-          </div>
-          <Button 
-            type="submit" 
-            className="w-full bg-gradient-to-r from-[hsl(207,100%,40%)] to-blue-600 hover:from-blue-600 hover:to-[hsl(207,100%,40%)] text-white font-semibold"
-          >
-            Nhận Ngay & Đăng Ký
-          </Button>
-        </form>
-
-        <p className="text-xs text-gray-500 text-center mt-4">
-          Chúng tôi cam kết bảo mật thông tin và không gửi spam
-        </p>
-      </motion.div>
-    </div>
-  );
-};
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 export default function EmailEnterprise() {
-  const [showPopup, setShowPopup] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -148,19 +31,6 @@ export default function EmailEnterprise() {
     package: ''
   });
   const { toast } = useToast();
-
-  // Show popup after 15 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const hasSeenPopup = localStorage.getItem('emailEnterprisePopupSeen');
-      if (!hasSeenPopup) {
-        setShowPopup(true);
-        localStorage.setItem('emailEnterprisePopupSeen', 'true');
-      }
-    }, 15000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -266,6 +136,7 @@ export default function EmailEnterprise() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[hsl(207,100%,40%)] to-blue-700 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -582,8 +453,7 @@ export default function EmailEnterprise() {
         </div>
       </section>
 
-      {/* Email Popup */}
-      <EmailPopup isVisible={showPopup} onClose={() => setShowPopup(false)} />
+      <Footer />
     </div>
   );
 }

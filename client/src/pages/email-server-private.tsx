@@ -27,7 +27,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import PersonalizationPopup from "@/components/personalization-popup";
 
 
 
@@ -705,11 +704,7 @@ export default function EmailServerPrivate() {
         </div>
       </section>
 
-      {/* Personalization Popup */}
-      <PersonalizationPopup 
-        storageKey="email-server-private-personalization"
-      />
-      
+            
       <Footer />
     </div>
   );
