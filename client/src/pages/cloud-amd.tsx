@@ -48,6 +48,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+const AMD_RED = "#ED1C24";
+const AMD_RED_DARK = "#B91C1C";
+
 export default function CloudAMD() {
   const [formData, setFormData] = useState({
     name: '',
@@ -224,78 +227,43 @@ export default function CloudAMD() {
       benefits: ["Hadoop, Spark clusters", "ML inference at scale", "Scientific computing"]
     },
     {
-      icon: MonitorSmartphone,
+      icon: Globe,
       title: "Web Applications",
-      description: "Hosting nhiều websites, applications với performance ổn định và chi phí tối ưu",
-      benefits: ["High-density hosting", "Load balancing", "Auto-scaling ready"]
+      description: "Chạy multiple web servers, load balancing và high-traffic applications với hiệu năng ổn định",
+      benefits: ["High concurrency", "Low latency", "Cost-effective scaling"]
     }
   ];
 
   const comparisons = [
-    {
-      feature: "Số cores tối đa (1 socket)",
-      amd: "128 cores",
-      intel: "60 cores",
-      winner: "amd"
-    },
-    {
-      feature: "Threads tối đa",
-      amd: "256 threads",
-      intel: "120 threads",
-      winner: "amd"
-    },
-    {
-      feature: "Memory channels",
-      amd: "12 channels",
-      intel: "8 channels",
-      winner: "amd"
-    },
-    {
-      feature: "PCIe lanes",
-      amd: "128 lanes PCIe 5.0",
-      intel: "80 lanes PCIe 5.0",
-      winner: "amd"
-    },
-    {
-      feature: "TDP efficiency",
-      amd: "Tốt hơn (7nm/5nm)",
-      intel: "Trung bình (10nm)",
-      winner: "amd"
-    },
-    {
-      feature: "Giá thành",
-      amd: "Thấp hơn 20-30%",
-      intel: "Cao hơn",
-      winner: "amd"
-    },
-    {
-      feature: "Memory encryption",
-      amd: "AMD SEV/SEV-ES",
-      intel: "Intel SGX",
-      winner: "tie"
-    }
+    { feature: "Max Cores/Socket", amd: "128 cores", intel: "60 cores", winner: "amd" },
+    { feature: "Giá thành (cùng cấu hình)", amd: "Thấp hơn 20-30%", intel: "Cao hơn", winner: "amd" },
+    { feature: "Memory Channels", amd: "12 channels", intel: "8 channels", winner: "amd" },
+    { feature: "PCIe Lanes", amd: "128 lanes PCIe 5.0", intel: "80 lanes PCIe 5.0", winner: "amd" },
+    { feature: "Memory Encryption", amd: "AMD SEV (SME, SEV, SEV-ES, SEV-SNP)", intel: "Intel TME/MKTME", winner: "amd" },
+    { feature: "Single-thread Performance", amd: "Rất tốt", intel: "Tốt hơn một chút", winner: "intel" },
+    { feature: "Ecosystem & Compatibility", amd: "Tốt", intel: "Rộng hơn", winner: "intel" }
   ];
 
   const faqs = [
     {
       question: "AMD EPYC khác gì so với Intel Xeon?",
-      answer: "AMD EPYC cung cấp nhiều cores hơn (lên đến 128 cores vs 60 cores của Intel), nhiều PCIe lanes hơn (128 vs 80), và giá thành thấp hơn 20-30%. EPYC sử dụng công nghệ chiplet tiên tiến và process 7nm/5nm, mang lại hiệu năng/watt tốt hơn."
-    },
-    {
-      question: "Cloud AMD phù hợp với workload nào?",
-      answer: "Cloud AMD đặc biệt phù hợp với: Multi-threaded applications (databases, virtualization), High-core-count workloads (HPC, rendering), Cost-sensitive deployments, Containerized environments (Kubernetes, Docker), và Memory-intensive applications."
+      answer: "AMD EPYC cung cấp nhiều cores hơn (lên đến 128 cores vs 60 cores), nhiều PCIe lanes hơn, và giá thành per-core thấp hơn 20-30%. Intel Xeon có thể nhỉnh hơn một chút về single-thread performance nhưng AMD vượt trội về multi-threaded workloads và value."
     },
     {
       question: "AMD SEV là gì và tại sao quan trọng?",
-      answer: "AMD SEV (Secure Encrypted Virtualization) mã hóa memory của từng VM riêng biệt. Điều này có nghĩa ngay cả hypervisor cũng không thể đọc dữ liệu của VM, bảo vệ khỏi các tấn công từ cloud provider hoặc các tenant khác."
+      answer: "AMD SEV (Secure Encrypted Virtualization) là công nghệ bảo mật silicon-level mã hóa memory của mỗi VM riêng biệt. Ngay cả hypervisor hoặc admin cũng không thể đọc được dữ liệu trong VM, đảm bảo privacy tuyệt đối cho các workload nhạy cảm."
     },
     {
-      question: "Có thể migrate từ Intel sang AMD không?",
-      answer: "Có, hầu hết ứng dụng chạy trên Intel đều tương thích 100% với AMD mà không cần thay đổi code. Đội ngũ STEP sẽ hỗ trợ migration miễn phí và đảm bảo zero downtime."
+      question: "Cloud AMD phù hợp với những ứng dụng nào?",
+      answer: "AMD EPYC tối ưu cho: Database clusters (PostgreSQL, MySQL, MongoDB), Virtualization (nhiều VMs trên cùng host), Big Data/Analytics, Web servers với high concurrency, CI/CD pipelines, và các ứng dụng multi-threaded nói chung."
     },
     {
-      question: "Hiệu năng AMD có ổn định không?",
-      answer: "AMD EPYC đã được các hyperscaler lớn như AWS, Google Cloud, Microsoft Azure sử dụng rộng rãi. Các benchmark độc lập (SPECrate, Geekbench) đều cho thấy AMD vượt trội trong multi-threaded workloads."
+      question: "Có thể migrate từ Intel sang AMD dễ dàng không?",
+      answer: "Có! Hầu hết các ứng dụng và OS đều tương thích với cả Intel và AMD x86-64. STEP hỗ trợ migration miễn phí, kiểm tra compatibility và tối ưu performance sau khi chuyển đổi."
+    },
+    {
+      question: "SLA và support như thế nào?",
+      answer: "Tất cả gói Cloud AMD đều có SLA 99.9%+ uptime (gói Enterprise/Ultra đạt 99.99%), support 24/7 qua hotline và ticket, response time từ 15 phút đến 2 giờ tùy mức độ ưu tiên."
     }
   ];
 
@@ -335,17 +303,26 @@ export default function CloudAMD() {
     <div className="min-h-screen bg-white">
       <Header />
       
-      {/* Hero Section - AMD Branding với màu đỏ/cam đặc trưng */}
-      <section className="relative pt-20 pb-24 bg-gradient-to-br from-gray-950 via-red-950 to-orange-950 text-white overflow-hidden">
-        {/* Animated Background */}
+      {/* Hero Section - AMD Branding với màu đỏ chính thức */}
+      <section className="relative pt-20 pb-28 overflow-hidden" style={{ background: 'linear-gradient(135deg, #000000 0%, #1a0000 30%, #2d0a0a 50%, #1a0000 70%, #000000 100%)' }}>
+        {/* AMD Arrow Pattern Background */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-red-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-orange-500/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-600/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] opacity-10">
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <polygon points="0,0 100,0 100,100" fill={AMD_RED} />
+            </svg>
+          </div>
+          <div className="absolute -bottom-20 -left-20 w-[600px] h-[600px] opacity-5">
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <polygon points="0,100 100,0 100,100" fill={AMD_RED} />
+            </svg>
+          </div>
+          <div className="absolute top-40 left-20 w-96 h-96 rounded-full blur-[150px] animate-pulse" style={{ backgroundColor: `${AMD_RED}30` }} />
+          <div className="absolute bottom-20 right-20 w-80 h-80 rounded-full blur-[120px] animate-pulse" style={{ backgroundColor: `${AMD_RED}20`, animationDelay: '1s' }} />
         </div>
 
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
+        {/* Subtle Grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(237,28,36,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(237,28,36,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -354,56 +331,64 @@ export default function CloudAMD() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              {/* AMD Badge */}
-              <div className="inline-flex items-center gap-2 bg-red-500/20 backdrop-blur-sm border border-red-400/30 rounded-full px-4 py-2 mb-6">
-                <div className="w-6 h-6 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center">
-                  <Cpu className="w-3 h-3 text-white" />
+              {/* AMD Badge - Official Style */}
+              <div className="inline-flex items-center gap-3 mb-8">
+                <div className="relative">
+                  <div className="w-14 h-14 flex items-center justify-center rounded-lg" style={{ backgroundColor: AMD_RED }}>
+                    <span className="text-white font-black text-xl tracking-tight">AMD</span>
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-black" />
                 </div>
-                <span className="text-red-200 text-sm font-medium">AMD EPYC Powered Cloud</span>
+                <div className="flex flex-col">
+                  <span className="text-white font-bold text-lg">EPYC™ Powered</span>
+                  <span className="text-gray-400 text-sm">Official Cloud Partner</span>
+                </div>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                Cloud AMD{" "}
-                <span className="bg-gradient-to-r from-red-400 via-orange-400 to-red-500 bg-clip-text text-transparent">
-                  Hiệu Năng Vượt Trội
-                </span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-6 text-white">
+                Cloud Server{" "}
+                <span style={{ color: AMD_RED }}>AMD</span>
               </h1>
               
-              <p className="text-lg md:text-xl text-gray-300 mb-6 leading-relaxed">
-                Tận dụng sức mạnh AMD EPYC với nhiều cores hơn, giá tốt hơn. 
-                Lý tưởng cho database, virtualization, HPC và các workload multi-threaded.
+              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                Sức mạnh <span className="font-bold text-white">AMD EPYC</span> với nhiều cores hơn, 
+                giá tốt hơn - lý tưởng cho database, virtualization và workload đòi hỏi hiệu năng cao.
               </p>
               
-              {/* AMD Highlights */}
-              <div className="flex flex-wrap gap-3 mb-8">
-                <div className="bg-red-500/20 border border-red-400/30 rounded-full px-4 py-1.5 text-sm font-medium text-red-300">
-                  ✓ Lên đến 128 Cores
+              {/* AMD Key Benefits */}
+              <div className="grid grid-cols-3 gap-4 mb-8">
+                <div className="text-center p-4 rounded-xl border border-[#ED1C24]/30 bg-[#ED1C24]/10" data-testid="badge-cores">
+                  <div className="text-2xl font-black text-white mb-1">128</div>
+                  <div className="text-xs text-gray-400">Cores/Socket</div>
                 </div>
-                <div className="bg-orange-500/20 border border-orange-400/30 rounded-full px-4 py-1.5 text-sm font-medium text-orange-300">
-                  ✓ Tiết kiệm 30% chi phí
+                <div className="text-center p-4 rounded-xl border border-[#ED1C24]/30 bg-[#ED1C24]/10" data-testid="badge-savings">
+                  <div className="text-2xl font-black text-white mb-1">30%</div>
+                  <div className="text-xs text-gray-400">Tiết Kiệm</div>
                 </div>
-                <div className="bg-yellow-500/20 border border-yellow-400/30 rounded-full px-4 py-1.5 text-sm font-medium text-yellow-300">
-                  ✓ AMD SEV Security
+                <div className="text-center p-4 rounded-xl border border-[#ED1C24]/30 bg-[#ED1C24]/10" data-testid="badge-sla">
+                  <div className="text-2xl font-black text-white mb-1">99.99%</div>
+                  <div className="text-xs text-gray-400">Uptime SLA</div>
                 </div>
               </div>
 
-              {/* Performance Badge */}
-              <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-400/30 rounded-xl p-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-orange-500 rounded-lg flex items-center justify-center">
-                    <Flame className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-red-300">Best Performance/Price</div>
-                    <div className="text-sm text-gray-400">Nhiều cores hơn, giá thành tốt hơn Intel tương đương</div>
-                  </div>
-                </div>
+              {/* AMD Tech Pills */}
+              <div className="flex flex-wrap gap-2 mb-8">
+                {['EPYC Genoa', 'Zen 4', 'DDR5', 'PCIe 5.0', 'AMD SEV'].map((tech, idx) => (
+                  <span 
+                    key={idx}
+                    className="px-3 py-1.5 rounded-full text-xs font-semibold border"
+                    style={{ borderColor: `${AMD_RED}50`, color: AMD_RED, backgroundColor: `${AMD_RED}10` }}
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   size="lg"
-                  className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold text-lg px-8 py-6 rounded-xl shadow-lg shadow-red-500/20"
+                  className="text-white font-bold text-lg px-8 py-6 rounded-xl shadow-lg transition-all hover:scale-105"
+                  style={{ backgroundColor: AMD_RED, boxShadow: `0 10px 40px ${AMD_RED}40` }}
                   onClick={() => document.getElementById('amd-packages')?.scrollIntoView({ behavior: 'smooth' })}
                   data-testid="button-view-packages"
                 >
@@ -413,60 +398,77 @@ export default function CloudAMD() {
                 <Button 
                   size="lg"
                   variant="outline"
-                  className="border-2 border-white/30 text-white hover:bg-white/10 font-semibold text-lg px-8 py-6 rounded-xl backdrop-blur-sm"
+                  className="border-2 border-white/30 text-white hover:bg-white/10 font-bold text-lg px-8 py-6 rounded-xl backdrop-blur-sm"
                   onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                   data-testid="button-contact"
                 >
                   <Phone className="mr-2 w-5 h-5" />
-                  Tư Vấn Miễn Phí
+                  Hotline: 0985.636.289
                 </Button>
               </div>
             </motion.div>
 
-            {/* Stats Card */}
+            {/* AMD Stats Card */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative"
             >
-              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 shadow-2xl">
-                <div className="text-center mb-6">
-                  <div className="inline-flex items-center gap-2 bg-red-500/30 rounded-full px-4 py-2 mb-4">
-                    <Award className="w-5 h-5 text-red-400" />
-                    <span className="font-semibold text-red-300">AMD EPYC Advantage</span>
-                  </div>
+              <div className="relative bg-gradient-to-br from-gray-900 to-black rounded-3xl p-8 border border-[#ED1C24]/30 shadow-2xl overflow-hidden">
+                {/* AMD Arrow Accent */}
+                <div className="absolute top-0 right-0 w-32 h-32 overflow-hidden">
+                  <div className="absolute -top-16 -right-16 w-32 h-32 rotate-45" style={{ backgroundColor: AMD_RED }} />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-2xl border border-red-400/20" data-testid="stat-cores">
-                    <div className="text-3xl font-bold text-white mb-1">128</div>
-                    <div className="text-red-200 text-sm">Cores/Socket</div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 flex items-center justify-center rounded-lg" style={{ backgroundColor: AMD_RED }}>
+                      <span className="text-white font-black text-sm">AMD</span>
+                    </div>
+                    <div>
+                      <div className="font-bold text-white text-lg">EPYC™ Advantage</div>
+                      <div className="text-gray-400 text-sm">So sánh với Intel Xeon</div>
+                    </div>
                   </div>
-                  <div className="text-center p-4 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-2xl border border-red-400/20" data-testid="stat-saving">
-                    <div className="text-3xl font-bold text-white mb-1">30%</div>
-                    <div className="text-red-200 text-sm">Cost Saving</div>
-                  </div>
-                  <div className="text-center p-4 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-2xl border border-red-400/20" data-testid="stat-pcie">
-                    <div className="text-3xl font-bold text-white mb-1">128</div>
-                    <div className="text-red-200 text-sm">PCIe 5.0 Lanes</div>
-                  </div>
-                  <div className="text-center p-4 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-2xl border border-red-400/20" data-testid="stat-uptime">
-                    <div className="text-3xl font-bold text-white mb-1">99.99%</div>
-                    <div className="text-red-200 text-sm">Uptime SLA</div>
-                  </div>
-                </div>
 
-                {/* Processor Pills */}
-                <div className="mt-6 flex flex-wrap gap-2 justify-center">
-                  <span className="bg-red-500/30 text-red-200 px-3 py-1 rounded-full text-xs">EPYC Genoa</span>
-                  <span className="bg-red-500/30 text-red-200 px-3 py-1 rounded-full text-xs">Zen 4</span>
-                  <span className="bg-red-500/30 text-red-200 px-3 py-1 rounded-full text-xs">DDR5</span>
-                  <span className="bg-red-500/30 text-red-200 px-3 py-1 rounded-full text-xs">PCIe 5.0</span>
+                  <div className="space-y-4">
+                    {[
+                      { label: "Số cores tối đa", value: "+113%", subtext: "128 vs 60 cores" },
+                      { label: "Chi phí per-core", value: "-30%", subtext: "Tiết kiệm đáng kể" },
+                      { label: "PCIe Lanes", value: "+60%", subtext: "128 vs 80 lanes" },
+                      { label: "Memory Channels", value: "+50%", subtext: "12 vs 8 channels" }
+                    ].map((stat, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10" data-testid={`stat-comparison-${idx}`}>
+                        <div>
+                          <div className="text-gray-400 text-sm">{stat.label}</div>
+                          <div className="text-gray-500 text-xs">{stat.subtext}</div>
+                        </div>
+                        <div className="text-2xl font-black" style={{ color: AMD_RED }}>{stat.value}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 p-4 rounded-xl bg-[#ED1C24]/10 border border-[#ED1C24]/30">
+                    <div className="flex items-center gap-3">
+                      <Award className="w-8 h-8" style={{ color: AMD_RED }} />
+                      <div>
+                        <div className="font-bold text-white">Best Performance per Dollar</div>
+                        <div className="text-gray-400 text-sm">Tối ưu cho multi-threaded workloads</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
           </div>
+        </div>
+
+        {/* Bottom AMD Arrow */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 overflow-hidden">
+          <svg viewBox="0 0 1440 60" className="w-full h-full" preserveAspectRatio="none">
+            <polygon points="0,60 720,0 1440,60" fill="#f9fafb" />
+          </svg>
         </div>
       </section>
 
@@ -480,8 +482,12 @@ export default function CloudAMD() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Tại Sao Chọn AMD Cloud?
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: `${AMD_RED}15`, color: AMD_RED }}>
+              <Cpu className="w-4 h-4" />
+              <span className="font-semibold text-sm">AMD EPYC Technology</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+              Tại Sao Chọn <span style={{ color: AMD_RED }}>AMD</span> Cloud?
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               AMD EPYC mang lại lợi thế vượt trội về cores, performance/dollar và công nghệ bảo mật
@@ -496,10 +502,14 @@ export default function CloudAMD() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 hover:border-red-200"
+                className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100 hover:border-[#ED1C24]/30"
+                data-testid={`advantage-card-${index}`}
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <div 
+                    className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
+                    style={{ backgroundColor: AMD_RED }}
+                  >
                     <advantage.icon className="text-white w-7 h-7" />
                   </div>
                   <div className="flex-1">
@@ -507,7 +517,10 @@ export default function CloudAMD() {
                     <p className="text-gray-600 text-sm leading-relaxed mb-3">
                       {advantage.description}
                     </p>
-                    <span className="inline-block bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                    <span 
+                      className="inline-block px-3 py-1 rounded-full text-xs font-bold"
+                      style={{ backgroundColor: `${AMD_RED}15`, color: AMD_RED }}
+                    >
                       {advantage.highlight}
                     </span>
                   </div>
@@ -528,8 +541,8 @@ export default function CloudAMD() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              AMD EPYC vs Intel Xeon
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+              <span style={{ color: AMD_RED }}>AMD EPYC</span> vs Intel Xeon
             </h2>
             <p className="text-lg text-gray-600">
               So sánh chi tiết giữa hai nền tảng server hàng đầu
@@ -542,21 +555,22 @@ export default function CloudAMD() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
             className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200"
+            data-testid="comparison-table"
           >
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
-                    <th className="px-6 py-4 text-left font-semibold">Tiêu Chí</th>
-                    <th className="px-6 py-4 text-center font-semibold">
+                  <tr style={{ backgroundColor: '#1a1a1a' }} className="text-white">
+                    <th className="px-6 py-4 text-left font-bold">Tiêu Chí</th>
+                    <th className="px-6 py-4 text-center font-bold">
                       <div className="flex items-center justify-center gap-2">
-                        <div className="w-3 h-3 bg-red-500 rounded-full" />
+                        <div className="w-4 h-4 rounded" style={{ backgroundColor: AMD_RED }} />
                         AMD EPYC
                       </div>
                     </th>
-                    <th className="px-6 py-4 text-center font-semibold">
+                    <th className="px-6 py-4 text-center font-bold">
                       <div className="flex items-center justify-center gap-2">
-                        <div className="w-3 h-3 bg-blue-500 rounded-full" />
+                        <div className="w-4 h-4 rounded bg-blue-500" />
                         Intel Xeon
                       </div>
                     </th>
@@ -566,16 +580,18 @@ export default function CloudAMD() {
                   {comparisons.map((row, index) => (
                     <tr key={index} className={`border-b border-gray-100 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
                       <td className="px-6 py-4 font-medium text-gray-900">{row.feature}</td>
-                      <td className={`px-6 py-4 text-center ${row.winner === 'amd' ? 'bg-green-50' : ''}`}>
+                      <td className={`px-6 py-4 text-center ${row.winner === 'amd' ? 'bg-[#ED1C24]/10' : ''}`}>
                         <div className="flex items-center justify-center gap-2">
-                          {row.winner === 'amd' && <CheckCircle className="w-5 h-5 text-green-500" />}
-                          <span className={row.winner === 'amd' ? 'font-semibold text-green-700' : 'text-gray-600'}>{row.amd}</span>
+                          {row.winner === 'amd' && <CheckCircle className="w-5 h-5" style={{ color: AMD_RED }} />}
+                          <span className={row.winner === 'amd' ? 'font-bold' : 'text-gray-600'} style={row.winner === 'amd' ? { color: AMD_RED } : {}}>
+                            {row.amd}
+                          </span>
                         </div>
                       </td>
-                      <td className={`px-6 py-4 text-center ${row.winner === 'intel' ? 'bg-green-50' : ''}`}>
+                      <td className={`px-6 py-4 text-center ${row.winner === 'intel' ? 'bg-blue-50' : ''}`}>
                         <div className="flex items-center justify-center gap-2">
-                          {row.winner === 'intel' && <CheckCircle className="w-5 h-5 text-green-500" />}
-                          <span className={row.winner === 'intel' ? 'font-semibold text-green-700' : 'text-gray-600'}>{row.intel}</span>
+                          {row.winner === 'intel' && <CheckCircle className="w-5 h-5 text-blue-500" />}
+                          <span className={row.winner === 'intel' ? 'font-bold text-blue-700' : 'text-gray-600'}>{row.intel}</span>
                         </div>
                       </td>
                     </tr>
@@ -587,8 +603,8 @@ export default function CloudAMD() {
         </div>
       </section>
 
-      {/* Use Cases */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 via-red-950 to-gray-900 text-white">
+      {/* Use Cases - AMD Dark Theme */}
+      <section className="py-20 text-white" style={{ background: 'linear-gradient(135deg, #000000 0%, #1a0000 50%, #000000 100%)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -597,10 +613,10 @@ export default function CloudAMD() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ứng Dụng Tối Ưu Cho AMD Cloud
+            <h2 className="text-3xl md:text-4xl font-black mb-4">
+              Ứng Dụng Tối Ưu Cho <span style={{ color: AMD_RED }}>AMD Cloud</span>
             </h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
               AMD EPYC phát huy tối đa sức mạnh với các workload multi-threaded và memory-intensive
             </p>
           </motion.div>
@@ -613,18 +629,26 @@ export default function CloudAMD() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
+                className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-[#ED1C24]/20 hover:border-[#ED1C24]/40 transition-all"
+                data-testid={`usecase-card-${index}`}
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <div 
+                    className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: AMD_RED }}
+                  >
                     <useCase.icon className="text-white w-7 h-7" />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-white mb-2">{useCase.title}</h3>
-                    <p className="text-gray-300 text-sm mb-4">{useCase.description}</p>
+                    <p className="text-gray-400 text-sm mb-4">{useCase.description}</p>
                     <div className="flex flex-wrap gap-2">
                       {useCase.benefits.map((benefit, idx) => (
-                        <span key={idx} className="bg-red-500/30 text-red-200 px-3 py-1 rounded-full text-xs">
+                        <span 
+                          key={idx} 
+                          className="px-3 py-1 rounded-full text-xs font-medium"
+                          style={{ backgroundColor: `${AMD_RED}30`, color: '#ff6b6b' }}
+                        >
                           {benefit}
                         </span>
                       ))}
@@ -647,8 +671,8 @@ export default function CloudAMD() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Gói Dịch Vụ Cloud AMD
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+              Gói Dịch Vụ <span style={{ color: AMD_RED }}>Cloud AMD</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Chọn cấu hình AMD EPYC phù hợp với nhu cầu - Tất cả đều bao gồm AMD SEV security và hỗ trợ 24/7
@@ -665,14 +689,15 @@ export default function CloudAMD() {
                 viewport={{ once: true }}
                 className={`relative rounded-2xl p-6 ${
                   pkg.popular 
-                    ? 'bg-gradient-to-br from-red-500 to-orange-500 text-white ring-4 ring-red-300 scale-105' 
+                    ? 'text-white ring-4 ring-[#ED1C24]/50 scale-105' 
                     : 'bg-white border border-gray-200 shadow-lg'
                 }`}
+                style={pkg.popular ? { backgroundColor: AMD_RED } : {}}
                 data-testid={`card-package-${pkg.name.toLowerCase().replace(' ', '-')}`}
               >
                 {pkg.popular && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                    <span className="bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
                       <Star className="w-3 h-3" />
                       BEST VALUE
                     </span>
@@ -680,7 +705,7 @@ export default function CloudAMD() {
                 )}
 
                 <div className="text-center mb-4">
-                  <h3 className="text-xl font-bold mb-1">{pkg.name}</h3>
+                  <h3 className="text-xl font-black mb-1">{pkg.name}</h3>
                   <div className={`text-xs font-medium ${pkg.popular ? 'text-white/80' : 'text-gray-500'}`}>
                     {pkg.processor}
                   </div>
@@ -691,7 +716,7 @@ export default function CloudAMD() {
 
                 <div className="text-center mb-4">
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-3xl font-bold">{pkg.price}</span>
+                    <span className="text-3xl font-black">{pkg.price}</span>
                   </div>
                   <span className={`text-sm ${pkg.popular ? 'text-white/80' : 'text-gray-500'}`}>{pkg.priceUnit}</span>
                 </div>
@@ -716,7 +741,7 @@ export default function CloudAMD() {
                 <ul className="space-y-2 mb-6 text-xs">
                   {pkg.features.slice(0, 5).map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle className={`w-4 h-4 flex-shrink-0 ${pkg.popular ? 'text-white' : 'text-green-500'}`} />
+                      <CheckCircle className={`w-4 h-4 flex-shrink-0 ${pkg.popular ? 'text-white' : ''}`} style={!pkg.popular ? { color: AMD_RED } : {}} />
                       <span className={pkg.popular ? 'text-white/90' : 'text-gray-600'}>{feature}</span>
                     </li>
                   ))}
@@ -727,11 +752,12 @@ export default function CloudAMD() {
                     setFormData(prev => ({ ...prev, package: pkg.name }));
                     document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className={`w-full py-5 font-semibold rounded-xl ${
+                  className={`w-full py-5 font-bold rounded-xl transition-all ${
                     pkg.popular 
-                      ? 'bg-white text-red-600 hover:bg-gray-100' 
-                      : 'bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white'
+                      ? 'bg-white hover:bg-gray-100' 
+                      : 'text-white hover:opacity-90'
                   }`}
+                  style={pkg.popular ? { color: AMD_RED } : { backgroundColor: AMD_RED }}
                   data-testid={`button-select-${pkg.name.toLowerCase().replace(' ', '-')}`}
                 >
                   Chọn Gói Này
@@ -743,8 +769,8 @@ export default function CloudAMD() {
         </div>
       </section>
 
-      {/* Contact Form */}
-      <section id="contact-form" className="py-20 bg-gradient-to-br from-gray-900 via-red-950 to-orange-950 text-white">
+      {/* Contact Form - AMD Theme */}
+      <section id="contact-form" className="py-20 text-white" style={{ background: 'linear-gradient(135deg, #000000 0%, #1a0000 50%, #0a0a0a 100%)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -753,10 +779,14 @@ export default function CloudAMD() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Tư Vấn Cloud AMD Miễn Phí
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: `${AMD_RED}20`, border: `1px solid ${AMD_RED}40` }}>
+              <Headphones className="w-4 h-4" style={{ color: AMD_RED }} />
+              <span className="font-semibold text-sm" style={{ color: AMD_RED }}>Tư vấn miễn phí 24/7</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black mb-4">
+              Tư Vấn <span style={{ color: AMD_RED }}>Cloud AMD</span> Miễn Phí
             </h2>
-            <p className="text-lg text-gray-300">
+            <p className="text-lg text-gray-400">
               Để lại thông tin để chuyên gia tư vấn cấu hình AMD phù hợp nhất
             </p>
           </motion.div>
@@ -771,24 +801,26 @@ export default function CloudAMD() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Họ và tên *</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Họ và tên *</label>
                   <Input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Nhập họ và tên"
                     required
+                    className="border-gray-300 focus:border-[#ED1C24] focus:ring-[#ED1C24]"
                     data-testid="input-name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Email *</label>
                   <Input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                     placeholder="Nhập email"
                     required
+                    className="border-gray-300 focus:border-[#ED1C24] focus:ring-[#ED1C24]"
                     data-testid="input-email"
                   />
                 </div>
@@ -796,23 +828,25 @@ export default function CloudAMD() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Số điện thoại *</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Số điện thoại *</label>
                   <Input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                     placeholder="Nhập số điện thoại"
                     required
+                    className="border-gray-300 focus:border-[#ED1C24] focus:ring-[#ED1C24]"
                     data-testid="input-phone"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tên công ty</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Tên công ty</label>
                   <Input
                     type="text"
                     value={formData.company}
                     onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
                     placeholder="Nhập tên công ty"
+                    className="border-gray-300 focus:border-[#ED1C24] focus:ring-[#ED1C24]"
                     data-testid="input-company"
                   />
                 </div>
@@ -820,9 +854,9 @@ export default function CloudAMD() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Use case chính</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Use case chính</label>
                   <Select value={formData.useCase} onValueChange={(value) => setFormData(prev => ({ ...prev, useCase: value }))}>
-                    <SelectTrigger data-testid="select-usecase">
+                    <SelectTrigger data-testid="select-usecase" className="border-gray-300 focus:border-[#ED1C24] focus:ring-[#ED1C24]">
                       <SelectValue placeholder="Chọn use case" />
                     </SelectTrigger>
                     <SelectContent>
@@ -835,9 +869,9 @@ export default function CloudAMD() {
                   </Select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Gói quan tâm</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Gói quan tâm</label>
                   <Select value={formData.package} onValueChange={(value) => setFormData(prev => ({ ...prev, package: value }))}>
-                    <SelectTrigger data-testid="select-package">
+                    <SelectTrigger data-testid="select-package" className="border-gray-300 focus:border-[#ED1C24] focus:ring-[#ED1C24]">
                       <SelectValue placeholder="Chọn gói dịch vụ" />
                     </SelectTrigger>
                     <SelectContent>
@@ -853,7 +887,8 @@ export default function CloudAMD() {
               <Button 
                 type="submit" 
                 size="lg"
-                className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold text-lg py-6 rounded-xl"
+                className="w-full text-white font-bold text-lg py-6 rounded-xl transition-all hover:opacity-90"
+                style={{ backgroundColor: AMD_RED }}
                 data-testid="button-submit"
               >
                 Gửi Yêu Cầu Tư Vấn
@@ -874,11 +909,11 @@ export default function CloudAMD() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
               Câu Hỏi Thường Gặp
             </h2>
             <p className="text-lg text-gray-600">
-              Tìm hiểu thêm về Cloud AMD và AMD EPYC
+              Tìm hiểu thêm về <span style={{ color: AMD_RED }} className="font-bold">Cloud AMD</span> và AMD EPYC
             </p>
           </motion.div>
 
@@ -893,10 +928,10 @@ export default function CloudAMD() {
                 <AccordionItem 
                   key={index} 
                   value={`item-${index}`}
-                  className="bg-white rounded-xl border border-gray-200 px-6 shadow-sm"
+                  className="bg-white rounded-xl border border-gray-200 px-6 shadow-sm hover:border-[#ED1C24]/30 transition-all"
                   data-testid={`faq-item-${index}`}
                 >
-                  <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline py-5">
+                  <AccordionTrigger className="text-left font-bold text-gray-900 hover:no-underline py-5">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 pb-5">
@@ -909,26 +944,38 @@ export default function CloudAMD() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-br from-gray-950 via-red-950 to-orange-950 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Final CTA - AMD Theme */}
+      <section className="py-20 text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #000000 0%, #1a0000 50%, #000000 100%)' }}>
+        {/* AMD Arrow Background */}
+        <div className="absolute inset-0 overflow-hidden opacity-10">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px]">
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <polygon points="50,0 100,50 50,100 0,50" fill={AMD_RED} />
+            </svg>
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <Cpu className="w-16 h-16 text-red-400 mx-auto mb-6" />
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Sẵn Sàng Trải Nghiệm Sức Mạnh AMD?
+            <div className="w-20 h-20 mx-auto mb-6 flex items-center justify-center rounded-2xl" style={{ backgroundColor: AMD_RED }}>
+              <span className="text-white font-black text-2xl">AMD</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black mb-6">
+              Sẵn Sàng Trải Nghiệm Sức Mạnh <span style={{ color: AMD_RED }}>AMD</span>?
             </h2>
-            <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
               Đội ngũ chuyên gia STEP sẵn sàng tư vấn cấu hình AMD Cloud tối ưu cho workload của bạn.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg"
-                className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold text-lg px-8 py-6 rounded-xl"
+                className="text-white font-bold text-lg px-8 py-6 rounded-xl transition-all hover:opacity-90"
+                style={{ backgroundColor: AMD_RED }}
                 onClick={() => document.getElementById('amd-packages')?.scrollIntoView({ behavior: 'smooth' })}
                 data-testid="button-cta-packages"
               >
@@ -938,7 +985,7 @@ export default function CloudAMD() {
               <Button 
                 size="lg"
                 variant="outline"
-                className="border-2 border-white/30 text-white hover:bg-white/10 font-semibold text-lg px-8 py-6 rounded-xl"
+                className="border-2 border-white/30 text-white hover:bg-white/10 font-bold text-lg px-8 py-6 rounded-xl"
                 onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                 data-testid="button-cta-contact"
               >
@@ -951,10 +998,14 @@ export default function CloudAMD() {
       </section>
 
       {/* Server Configurator Section */}
-      <section id="server-configurator" className="bg-gray-950">
+      <section id="server-configurator" style={{ background: 'linear-gradient(180deg, #000000 0%, #0a0a0a 100%)' }}>
         <div className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-red-400 via-orange-400 to-red-500 bg-clip-text text-transparent">
-            Cấu Hình Cloud AMD Server
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: `${AMD_RED}20`, border: `1px solid ${AMD_RED}40` }}>
+            <Settings className="w-4 h-4" style={{ color: AMD_RED }} />
+            <span className="font-semibold text-sm" style={{ color: AMD_RED }}>Tùy chỉnh linh hoạt</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-black mb-4 text-white">
+            Cấu Hình <span style={{ color: AMD_RED }}>Cloud AMD</span> Server
           </h2>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             Tùy chỉnh cấu hình AMD EPYC theo nhu cầu của bạn
