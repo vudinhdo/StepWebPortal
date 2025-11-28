@@ -59,7 +59,8 @@ const gpuPackages = [
   {
     name: "RTX 4060",
     vram: "8GB GDDR6",
-    price: "2.500.000",
+    priceValue: "2.500.000",
+    priceUnit: "VNĐ/tháng",
     specs: "8GB VRAM, 3072 CUDA Cores",
     suitable: "Fine-tuning models, Inference nhẹ",
     popular: false,
@@ -67,7 +68,7 @@ const gpuPackages = [
       "8GB GDDR6 VRAM",
       "3072 CUDA Cores",
       "Ada Lovelace Architecture",
-      "Tensor Cores Gen 4",
+      "4th Gen Tensor Cores",
       "8 vCPU, 32GB RAM",
       "200GB NVMe SSD",
       "CUDA 12.x Support",
@@ -79,7 +80,8 @@ const gpuPackages = [
   {
     name: "RTX 4080",
     vram: "16GB GDDR6X",
-    price: "5.000.000",
+    priceValue: "5.000.000",
+    priceUnit: "VNĐ/tháng",
     specs: "16GB VRAM, 9728 CUDA Cores",
     suitable: "Training models, LLM Inference",
     popular: true,
@@ -87,7 +89,7 @@ const gpuPackages = [
       "16GB GDDR6X VRAM",
       "9728 CUDA Cores",
       "Ada Lovelace Architecture",
-      "Tensor Cores Gen 4",
+      "4th Gen Tensor Cores",
       "16 vCPU, 64GB RAM",
       "500GB NVMe SSD",
       "CUDA 12.x Support",
@@ -99,7 +101,8 @@ const gpuPackages = [
   {
     name: "RTX 4090",
     vram: "24GB GDDR6X",
-    price: "7.500.000",
+    priceValue: "7.500.000",
+    priceUnit: "VNĐ/tháng",
     specs: "24GB VRAM, 16384 CUDA Cores",
     suitable: "Heavy Training, Large LLMs",
     popular: false,
@@ -107,7 +110,7 @@ const gpuPackages = [
       "24GB GDDR6X VRAM",
       "16384 CUDA Cores",
       "Ada Lovelace Architecture",
-      "Tensor Cores Gen 4",
+      "4th Gen Tensor Cores",
       "32 vCPU, 128GB RAM",
       "1TB NVMe SSD",
       "NVLink Support",
@@ -119,7 +122,8 @@ const gpuPackages = [
   {
     name: "Tesla V100",
     vram: "32GB HBM2",
-    price: "12.000.000",
+    priceValue: "12.000.000",
+    priceUnit: "VNĐ/tháng",
     specs: "32GB HBM2, 5120 CUDA Cores",
     suitable: "Enterprise AI, Research",
     popular: false,
@@ -139,7 +143,8 @@ const gpuPackages = [
   {
     name: "A100 40GB",
     vram: "40GB HBM2e",
-    price: "25.000.000",
+    priceValue: "25.000.000",
+    priceUnit: "VNĐ/tháng",
     specs: "40GB HBM2e, 6912 CUDA Cores",
     suitable: "LLM Training, Enterprise AI",
     popular: true,
@@ -159,7 +164,8 @@ const gpuPackages = [
   {
     name: "H100 80GB",
     vram: "80GB HBM3",
-    price: "50.000.000",
+    priceValue: "50.000.000",
+    priceUnit: "VNĐ/tháng",
     specs: "80GB HBM3, 16896 CUDA Cores",
     suitable: "Frontier AI, LLM từ scratch",
     popular: false,
@@ -273,7 +279,7 @@ export default function CloudGPU() {
       <Header />
       
       {/* Hero Section with Cyber/AI Effects */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      <section className="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-24 md:pt-20">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-purple-950/30 to-gray-950" />
         
@@ -286,18 +292,18 @@ export default function CloudGPU() {
           }} />
         </div>
 
-        {/* Floating Orbs */}
+        {/* Floating Orbs - Hidden on mobile, visible on md+ */}
         <motion.div
           animate={floatingAnimation}
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+          className="hidden md:block absolute top-1/4 left-1/4 w-48 lg:w-96 h-48 lg:h-96 bg-purple-500/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ ...floatingAnimation, transition: { ...floatingAnimation.transition, delay: 1 } }}
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl"
+          className="hidden md:block absolute bottom-1/4 right-1/4 w-40 lg:w-80 h-40 lg:h-80 bg-cyan-500/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ ...floatingAnimation, transition: { ...floatingAnimation.transition, delay: 0.5 } }}
-          className="absolute top-1/3 right-1/3 w-64 h-64 bg-pink-500/15 rounded-full blur-3xl"
+          className="hidden md:block absolute top-1/3 right-1/3 w-32 lg:w-64 h-32 lg:h-64 bg-pink-500/15 rounded-full blur-3xl"
         />
 
         {/* Neural Network Lines - Decorative */}
@@ -496,9 +502,9 @@ export default function CloudGPU() {
                     <CircuitBoard className="w-8 h-8 text-white/80" />
                   </div>
                   <div className="text-white/90 text-sm mb-2">{pkg.vram}</div>
-                  <div className="text-3xl font-bold text-white">
-                    {pkg.price}
-                    <span className="text-base font-normal text-white/80"> VNĐ/tháng</span>
+                  <div className="text-2xl md:text-3xl font-bold text-white">
+                    {pkg.priceValue}
+                    <span className="text-sm md:text-base font-normal text-white/80"> {pkg.priceUnit}</span>
                   </div>
                 </div>
 
