@@ -155,6 +155,8 @@ export default function MegaMenu() {
                     <a href={
                       item.name === 'Cloud Odoo' ? '/Cloud/CloudOdoo' :
                       item.name === 'Cloud Server' ? '/Cloud/CloudServer' :
+                      item.name === 'Cloud GPU' ? '/Cloud/CloudGPU' :
+                      item.name === 'Cloud AMD' ? '/Cloud/CloudAMD' :
                       '/cloud'
                     } className="flex items-center text-sm text-gray-600 hover:text-[hsl(207,100%,40%)] transition-colors group">
                       <item.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[hsl(207,100%,40%)] transition-colors" />

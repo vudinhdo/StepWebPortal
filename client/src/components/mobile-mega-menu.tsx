@@ -150,8 +150,8 @@ export default function MobileMegaMenu() {
                         // Cloud links
                         category.id === 'cloud' && item.name === 'Cloud Server' ? '/Cloud/CloudServer' :
                         category.id === 'cloud' && item.name === 'Cloud Odoo' ? '/Cloud/CloudOdoo' :
-                        category.id === 'cloud' && item.name === 'Cloud GPU' ? '/Cloud/Cloud GPU' :
-                        category.id === 'cloud' && item.name === 'Cloud AMD' ? '/Cloud/Cloud AMD' :
+                        category.id === 'cloud' && item.name === 'Cloud GPU' ? '/Cloud/CloudGPU' :
+                        category.id === 'cloud' && item.name === 'Cloud AMD' ? '/Cloud/CloudAMD' :
                         // Hosting links
                         category.id === 'hosting' && item.name === 'Hosting WordPress' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting WordPress' :
                         category.id === 'hosting' && item.name === 'Hosting Laravel' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting Laravel' :

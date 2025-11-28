@@ -21,6 +21,7 @@ import Cloud from "@/pages/cloud";
 import CloudOdoo from "@/pages/cloud-odoo";
 import CloudServer from "@/pages/cloud-server";
 import CloudGPU from "@/pages/cloud-gpu";
+import CloudAMD from "@/pages/cloud-amd";
 import GCP from "@/pages/gcp";
 import VMware from "@/pages/vmware";
 import PerformanceBenchmark from "@/pages/performance-benchmark";
@@ -72,7 +73,8 @@ function Router() {
         <Route path="/cloud" component={Cloud} />
         <Route path="/Cloud/CloudOdoo" component={CloudOdoo} />
         <Route path="/Cloud/CloudServer" component={CloudServer} />
-        <Route path="/Cloud/Cloud GPU" component={CloudGPU} />
+        <Route path="/Cloud/CloudGPU" component={CloudGPU} />
+        <Route path="/Cloud/CloudAMD" component={CloudAMD} />
         <Route path="/gcp" component={GCP} />
         <Route path="/google-cloud-platform" component={GCP} />
         <Route path="/dich-vu/phan-mem/vmware" component={VMware} />

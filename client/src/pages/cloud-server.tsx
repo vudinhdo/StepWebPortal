@@ -1338,7 +1338,22 @@ export default function CloudServer() {
         </div>
       </section>
 
-
+      {/* Server Configurator Section */}
+      <section id="server-configurator" className="bg-gray-950">
+        <div className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+            Cấu Hình Cloud Server
+          </h2>
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            Tùy chỉnh cấu hình server theo nhu cầu của doanh nghiệp
+          </p>
+        </div>
+        <div className="bg-gray-50 rounded-t-3xl">
+          <div className="py-12">
+            <ServerConfigurator />
+          </div>
+        </div>
+      </section>
       
       <Footer />
     </div>
