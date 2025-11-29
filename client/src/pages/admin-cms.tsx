@@ -22,7 +22,9 @@ import {
   Edit,
   Trash2,
   LogOut,
+  Server,
 } from "lucide-react";
+import { EquipmentManager } from "@/components/cms/equipment-manager";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
@@ -314,7 +316,7 @@ function AdminCMSContent({ onLogout }: { onLogout: () => void }) {
 
       <div className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="dashboard">
               <LayoutDashboard className="w-4 h-4 mr-2" />
               Dashboard
@@ -326,6 +328,10 @@ function AdminCMSContent({ onLogout }: { onLogout: () => void }) {
             <TabsTrigger value="services">
               <Settings className="w-4 h-4 mr-2" />
               Dịch vụ
+            </TabsTrigger>
+            <TabsTrigger value="equipment" data-testid="equipment-tab">
+              <Server className="w-4 h-4 mr-2" />
+              Kho Thiết Bị
             </TabsTrigger>
             <TabsTrigger value="testimonials">
               <Star className="w-4 h-4 mr-2" />
@@ -347,6 +353,10 @@ function AdminCMSContent({ onLogout }: { onLogout: () => void }) {
 
           <TabsContent value="services" className="mt-6">
             <ServicesList />
+          </TabsContent>
+
+          <TabsContent value="equipment" className="mt-6">
+            <EquipmentManager />
           </TabsContent>
 
           <TabsContent value="testimonials" className="mt-6">
