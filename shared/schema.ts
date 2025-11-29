@@ -146,6 +146,45 @@ export const emailPopupLeads = pgTable("email_popup_leads", {
   isProcessed: boolean("is_processed").default(false),
 });
 
+// Server Equipment Inventory
+export const serverEquipment = pgTable("server_equipment", {
+  id: serial("id").primaryKey(),
+  category: text("category").notNull(), // BASE_DELL, BASE_HPE, OPTION_DELL, OPTION_HPE, OPTION_NGOAI, THIET_BI_KHAC
+  subCategory: text("sub_category"), // CPU, RAM, HDD, SSD, NIC, GPU, BackPlane, Main, etc.
+  partNumber: text("part_number").notNull(),
+  model: text("model"),
+  name: text("name").notNull(),
+  description: text("description"),
+  specs: jsonb("specs"), // flexible specs like {cpu, ram, storage, raid, nic, psu, etc.}
+  stockCount: integer("stock_count").default(0),
+  priceEndUser: integer("price_end_user"), // VND
+  priceDealer: integer("price_dealer"), // VND
+  priceMD: integer("price_md"), // VND
+  condition: text("condition").default("new"), // new, used, refurbished
+  brand: text("brand"), // Dell, HPE, Samsung, Intel, etc.
+  imageUrl: text("image_url"),
+  tags: text("tags").array(),
+  isActive: boolean("is_active").default(true),
+  isFeatured: boolean("is_featured").default(false),
+  displayOrder: integer("display_order").default(0),
+  note: text("note"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Equipment Categories for better organization
+export const equipmentCategories = pgTable("equipment_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+  icon: text("icon"),
+  parentId: integer("parent_id"),
+  displayOrder: integer("display_order").default(0),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertContactSchema = createInsertSchema(contacts).omit({
   id: true,
   createdAt: true,
@@ -215,6 +254,30 @@ export const insertEmailPopupLeadSchema = createInsertSchema(emailPopupLeads).om
   isProcessed: true,
 });
 
+// Server Equipment schemas
+export const insertServerEquipmentSchema = createInsertSchema(serverEquipment).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateServerEquipmentSchema = createInsertSchema(serverEquipment).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+}).partial();
+
+// Equipment Categories schemas
+export const insertEquipmentCategorySchema = createInsertSchema(equipmentCategories).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const updateEquipmentCategorySchema = createInsertSchema(equipmentCategories).omit({
+  id: true,
+  createdAt: true,
+}).partial();
+
 // Type exports
 export type InsertContact = z.infer<typeof insertContactSchema>;
 export type Contact = typeof contacts.$inferSelect;
@@ -263,3 +326,12 @@ export type ActivityLog = typeof activityLogs.$inferSelect;
 export type InsertActivityLog = typeof activityLogs.$inferInsert;
 export type WebsiteBackup = typeof websiteBackups.$inferSelect;
 export type InsertWebsiteBackup = typeof websiteBackups.$inferInsert;
+
+// Server Equipment types
+export type InsertServerEquipment = z.infer<typeof insertServerEquipmentSchema>;
+export type UpdateServerEquipment = z.infer<typeof updateServerEquipmentSchema>;
+export type ServerEquipment = typeof serverEquipment.$inferSelect;
+
+export type InsertEquipmentCategory = z.infer<typeof insertEquipmentCategorySchema>;
+export type UpdateEquipmentCategory = z.infer<typeof updateEquipmentCategorySchema>;
+export type EquipmentCategory = typeof equipmentCategories.$inferSelect;
