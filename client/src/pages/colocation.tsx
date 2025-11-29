@@ -166,30 +166,31 @@ export default function Colocation() {
       id: "s-cmc02",
       name: "S-CMC02", 
       subtitle: "Nâng cao cho doanh nghiệp",
-      price: 1900000,
-      unit: "VNĐ/tháng",
-      originalPrice: 2200000,
+      price: 1450000,
+      unit: "VNĐ/tháng + VAT",
+      originalPrice: 1700000,
       popular: false,
       space: "1U Server",
-      power: "400W",
-      bandwidth: "200Mbps trong nước / 10Mbps quốc tế",
-      ips: "1 IPv4 + IPv6 miễn phí",
+      power: "300W",
+      bandwidth: "300Mbps trong nước / 5Mbps quốc tế",
+      ips: "2 IPv4 + IPv6",
       color: "hsl(207, 100%, 40%)",
       bgColor: "hsl(207, 100%, 96%)",
       borderColor: "hsl(207, 100%, 80%)",
       features: [
         "Chỗ đặt máy chủ: 1U",
-        "Công suất điện: 400W",
+        "Công suất điện: 300W",
         "Lưu lượng thông tin: Không giới hạn",
-        "Băng thông trong nước: 200Mbps",
-        "Băng thông quốc tế: 10Mbps",
+        "Băng thông trong nước: 300Mbps",
+        "Băng thông quốc tế: 5Mbps",
         "Cổng cắm mạng: 1Gbps",
         "Điện máy nổ dự phòng: Có",
         "UPS: Có", 
-        "IPv4: 1 IP/máy",
-        "IPv6: Miễn phí",
+        "IPv4: 2 IP/máy",
+        "IPv6: Có",
+        "Remote hands: Có",
         "Hỗ trợ kỹ thuật: 24/7",
-        "Giảm 3% khi thanh toán 12 tháng"
+        "Giảm 5% khi thanh toán 12 tháng"
       ],
       support: "Hỗ trợ 24/7 ưu tiên",
       sla: "99.8% uptime SLA"
@@ -198,23 +199,23 @@ export default function Colocation() {
       id: "s-cmc03",
       name: "S-CMC03",
       subtitle: "Cao cấp cho enterprise",
-      price: 3500000, 
-      unit: "VNĐ/tháng",
-      originalPrice: 4000000,
+      price: 2550000, 
+      unit: "VNĐ/tháng + VAT",
+      originalPrice: 3000000,
       popular: false,
       space: "2U Server",
-      power: "800W",
-      bandwidth: "500Mbps trong nước / 25Mbps quốc tế",
+      power: "750W",
+      bandwidth: "300Mbps trong nước / 5Mbps quốc tế",
       ips: "2 IPv4 + IPv6",
       color: "hsl(271, 91%, 65%)",
       bgColor: "hsl(271, 91%, 96%)",
       borderColor: "hsl(271, 91%, 75%)",
       features: [
         "Chỗ đặt máy chủ: 2U",
-        "Công suất điện: 800W",
+        "Công suất điện: 750W",
         "Lưu lượng thông tin: Không giới hạn",
-        "Băng thông trong nước: 500Mbps",
-        "Băng thông quốc tế: 25Mbps",
+        "Băng thông trong nước: 300Mbps",
+        "Băng thông quốc tế: 5Mbps",
         "Cổng cắm mạng: 1Gbps",
         "Điện máy nổ dự phòng: Có",
         "UPS: Có",
@@ -704,89 +705,47 @@ export default function Colocation() {
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             {[
               {
-                icon: "🌐",
-                title: "Địa chỉ IP",
-                subtitle: "1 địa chỉ",
-                price: 80000,
-                color: "hsl(207, 100%, 40%)",
-                bgColor: "hsl(207, 100%, 96%)"
-              },
-              {
-                icon: "🗄️",
-                title: "Không gian Rack", 
-                subtitle: "1U",
-                price: 200000,
-                color: "hsl(339, 82%, 52%)",
-                bgColor: "hsl(339, 82%, 96%)"
-              },
-              {
-                icon: "📡",
-                title: "Băng thông",
-                subtitle: "100Mbps",
-                price: 1050000,
-                color: "hsl(207, 100%, 40%)",
-                bgColor: "hsl(207, 100%, 96%)"
-              },
-              {
-                icon: "📡",
-                title: "Băng thông", 
-                subtitle: "200Mbps",
-                price: 1800000,
-                color: "hsl(271, 91%, 65%)",
-                bgColor: "hsl(271, 91%, 96%)"
-              },
-              {
                 icon: "⚡",
-                title: "Công suất điện",
+                title: "Tăng thêm công suất điện",
                 subtitle: "100W", 
                 price: 200000,
                 color: "hsl(339, 82%, 52%)",
                 bgColor: "hsl(339, 82%, 96%)"
               },
               {
-                icon: "🛡️",
-                title: "Firewall",
-                subtitle: "",
-                price: 350000,
-                color: "hsl(207, 100%, 40%)",
-                bgColor: "hsl(207, 100%, 96%)"
+                icon: "🗄️",
+                title: "Bổ sung Rack", 
+                subtitle: "1U",
+                price: 200000,
+                color: "hsl(142, 76%, 36%)",
+                bgColor: "hsl(142, 76%, 96%)"
               },
               {
                 icon: "📦",
-                title: "Device Rack",
-                subtitle: "1U/50W",
+                title: "Đặt thêm thiết bị",
+                subtitle: "1U, 50W",
                 price: 1000000,
-                color: "hsl(339, 82%, 52%)",
-                bgColor: "hsl(339, 82%, 96%)"
-              },
-              {
-                icon: "📦",
-                title: "Device Rack",
-                subtitle: "Dưới 1U/50W",
-                price: 500000,
                 color: "hsl(271, 91%, 65%)",
                 bgColor: "hsl(271, 91%, 96%)"
               },
               {
-                icon: "🔗",
-                title: "Đường cáp Local RJ45",
-                subtitle: "",
-                price: 1000000,
-                unit: "/tháng",
+                icon: "📡",
+                title: "Băng thông",
+                subtitle: "100Mbps/5Mbps",
+                price: 200000,
                 color: "hsl(207, 100%, 40%)",
                 bgColor: "hsl(207, 100%, 96%)"
               },
               {
-                icon: "🔗",
-                title: "Đường cáp quang",
-                subtitle: "Back-end",
-                price: 1000000,
-                unit: "/tháng", 
-                color: "hsl(339, 82%, 52%)",
-                bgColor: "hsl(339, 82%, 96%)"
+                icon: "🌐",
+                title: "IP",
+                subtitle: "01 IP",
+                price: 50000,
+                color: "hsl(25, 95%, 53%)",
+                bgColor: "hsl(25, 95%, 96%)"
               }
             ].map((service, index) => (
               <motion.div
@@ -820,9 +779,6 @@ export default function Colocation() {
                       >
                         {service.price.toLocaleString('vi-VN')} VNĐ
                       </span>
-                      {service.unit && (
-                        <span className="text-gray-600 text-sm block">{service.unit}</span>
-                      )}
                     </div>
                   </CardContent>
                 </Card>
