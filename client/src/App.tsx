@@ -42,6 +42,7 @@ import NetworkEquipment from "@/pages/network-equipment";
 import DLP from "@/pages/dlp";
 import Colocation from "@/pages/colocation";
 import Contact from "@/pages/contact";
+import EquipmentCatalog from "@/pages/equipment-catalog";
 
 function Router() {
   return (
@@ -93,6 +94,9 @@ function Router() {
         <Route path="/hybrid-email" component={HybridEmail} />
         <Route path="/colocation" component={Colocation} />
         <Route path="/contact" component={Contact} />
+        <Route path="/dich-vu/may-chu/thiet-bi-may-chu" component={EquipmentCatalog} />
+        <Route path="/thiet-bi-may-chu" component={EquipmentCatalog} />
+        <Route path="/equipment" component={EquipmentCatalog} />
         <Route component={NotFound} />
       </Switch>
     </PageTransition>
