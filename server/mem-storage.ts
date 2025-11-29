@@ -6,7 +6,9 @@ import {
   type PageContent, type InsertPageContent, type UpdatePageContent,
   type SiteSetting, type InsertSiteSetting,
   type EmailPopupLead, type InsertEmailPopupLead,
-  type AdminUser, type InsertAdminUser, type ActivityLog, type InsertActivityLog, type WebsiteBackup, type InsertWebsiteBackup
+  type AdminUser, type InsertAdminUser, type ActivityLog, type InsertActivityLog, type WebsiteBackup, type InsertWebsiteBackup,
+  type ServerEquipment, type InsertServerEquipment, type UpdateServerEquipment,
+  type EquipmentCategory, type InsertEquipmentCategory, type UpdateEquipmentCategory
 } from "@shared/schema";
 
 export interface IStorage {
@@ -89,6 +91,28 @@ export interface IStorage {
   getWebsiteBackups(): Promise<WebsiteBackup[]>;
   getWebsiteBackup(id: number): Promise<WebsiteBackup | undefined>;
   deleteWebsiteBackup(id: number): Promise<boolean>;
+
+  // Server Equipment methods
+  createServerEquipment(equipment: InsertServerEquipment): Promise<ServerEquipment>;
+  updateServerEquipment(id: number, equipment: UpdateServerEquipment): Promise<ServerEquipment | undefined>;
+  deleteServerEquipment(id: number): Promise<boolean>;
+  getServerEquipments(): Promise<ServerEquipment[]>;
+  getActiveServerEquipments(): Promise<ServerEquipment[]>;
+  getFeaturedServerEquipments(): Promise<ServerEquipment[]>;
+  getServerEquipment(id: number): Promise<ServerEquipment | undefined>;
+  getServerEquipmentsByCategory(category: string): Promise<ServerEquipment[]>;
+  getServerEquipmentsBySubCategory(subCategory: string): Promise<ServerEquipment[]>;
+  searchServerEquipments(query: string): Promise<ServerEquipment[]>;
+  bulkCreateServerEquipments(equipments: InsertServerEquipment[]): Promise<ServerEquipment[]>;
+
+  // Equipment Category methods
+  createEquipmentCategory(category: InsertEquipmentCategory): Promise<EquipmentCategory>;
+  updateEquipmentCategory(id: number, category: UpdateEquipmentCategory): Promise<EquipmentCategory | undefined>;
+  deleteEquipmentCategory(id: number): Promise<boolean>;
+  getEquipmentCategories(): Promise<EquipmentCategory[]>;
+  getActiveEquipmentCategories(): Promise<EquipmentCategory[]>;
+  getEquipmentCategory(id: number): Promise<EquipmentCategory | undefined>;
+  getEquipmentCategoryBySlug(slug: string): Promise<EquipmentCategory | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -103,6 +127,8 @@ export class MemStorage implements IStorage {
   private adminUsers: AdminUser[] = [];
   private activityLogs: ActivityLog[] = [];
   private websiteBackups: WebsiteBackup[] = [];
+  private serverEquipments: ServerEquipment[] = [];
+  private equipmentCategories: EquipmentCategory[] = [];
 
   constructor() {
     this.initializeSampleData();
@@ -344,10 +370,6 @@ export class MemStorage implements IStorage {
 
   async getArticleBySlug(slug: string): Promise<Article | undefined> {
     return this.articles.find(a => a.slug === slug);
-  }
-
-  async getArticlesByCategory(category: string): Promise<Article[]> {
-    return this.articles.filter(a => a.category === category && a.isPublished);
   }
 
   async getArticlesByCategory(category: string): Promise<Article[]> {
@@ -633,48 +655,124 @@ export class MemStorage implements IStorage {
     return false;
   }
 
-  // Page content management
-  async getPageContents(): Promise<any[]> {
-    return this.pageContents || [];
-  }
-
-  async getPageContentsByPage(pageName: string): Promise<any[]> {
-    return (this.pageContents || []).filter((content: any) => content.pageName === pageName);
-  }
-
-  async createPageContent(data: any): Promise<any> {
-    const newContent = {
-      id: this.generateId(),
-      ...data,
+  // Server Equipment methods
+  async createServerEquipment(equipment: InsertServerEquipment): Promise<ServerEquipment> {
+    const newEquipment: ServerEquipment = {
+      id: this.serverEquipments.length + 1,
+      ...equipment,
+      createdAt: new Date(),
       updatedAt: new Date()
     };
-    this.pageContents = this.pageContents || [];
-    this.pageContents.push(newContent);
-    return newContent;
+    this.serverEquipments.push(newEquipment);
+    return newEquipment;
   }
 
-  async updatePageContent(id: number, data: any): Promise<any> {
-    this.pageContents = this.pageContents || [];
-    const index = this.pageContents.findIndex((content: any) => content.id === id);
-    if (index >= 0) {
-      this.pageContents[index] = {
-        ...this.pageContents[index],
-        ...data,
-        updatedAt: new Date()
-      };
-      return this.pageContents[index];
+  async updateServerEquipment(id: number, equipment: UpdateServerEquipment): Promise<ServerEquipment | undefined> {
+    const index = this.serverEquipments.findIndex(e => e.id === id);
+    if (index !== -1) {
+      this.serverEquipments[index] = { ...this.serverEquipments[index], ...equipment, updatedAt: new Date() };
+      return this.serverEquipments[index];
     }
-    return null;
+    return undefined;
   }
 
-  async deletePageContent(id: number): Promise<boolean> {
-    this.pageContents = this.pageContents || [];
-    const index = this.pageContents.findIndex((content: any) => content.id === id);
-    if (index >= 0) {
-      this.pageContents.splice(index, 1);
+  async deleteServerEquipment(id: number): Promise<boolean> {
+    const index = this.serverEquipments.findIndex(e => e.id === id);
+    if (index !== -1) {
+      this.serverEquipments.splice(index, 1);
       return true;
     }
     return false;
+  }
+
+  async getServerEquipments(): Promise<ServerEquipment[]> {
+    return [...this.serverEquipments];
+  }
+
+  async getActiveServerEquipments(): Promise<ServerEquipment[]> {
+    return this.serverEquipments.filter(e => e.isActive);
+  }
+
+  async getFeaturedServerEquipments(): Promise<ServerEquipment[]> {
+    return this.serverEquipments.filter(e => e.isActive && e.isFeatured);
+  }
+
+  async getServerEquipment(id: number): Promise<ServerEquipment | undefined> {
+    return this.serverEquipments.find(e => e.id === id);
+  }
+
+  async getServerEquipmentsByCategory(category: string): Promise<ServerEquipment[]> {
+    return this.serverEquipments.filter(e => e.category === category && e.isActive);
+  }
+
+  async getServerEquipmentsBySubCategory(subCategory: string): Promise<ServerEquipment[]> {
+    return this.serverEquipments.filter(e => e.subCategory === subCategory && e.isActive);
+  }
+
+  async searchServerEquipments(query: string): Promise<ServerEquipment[]> {
+    const lowerQuery = query.toLowerCase();
+    return this.serverEquipments.filter(e => 
+      e.isActive && (
+        e.name.toLowerCase().includes(lowerQuery) ||
+        e.model?.toLowerCase().includes(lowerQuery) ||
+        e.partNumber.toLowerCase().includes(lowerQuery) ||
+        e.description?.toLowerCase().includes(lowerQuery)
+      )
+    );
+  }
+
+  async bulkCreateServerEquipments(equipments: InsertServerEquipment[]): Promise<ServerEquipment[]> {
+    const created: ServerEquipment[] = [];
+    for (const equipment of equipments) {
+      const newEquipment = await this.createServerEquipment(equipment);
+      created.push(newEquipment);
+    }
+    return created;
+  }
+
+  // Equipment Category methods
+  async createEquipmentCategory(category: InsertEquipmentCategory): Promise<EquipmentCategory> {
+    const newCategory: EquipmentCategory = {
+      id: this.equipmentCategories.length + 1,
+      ...category,
+      createdAt: new Date()
+    };
+    this.equipmentCategories.push(newCategory);
+    return newCategory;
+  }
+
+  async updateEquipmentCategory(id: number, category: UpdateEquipmentCategory): Promise<EquipmentCategory | undefined> {
+    const index = this.equipmentCategories.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.equipmentCategories[index] = { ...this.equipmentCategories[index], ...category };
+      return this.equipmentCategories[index];
+    }
+    return undefined;
+  }
+
+  async deleteEquipmentCategory(id: number): Promise<boolean> {
+    const index = this.equipmentCategories.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.equipmentCategories.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+
+  async getEquipmentCategories(): Promise<EquipmentCategory[]> {
+    return [...this.equipmentCategories];
+  }
+
+  async getActiveEquipmentCategories(): Promise<EquipmentCategory[]> {
+    return this.equipmentCategories.filter(c => c.isActive);
+  }
+
+  async getEquipmentCategory(id: number): Promise<EquipmentCategory | undefined> {
+    return this.equipmentCategories.find(c => c.id === id);
+  }
+
+  async getEquipmentCategoryBySlug(slug: string): Promise<EquipmentCategory | undefined> {
+    return this.equipmentCategories.find(c => c.slug === slug);
   }
 }
 

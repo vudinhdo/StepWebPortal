@@ -6,7 +6,8 @@ import {
   insertContactSchema, insertDomainContactSchema, insertArticleSchema, updateArticleSchema,
   insertServiceSchema, updateServiceSchema, insertTestimonialSchema, updateTestimonialSchema,
   insertPageContentSchema, updatePageContentSchema, insertSiteSettingSchema, insertEmailPopupLeadSchema,
-  loginSchema
+  loginSchema, insertServerEquipmentSchema, updateServerEquipmentSchema,
+  insertEquipmentCategorySchema, updateEquipmentCategorySchema
 } from "@shared/schema";
 import { z } from "zod";
 
@@ -671,6 +672,241 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true, message: "Đã xóa nội dung" });
     } catch (error) {
       console.error("Error deleting page content:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // ========== SERVER EQUIPMENT ROUTES ==========
+  
+  // Get all equipment (public - active only)
+  app.get("/api/equipment", async (req, res) => {
+    try {
+      const { category, subCategory, search, featured } = req.query;
+      
+      let equipment;
+      if (search) {
+        equipment = await storage.searchServerEquipments(search as string);
+      } else if (category) {
+        equipment = await storage.getServerEquipmentsByCategory(category as string);
+      } else if (subCategory) {
+        equipment = await storage.getServerEquipmentsBySubCategory(subCategory as string);
+      } else if (featured === 'true') {
+        equipment = await storage.getFeaturedServerEquipments();
+      } else {
+        equipment = await storage.getActiveServerEquipments();
+      }
+      
+      res.json(equipment);
+    } catch (error) {
+      console.error("Error fetching equipment:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Get all equipment for admin (includes inactive)
+  app.get("/api/admin/equipment", async (req, res) => {
+    try {
+      const equipment = await storage.getServerEquipments();
+      res.json(equipment);
+    } catch (error) {
+      console.error("Error fetching all equipment:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Get single equipment
+  app.get("/api/equipment/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const equipment = await storage.getServerEquipment(id);
+      if (!equipment) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy thiết bị" });
+      }
+      res.json(equipment);
+    } catch (error) {
+      console.error("Error fetching equipment:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Create equipment (admin)
+  app.post("/api/equipment", async (req, res) => {
+    try {
+      const validatedData = insertServerEquipmentSchema.parse(req.body);
+      const equipment = await storage.createServerEquipment(validatedData);
+      res.json({ success: true, data: equipment });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          message: "Dữ liệu không hợp lệ",
+          errors: error.errors 
+        });
+      } else {
+        console.error("Error creating equipment:", error);
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  // Bulk create equipment (admin - for import)
+  app.post("/api/equipment/bulk", async (req, res) => {
+    try {
+      const { items } = req.body;
+      if (!Array.isArray(items)) {
+        return res.status(400).json({ success: false, message: "Items must be an array" });
+      }
+      
+      const validatedItems = items.map(item => insertServerEquipmentSchema.parse(item));
+      const created = await storage.bulkCreateServerEquipments(validatedItems);
+      res.json({ success: true, count: created.length, data: created });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          message: "Dữ liệu không hợp lệ",
+          errors: error.errors 
+        });
+      } else {
+        console.error("Error bulk creating equipment:", error);
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  // Update equipment (admin)
+  app.patch("/api/equipment/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = updateServerEquipmentSchema.parse(req.body);
+      const equipment = await storage.updateServerEquipment(id, validatedData);
+      if (!equipment) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy thiết bị" });
+      }
+      res.json({ success: true, data: equipment });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          message: "Dữ liệu không hợp lệ",
+          errors: error.errors 
+        });
+      } else {
+        console.error("Error updating equipment:", error);
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  // Delete equipment (admin)
+  app.delete("/api/equipment/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteServerEquipment(id);
+      if (!success) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy thiết bị" });
+      }
+      res.json({ success: true, message: "Đã xóa thiết bị" });
+    } catch (error) {
+      console.error("Error deleting equipment:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // ========== EQUIPMENT CATEGORIES ROUTES ==========
+  
+  // Get all categories (public - active only)
+  app.get("/api/equipment-categories", async (req, res) => {
+    try {
+      const categories = await storage.getActiveEquipmentCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error("Error fetching equipment categories:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Get all categories for admin (includes inactive)
+  app.get("/api/admin/equipment-categories", async (req, res) => {
+    try {
+      const categories = await storage.getEquipmentCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error("Error fetching all equipment categories:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Get single category
+  app.get("/api/equipment-categories/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const category = await storage.getEquipmentCategory(id);
+      if (!category) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy danh mục" });
+      }
+      res.json(category);
+    } catch (error) {
+      console.error("Error fetching equipment category:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Create category (admin)
+  app.post("/api/equipment-categories", async (req, res) => {
+    try {
+      const validatedData = insertEquipmentCategorySchema.parse(req.body);
+      const category = await storage.createEquipmentCategory(validatedData);
+      res.json({ success: true, data: category });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          message: "Dữ liệu không hợp lệ",
+          errors: error.errors 
+        });
+      } else {
+        console.error("Error creating equipment category:", error);
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  // Update category (admin)
+  app.patch("/api/equipment-categories/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = updateEquipmentCategorySchema.parse(req.body);
+      const category = await storage.updateEquipmentCategory(id, validatedData);
+      if (!category) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy danh mục" });
+      }
+      res.json({ success: true, data: category });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          message: "Dữ liệu không hợp lệ",
+          errors: error.errors 
+        });
+      } else {
+        console.error("Error updating equipment category:", error);
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  // Delete category (admin)
+  app.delete("/api/equipment-categories/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteEquipmentCategory(id);
+      if (!success) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy danh mục" });
+      }
+      res.json({ success: true, message: "Đã xóa danh mục" });
+    } catch (error) {
+      console.error("Error deleting equipment category:", error);
       res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
     }
   });
