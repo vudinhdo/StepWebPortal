@@ -34,6 +34,23 @@ Preferred communication style: Simple, everyday language.
 - **Hosting Services**: Structured content for various hosting types, emphasizing performance, security, and competitive differentiation with detailed technical features, comparisons, testimonials, and FAQs. Aggressive promotional messaging and a focus on licensed software stacks (cPanel/WHM, LiteSpeed Enterprise, Imunify360).
 - **Cloud Server Solutions**: Component-based pricing with an interactive calculator, complimentary services, and premium add-ons.
 - **Server Configurator**: A multi-tabbed interface for configuring cloud servers with contextual tooltips, quick presets, customer info collection, flexible payment cycles, GPU/OS selection, and a professional PDF quote generation feature with VAT calculation and voucher discounts. Includes sticky pricing sidebar on desktop and mobile-optimized layouts.
+- **Server Equipment Catalog**: Full e-commerce style catalog at /equipment for selling server hardware and components. Features include:
+    - Product grid/list view toggle with responsive design
+    - Search by name, part number, brand
+    - Category filtering (Dell servers, HPE servers, components, GPUs, etc.)
+    - Brand, condition, and price sorting filters
+    - Detailed product modal with specs (CPU, RAM, storage, network, RAID, PSU, form factor, warranty)
+    - Three-tier pricing (End User, Dealer, MD)
+    - Stock count tracking with availability badges
+    - Featured product highlighting
+    - Vietnamese language throughout
+- **CMS Equipment Manager**: Admin panel tab (in /admin-cms) for managing server equipment inventory with:
+    - Full CRUD operations for equipment items
+    - Tabbed form for basic info, specs, pricing, and categorization
+    - Stock management and condition tracking
+    - Bulk actions (activate/deactivate, feature/unfeature)
+    - Search and category filtering in admin view
+    - Excel import/export capabilities (planned)
 - **Certifications & Portfolio**: Showcase of professional certifications and a comprehensive portfolio of partners and customers.
 - **Service Process**: A visual 4-step workflow for service delivery.
 
