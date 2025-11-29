@@ -48,7 +48,7 @@ function FAQAccordion({ openFaqIndex, setOpenFaqIndex }: {
     },
     {
       question: "STEP có những gói colocation nào và giá cả ra sao?",
-      answer: "STEP cung cấp 6 gói chính từ S-CMC01 (1.5M VNĐ/tháng) cho startup đến S-Full Rack (28.5M VNĐ/tháng) cho enterprise. Mỗi gói bao gồm không gian rack, điện, băng thông, IP và hỗ trợ 24/7. Khách hàng thanh toán 12 tháng được giảm 3-12% và nhận thêm các dịch vụ bổ sung miễn phí."
+      answer: "STEP cung cấp 6 gói chính: S-CMC01 (1.35M), S-CMC02 (1.45M), S-CMC03 (2.55M), S-Quarter Rack (8.5M), S-Half Rack (15.5M) và S-Full Rack (25.5M) VNĐ/tháng + VAT. Mỗi gói bao gồm không gian rack, điện, băng thông, IP và hỗ trợ 24/7. Tất cả các gói được giảm 5% khi thanh toán 12 tháng."
     },
     {
       question: "Data center của STEP có đạt chuẩn quốc tế không?",
@@ -462,7 +462,7 @@ export default function Colocation() {
             </p>
             
             <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-8 py-4 rounded-lg inline-block mb-8">
-              <span className="text-2xl font-bold">Chỉ từ 1.500.000 VNĐ/tháng</span>
+              <span className="text-2xl font-bold">Chỉ từ 1.350.000 VNĐ/tháng + VAT</span>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -484,6 +484,7 @@ export default function Colocation() {
                   size="lg"
                   className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-semibold"
                   data-testid="button-view-packages"
+                  onClick={() => document.getElementById('packages-section')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   <ArrowRight className="mr-2 h-5 w-5" />
                   Xem Các Gói Dịch Vụ
@@ -517,8 +518,42 @@ export default function Colocation() {
         </div>
       </section>
 
+      {/* Quick Navigation */}
+      <section className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 py-3 hidden md:block">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex items-center justify-center gap-2 flex-wrap">
+            {[
+              { label: "Ưu điểm", target: "features-section" },
+              { label: "Gói dịch vụ", target: "packages-section" },
+              { label: "Dịch vụ bổ sung", target: "supplementary-section" },
+              { label: "Hỗ trợ", target: "support-section" },
+              { label: "Băng thông", target: "bandwidth-section" },
+              { label: "FAQ", target: "faq-section" }
+            ].map((item, index) => (
+              <button
+                key={index}
+                onClick={() => document.getElementById(item.target)?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                data-testid={`nav-${item.target}`}
+              >
+                {item.label}
+              </button>
+            ))}
+            <Button 
+              size="sm" 
+              className="bg-blue-600 hover:bg-blue-700 ml-2"
+              onClick={() => window.location.href = '/contact'}
+              data-testid="nav-contact-btn"
+            >
+              <Phone className="mr-1 h-3 w-3" />
+              Liên hệ
+            </Button>
+          </nav>
+        </div>
+      </section>
+
       {/* Premium Features Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="features-section" className="py-20 bg-gray-50 scroll-mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -569,7 +604,7 @@ export default function Colocation() {
       </section>
 
       {/* Service Packages Section */}
-      <section className="py-20 bg-white">
+      <section id="packages-section" className="py-20 bg-white scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -685,11 +720,127 @@ export default function Colocation() {
               </motion.div>
             ))}
           </div>
+
+          {/* Package Comparison Table */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mt-16"
+          >
+            <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+              Bảng So Sánh Nhanh Các Gói Dịch Vụ
+            </h3>
+            
+            <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-lg">
+              <table className="w-full min-w-[800px]" data-testid="comparison-table">
+                <thead>
+                  <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+                    <th className="px-4 py-4 text-left font-semibold">Thông số</th>
+                    <th className="px-4 py-4 text-center font-semibold">S-CMC01</th>
+                    <th className="px-4 py-4 text-center font-semibold">S-CMC02</th>
+                    <th className="px-4 py-4 text-center font-semibold">S-CMC03</th>
+                    <th className="px-4 py-4 text-center font-semibold">Quarter Rack</th>
+                    <th className="px-4 py-4 text-center font-semibold">Half Rack</th>
+                    <th className="px-4 py-4 text-center font-semibold">Full Rack</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr className="bg-blue-50">
+                    <td className="px-4 py-3 font-semibold text-gray-900">Giá/tháng</td>
+                    <td className="px-4 py-3 text-center font-bold text-green-600">1.35M</td>
+                    <td className="px-4 py-3 text-center font-bold text-blue-600">1.45M</td>
+                    <td className="px-4 py-3 text-center font-bold text-purple-600">2.55M</td>
+                    <td className="px-4 py-3 text-center font-bold text-pink-600">8.5M</td>
+                    <td className="px-4 py-3 text-center font-bold text-cyan-600">15.5M</td>
+                    <td className="px-4 py-3 text-center font-bold text-orange-600">25.5M</td>
+                  </tr>
+                  <tr className="bg-white hover:bg-gray-50">
+                    <td className="px-4 py-3 text-gray-700">Không gian</td>
+                    <td className="px-4 py-3 text-center">1U</td>
+                    <td className="px-4 py-3 text-center">1U</td>
+                    <td className="px-4 py-3 text-center">2U</td>
+                    <td className="px-4 py-3 text-center">10U</td>
+                    <td className="px-4 py-3 text-center">21U</td>
+                    <td className="px-4 py-3 text-center">42U</td>
+                  </tr>
+                  <tr className="bg-gray-50 hover:bg-gray-100">
+                    <td className="px-4 py-3 text-gray-700">Công suất điện</td>
+                    <td className="px-4 py-3 text-center">300W</td>
+                    <td className="px-4 py-3 text-center">300W</td>
+                    <td className="px-4 py-3 text-center">750W</td>
+                    <td className="px-4 py-3 text-center">2kW</td>
+                    <td className="px-4 py-3 text-center">3kW</td>
+                    <td className="px-4 py-3 text-center">5kW</td>
+                  </tr>
+                  <tr className="bg-white hover:bg-gray-50">
+                    <td className="px-4 py-3 text-gray-700">BW trong nước</td>
+                    <td className="px-4 py-3 text-center">200Mbps</td>
+                    <td className="px-4 py-3 text-center">300Mbps</td>
+                    <td className="px-4 py-3 text-center">300Mbps</td>
+                    <td className="px-4 py-3 text-center">500Mbps</td>
+                    <td className="px-4 py-3 text-center">500Mbps</td>
+                    <td className="px-4 py-3 text-center">1Gbps</td>
+                  </tr>
+                  <tr className="bg-gray-50 hover:bg-gray-100">
+                    <td className="px-4 py-3 text-gray-700">BW quốc tế</td>
+                    <td className="px-4 py-3 text-center">3Mbps</td>
+                    <td className="px-4 py-3 text-center">5Mbps</td>
+                    <td className="px-4 py-3 text-center">5Mbps</td>
+                    <td className="px-4 py-3 text-center">5Mbps</td>
+                    <td className="px-4 py-3 text-center">5Mbps</td>
+                    <td className="px-4 py-3 text-center">50Mbps</td>
+                  </tr>
+                  <tr className="bg-white hover:bg-gray-50">
+                    <td className="px-4 py-3 text-gray-700">Cổng mạng</td>
+                    <td className="px-4 py-3 text-center">1Gbps</td>
+                    <td className="px-4 py-3 text-center">1Gbps</td>
+                    <td className="px-4 py-3 text-center">1Gbps</td>
+                    <td className="px-4 py-3 text-center">1Gbps</td>
+                    <td className="px-4 py-3 text-center">10Gbps</td>
+                    <td className="px-4 py-3 text-center">10Gbps</td>
+                  </tr>
+                  <tr className="bg-gray-50 hover:bg-gray-100">
+                    <td className="px-4 py-3 text-gray-700">IPv4</td>
+                    <td className="px-4 py-3 text-center">1 IP</td>
+                    <td className="px-4 py-3 text-center">2 IP</td>
+                    <td className="px-4 py-3 text-center">2 IP</td>
+                    <td className="px-4 py-3 text-center">4 IP</td>
+                    <td className="px-4 py-3 text-center">1 IP</td>
+                    <td className="px-4 py-3 text-center">10 IP</td>
+                  </tr>
+                  <tr className="bg-white hover:bg-gray-50">
+                    <td className="px-4 py-3 text-gray-700">Remote hands</td>
+                    <td className="px-4 py-3 text-center text-green-600">✓</td>
+                    <td className="px-4 py-3 text-center text-green-600">✓</td>
+                    <td className="px-4 py-3 text-center text-green-600">✓</td>
+                    <td className="px-4 py-3 text-center">4h/tháng</td>
+                    <td className="px-4 py-3 text-center text-green-600">✓</td>
+                    <td className="px-4 py-3 text-center font-semibold text-green-600">Unlimited</td>
+                  </tr>
+                  <tr className="bg-gray-50 hover:bg-gray-100">
+                    <td className="px-4 py-3 text-gray-700">KVM over IP</td>
+                    <td className="px-4 py-3 text-center text-gray-400">-</td>
+                    <td className="px-4 py-3 text-center text-gray-400">-</td>
+                    <td className="px-4 py-3 text-center text-gray-400">-</td>
+                    <td className="px-4 py-3 text-center text-gray-400">-</td>
+                    <td className="px-4 py-3 text-center text-gray-400">-</td>
+                    <td className="px-4 py-3 text-center text-green-600">✓</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <p className="text-center text-gray-500 mt-4 text-sm">
+              * Tất cả các gói đều bao gồm: UPS, máy phát điện dự phòng, IPv6, hỗ trợ 24/7, giảm 5% khi thanh toán 12 tháng
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* Supplementary Services Pricing Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="supplementary-section" className="py-20 bg-gray-50 scroll-mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -816,7 +967,7 @@ export default function Colocation() {
       </section>
 
       {/* Support Excellence Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
+      <section id="support-section" className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 scroll-mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -1016,7 +1167,7 @@ export default function Colocation() {
       </section>
 
       {/* International Bandwidth Advantages */}
-      <section className="py-20 bg-gray-50">
+      <section id="bandwidth-section" className="py-20 bg-gray-50 scroll-mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -1165,7 +1316,7 @@ export default function Colocation() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-white">
+      <section id="faq-section" className="py-20 bg-white scroll-mt-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -1215,6 +1366,31 @@ export default function Colocation() {
       </section>
 
       <Footer />
+
+      {/* Sticky Mobile CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200 shadow-lg p-3">
+        <div className="flex gap-2">
+          <Button 
+            className="flex-1 bg-blue-600 hover:bg-blue-700 font-semibold"
+            onClick={() => window.location.href = '/contact'}
+            data-testid="button-mobile-cta-contact"
+          >
+            <Phone className="mr-2 h-4 w-4" />
+            Liên Hệ Ngay
+          </Button>
+          <Button 
+            variant="outline"
+            className="flex-1 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold"
+            onClick={() => document.getElementById('packages-section')?.scrollIntoView({ behavior: 'smooth' })}
+            data-testid="button-mobile-cta-packages"
+          >
+            Xem Gói Dịch Vụ
+          </Button>
+        </div>
+      </div>
+
+      {/* Spacer for mobile sticky CTA */}
+      <div className="h-16 md:hidden" />
     </div>
   );
 }
