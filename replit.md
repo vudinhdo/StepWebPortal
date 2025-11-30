@@ -34,28 +34,30 @@ Preferred communication style: Simple, everyday language.
 - **Hosting Services**: Structured content for various hosting types, emphasizing performance, security, and competitive differentiation with detailed technical features, comparisons, testimonials, and FAQs. Aggressive promotional messaging and a focus on licensed software stacks (cPanel/WHM, LiteSpeed Enterprise, Imunify360).
 - **Cloud Server Solutions**: Component-based pricing with an interactive calculator, complimentary services, and premium add-ons.
 - **Server Configurator**: A multi-tabbed interface for configuring cloud servers with contextual tooltips, quick presets, customer info collection, flexible payment cycles, GPU/OS selection, and a professional PDF quote generation feature with VAT calculation and voucher discounts. Includes sticky pricing sidebar on desktop and mobile-optimized layouts.
-- **Server Equipment Catalog**: Full e-commerce style catalog at /dich-vu/may-chu/thiet-bi-may-chu for selling server hardware and components. Features include:
-    - **Modern Layout**: Compact sticky header with search, sort, and view controls; horizontal scrollable category menu with count badges; left sidebar filter panel (desktop) with collapsible sections
-    - **Smart Search**: Autocomplete suggestions showing matching products, brands, and subcategories as you type
-    - **Deep Filtering with Fuzzy Matching**: 
-      - Brand filter (Dell, HPE, H3C, ASUS, Synology, Infortrend, Intel, NVIDIA)
-      - CPU/Processor filter - fuzzy keyword matching (e.g., "Intel Xeon" matches "2 x Intel Xeon Gold 5318Y")
-      - RAM/Memory filter - fuzzy keyword matching (e.g., "DDR4" matches various DDR4 configurations)
-      - Storage filter - fuzzy keyword matching for HDD/SSD/NVMe specs
-      - Form Factor filter - case-insensitive bidirectional matching (Rack 1U, 2U, Tower, etc.)
-      - Price range filter (single-selection: Under 50M, 50-100M, 100-200M, 200-500M, Over 500M VND)
-      - Condition filter (New, Refurbished, Used)
-      - In-stock only toggle
+- **Server & Network Equipment Catalog**: Full e-commerce style catalog at /dich-vu/may-chu/thiet-bi-may-chu for selling server hardware, network equipment, and components. Features include:
+    - **Modern Professional UI/UX**: Redesigned catalog page with gradient hero section, stats overview, sticky category bar, and clean product cards
+    - **Smart Search**: Autocomplete suggestions showing matching products, brands, and categories as you type with real-time filtering
+    - **Categories (13 total)**:
+      - Server: Dell, HPE, H3C, ASUS
+      - Storage: NAS/SAN systems (Synology, Infortrend)
+      - Components: Dell parts, HPE parts, Network cards, GPUs
+      - **NEW Network Equipment**:
+        - Switches (Cisco, Juniper, Huawei, H3C) - Layer 2/3 and Datacenter
+        - Optical Modules & Fiber (Cisco, Huawei, FS.COM) - SFP+, QSFP28, patch cords
+        - Network Supplies (CommScope, Panduit, Schneider) - Patch panels, cables, racks, UPS, PDU
+        - Load Balancers (F5, Citrix, A10) - Hardware and Virtual ADC
+    - **Deep Filtering**: Brand, Price range (< 50tr, 50-100tr, 100-300tr, 300-500tr, > 500tr), Condition (New/Refurbished/Used), In-stock toggle
     - **Enhanced Sorting**: Featured, Price (low-high/high-low), Name A-Z, Newest, Stock availability
     - **Active Filter Tags**: Individual removal of filters with visual badges
-    - **Mobile Optimized**: Collapsible filter panel slides from left with filter count badge
-    - Product grid/list view toggle with responsive design
-    - Detailed product modal with organized specs display (CPU, RAM, storage icons)
-    - Three-tier pricing (End User, Dealer, MD)
-    - Stock count tracking with availability badges
-    - Featured product highlighting
+    - **Mobile Optimized**: Slide-from-left filter panel with filter count badge
+    - Grid/List view toggle with smooth animations
+    - Product cards with specs icons (CPU, RAM, Storage, Network)
+    - Three-tier pricing (End User, Dealer, MD) with discount badges
+    - Stock count tracking with availability indicators
+    - Featured product "Hot" badges
+    - Quick actions: Zalo quote, View details, Add to cart
     - Vietnamese language throughout
-    - **Product Data**: 32+ products from Dell PowerEdge, HPE ProLiant, H3C UniServer, ASUS, Synology NAS/SAN, Infortrend EonStor
+    - **Product Data**: 71 products across 12+ brands including Dell PowerEdge, HPE ProLiant, H3C UniServer, ASUS, Synology NAS/SAN, Infortrend EonStor, Cisco, Juniper, Huawei, FS.COM, CommScope, Panduit, Schneider/APC, F5, Citrix, A10 Networks
 - **CMS Equipment Manager**: Admin panel tab (in /admin-cms) for managing server equipment inventory with:
     - Full CRUD operations for equipment items
     - Tabbed form for basic info, specs, pricing, and categorization
