@@ -8,7 +8,8 @@ import {
   type EmailPopupLead, type InsertEmailPopupLead,
   type AdminUser, type InsertAdminUser, type ActivityLog, type InsertActivityLog, type WebsiteBackup, type InsertWebsiteBackup,
   type ServerEquipment, type InsertServerEquipment, type UpdateServerEquipment,
-  type EquipmentCategory, type InsertEquipmentCategory, type UpdateEquipmentCategory
+  type EquipmentCategory, type InsertEquipmentCategory, type UpdateEquipmentCategory,
+  type EquipmentOrder, type InsertEquipmentOrder
 } from "@shared/schema";
 
 export interface IStorage {
@@ -113,6 +114,13 @@ export interface IStorage {
   getActiveEquipmentCategories(): Promise<EquipmentCategory[]>;
   getEquipmentCategory(id: number): Promise<EquipmentCategory | undefined>;
   getEquipmentCategoryBySlug(slug: string): Promise<EquipmentCategory | undefined>;
+
+  // Equipment Order methods
+  createEquipmentOrder(order: InsertEquipmentOrder): Promise<EquipmentOrder>;
+  getEquipmentOrders(): Promise<EquipmentOrder[]>;
+  getEquipmentOrder(id: number): Promise<EquipmentOrder | undefined>;
+  getEquipmentOrderByNumber(orderNumber: string): Promise<EquipmentOrder | undefined>;
+  updateEquipmentOrderStatus(id: number, status: string): Promise<EquipmentOrder | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -129,6 +137,7 @@ export class MemStorage implements IStorage {
   private websiteBackups: WebsiteBackup[] = [];
   private serverEquipments: ServerEquipment[] = [];
   private equipmentCategories: EquipmentCategory[] = [];
+  private equipmentOrders: EquipmentOrder[] = [];
 
   constructor() {
     this.initializeSampleData();
@@ -1909,6 +1918,45 @@ export class MemStorage implements IStorage {
 
   async getEquipmentCategoryBySlug(slug: string): Promise<EquipmentCategory | undefined> {
     return this.equipmentCategories.find(c => c.slug === slug);
+  }
+
+  // Equipment Order methods
+  async createEquipmentOrder(order: InsertEquipmentOrder): Promise<EquipmentOrder> {
+    const newOrder: EquipmentOrder = {
+      id: this.equipmentOrders.length + 1,
+      ...order,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.equipmentOrders.push(newOrder);
+    return newOrder;
+  }
+
+  async getEquipmentOrders(): Promise<EquipmentOrder[]> {
+    return [...this.equipmentOrders].sort((a, b) => 
+      (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0)
+    );
+  }
+
+  async getEquipmentOrder(id: number): Promise<EquipmentOrder | undefined> {
+    return this.equipmentOrders.find(o => o.id === id);
+  }
+
+  async getEquipmentOrderByNumber(orderNumber: string): Promise<EquipmentOrder | undefined> {
+    return this.equipmentOrders.find(o => o.orderNumber === orderNumber);
+  }
+
+  async updateEquipmentOrderStatus(id: number, status: string): Promise<EquipmentOrder | undefined> {
+    const index = this.equipmentOrders.findIndex(o => o.id === id);
+    if (index !== -1) {
+      this.equipmentOrders[index] = { 
+        ...this.equipmentOrders[index], 
+        status,
+        updatedAt: new Date()
+      };
+      return this.equipmentOrders[index];
+    }
+    return undefined;
   }
 }
 

@@ -335,3 +335,36 @@ export type ServerEquipment = typeof serverEquipment.$inferSelect;
 export type InsertEquipmentCategory = z.infer<typeof insertEquipmentCategorySchema>;
 export type UpdateEquipmentCategory = z.infer<typeof updateEquipmentCategorySchema>;
 export type EquipmentCategory = typeof equipmentCategories.$inferSelect;
+
+// Equipment Orders table
+export const equipmentOrders = pgTable("equipment_orders", {
+  id: serial("id").primaryKey(),
+  orderNumber: text("order_number").notNull().unique(),
+  customerType: text("customer_type").notNull(), // personal, business
+  customerName: text("customer_name").notNull(),
+  customerEmail: text("customer_email").notNull(),
+  customerPhone: text("customer_phone").notNull(),
+  customerAddress: text("customer_address").notNull(),
+  companyName: text("company_name"),
+  companyTaxCode: text("company_tax_code"),
+  companyAddress: text("company_address"),
+  paymentMethod: text("payment_method").notNull(), // bank_transfer, cod
+  items: jsonb("items").notNull(), // array of {productId, productName, quantity, price}
+  subtotal: integer("subtotal").notNull(), // VND
+  vatAmount: integer("vat_amount").notNull(), // VND  
+  totalAmount: integer("total_amount").notNull(), // VND
+  notes: text("notes"),
+  status: text("status").notNull().default("pending"), // pending, confirmed, processing, shipped, completed, cancelled
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Equipment Orders schemas
+export const insertEquipmentOrderSchema = createInsertSchema(equipmentOrders).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertEquipmentOrder = z.infer<typeof insertEquipmentOrderSchema>;
+export type EquipmentOrder = typeof equipmentOrders.$inferSelect;

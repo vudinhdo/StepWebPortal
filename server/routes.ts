@@ -7,7 +7,7 @@ import {
   insertServiceSchema, updateServiceSchema, insertTestimonialSchema, updateTestimonialSchema,
   insertPageContentSchema, updatePageContentSchema, insertSiteSettingSchema, insertEmailPopupLeadSchema,
   loginSchema, insertServerEquipmentSchema, updateServerEquipmentSchema,
-  insertEquipmentCategorySchema, updateEquipmentCategorySchema
+  insertEquipmentCategorySchema, updateEquipmentCategorySchema, insertEquipmentOrderSchema
 } from "@shared/schema";
 import { z } from "zod";
 
@@ -907,6 +907,157 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true, message: "Đã xóa danh mục" });
     } catch (error) {
       console.error("Error deleting equipment category:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // =================================
+  // Equipment Orders API
+  // =================================
+
+  // Create new order with server-side price validation
+  app.post("/api/orders", async (req, res) => {
+    try {
+      const { items, customerType, customerName, customerEmail, customerPhone, customerAddress,
+              companyName, companyTaxCode, companyAddress, paymentMethod, notes } = req.body;
+
+      if (!items || !Array.isArray(items) || items.length === 0) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Giỏ hàng trống" 
+        });
+      }
+
+      // Validate and recalculate prices from server-side equipment data
+      let serverCalculatedSubtotal = 0;
+      const validatedItems = [];
+
+      for (const item of items) {
+        const productId = parseInt(item.productId);
+        if (isNaN(productId) || !item.quantity || item.quantity < 1) {
+          return res.status(400).json({ 
+            success: false, 
+            message: "Dữ liệu sản phẩm không hợp lệ" 
+          });
+        }
+
+        const equipment = await storage.getServerEquipment(productId);
+        if (!equipment) {
+          return res.status(400).json({ 
+            success: false, 
+            message: `Sản phẩm không tồn tại: ${item.productName || productId}` 
+          });
+        }
+
+        // Use server-side price (endUser price)
+        const serverPrice = equipment.priceEndUser || 0;
+        const quantity = Math.max(1, Math.floor(item.quantity));
+        
+        validatedItems.push({
+          productId: equipment.id,
+          productName: equipment.name,
+          quantity,
+          price: serverPrice
+        });
+
+        serverCalculatedSubtotal += serverPrice * quantity;
+      }
+
+      // Server-calculated totals (10% VAT)
+      const serverVatAmount = Math.round(serverCalculatedSubtotal * 0.1);
+      const serverTotalAmount = serverCalculatedSubtotal + serverVatAmount;
+
+      const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+      
+      const orderData = {
+        orderNumber,
+        customerType,
+        customerName,
+        customerEmail,
+        customerPhone,
+        customerAddress,
+        companyName: companyName || null,
+        companyTaxCode: companyTaxCode || null,
+        companyAddress: companyAddress || null,
+        paymentMethod,
+        items: validatedItems,
+        subtotal: serverCalculatedSubtotal,
+        vatAmount: serverVatAmount,
+        totalAmount: serverTotalAmount,
+        notes: notes || null,
+        status: "pending"
+      };
+
+      const validatedData = insertEquipmentOrderSchema.parse(orderData);
+      const order = await storage.createEquipmentOrder(validatedData);
+      
+      res.json({ 
+        success: true, 
+        data: order,
+        message: "Đơn hàng đã được tạo thành công" 
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          message: "Dữ liệu không hợp lệ",
+          errors: error.errors 
+        });
+      } else {
+        console.error("Error creating order:", error);
+        res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+      }
+    }
+  });
+
+  // Get all orders (admin)
+  app.get("/api/orders", async (req, res) => {
+    try {
+      const orders = await storage.getEquipmentOrders();
+      res.json({ success: true, data: orders });
+    } catch (error) {
+      console.error("Error getting orders:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Get order by ID
+  app.get("/api/orders/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const order = await storage.getEquipmentOrder(id);
+      if (!order) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy đơn hàng" });
+      }
+      res.json({ success: true, data: order });
+    } catch (error) {
+      console.error("Error getting order:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Update order status (admin only - validate status transitions)
+  app.patch("/api/orders/:id/status", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { status } = req.body;
+      
+      // Validate status is one of the allowed values
+      const allowedStatuses = ['pending', 'confirmed', 'processing', 'shipped', 'completed', 'cancelled'];
+      if (!status || !allowedStatuses.includes(status)) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Trạng thái không hợp lệ" 
+        });
+      }
+
+      const order = await storage.updateEquipmentOrderStatus(id, status);
+      if (!order) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy đơn hàng" });
+      }
+      res.json({ success: true, data: order });
+    } catch (error) {
+      console.error("Error updating order status:", error);
       res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
     }
   });
