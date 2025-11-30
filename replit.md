@@ -34,16 +34,25 @@ Preferred communication style: Simple, everyday language.
 - **Hosting Services**: Structured content for various hosting types, emphasizing performance, security, and competitive differentiation with detailed technical features, comparisons, testimonials, and FAQs. Aggressive promotional messaging and a focus on licensed software stacks (cPanel/WHM, LiteSpeed Enterprise, Imunify360).
 - **Cloud Server Solutions**: Component-based pricing with an interactive calculator, complimentary services, and premium add-ons.
 - **Server Configurator**: A multi-tabbed interface for configuring cloud servers with contextual tooltips, quick presets, customer info collection, flexible payment cycles, GPU/OS selection, and a professional PDF quote generation feature with VAT calculation and voucher discounts. Includes sticky pricing sidebar on desktop and mobile-optimized layouts.
-- **Server Equipment Catalog**: Full e-commerce style catalog at /equipment for selling server hardware and components. Features include:
+- **Server Equipment Catalog**: Full e-commerce style catalog at /dich-vu/may-chu/thiet-bi-may-chu for selling server hardware and components. Features include:
+    - **Smart Search**: Autocomplete suggestions showing matching products, brands, and subcategories as you type
+    - **Sophisticated Filtering**: 
+      - Category filter (9 categories: Dell/HPE/H3C/ASUS servers, Dell/HPE components, Network/GPU, NAS, SAN, Dell Storage, Other)
+      - Brand filter (Dell, HPE, H3C, ASUS, Synology, Infortrend, Intel, NVIDIA)
+      - Sub-category filter (Rack Server 1U, 2U, NAS, SAN, etc.)
+      - Condition filter (New, Refurbished, Used)
+      - Price range filter (Under 50M, 50-100M, 100-200M, Over 200M VND)
+      - In-stock only checkbox
+    - **Enhanced Sorting**: Featured, Price (low-high/high-low), Name A-Z, Newest, Stock availability
+    - **Active Filter Tags**: Individual removal of filters with visual badges
+    - **Mobile Optimized**: Collapsible filter panel with filter count badge
     - Product grid/list view toggle with responsive design
-    - Search by name, part number, brand
-    - Category filtering (Dell servers, HPE servers, components, GPUs, etc.)
-    - Brand, condition, and price sorting filters
     - Detailed product modal with specs (CPU, RAM, storage, network, RAID, PSU, form factor, warranty)
     - Three-tier pricing (End User, Dealer, MD)
     - Stock count tracking with availability badges
     - Featured product highlighting
     - Vietnamese language throughout
+    - **Product Data**: 32+ products from Dell PowerEdge, HPE ProLiant, H3C UniServer, ASUS, Synology NAS/SAN, Infortrend EonStor
 - **CMS Equipment Manager**: Admin panel tab (in /admin-cms) for managing server equipment inventory with:
     - Full CRUD operations for equipment items
     - Tabbed form for basic info, specs, pricing, and categorization
