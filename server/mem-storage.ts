@@ -9,10 +9,15 @@ import {
   type AdminUser, type InsertAdminUser, type ActivityLog, type InsertActivityLog, type WebsiteBackup, type InsertWebsiteBackup,
   type ServerEquipment, type InsertServerEquipment, type UpdateServerEquipment,
   type EquipmentCategory, type InsertEquipmentCategory, type UpdateEquipmentCategory,
-  type EquipmentOrder, type InsertEquipmentOrder
+  type EquipmentOrder, type InsertEquipmentOrder,
+  type User, type UpsertUser
 } from "@shared/schema";
 
 export interface IStorage {
+  // Replit Auth User methods
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
+  
   // Contact methods
   createContact(contact: InsertContact): Promise<Contact>;
   getContacts(): Promise<Contact[]>;
@@ -138,6 +143,7 @@ export class MemStorage implements IStorage {
   private serverEquipments: ServerEquipment[] = [];
   private equipmentCategories: EquipmentCategory[] = [];
   private equipmentOrders: EquipmentOrder[] = [];
+  private users: User[] = [];
 
   constructor() {
     this.initializeSampleData();
@@ -3166,6 +3172,36 @@ export class MemStorage implements IStorage {
       return this.equipmentOrders[index];
     }
     return undefined;
+  }
+
+  // Replit Auth User methods
+  async getUser(id: string): Promise<User | undefined> {
+    return this.users.find(u => u.id === id);
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const existingIndex = this.users.findIndex(u => u.id === userData.id);
+    if (existingIndex !== -1) {
+      this.users[existingIndex] = {
+        ...this.users[existingIndex],
+        ...userData,
+        updatedAt: new Date()
+      };
+      return this.users[existingIndex];
+    } else {
+      const newUser: User = {
+        id: userData.id || String(Date.now()),
+        email: userData.email || null,
+        firstName: userData.firstName || null,
+        lastName: userData.lastName || null,
+        profileImageUrl: userData.profileImageUrl || null,
+        isAdmin: userData.isAdmin || false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      this.users.push(newUser);
+      return newUser;
+    }
   }
 }
 

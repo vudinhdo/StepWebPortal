@@ -1,7 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { authenticateAdmin, loginAdmin, logoutAdmin, getCurrentUser, isAuthenticated } from "./auth";
+import { authenticateAdmin, loginAdmin, logoutAdmin, getCurrentUser, isAuthenticated as isAdminAuthenticated } from "./auth";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 import { 
   insertContactSchema, insertDomainContactSchema, insertArticleSchema, updateArticleSchema,
   insertServiceSchema, updateServiceSchema, insertTestimonialSchema, updateTestimonialSchema,
@@ -12,6 +13,21 @@ import {
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup Replit Auth (OAuth2 with Google, GitHub, etc.)
+  await setupAuth(app);
+
+  // Auth user endpoint for Replit Auth
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
   // Contact form submission
   app.post("/api/contact", async (req, res) => {
     try {
@@ -611,17 +627,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ success: true, message: "Đã đăng xuất thành công" });
   });
 
-  app.get("/api/auth/user", (req, res) => {
-    const user = getCurrentUser();
-    if (user) {
-      res.json({ success: true, user: { id: user.id, username: user.username, role: user.role } });
-    } else {
-      res.status(401).json({ success: false, message: "Chưa đăng nhập" });
-    }
-  });
-
   app.get("/api/auth/status", (req, res) => {
-    res.json({ success: true, authenticated: isAuthenticated() });
+    res.json({ success: true, authenticated: isAdminAuthenticated() });
   });
 
   // Page Content Management Routes
