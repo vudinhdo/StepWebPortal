@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useRef, ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -33,6 +33,9 @@ export function InlineEditProvider({ children }: { children: ReactNode }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [pendingChanges, setPendingChanges] = useState<Map<string, EditableItem>>(new Map());
   const [isSaving, setIsSaving] = useState(false);
+  
+  const pendingChangesRef = useRef(pendingChanges);
+  pendingChangesRef.current = pendingChanges;
 
   const userRole = (user as any)?.role || 'viewer';
   const canEdit = isAuthenticated && ['admin', 'editor'].includes(userRole);
@@ -46,10 +49,22 @@ export function InlineEditProvider({ children }: { children: ReactNode }) {
       });
       return;
     }
-    setIsEditMode(prev => !prev);
+    
     if (isEditMode) {
+      const currentChanges = pendingChangesRef.current;
+      const hasDirtyChanges = Array.from(currentChanges.values()).some(item => item.isDirty);
+      if (hasDirtyChanges) {
+        toast({
+          title: "Có thay đổi chưa lưu",
+          description: "Vui lòng lưu hoặc hủy thay đổi trước khi tắt chế độ chỉnh sửa",
+          variant: "destructive",
+        });
+        return;
+      }
       setPendingChanges(new Map());
     }
+    
+    setIsEditMode(prev => !prev);
   }, [canEdit, isEditMode, toast]);
 
   const registerEditable = useCallback((key: string, item: Omit<EditableItem, 'currentValue' | 'isDirty'>) => {

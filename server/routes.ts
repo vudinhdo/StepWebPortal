@@ -64,8 +64,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Không tìm thấy user" });
       }
       res.json(updatedUser);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating user role:", error);
+      if (error.message === 'Cannot remove the last admin') {
+        return res.status(400).json({ message: "Không thể xóa quyền admin cuối cùng" });
+      }
       res.status(500).json({ message: "Failed to update user role" });
     }
   });

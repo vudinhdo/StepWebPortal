@@ -3229,6 +3229,14 @@ export class MemStorage implements IStorage {
     const index = this.users.findIndex(u => u.id === id);
     if (index === -1) return undefined;
     
+    const currentUser = this.users[index];
+    if (currentUser.role === 'admin' && role !== 'admin') {
+      const adminCount = this.users.filter(u => u.role === 'admin').length;
+      if (adminCount <= 1) {
+        throw new Error('Cannot remove the last admin');
+      }
+    }
+    
     this.users[index] = {
       ...this.users[index],
       role,
