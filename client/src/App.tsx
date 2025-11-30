@@ -57,6 +57,7 @@ function Router() {
         <Route path="/blog/:slug" component={BlogDetail} />
         <Route path="/admin" component={Admin} />
         <Route path="/admin-login" component={AdminLogin} />
+        <Route path="/admin-cms" component={AdminCMS} />
         <Route path="/Admin_CMS" component={AdminCMS} />
         <Route path="/admin-cms-complete" component={AdminCMS} />
         <Route path="/huong-dan-cms" component={CMSGuide} />
