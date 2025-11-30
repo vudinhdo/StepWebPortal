@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { 
@@ -24,7 +24,12 @@ import {
   Network,
   X,
   ChevronDown,
-  Info
+  Info,
+  Database,
+  TrendingUp,
+  Sparkles,
+  AlertCircle,
+  PackageCheck
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -36,6 +41,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import type { ServerEquipment, EquipmentCategory } from "@shared/schema";
 
 interface EquipmentSpecs {
@@ -76,7 +84,11 @@ const getCategoryIcon = (categorySlug: string) => {
   switch(categorySlug) {
     case "may-chu-dell":
     case "may-chu-hpe":
+    case "may-chu-h3c":
+    case "may-chu-asus":
       return Server;
+    case "he-thong-luu-tru":
+      return Database;
     case "linh-kien-dell":
     case "linh-kien-hpe":
       return Cpu;
@@ -86,6 +98,14 @@ const getCategoryIcon = (categorySlug: string) => {
       return Package;
   }
 };
+
+const PRICE_RANGES = [
+  { label: "Tất cả", min: 0, max: Infinity },
+  { label: "Dưới 50 triệu", min: 0, max: 50000000 },
+  { label: "50 - 100 triệu", min: 50000000, max: 100000000 },
+  { label: "100 - 200 triệu", min: 100000000, max: 200000000 },
+  { label: "Trên 200 triệu", min: 200000000, max: Infinity },
+];
 
 const getSpecs = (equipment: ServerEquipment): EquipmentSpecs => {
   if (!equipment.specs) return {};
@@ -462,10 +482,15 @@ export default function EquipmentCatalog() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedBrand, setSelectedBrand] = useState<string>("all");
   const [selectedCondition, setSelectedCondition] = useState<string>("all");
+  const [selectedPriceRange, setSelectedPriceRange] = useState<number>(0);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string>("all");
+  const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState<string>("featured");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedEquipment, setSelectedEquipment] = useState<ServerEquipment | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   const { data: equipment = [], isLoading: equipmentLoading } = useQuery<ServerEquipment[]>({
     queryKey: ['/api/equipment'],
@@ -475,10 +500,65 @@ export default function EquipmentCatalog() {
     queryKey: ['/api/equipment-categories'],
   });
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSearchSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const brands = useMemo(() => {
     const brandSet = new Set(equipment.map(e => e.brand).filter(Boolean));
-    return Array.from(brandSet) as string[];
+    return Array.from(brandSet).sort() as string[];
   }, [equipment]);
+
+  const subCategories = useMemo(() => {
+    const subCatSet = new Set(equipment.map(e => e.subCategory).filter(Boolean));
+    return Array.from(subCatSet).sort() as string[];
+  }, [equipment]);
+
+  const searchSuggestions = useMemo(() => {
+    if (!searchQuery || searchQuery.length < 2) return [];
+    const query = searchQuery.toLowerCase();
+    const suggestions: { type: string; value: string; label: string }[] = [];
+    
+    brands.forEach(brand => {
+      if (brand.toLowerCase().includes(query)) {
+        suggestions.push({ type: 'brand', value: brand, label: `Thương hiệu: ${brand}` });
+      }
+    });
+    
+    subCategories.forEach(subCat => {
+      if (subCat && subCat.toLowerCase().includes(query)) {
+        suggestions.push({ type: 'subCategory', value: subCat, label: `Loại: ${subCat}` });
+      }
+    });
+    
+    equipment.slice(0, 5).filter(e => 
+      e.name.toLowerCase().includes(query) || 
+      e.partNumber?.toLowerCase().includes(query)
+    ).forEach(e => {
+      suggestions.push({ type: 'product', value: e.name, label: e.name });
+    });
+    
+    return suggestions.slice(0, 8);
+  }, [searchQuery, brands, subCategories, equipment]);
+
+  const handleSuggestionClick = useCallback((suggestion: { type: string; value: string }) => {
+    if (suggestion.type === 'brand') {
+      setSelectedBrand(suggestion.value);
+      setSearchQuery("");
+    } else if (suggestion.type === 'subCategory') {
+      setSelectedSubCategory(suggestion.value);
+      setSearchQuery("");
+    } else {
+      setSearchQuery(suggestion.value);
+    }
+    setShowSearchSuggestions(false);
+  }, []);
 
   const filteredEquipment = useMemo(() => {
     let result = [...equipment];
@@ -487,9 +567,11 @@ export default function EquipmentCatalog() {
       const query = searchQuery.toLowerCase();
       result = result.filter(e => 
         e.name.toLowerCase().includes(query) ||
-        e.partNumber.toLowerCase().includes(query) ||
+        e.partNumber?.toLowerCase().includes(query) ||
         e.description?.toLowerCase().includes(query) ||
-        e.brand?.toLowerCase().includes(query)
+        e.brand?.toLowerCase().includes(query) ||
+        e.model?.toLowerCase().includes(query) ||
+        e.tags?.some(tag => tag.toLowerCase().includes(query))
       );
     }
 
@@ -505,6 +587,22 @@ export default function EquipmentCatalog() {
       result = result.filter(e => e.condition?.toLowerCase() === selectedCondition.toLowerCase());
     }
 
+    if (selectedSubCategory !== "all") {
+      result = result.filter(e => e.subCategory === selectedSubCategory);
+    }
+
+    if (selectedPriceRange > 0) {
+      const range = PRICE_RANGES[selectedPriceRange];
+      result = result.filter(e => {
+        const price = e.priceDealer || 0;
+        return price >= range.min && price < range.max;
+      });
+    }
+
+    if (inStockOnly) {
+      result = result.filter(e => (e.stockCount || 0) > 0);
+    }
+
     switch (sortBy) {
       case "featured":
         result.sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0));
@@ -518,10 +616,38 @@ export default function EquipmentCatalog() {
       case "name":
         result.sort((a, b) => a.name.localeCompare(b.name));
         break;
+      case "newest":
+        result.sort((a, b) => (b.id || 0) - (a.id || 0));
+        break;
+      case "stock":
+        result.sort((a, b) => (b.stockCount || 0) - (a.stockCount || 0));
+        break;
     }
 
     return result;
-  }, [equipment, searchQuery, selectedCategory, selectedBrand, selectedCondition, sortBy]);
+  }, [equipment, searchQuery, selectedCategory, selectedBrand, selectedCondition, selectedSubCategory, selectedPriceRange, inStockOnly, sortBy]);
+
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+    if (selectedCategory !== "all") count++;
+    if (selectedBrand !== "all") count++;
+    if (selectedCondition !== "all") count++;
+    if (selectedSubCategory !== "all") count++;
+    if (selectedPriceRange > 0) count++;
+    if (inStockOnly) count++;
+    if (searchQuery) count++;
+    return count;
+  }, [selectedCategory, selectedBrand, selectedCondition, selectedSubCategory, selectedPriceRange, inStockOnly, searchQuery]);
+
+  const clearAllFilters = useCallback(() => {
+    setSelectedCategory("all");
+    setSelectedBrand("all");
+    setSelectedCondition("all");
+    setSelectedSubCategory("all");
+    setSelectedPriceRange(0);
+    setInStockOnly(false);
+    setSearchQuery("");
+  }, []);
 
   const stats = useMemo(() => ({
     total: equipment.length,
@@ -589,22 +715,60 @@ export default function EquipmentCatalog() {
         <section className="sticky top-0 z-40 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 shadow-sm">
           <div className="container mx-auto px-4 py-4">
             <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-              {/* Search */}
-              <div className="relative w-full lg:w-96">
+              {/* Smart Search with Suggestions */}
+              <div className="relative w-full lg:w-96" ref={searchRef}>
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <Input
-                  placeholder="Tìm kiếm thiết bị, part number..."
+                  placeholder="Tìm kiếm thiết bị, part number, thương hiệu..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setShowSearchSuggestions(true);
+                  }}
+                  onFocus={() => setShowSearchSuggestions(true)}
+                  className="pl-10 pr-10"
                   data-testid="search-input"
                 />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+                
+                {/* Search Suggestions Dropdown */}
+                <AnimatePresence>
+                  {showSearchSuggestions && searchSuggestions.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg z-50 overflow-hidden"
+                    >
+                      {searchSuggestions.map((suggestion, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleSuggestionClick(suggestion)}
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-slate-700 flex items-center gap-2 transition-colors"
+                          data-testid={`search-suggestion-${index}`}
+                        >
+                          {suggestion.type === 'brand' && <Tag className="w-4 h-4 text-blue-500" />}
+                          {suggestion.type === 'subCategory' && <Package className="w-4 h-4 text-green-500" />}
+                          {suggestion.type === 'product' && <Server className="w-4 h-4 text-gray-400" />}
+                          <span className="truncate">{suggestion.label}</span>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Desktop Filters */}
-              <div className="hidden lg:flex items-center gap-3">
+              <div className="hidden lg:flex items-center gap-2 flex-wrap">
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="w-44" data-testid="category-filter">
+                  <SelectTrigger className="w-40" data-testid="category-filter">
                     <SelectValue placeholder="Danh mục" />
                   </SelectTrigger>
                   <SelectContent>
@@ -616,7 +780,7 @@ export default function EquipmentCatalog() {
                 </Select>
 
                 <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-                  <SelectTrigger className="w-36" data-testid="brand-filter">
+                  <SelectTrigger className="w-32" data-testid="brand-filter">
                     <SelectValue placeholder="Thương hiệu" />
                   </SelectTrigger>
                   <SelectContent>
@@ -627,8 +791,20 @@ export default function EquipmentCatalog() {
                   </SelectContent>
                 </Select>
 
+                <Select value={selectedSubCategory} onValueChange={setSelectedSubCategory}>
+                  <SelectTrigger className="w-36" data-testid="subcategory-filter">
+                    <SelectValue placeholder="Loại sản phẩm" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tất cả loại</SelectItem>
+                    {subCategories.map(subCat => (
+                      <SelectItem key={subCat} value={subCat}>{subCat}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
                 <Select value={selectedCondition} onValueChange={setSelectedCondition}>
-                  <SelectTrigger className="w-36" data-testid="condition-filter">
+                  <SelectTrigger className="w-32" data-testid="condition-filter">
                     <SelectValue placeholder="Tình trạng" />
                   </SelectTrigger>
                   <SelectContent>
@@ -639,8 +815,31 @@ export default function EquipmentCatalog() {
                   </SelectContent>
                 </Select>
 
+                <Select value={String(selectedPriceRange)} onValueChange={(val) => setSelectedPriceRange(Number(val))}>
+                  <SelectTrigger className="w-36" data-testid="price-filter">
+                    <SelectValue placeholder="Mức giá" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PRICE_RANGES.map((range, index) => (
+                      <SelectItem key={index} value={String(index)}>{range.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <div className="flex items-center gap-2 px-2">
+                  <Checkbox 
+                    id="in-stock" 
+                    checked={inStockOnly}
+                    onCheckedChange={(checked) => setInStockOnly(checked === true)}
+                    data-testid="in-stock-checkbox"
+                  />
+                  <Label htmlFor="in-stock" className="text-sm cursor-pointer whitespace-nowrap">
+                    Còn hàng
+                  </Label>
+                </div>
+
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-40" data-testid="sort-select">
+                  <SelectTrigger className="w-36" data-testid="sort-select">
                     <SelectValue placeholder="Sắp xếp" />
                   </SelectTrigger>
                   <SelectContent>
@@ -648,6 +847,8 @@ export default function EquipmentCatalog() {
                     <SelectItem value="price-asc">Giá thấp → cao</SelectItem>
                     <SelectItem value="price-desc">Giá cao → thấp</SelectItem>
                     <SelectItem value="name">Tên A-Z</SelectItem>
+                    <SelectItem value="newest">Mới nhất</SelectItem>
+                    <SelectItem value="stock">Còn hàng nhiều</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -678,12 +879,17 @@ export default function EquipmentCatalog() {
                 <Button
                   variant="outline"
                   onClick={() => setShowFilters(!showFilters)}
-                  className="flex-1"
+                  className="flex-1 relative"
                   data-testid="mobile-filter-toggle"
                 >
                   <Filter className="w-4 h-4 mr-2" />
                   Bộ lọc
-                  <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+                  {activeFiltersCount > 0 && (
+                    <Badge className="ml-2 bg-primary text-white text-xs px-1.5 py-0.5 min-w-[20px]">
+                      {activeFiltersCount}
+                    </Badge>
+                  )}
+                  <ChevronDown className={`w-4 h-4 ml-auto transition-transform ${showFilters ? 'rotate-180' : ''}`} />
                 </Button>
                 <div className="flex items-center border rounded-lg">
                   <Button
@@ -715,54 +921,106 @@ export default function EquipmentCatalog() {
                   exit={{ height: 0, opacity: 0 }}
                   className="lg:hidden overflow-hidden"
                 >
-                  <div className="grid grid-cols-2 gap-3 pt-4">
-                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Danh mục" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Tất cả danh mục</SelectItem>
-                        {categories.map(cat => (
-                          <SelectItem key={cat.id} value={cat.slug}>{cat.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="space-y-4 pt-4 pb-2">
+                    <div className="grid grid-cols-2 gap-3">
+                      <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Danh mục" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Tất cả danh mục</SelectItem>
+                          {categories.map(cat => (
+                            <SelectItem key={cat.id} value={cat.slug}>{cat.name}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
 
-                    <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Thương hiệu" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Tất cả</SelectItem>
-                        {brands.map(brand => (
-                          <SelectItem key={brand} value={brand}>{brand}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Thương hiệu" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Tất cả</SelectItem>
+                          {brands.map(brand => (
+                            <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
 
-                    <Select value={selectedCondition} onValueChange={setSelectedCondition}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Tình trạng" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Tất cả</SelectItem>
-                        <SelectItem value="new">Mới 100%</SelectItem>
-                        <SelectItem value="refurbished">Đã qua sử dụng</SelectItem>
-                        <SelectItem value="used">Cũ</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <Select value={selectedSubCategory} onValueChange={setSelectedSubCategory}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Loại sản phẩm" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Tất cả loại</SelectItem>
+                          {subCategories.map(subCat => (
+                            <SelectItem key={subCat} value={subCat}>{subCat}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
 
-                    <Select value={sortBy} onValueChange={setSortBy}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Sắp xếp" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="featured">Nổi bật</SelectItem>
-                        <SelectItem value="price-asc">Giá thấp → cao</SelectItem>
-                        <SelectItem value="price-desc">Giá cao → thấp</SelectItem>
-                        <SelectItem value="name">Tên A-Z</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <Select value={selectedCondition} onValueChange={setSelectedCondition}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Tình trạng" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Tất cả</SelectItem>
+                          <SelectItem value="new">Mới 100%</SelectItem>
+                          <SelectItem value="refurbished">Đã qua sử dụng</SelectItem>
+                          <SelectItem value="used">Cũ</SelectItem>
+                        </SelectContent>
+                      </Select>
+
+                      <Select value={String(selectedPriceRange)} onValueChange={(val) => setSelectedPriceRange(Number(val))}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Mức giá" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {PRICE_RANGES.map((range, index) => (
+                            <SelectItem key={index} value={String(index)}>{range.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+
+                      <Select value={sortBy} onValueChange={setSortBy}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sắp xếp" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="featured">Nổi bật</SelectItem>
+                          <SelectItem value="price-asc">Giá thấp → cao</SelectItem>
+                          <SelectItem value="price-desc">Giá cao → thấp</SelectItem>
+                          <SelectItem value="name">Tên A-Z</SelectItem>
+                          <SelectItem value="newest">Mới nhất</SelectItem>
+                          <SelectItem value="stock">Còn hàng nhiều</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Checkbox 
+                          id="in-stock-mobile" 
+                          checked={inStockOnly}
+                          onCheckedChange={(checked) => setInStockOnly(checked === true)}
+                        />
+                        <Label htmlFor="in-stock-mobile" className="text-sm cursor-pointer">
+                          Chỉ hiện sản phẩm còn hàng
+                        </Label>
+                      </div>
+                      
+                      {activeFiltersCount > 0 && (
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={clearAllFilters}
+                          className="text-red-500 hover:text-red-600"
+                        >
+                          <X className="w-4 h-4 mr-1" />
+                          Xóa bộ lọc
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -807,25 +1065,87 @@ export default function EquipmentCatalog() {
         {/* Products Grid */}
         <section className="py-8 lg:py-12">
           <div className="container mx-auto px-4">
-            {/* Results Summary */}
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-gray-600 dark:text-gray-300" data-testid="results-count">
-                Tìm thấy <strong>{filteredEquipment.length}</strong> sản phẩm
-              </p>
-              {(selectedCategory !== "all" || selectedBrand !== "all" || selectedCondition !== "all" || searchQuery) && (
+            {/* Results Summary with Active Filters */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-2 flex-wrap">
+                <p className="text-gray-600 dark:text-gray-300" data-testid="results-count">
+                  Tìm thấy <strong>{filteredEquipment.length}</strong> sản phẩm
+                </p>
+                
+                {/* Active Filter Tags */}
+                {activeFiltersCount > 0 && (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-gray-400">|</span>
+                    {selectedCategory !== "all" && (
+                      <Badge variant="secondary" className="flex items-center gap-1">
+                        {categories.find(c => c.slug === selectedCategory)?.name}
+                        <button onClick={() => setSelectedCategory("all")} className="ml-1 hover:text-red-500">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    )}
+                    {selectedBrand !== "all" && (
+                      <Badge variant="secondary" className="flex items-center gap-1">
+                        {selectedBrand}
+                        <button onClick={() => setSelectedBrand("all")} className="ml-1 hover:text-red-500">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    )}
+                    {selectedSubCategory !== "all" && (
+                      <Badge variant="secondary" className="flex items-center gap-1">
+                        {selectedSubCategory}
+                        <button onClick={() => setSelectedSubCategory("all")} className="ml-1 hover:text-red-500">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    )}
+                    {selectedCondition !== "all" && (
+                      <Badge variant="secondary" className="flex items-center gap-1">
+                        {selectedCondition === "new" ? "Mới 100%" : selectedCondition === "refurbished" ? "Đã qua sử dụng" : "Cũ"}
+                        <button onClick={() => setSelectedCondition("all")} className="ml-1 hover:text-red-500">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    )}
+                    {selectedPriceRange > 0 && (
+                      <Badge variant="secondary" className="flex items-center gap-1">
+                        {PRICE_RANGES[selectedPriceRange].label}
+                        <button onClick={() => setSelectedPriceRange(0)} className="ml-1 hover:text-red-500">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    )}
+                    {inStockOnly && (
+                      <Badge variant="secondary" className="flex items-center gap-1">
+                        Còn hàng
+                        <button onClick={() => setInStockOnly(false)} className="ml-1 hover:text-red-500">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    )}
+                    {searchQuery && (
+                      <Badge variant="secondary" className="flex items-center gap-1">
+                        "{searchQuery}"
+                        <button onClick={() => setSearchQuery("")} className="ml-1 hover:text-red-500">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    )}
+                  </div>
+                )}
+              </div>
+              
+              {activeFiltersCount > 0 && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => {
-                    setSelectedCategory("all");
-                    setSelectedBrand("all");
-                    setSelectedCondition("all");
-                    setSearchQuery("");
-                  }}
+                  onClick={clearAllFilters}
+                  className="text-red-500 hover:text-red-600 shrink-0"
                   data-testid="clear-filters"
                 >
                   <X className="w-4 h-4 mr-1" />
-                  Xóa bộ lọc
+                  Xóa tất cả bộ lọc
                 </Button>
               )}
             </div>
@@ -854,12 +1174,7 @@ export default function EquipmentCatalog() {
                 </p>
                 <Button
                   variant="outline"
-                  onClick={() => {
-                    setSelectedCategory("all");
-                    setSelectedBrand("all");
-                    setSelectedCondition("all");
-                    setSearchQuery("");
-                  }}
+                  onClick={clearAllFilters}
                 >
                   Xóa bộ lọc
                 </Button>
