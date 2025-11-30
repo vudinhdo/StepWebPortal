@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-import { Menu, ChevronDown, X } from "lucide-react";
+import { Menu, ChevronDown, X, ShoppingCart } from "lucide-react";
+import { Link } from "wouter";
 import MegaMenu from "./mega-menu";
 import MobileMegaMenu from "./mobile-mega-menu";
+import { useCart } from "@/contexts/cart-context";
 import stepLogo from "@assets/logo step_1753193285585.png";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { getItemCount } = useCart();
+  const cartItemCount = getItemCount();
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
@@ -61,6 +65,16 @@ export default function Header() {
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
+            <Link href="/gio-hang">
+              <Button variant="ghost" className="relative" data-testid="cart-button">
+                <ShoppingCart className="h-5 w-5" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                    {cartItemCount > 99 ? '99+' : cartItemCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
             <Button variant="ghost" className="text-gray-700 hover:text-blue-600">
               Đăng nhập
             </Button>
@@ -69,14 +83,25 @@ export default function Header() {
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Mở menu</span>
+          {/* Mobile Cart & Menu Buttons */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <Link href="/gio-hang">
+              <Button variant="ghost" size="icon" className="relative" data-testid="mobile-cart-button">
+                <ShoppingCart className="h-5 w-5" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                    {cartItemCount > 99 ? '99+' : cartItemCount}
+                  </span>
+                )}
               </Button>
-            </SheetTrigger>
+            </Link>
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Mở menu</span>
+                </Button>
+              </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px] p-0">
               <SheetTitle className="sr-only">Menu điều hướng</SheetTitle>
               <SheetDescription className="sr-only">
@@ -160,7 +185,8 @@ export default function Header() {
                 </div>
               </div>
             </SheetContent>
-          </Sheet>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>

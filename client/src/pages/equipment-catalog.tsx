@@ -54,7 +54,13 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useCart } from "@/contexts/cart-context";
+import { useToast } from "@/hooks/use-toast";
+import { Link } from "wouter";
+import { MessageCircle, Eye } from "lucide-react";
 import type { ServerEquipment, EquipmentCategory } from "@shared/schema";
+
+const ZALO_OA_LINK = 'https://zalo.me/93171011934970677';
 
 interface EquipmentSpecs {
   cpu?: string;
@@ -185,15 +191,19 @@ const getSpecs = (equipment: ServerEquipment): EquipmentSpecs => {
 interface EquipmentCardProps {
   equipment: ServerEquipment;
   viewMode: "grid" | "list";
-  onViewDetails: (equipment: ServerEquipment) => void;
+  onAddToCart: (equipment: ServerEquipment) => void;
 }
 
-function EquipmentCard({ equipment, viewMode, onViewDetails }: EquipmentCardProps) {
+function EquipmentCard({ equipment, viewMode, onAddToCart }: EquipmentCardProps) {
   const conditionBadge = getConditionBadge(equipment.condition);
   const specs = getSpecs(equipment);
   const discount = equipment.priceEndUser && equipment.priceDealer 
     ? Math.round((1 - equipment.priceDealer / equipment.priceEndUser) * 100)
     : 0;
+  
+  const handleZaloQuote = () => {
+    window.open(ZALO_OA_LINK, '_blank');
+  };
 
   if (viewMode === "list") {
     return (
@@ -261,18 +271,32 @@ function EquipmentCard({ equipment, viewMode, onViewDetails }: EquipmentCardProp
               <Button 
                 variant="outline" 
                 size="sm"
-                onClick={() => onViewDetails(equipment)}
-                data-testid={`view-details-${equipment.id}`}
+                onClick={handleZaloQuote}
+                className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                data-testid={`zalo-quote-${equipment.id}`}
               >
-                Chi tiết
+                <MessageCircle className="w-3 h-3 mr-1" />
+                Báo giá
               </Button>
+              <Link href={`/thiet-bi-may-chu/${equipment.id}`}>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  data-testid={`view-details-${equipment.id}`}
+                >
+                  <Eye className="w-3 h-3 mr-1" />
+                  Chi tiết
+                </Button>
+              </Link>
               <Button 
                 size="sm" 
                 className="bg-primary hover:bg-primary/90"
-                data-testid={`contact-quote-${equipment.id}`}
+                onClick={() => onAddToCart(equipment)}
+                disabled={!equipment.stockCount || equipment.stockCount <= 0}
+                data-testid={`add-cart-${equipment.id}`}
               >
-                <Phone className="w-3 h-3 mr-1" />
-                Báo giá
+                <ShoppingCart className="w-3 h-3 mr-1" />
+                Giỏ hàng
               </Button>
             </div>
           </div>
@@ -360,23 +384,37 @@ function EquipmentCard({ equipment, viewMode, onViewDetails }: EquipmentCardProp
           )}
         </div>
         
-        <div className="flex gap-2">
+        <div className="grid grid-cols-3 gap-1">
           <Button 
             variant="outline" 
             size="sm"
-            className="flex-1"
-            onClick={() => onViewDetails(equipment)}
-            data-testid={`view-details-${equipment.id}`}
+            className="text-blue-600 border-blue-600 hover:bg-blue-50 text-xs px-2"
+            onClick={handleZaloQuote}
+            data-testid={`zalo-quote-${equipment.id}`}
           >
-            Chi tiết
+            <MessageCircle className="w-3 h-3 mr-0.5" />
+            Báo giá
           </Button>
+          <Link href={`/thiet-bi-may-chu/${equipment.id}`} className="contents">
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="text-xs px-2"
+              data-testid={`view-details-${equipment.id}`}
+            >
+              <Eye className="w-3 h-3 mr-0.5" />
+              Chi tiết
+            </Button>
+          </Link>
           <Button 
             size="sm" 
-            className="flex-1 bg-primary hover:bg-primary/90"
-            data-testid={`contact-quote-${equipment.id}`}
+            className="bg-primary hover:bg-primary/90 text-xs px-2"
+            onClick={() => onAddToCart(equipment)}
+            disabled={!equipment.stockCount || equipment.stockCount <= 0}
+            data-testid={`add-cart-${equipment.id}`}
           >
-            <Phone className="w-3 h-3 mr-1" />
-            Báo giá
+            <ShoppingCart className="w-3 h-3 mr-0.5" />
+            Giỏ hàng
           </Button>
         </div>
       </div>
@@ -531,6 +569,17 @@ export default function EquipmentCatalog() {
   const [selectedRAMs, setSelectedRAMs] = useState<string[]>([]);
   const [selectedStorages, setSelectedStorages] = useState<string[]>([]);
   const [selectedFormFactors, setSelectedFormFactors] = useState<string[]>([]);
+
+  const { addToCart, getItemCount } = useCart();
+  const { toast } = useToast();
+
+  const handleAddToCart = useCallback((equipment: ServerEquipment) => {
+    addToCart(equipment);
+    toast({
+      title: "Đã thêm vào giỏ hàng",
+      description: equipment.name,
+    });
+  }, [addToCart, toast]);
 
   const { data: equipment = [], isLoading: equipmentLoading } = useQuery<ServerEquipment[]>({
     queryKey: ['/api/equipment'],
@@ -1308,7 +1357,7 @@ export default function EquipmentCatalog() {
                         key={item.id}
                         equipment={item}
                         viewMode="grid"
-                        onViewDetails={setSelectedEquipment}
+                        onAddToCart={handleAddToCart}
                       />
                     ))}
                   </div>
@@ -1319,7 +1368,7 @@ export default function EquipmentCatalog() {
                         key={item.id}
                         equipment={item}
                         viewMode="list"
-                        onViewDetails={setSelectedEquipment}
+                        onAddToCart={handleAddToCart}
                       />
                     ))}
                   </div>

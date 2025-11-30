@@ -3,6 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { CartProvider } from "@/contexts/cart-context";
 import PageTransition from "./components/page-transition";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
@@ -43,6 +44,9 @@ import DLP from "@/pages/dlp";
 import Colocation from "@/pages/colocation";
 import Contact from "@/pages/contact";
 import EquipmentCatalog from "@/pages/equipment-catalog";
+import EquipmentDetail from "@/pages/equipment-detail";
+import Cart from "@/pages/cart";
+import Checkout from "@/pages/checkout";
 
 function Router() {
   return (
@@ -96,7 +100,10 @@ function Router() {
         <Route path="/contact" component={Contact} />
         <Route path="/dich-vu/may-chu/thiet-bi-may-chu" component={EquipmentCatalog} />
         <Route path="/thiet-bi-may-chu" component={EquipmentCatalog} />
+        <Route path="/thiet-bi-may-chu/:id" component={EquipmentDetail} />
         <Route path="/equipment" component={EquipmentCatalog} />
+        <Route path="/gio-hang" component={Cart} />
+        <Route path="/thanh-toan" component={Checkout} />
         <Route component={NotFound} />
       </Switch>
     </PageTransition>
@@ -106,10 +113,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <CartProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </CartProvider>
     </QueryClientProvider>
   );
 }
