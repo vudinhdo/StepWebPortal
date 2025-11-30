@@ -35,19 +35,22 @@ Preferred communication style: Simple, everyday language.
 - **Cloud Server Solutions**: Component-based pricing with an interactive calculator, complimentary services, and premium add-ons.
 - **Server Configurator**: A multi-tabbed interface for configuring cloud servers with contextual tooltips, quick presets, customer info collection, flexible payment cycles, GPU/OS selection, and a professional PDF quote generation feature with VAT calculation and voucher discounts. Includes sticky pricing sidebar on desktop and mobile-optimized layouts.
 - **Server Equipment Catalog**: Full e-commerce style catalog at /dich-vu/may-chu/thiet-bi-may-chu for selling server hardware and components. Features include:
+    - **Modern Layout**: Compact sticky header with search, sort, and view controls; horizontal scrollable category menu with count badges; left sidebar filter panel (desktop) with collapsible sections
     - **Smart Search**: Autocomplete suggestions showing matching products, brands, and subcategories as you type
-    - **Sophisticated Filtering**: 
-      - Category filter (9 categories: Dell/HPE/H3C/ASUS servers, Dell/HPE components, Network/GPU, NAS, SAN, Dell Storage, Other)
+    - **Deep Filtering with Fuzzy Matching**: 
       - Brand filter (Dell, HPE, H3C, ASUS, Synology, Infortrend, Intel, NVIDIA)
-      - Sub-category filter (Rack Server 1U, 2U, NAS, SAN, etc.)
+      - CPU/Processor filter - fuzzy keyword matching (e.g., "Intel Xeon" matches "2 x Intel Xeon Gold 5318Y")
+      - RAM/Memory filter - fuzzy keyword matching (e.g., "DDR4" matches various DDR4 configurations)
+      - Storage filter - fuzzy keyword matching for HDD/SSD/NVMe specs
+      - Form Factor filter - case-insensitive bidirectional matching (Rack 1U, 2U, Tower, etc.)
+      - Price range filter (single-selection: Under 50M, 50-100M, 100-200M, 200-500M, Over 500M VND)
       - Condition filter (New, Refurbished, Used)
-      - Price range filter (Under 50M, 50-100M, 100-200M, Over 200M VND)
-      - In-stock only checkbox
+      - In-stock only toggle
     - **Enhanced Sorting**: Featured, Price (low-high/high-low), Name A-Z, Newest, Stock availability
     - **Active Filter Tags**: Individual removal of filters with visual badges
-    - **Mobile Optimized**: Collapsible filter panel with filter count badge
+    - **Mobile Optimized**: Collapsible filter panel slides from left with filter count badge
     - Product grid/list view toggle with responsive design
-    - Detailed product modal with specs (CPU, RAM, storage, network, RAID, PSU, form factor, warranty)
+    - Detailed product modal with organized specs display (CPU, RAM, storage icons)
     - Three-tier pricing (End User, Dealer, MD)
     - Stock count tracking with availability badges
     - Featured product highlighting
