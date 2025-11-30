@@ -3179,16 +3179,34 @@ export class MemStorage implements IStorage {
     return this.users.find(u => u.id === id);
   }
 
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    return this.users.find(u => u.email === email);
+  }
+
   async upsertUser(userData: UpsertUser): Promise<User> {
-    const existingIndex = this.users.findIndex(u => u.id === userData.id);
+    // First check by ID, then by email for deduplication
+    let existingIndex = this.users.findIndex(u => u.id === userData.id);
+    
+    // If not found by ID but email exists, find by email to prevent duplicates
+    if (existingIndex === -1 && userData.email) {
+      existingIndex = this.users.findIndex(u => u.email === userData.email);
+    }
+
     if (existingIndex !== -1) {
+      // Update existing user
       this.users[existingIndex] = {
         ...this.users[existingIndex],
-        ...userData,
+        id: userData.id || this.users[existingIndex].id, // Update ID if provided
+        email: userData.email ?? this.users[existingIndex].email,
+        firstName: userData.firstName ?? this.users[existingIndex].firstName,
+        lastName: userData.lastName ?? this.users[existingIndex].lastName,
+        profileImageUrl: userData.profileImageUrl ?? this.users[existingIndex].profileImageUrl,
+        isAdmin: userData.isAdmin ?? this.users[existingIndex].isAdmin,
         updatedAt: new Date()
       };
       return this.users[existingIndex];
     } else {
+      // Create new user
       const newUser: User = {
         id: userData.id || String(Date.now()),
         email: userData.email || null,
@@ -3202,6 +3220,10 @@ export class MemStorage implements IStorage {
       this.users.push(newUser);
       return newUser;
     }
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return [...this.users];
   }
 }
 
