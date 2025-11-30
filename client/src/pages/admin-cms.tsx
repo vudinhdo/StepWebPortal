@@ -1550,25 +1550,50 @@ function UsersSection({ users }: { users: any[] }) {
 // Categories Section
 function CategoriesSection() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [isAdding, setIsAdding] = useState(false);
   const [newCategory, setNewCategory] = useState({ name: "", slug: "", description: "", type: "post" });
+
+  const { data: categories = [], isLoading } = useQuery<any[]>({
+    queryKey: ["/api/cms-categories"],
+  });
+
+  const createMutation = useMutation({
+    mutationFn: async (data: { name: string; slug: string; type: string; description?: string }) => {
+      return await apiRequest("POST", "/api/cms-categories", data);
+    },
+    onSuccess: () => {
+      toast({ title: "Thành công", description: "Đã thêm danh mục mới" });
+      queryClient.invalidateQueries({ queryKey: ["/api/cms-categories"] });
+      setIsAdding(false);
+      setNewCategory({ name: "", slug: "", description: "", type: "post" });
+    },
+    onError: () => {
+      toast({ title: "Lỗi", description: "Không thể thêm danh mục", variant: "destructive" });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return await apiRequest("DELETE", `/api/cms-categories/${id}`);
+    },
+    onSuccess: () => {
+      toast({ title: "Thành công", description: "Đã xóa danh mục" });
+      queryClient.invalidateQueries({ queryKey: ["/api/cms-categories"] });
+    },
+    onError: () => {
+      toast({ title: "Lỗi", description: "Không thể xóa danh mục", variant: "destructive" });
+    },
+  });
 
   const handleAddCategory = () => {
     if (!newCategory.name.trim()) {
       toast({ title: "Lỗi", description: "Vui lòng nhập tên danh mục", variant: "destructive" });
       return;
     }
-    toast({ title: "Thành công", description: "Đã thêm danh mục mới" });
-    setIsAdding(false);
-    setNewCategory({ name: "", slug: "", description: "", type: "post" });
+    const slug = newCategory.slug || newCategory.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+    createMutation.mutate({ ...newCategory, slug });
   };
-
-  const sampleCategories = [
-    { id: 1, name: "Tin tức", slug: "tin-tuc", type: "post", count: 15 },
-    { id: 2, name: "Hướng dẫn", slug: "huong-dan", type: "post", count: 8 },
-    { id: 3, name: "Cloud Server", slug: "cloud-server", type: "product", count: 12 },
-    { id: 4, name: "Hosting", slug: "hosting", type: "product", count: 20 },
-  ];
 
   return (
     <div className="space-y-6">
@@ -1648,22 +1673,44 @@ function CategoriesSection() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sampleCategories.map((cat) => (
-                <TableRow key={cat.id}>
-                  <TableCell className="font-medium">{cat.name}</TableCell>
-                  <TableCell className="text-gray-500">{cat.slug}</TableCell>
-                  <TableCell>
-                    <Badge variant={cat.type === "post" ? "default" : "secondary"}>
-                      {cat.type === "post" ? "Bài viết" : "Sản phẩm"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{cat.count}</TableCell>
-                  <TableCell className="text-right">
-                    <Button variant="ghost" size="sm"><Edit className="w-4 h-4" /></Button>
-                    <Button variant="ghost" size="sm" className="text-red-600"><Trash2 className="w-4 h-4" /></Button>
+              {isLoading ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-8 text-gray-500">
+                    Đang tải...
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : categories.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-8 text-gray-500">
+                    Chưa có danh mục nào. Nhấn "Thêm danh mục" để tạo mới.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                categories.map((cat: any) => (
+                  <TableRow key={cat.id}>
+                    <TableCell className="font-medium">{cat.name}</TableCell>
+                    <TableCell className="text-gray-500">{cat.slug}</TableCell>
+                    <TableCell>
+                      <Badge variant={cat.type === "post" ? "default" : "secondary"}>
+                        {cat.type === "post" ? "Bài viết" : "Sản phẩm"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{cat.count || 0}</TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="sm"><Edit className="w-4 h-4" /></Button>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-red-600"
+                        onClick={() => deleteMutation.mutate(cat.id)}
+                        disabled={deleteMutation.isPending}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </CardContent>
@@ -1675,27 +1722,50 @@ function CategoriesSection() {
 // Tags Section
 function TagsSection() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [isAdding, setIsAdding] = useState(false);
   const [newTag, setNewTag] = useState({ name: "", slug: "" });
+
+  const { data: tags = [], isLoading } = useQuery<any[]>({
+    queryKey: ["/api/cms-tags"],
+  });
+
+  const createMutation = useMutation({
+    mutationFn: async (data: { name: string; slug: string }) => {
+      return await apiRequest("POST", "/api/cms-tags", data);
+    },
+    onSuccess: () => {
+      toast({ title: "Thành công", description: "Đã thêm thẻ mới" });
+      queryClient.invalidateQueries({ queryKey: ["/api/cms-tags"] });
+      setIsAdding(false);
+      setNewTag({ name: "", slug: "" });
+    },
+    onError: () => {
+      toast({ title: "Lỗi", description: "Không thể thêm thẻ", variant: "destructive" });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return await apiRequest("DELETE", `/api/cms-tags/${id}`);
+    },
+    onSuccess: () => {
+      toast({ title: "Thành công", description: "Đã xóa thẻ" });
+      queryClient.invalidateQueries({ queryKey: ["/api/cms-tags"] });
+    },
+    onError: () => {
+      toast({ title: "Lỗi", description: "Không thể xóa thẻ", variant: "destructive" });
+    },
+  });
 
   const handleAddTag = () => {
     if (!newTag.name.trim()) {
       toast({ title: "Lỗi", description: "Vui lòng nhập tên thẻ", variant: "destructive" });
       return;
     }
-    toast({ title: "Thành công", description: "Đã thêm thẻ mới" });
-    setIsAdding(false);
-    setNewTag({ name: "", slug: "" });
+    const slug = newTag.slug || newTag.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+    createMutation.mutate({ name: newTag.name, slug });
   };
-
-  const sampleTags = [
-    { id: 1, name: "Cloud", slug: "cloud", count: 25 },
-    { id: 2, name: "Hosting", slug: "hosting", count: 18 },
-    { id: 3, name: "Server", slug: "server", count: 32 },
-    { id: 4, name: "Domain", slug: "domain", count: 12 },
-    { id: 5, name: "VPS", slug: "vps", count: 15 },
-    { id: 6, name: "WordPress", slug: "wordpress", count: 20 },
-  ];
 
   return (
     <div className="space-y-6">
@@ -1743,25 +1813,37 @@ function TagsSection() {
 
       <Card>
         <CardContent className="pt-6">
-          <div className="flex flex-wrap gap-3">
-            {sampleTags.map((tag) => (
-              <div key={tag.id} className="group relative">
-                <Badge variant="outline" className="px-4 py-2 text-base cursor-pointer hover:bg-gray-100">
-                  <Tags className="w-4 h-4 mr-2" />
-                  {tag.name}
-                  <span className="ml-2 text-gray-400">({tag.count})</span>
-                </Badge>
-                <div className="absolute -top-2 -right-2 hidden group-hover:flex gap-1">
-                  <Button variant="secondary" size="sm" className="w-6 h-6 p-0 rounded-full">
-                    <Edit className="w-3 h-3" />
-                  </Button>
-                  <Button variant="destructive" size="sm" className="w-6 h-6 p-0 rounded-full">
-                    <X className="w-3 h-3" />
-                  </Button>
+          {isLoading ? (
+            <p className="text-center text-gray-500 py-4">Đang tải...</p>
+          ) : tags.length === 0 ? (
+            <p className="text-center text-gray-500 py-4">Chưa có thẻ nào. Nhấn "Thêm thẻ" để tạo mới.</p>
+          ) : (
+            <div className="flex flex-wrap gap-3">
+              {tags.map((tag: any) => (
+                <div key={tag.id} className="group relative">
+                  <Badge variant="outline" className="px-4 py-2 text-base cursor-pointer hover:bg-gray-100">
+                    <Tags className="w-4 h-4 mr-2" />
+                    {tag.name}
+                    <span className="ml-2 text-gray-400">({tag.count || 0})</span>
+                  </Badge>
+                  <div className="absolute -top-2 -right-2 hidden group-hover:flex gap-1">
+                    <Button variant="secondary" size="sm" className="w-6 h-6 p-0 rounded-full">
+                      <Edit className="w-3 h-3" />
+                    </Button>
+                    <Button 
+                      variant="destructive" 
+                      size="sm" 
+                      className="w-6 h-6 p-0 rounded-full"
+                      onClick={() => deleteMutation.mutate(tag.id)}
+                      disabled={deleteMutation.isPending}
+                    >
+                      <X className="w-3 h-3" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

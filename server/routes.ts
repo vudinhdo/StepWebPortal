@@ -964,6 +964,126 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // =================================
+  // CMS Categories API
+  // =================================
+
+  // Get all CMS categories
+  app.get("/api/cms-categories", async (req, res) => {
+    try {
+      const categories = await storage.getCmsCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error("Error fetching CMS categories:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Create CMS category
+  app.post("/api/cms-categories", async (req, res) => {
+    try {
+      const { name, slug, type, description } = req.body;
+      if (!name || !slug || !type) {
+        return res.status(400).json({ success: false, message: "Thiếu thông tin bắt buộc" });
+      }
+      const category = await storage.createCmsCategory({ name, slug, type, description });
+      res.json({ success: true, data: category });
+    } catch (error) {
+      console.error("Error creating CMS category:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Update CMS category
+  app.patch("/api/cms-categories/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const category = await storage.updateCmsCategory(id, req.body);
+      if (!category) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy danh mục" });
+      }
+      res.json({ success: true, data: category });
+    } catch (error) {
+      console.error("Error updating CMS category:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Delete CMS category
+  app.delete("/api/cms-categories/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteCmsCategory(id);
+      if (!success) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy danh mục" });
+      }
+      res.json({ success: true, message: "Đã xóa danh mục" });
+    } catch (error) {
+      console.error("Error deleting CMS category:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // =================================
+  // CMS Tags API
+  // =================================
+
+  // Get all CMS tags
+  app.get("/api/cms-tags", async (req, res) => {
+    try {
+      const tags = await storage.getCmsTags();
+      res.json(tags);
+    } catch (error) {
+      console.error("Error fetching CMS tags:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Create CMS tag
+  app.post("/api/cms-tags", async (req, res) => {
+    try {
+      const { name, slug } = req.body;
+      if (!name || !slug) {
+        return res.status(400).json({ success: false, message: "Thiếu thông tin bắt buộc" });
+      }
+      const tag = await storage.createCmsTag({ name, slug });
+      res.json({ success: true, data: tag });
+    } catch (error) {
+      console.error("Error creating CMS tag:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Update CMS tag
+  app.patch("/api/cms-tags/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const tag = await storage.updateCmsTag(id, req.body);
+      if (!tag) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy thẻ" });
+      }
+      res.json({ success: true, data: tag });
+    } catch (error) {
+      console.error("Error updating CMS tag:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // Delete CMS tag
+  app.delete("/api/cms-tags/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteCmsTag(id);
+      if (!success) {
+        return res.status(404).json({ success: false, message: "Không tìm thấy thẻ" });
+      }
+      res.json({ success: true, message: "Đã xóa thẻ" });
+    } catch (error) {
+      console.error("Error deleting CMS tag:", error);
+      res.status(500).json({ success: false, message: "Lỗi máy chủ nội bộ" });
+    }
+  });
+
+  // =================================
   // Equipment Orders API
   // =================================
 

@@ -126,6 +126,50 @@ export interface IStorage {
   getEquipmentOrder(id: number): Promise<EquipmentOrder | undefined>;
   getEquipmentOrderByNumber(orderNumber: string): Promise<EquipmentOrder | undefined>;
   updateEquipmentOrderStatus(id: number, status: string): Promise<EquipmentOrder | undefined>;
+
+  // CMS Categories methods
+  getCmsCategories(): Promise<CmsCategory[]>;
+  createCmsCategory(category: InsertCmsCategory): Promise<CmsCategory>;
+  updateCmsCategory(id: number, category: Partial<InsertCmsCategory>): Promise<CmsCategory | undefined>;
+  deleteCmsCategory(id: number): Promise<boolean>;
+
+  // CMS Tags methods
+  getCmsTags(): Promise<CmsTag[]>;
+  createCmsTag(tag: InsertCmsTag): Promise<CmsTag>;
+  updateCmsTag(id: number, tag: Partial<InsertCmsTag>): Promise<CmsTag | undefined>;
+  deleteCmsTag(id: number): Promise<boolean>;
+}
+
+// CMS Category type (simple for now)
+export interface CmsCategory {
+  id: number;
+  name: string;
+  slug: string;
+  type: 'post' | 'product';
+  description?: string | null;
+  count: number;
+  createdAt: Date;
+}
+
+export interface InsertCmsCategory {
+  name: string;
+  slug: string;
+  type: 'post' | 'product';
+  description?: string | null;
+}
+
+// CMS Tag type
+export interface CmsTag {
+  id: number;
+  name: string;
+  slug: string;
+  count: number;
+  createdAt: Date;
+}
+
+export interface InsertCmsTag {
+  name: string;
+  slug: string;
 }
 
 export class MemStorage implements IStorage {
@@ -144,6 +188,8 @@ export class MemStorage implements IStorage {
   private equipmentCategories: EquipmentCategory[] = [];
   private equipmentOrders: EquipmentOrder[] = [];
   private users: User[] = [];
+  private cmsCategories: CmsCategory[] = [];
+  private cmsTags: CmsTag[] = [];
 
   constructor() {
     this.initializeSampleData();
@@ -3248,6 +3294,82 @@ export class MemStorage implements IStorage {
 
   async getAllUsers(): Promise<User[]> {
     return [...this.users];
+  }
+
+  // CMS Categories methods
+  async getCmsCategories(): Promise<CmsCategory[]> {
+    return [...this.cmsCategories];
+  }
+
+  async createCmsCategory(category: InsertCmsCategory): Promise<CmsCategory> {
+    const newCategory: CmsCategory = {
+      id: this.cmsCategories.length + 1,
+      name: category.name,
+      slug: category.slug,
+      type: category.type as 'post' | 'product',
+      description: category.description || null,
+      count: 0,
+      createdAt: new Date()
+    };
+    this.cmsCategories.push(newCategory);
+    return newCategory;
+  }
+
+  async updateCmsCategory(id: number, category: Partial<InsertCmsCategory>): Promise<CmsCategory | undefined> {
+    const index = this.cmsCategories.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.cmsCategories[index] = { 
+        ...this.cmsCategories[index], 
+        ...category,
+        type: (category.type as 'post' | 'product') || this.cmsCategories[index].type
+      };
+      return this.cmsCategories[index];
+    }
+    return undefined;
+  }
+
+  async deleteCmsCategory(id: number): Promise<boolean> {
+    const index = this.cmsCategories.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.cmsCategories.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+
+  // CMS Tags methods
+  async getCmsTags(): Promise<CmsTag[]> {
+    return [...this.cmsTags];
+  }
+
+  async createCmsTag(tag: InsertCmsTag): Promise<CmsTag> {
+    const newTag: CmsTag = {
+      id: this.cmsTags.length + 1,
+      name: tag.name,
+      slug: tag.slug,
+      count: 0,
+      createdAt: new Date()
+    };
+    this.cmsTags.push(newTag);
+    return newTag;
+  }
+
+  async updateCmsTag(id: number, tag: Partial<InsertCmsTag>): Promise<CmsTag | undefined> {
+    const index = this.cmsTags.findIndex(t => t.id === id);
+    if (index !== -1) {
+      this.cmsTags[index] = { ...this.cmsTags[index], ...tag };
+      return this.cmsTags[index];
+    }
+    return undefined;
+  }
+
+  async deleteCmsTag(id: number): Promise<boolean> {
+    const index = this.cmsTags.findIndex(t => t.id === id);
+    if (index !== -1) {
+      this.cmsTags.splice(index, 1);
+      return true;
+    }
+    return false;
   }
 }
 
