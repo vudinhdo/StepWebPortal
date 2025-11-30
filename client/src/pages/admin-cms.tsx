@@ -268,15 +268,25 @@ function AdminCMSContent({ user }: { user: User }) {
     window.location.href = "/api/logout";
   };
 
+  const { data: cmsUsers = [] } = useQuery<any[]>({
+    queryKey: ["/api/users"],
+    enabled: (user as any)?.role === 'admin',
+  });
+
+  const userRole = (user as any)?.role || 'viewer';
+
   const menuItems = [
     { id: "dashboard", label: "Tổng quan", icon: LayoutDashboard },
     { id: "articles", label: "Bài viết", icon: FileText, count: articles.length },
     { id: "pages", label: "Trang", icon: Layout, count: pageContents.length },
     { id: "equipment", label: "Sản phẩm", icon: Server, count: equipment.length },
+    { id: "categories", label: "Danh mục", icon: FolderOpen },
+    { id: "tags", label: "Thẻ", icon: Tags },
     { id: "services", label: "Dịch vụ", icon: Wrench, count: services.length },
     { id: "testimonials", label: "Đánh giá", icon: Star, count: testimonials.length },
     { id: "orders", label: "Đơn hàng", icon: ShoppingCart, count: orders.length },
     { id: "contacts", label: "Liên hệ", icon: MessageSquare, count: contacts.length + domainContacts.length },
+    ...(userRole === 'admin' ? [{ id: "users", label: "Người dùng", icon: Users, count: cmsUsers.length }] : []),
     { id: "settings", label: "Cài đặt", icon: Settings },
   ];
 
@@ -290,6 +300,10 @@ function AdminCMSContent({ user }: { user: User }) {
         return <PagesSection pageContents={pageContents} />;
       case "equipment":
         return <EquipmentManager />;
+      case "categories":
+        return <CategoriesSection />;
+      case "tags":
+        return <TagsSection />;
       case "services":
         return <ServicesSection services={services} />;
       case "testimonials":
@@ -298,6 +312,8 @@ function AdminCMSContent({ user }: { user: User }) {
         return <OrdersSection orders={orders} />;
       case "contacts":
         return <ContactsSection contacts={contacts} domainContacts={domainContacts} emailLeads={emailLeads} />;
+      case "users":
+        return <UsersSection users={cmsUsers} />;
       case "settings":
         return <SettingsSection />;
       default:
@@ -537,7 +553,7 @@ function ArticlesSection({ articles }: { articles: any[] }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  const categories = ["all", ...new Set(articles.map(a => a.category).filter(Boolean))];
+  const categories = ["all", ...Array.from(new Set(articles.map(a => a.category).filter(Boolean)))];
 
   const filteredArticles = articles.filter(article => {
     const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1384,6 +1400,370 @@ function SettingsSection() {
           </CardContent>
         </Card>
       </div>
+    </div>
+  );
+}
+
+// Users Management Section
+function UsersSection({ users }: { users: any[] }) {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+
+  const updateRoleMutation = useMutation({
+    mutationFn: async ({ userId, role }: { userId: string; role: string }) => {
+      return await apiRequest("PATCH", `/api/users/${userId}/role`, { role });
+    },
+    onSuccess: () => {
+      toast({ title: "Thành công", description: "Đã cập nhật quyền người dùng" });
+      queryClient.invalidateQueries({ queryKey: ["/api/users"] });
+      setSelectedUser(null);
+    },
+    onError: (error: any) => {
+      toast({ 
+        title: "Lỗi", 
+        description: error.message || "Không thể cập nhật quyền người dùng", 
+        variant: "destructive" 
+      });
+    },
+  });
+
+  const roleLabels: Record<string, { label: string; color: string }> = {
+    admin: { label: "Quản trị viên", color: "bg-red-100 text-red-700" },
+    editor: { label: "Biên tập viên", color: "bg-blue-100 text-blue-700" },
+    writer: { label: "Người viết", color: "bg-green-100 text-green-700" },
+    viewer: { label: "Người xem", color: "bg-gray-100 text-gray-700" },
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Quản lý người dùng</h1>
+          <p className="text-gray-500">Quản lý vai trò và quyền truy cập của người dùng</p>
+        </div>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="w-5 h-5" />
+            Danh sách người dùng ({users.length})
+          </CardTitle>
+          <CardDescription>
+            Quản lý phân quyền: Admin có toàn quyền, Editor có thể chỉnh sửa và xuất bản, Writer có thể tạo nội dung, Viewer chỉ xem
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Người dùng</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Vai trò</TableHead>
+                <TableHead>Ngày tạo</TableHead>
+                <TableHead className="text-right">Thao tác</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {users.map((u: any) => (
+                <TableRow key={u.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      {u.profileImageUrl ? (
+                        <img src={u.profileImageUrl} alt="" className="w-8 h-8 rounded-full" />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                          <User className="w-4 h-4 text-gray-500" />
+                        </div>
+                      )}
+                      <span className="font-medium">{u.firstName || u.email?.split('@')[0] || 'User'}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{u.email}</TableCell>
+                  <TableCell>
+                    <Badge className={roleLabels[u.role]?.color || roleLabels.viewer.color}>
+                      {roleLabels[u.role]?.label || roleLabels.viewer.label}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    {u.createdAt ? format(new Date(u.createdAt), "dd/MM/yyyy") : "-"}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Dialog open={selectedUser?.id === u.id} onOpenChange={(open) => !open && setSelectedUser(null)}>
+                      <DialogTrigger asChild>
+                        <Button variant="ghost" size="sm" onClick={() => setSelectedUser(u)}>
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Thay đổi vai trò</DialogTitle>
+                          <DialogDescription>
+                            Chọn vai trò mới cho {selectedUser?.firstName || selectedUser?.email}
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4 py-4">
+                          <Select 
+                            defaultValue={selectedUser?.role || 'viewer'}
+                            onValueChange={(role) => {
+                              updateRoleMutation.mutate({ userId: selectedUser.id, role });
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="admin">Quản trị viên (Admin)</SelectItem>
+                              <SelectItem value="editor">Biên tập viên (Editor)</SelectItem>
+                              <SelectItem value="writer">Người viết (Writer)</SelectItem>
+                              <SelectItem value="viewer">Người xem (Viewer)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <div className="text-sm text-gray-500 space-y-1">
+                            <p><strong>Admin:</strong> Toàn quyền quản trị hệ thống</p>
+                            <p><strong>Editor:</strong> Chỉnh sửa và xuất bản nội dung</p>
+                            <p><strong>Writer:</strong> Tạo và chỉnh sửa nội dung của mình</p>
+                            <p><strong>Viewer:</strong> Chỉ xem nội dung</p>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {users.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-8 text-gray-500">
+                    Chưa có người dùng nào
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// Categories Section
+function CategoriesSection() {
+  const { toast } = useToast();
+  const [isAdding, setIsAdding] = useState(false);
+  const [newCategory, setNewCategory] = useState({ name: "", slug: "", description: "", type: "post" });
+
+  const handleAddCategory = () => {
+    if (!newCategory.name.trim()) {
+      toast({ title: "Lỗi", description: "Vui lòng nhập tên danh mục", variant: "destructive" });
+      return;
+    }
+    toast({ title: "Thành công", description: "Đã thêm danh mục mới" });
+    setIsAdding(false);
+    setNewCategory({ name: "", slug: "", description: "", type: "post" });
+  };
+
+  const sampleCategories = [
+    { id: 1, name: "Tin tức", slug: "tin-tuc", type: "post", count: 15 },
+    { id: 2, name: "Hướng dẫn", slug: "huong-dan", type: "post", count: 8 },
+    { id: 3, name: "Cloud Server", slug: "cloud-server", type: "product", count: 12 },
+    { id: 4, name: "Hosting", slug: "hosting", type: "product", count: 20 },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Danh mục</h1>
+          <p className="text-gray-500">Quản lý danh mục cho bài viết và sản phẩm</p>
+        </div>
+        <Dialog open={isAdding} onOpenChange={setIsAdding}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              Thêm danh mục
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Thêm danh mục mới</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div>
+                <Label>Tên danh mục</Label>
+                <Input 
+                  value={newCategory.name} 
+                  onChange={(e) => setNewCategory({...newCategory, name: e.target.value})}
+                  placeholder="VD: Tin tức công nghệ"
+                />
+              </div>
+              <div>
+                <Label>Slug (URL)</Label>
+                <Input 
+                  value={newCategory.slug} 
+                  onChange={(e) => setNewCategory({...newCategory, slug: e.target.value})}
+                  placeholder="VD: tin-tuc-cong-nghe"
+                />
+              </div>
+              <div>
+                <Label>Loại</Label>
+                <Select value={newCategory.type} onValueChange={(v) => setNewCategory({...newCategory, type: v})}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="post">Bài viết</SelectItem>
+                    <SelectItem value="product">Sản phẩm</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Mô tả</Label>
+                <Textarea 
+                  value={newCategory.description} 
+                  onChange={(e) => setNewCategory({...newCategory, description: e.target.value})}
+                  placeholder="Mô tả ngắn về danh mục"
+                  rows={3}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsAdding(false)}>Hủy</Button>
+              <Button onClick={handleAddCategory}>Thêm</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Tên danh mục</TableHead>
+                <TableHead>Slug</TableHead>
+                <TableHead>Loại</TableHead>
+                <TableHead>Số lượng</TableHead>
+                <TableHead className="text-right">Thao tác</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {sampleCategories.map((cat) => (
+                <TableRow key={cat.id}>
+                  <TableCell className="font-medium">{cat.name}</TableCell>
+                  <TableCell className="text-gray-500">{cat.slug}</TableCell>
+                  <TableCell>
+                    <Badge variant={cat.type === "post" ? "default" : "secondary"}>
+                      {cat.type === "post" ? "Bài viết" : "Sản phẩm"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{cat.count}</TableCell>
+                  <TableCell className="text-right">
+                    <Button variant="ghost" size="sm"><Edit className="w-4 h-4" /></Button>
+                    <Button variant="ghost" size="sm" className="text-red-600"><Trash2 className="w-4 h-4" /></Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// Tags Section
+function TagsSection() {
+  const { toast } = useToast();
+  const [isAdding, setIsAdding] = useState(false);
+  const [newTag, setNewTag] = useState({ name: "", slug: "" });
+
+  const handleAddTag = () => {
+    if (!newTag.name.trim()) {
+      toast({ title: "Lỗi", description: "Vui lòng nhập tên thẻ", variant: "destructive" });
+      return;
+    }
+    toast({ title: "Thành công", description: "Đã thêm thẻ mới" });
+    setIsAdding(false);
+    setNewTag({ name: "", slug: "" });
+  };
+
+  const sampleTags = [
+    { id: 1, name: "Cloud", slug: "cloud", count: 25 },
+    { id: 2, name: "Hosting", slug: "hosting", count: 18 },
+    { id: 3, name: "Server", slug: "server", count: 32 },
+    { id: 4, name: "Domain", slug: "domain", count: 12 },
+    { id: 5, name: "VPS", slug: "vps", count: 15 },
+    { id: 6, name: "WordPress", slug: "wordpress", count: 20 },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Thẻ</h1>
+          <p className="text-gray-500">Quản lý các thẻ cho bài viết và sản phẩm</p>
+        </div>
+        <Dialog open={isAdding} onOpenChange={setIsAdding}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              Thêm thẻ
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Thêm thẻ mới</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div>
+                <Label>Tên thẻ</Label>
+                <Input 
+                  value={newTag.name} 
+                  onChange={(e) => setNewTag({...newTag, name: e.target.value})}
+                  placeholder="VD: Cloud Computing"
+                />
+              </div>
+              <div>
+                <Label>Slug (URL)</Label>
+                <Input 
+                  value={newTag.slug} 
+                  onChange={(e) => setNewTag({...newTag, slug: e.target.value})}
+                  placeholder="VD: cloud-computing"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsAdding(false)}>Hủy</Button>
+              <Button onClick={handleAddTag}>Thêm</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex flex-wrap gap-3">
+            {sampleTags.map((tag) => (
+              <div key={tag.id} className="group relative">
+                <Badge variant="outline" className="px-4 py-2 text-base cursor-pointer hover:bg-gray-100">
+                  <Tags className="w-4 h-4 mr-2" />
+                  {tag.name}
+                  <span className="ml-2 text-gray-400">({tag.count})</span>
+                </Badge>
+                <div className="absolute -top-2 -right-2 hidden group-hover:flex gap-1">
+                  <Button variant="secondary" size="sm" className="w-6 h-6 p-0 rounded-full">
+                    <Edit className="w-3 h-3" />
+                  </Button>
+                  <Button variant="destructive" size="sm" className="w-6 h-6 p-0 rounded-full">
+                    <X className="w-3 h-3" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -229,6 +229,125 @@ export const equipmentCategories = pgTable("equipment_categories", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// CMS Categories for Posts and Pages (WordPress-like)
+export const cmsCategories = pgTable("cms_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+  parentId: integer("parent_id"),
+  type: text("type").notNull().default("post"), // post, page, product
+  imageUrl: text("image_url"),
+  order: integer("order").default(0),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// CMS Tags for Posts and Products
+export const cmsTags = pgTable("cms_tags", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+  type: text("type").notNull().default("post"), // post, product
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// CMS Media Library
+export const cmsMedia = pgTable("cms_media", {
+  id: serial("id").primaryKey(),
+  fileName: text("file_name").notNull(),
+  fileUrl: text("file_url").notNull(),
+  fileType: text("file_type").notNull(), // image, video, document
+  mimeType: text("mime_type"),
+  fileSize: integer("file_size"),
+  altText: text("alt_text"),
+  caption: text("caption"),
+  uploadedBy: varchar("uploaded_by"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// CMS Posts (WordPress-like blog posts)
+export const cmsPosts = pgTable("cms_posts", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  excerpt: text("excerpt"),
+  content: text("content").notNull(),
+  featuredImage: text("featured_image"),
+  authorId: varchar("author_id"),
+  categoryId: integer("category_id"),
+  status: text("status").notNull().default("draft"), // draft, pending, published, trash
+  visibility: text("visibility").default("public"), // public, private, password
+  password: text("password"),
+  allowComments: boolean("allow_comments").default(true),
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
+  publishedAt: timestamp("published_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// CMS Post Tags relation
+export const cmsPostTags = pgTable("cms_post_tags", {
+  id: serial("id").primaryKey(),
+  postId: integer("post_id").notNull(),
+  tagId: integer("tag_id").notNull(),
+});
+
+// CMS Pages (static pages like About, Contact, etc)
+export const cmsPages = pgTable("cms_pages", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  content: text("content").notNull(),
+  featuredImage: text("featured_image"),
+  template: text("template").default("default"), // default, fullwidth, sidebar
+  parentId: integer("parent_id"),
+  authorId: varchar("author_id"),
+  status: text("status").notNull().default("draft"), // draft, published, trash
+  order: integer("order").default(0),
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
+  publishedAt: timestamp("published_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// CMS Products with attributes
+export const cmsProducts = pgTable("cms_products", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  shortDescription: text("short_description"),
+  description: text("description"),
+  featuredImage: text("featured_image"),
+  gallery: text("gallery").array(),
+  sku: text("sku"),
+  regularPrice: integer("regular_price"),
+  salePrice: integer("sale_price"),
+  stockStatus: text("stock_status").default("instock"), // instock, outofstock, onbackorder
+  stockQuantity: integer("stock_quantity"),
+  categoryId: integer("category_id"),
+  authorId: varchar("author_id"),
+  status: text("status").notNull().default("draft"), // draft, published, trash
+  isFeatured: boolean("is_featured").default(false),
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
+  attributes: jsonb("attributes"), // flexible attributes {size: [], color: [], etc}
+  publishedAt: timestamp("published_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// CMS Product Tags relation
+export const cmsProductTags = pgTable("cms_product_tags", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id").notNull(),
+  tagId: integer("tag_id").notNull(),
+});
+
 export const insertContactSchema = createInsertSchema(contacts).omit({
   id: true,
   createdAt: true,
@@ -412,3 +531,63 @@ export const insertEquipmentOrderSchema = createInsertSchema(equipmentOrders).om
 
 export type InsertEquipmentOrder = z.infer<typeof insertEquipmentOrderSchema>;
 export type EquipmentOrder = typeof equipmentOrders.$inferSelect;
+
+// CMS Categories schemas
+export const insertCmsCategorySchema = createInsertSchema(cmsCategories).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const updateCmsCategorySchema = insertCmsCategorySchema.partial();
+export type InsertCmsCategory = z.infer<typeof insertCmsCategorySchema>;
+export type UpdateCmsCategory = z.infer<typeof updateCmsCategorySchema>;
+export type CmsCategory = typeof cmsCategories.$inferSelect;
+
+// CMS Tags schemas
+export const insertCmsTagSchema = createInsertSchema(cmsTags).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertCmsTag = z.infer<typeof insertCmsTagSchema>;
+export type CmsTag = typeof cmsTags.$inferSelect;
+
+// CMS Media schemas
+export const insertCmsMediaSchema = createInsertSchema(cmsMedia).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertCmsMedia = z.infer<typeof insertCmsMediaSchema>;
+export type CmsMedia = typeof cmsMedia.$inferSelect;
+
+// CMS Posts schemas
+export const insertCmsPostSchema = createInsertSchema(cmsPosts).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const updateCmsPostSchema = insertCmsPostSchema.partial();
+export type InsertCmsPost = z.infer<typeof insertCmsPostSchema>;
+export type UpdateCmsPost = z.infer<typeof updateCmsPostSchema>;
+export type CmsPost = typeof cmsPosts.$inferSelect;
+
+// CMS Pages schemas
+export const insertCmsPageSchema = createInsertSchema(cmsPages).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const updateCmsPageSchema = insertCmsPageSchema.partial();
+export type InsertCmsPage = z.infer<typeof insertCmsPageSchema>;
+export type UpdateCmsPage = z.infer<typeof updateCmsPageSchema>;
+export type CmsPage = typeof cmsPages.$inferSelect;
+
+// CMS Products schemas
+export const insertCmsProductSchema = createInsertSchema(cmsProducts).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const updateCmsProductSchema = insertCmsProductSchema.partial();
+export type InsertCmsProduct = z.infer<typeof insertCmsProductSchema>;
+export type UpdateCmsProduct = z.infer<typeof updateCmsProductSchema>;
+export type CmsProduct = typeof cmsProducts.$inferSelect;
