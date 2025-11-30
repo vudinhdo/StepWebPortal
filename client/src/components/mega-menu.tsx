@@ -215,6 +215,7 @@ export default function MegaMenu() {
                 {categories[3].items.map((item, index) => (
                   <li key={index}>
                     <a href={
+                      item.name === 'Thiết bị máy chủ' ? '/dich-vu/may-chu/thiet-bi-may-chu' :
                       item.name === 'Thuê máy chủ vật lý' ? '/Sản Phẩm & Dịch Vụ/Dedicated Server' :
                       item.name === 'Thiết bị mạng' ? '/thiet-bi-mang' :
                       item.name === 'Chỗ đặt máy chủ' ? '/colocation' :

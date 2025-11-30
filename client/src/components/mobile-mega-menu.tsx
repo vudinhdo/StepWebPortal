@@ -158,6 +158,7 @@ export default function MobileMegaMenu() {
                         category.id === 'hosting' && item.name === 'Hosting NVME' ? '/Sản Phẩm & Dịch Vụ/Hosting/Hosting NVME' :
                         category.id === 'hosting' && item.name === 'Reseller Hosting' ? '/Sản Phẩm & Dịch Vụ/Hosting/Reseller Hosting' :
                         // Server links
+                        category.id === 'server' && item.name === 'Thiết bị máy chủ' ? '/dich-vu/may-chu/thiet-bi-may-chu' :
                         category.id === 'server' && item.name === 'Thuê máy chủ vật lý' ? '/Sản Phẩm & Dịch Vụ/Dedicated Server' :
                         category.id === 'server' && item.name === 'Chỗ đặt máy chủ' ? '/colocation' :
                         // Email links
