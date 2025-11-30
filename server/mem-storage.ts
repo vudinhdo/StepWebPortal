@@ -3196,30 +3196,46 @@ export class MemStorage implements IStorage {
       // Update existing user
       this.users[existingIndex] = {
         ...this.users[existingIndex],
-        id: userData.id || this.users[existingIndex].id, // Update ID if provided
+        id: userData.id || this.users[existingIndex].id,
         email: userData.email ?? this.users[existingIndex].email,
         firstName: userData.firstName ?? this.users[existingIndex].firstName,
         lastName: userData.lastName ?? this.users[existingIndex].lastName,
         profileImageUrl: userData.profileImageUrl ?? this.users[existingIndex].profileImageUrl,
+        role: userData.role ?? this.users[existingIndex].role,
         isAdmin: userData.isAdmin ?? this.users[existingIndex].isAdmin,
         updatedAt: new Date()
       };
       return this.users[existingIndex];
     } else {
-      // Create new user
+      // Create new user - first user is admin, others are viewer
+      const isFirstUser = this.users.length === 0;
       const newUser: User = {
         id: userData.id || String(Date.now()),
         email: userData.email || null,
         firstName: userData.firstName || null,
         lastName: userData.lastName || null,
         profileImageUrl: userData.profileImageUrl || null,
-        isAdmin: userData.isAdmin || false,
+        role: userData.role || (isFirstUser ? 'admin' : 'viewer'),
+        isAdmin: userData.isAdmin || isFirstUser,
         createdAt: new Date(),
         updatedAt: new Date()
       };
       this.users.push(newUser);
       return newUser;
     }
+  }
+
+  async updateUserRole(id: string, role: string): Promise<User | undefined> {
+    const index = this.users.findIndex(u => u.id === id);
+    if (index === -1) return undefined;
+    
+    this.users[index] = {
+      ...this.users[index],
+      role,
+      isAdmin: role === 'admin',
+      updatedAt: new Date()
+    };
+    return this.users[index];
   }
 
   async getAllUsers(): Promise<User[]> {

@@ -28,6 +28,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get all users (admin only)
+  app.get('/api/users', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const currentUser = await storage.getUser(userId);
+      if (!currentUser || currentUser.role !== 'admin') {
+        return res.status(403).json({ message: "Không có quyền truy cập" });
+      }
+      const users = await storage.getAllUsers();
+      res.json(users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+
+  // Update user role (admin only)
+  app.patch('/api/users/:id/role', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const currentUser = await storage.getUser(userId);
+      if (!currentUser || currentUser.role !== 'admin') {
+        return res.status(403).json({ message: "Không có quyền truy cập" });
+      }
+      
+      const { role } = req.body;
+      if (!['admin', 'editor', 'writer', 'viewer'].includes(role)) {
+        return res.status(400).json({ message: "Role không hợp lệ" });
+      }
+      
+      const targetUserId = req.params.id;
+      const updatedUser = await storage.updateUserRole(targetUserId, role);
+      if (!updatedUser) {
+        return res.status(404).json({ message: "Không tìm thấy user" });
+      }
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Error updating user role:", error);
+      res.status(500).json({ message: "Failed to update user role" });
+    }
+  });
+
   // Contact form submission
   app.post("/api/contact", async (req, res) => {
     try {

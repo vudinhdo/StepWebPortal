@@ -14,6 +14,16 @@ export const sessions = pgTable(
   (table) => [index("IDX_session_expire").on(table.expire)],
 );
 
+// User Roles
+export const UserRole = {
+  ADMIN: 'admin',           // Full access - manage everything
+  EDITOR: 'editor',         // Can edit and publish all content
+  WRITER: 'writer',         // Can create/edit own content, needs approval
+  VIEWER: 'viewer',         // View only, no edit access
+} as const;
+
+export type UserRoleType = typeof UserRole[keyof typeof UserRole];
+
 // User storage table for Replit Auth (OAuth users)
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -21,13 +31,20 @@ export const users = pgTable("users", {
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
   profileImageUrl: varchar("profile_image_url"),
-  isAdmin: boolean("is_admin").default(false),
+  role: varchar("role", { length: 20 }).default('viewer').notNull(), // admin, editor, writer, viewer
+  isAdmin: boolean("is_admin").default(false), // Deprecated, use role instead
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
+
+// Helper to check permissions
+export const canEditContent = (role: string) => ['admin', 'editor'].includes(role);
+export const canPublishContent = (role: string) => ['admin', 'editor'].includes(role);
+export const canCreateContent = (role: string) => ['admin', 'editor', 'writer'].includes(role);
+export const canManageUsers = (role: string) => role === 'admin';
 
 // Admin Users table for CMS authentication
 export const adminUsers = pgTable("admin_users", {
