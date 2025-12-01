@@ -1,0 +1,531 @@
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STEP - Kết nối, bảo vệ và xây dựng hạ tầng CNTT toàn diện</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'step-blue': '#0066CC',
+                        'step-light-blue': '#00BFFF',
+                        'step-gray': '#F0F4F8',
+                        'step-dark-gray': '#6C757D',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter text-gray-900 bg-white">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-step-light-blue to-step-blue rounded-full flex items-center justify-center">
+                        <i class="fas fa-arrow-right text-white transform rotate-45"></i>
+                    </div>
+                    <div>
+                        <div class="text-xl font-bold text-step-blue">STEP</div>
+                        <div class="text-xs text-step-dark-gray">STEP BY STEP</div>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-step-blue transition-colors">Trang chủ</a>
+                    <div class="relative group">
+                        <a href="#" class="text-gray-700 hover:text-step-blue transition-colors flex items-center">
+                            Sản Phẩm & Dịch Vụ
+                            <i class="fas fa-chevron-down ml-1 text-sm"></i>
+                        </a>
+                        <!-- Mega Menu -->
+                        <div class="absolute top-full left-1/2 transform -translate-x-1/2 w-screen max-w-6xl bg-white border border-gray-200 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2">
+                            <div class="p-8">
+                                <div class="grid grid-cols-3 gap-8">
+                                    <!-- Domain -->
+                                    <div>
+                                        <h3 class="text-step-blue font-semibold mb-4 flex items-center">
+                                            <i class="fas fa-globe mr-2"></i>
+                                            Tên Miền
+                                        </h3>
+                                        <ul class="space-y-2 text-sm">
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Cung cấp và quản lý tên miền cho doanh nghiệp</a></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Cloud -->
+                                    <div>
+                                        <h3 class="text-step-blue font-semibold mb-4 flex items-center">
+                                            <i class="fas fa-cloud mr-2"></i>
+                                            Cloud
+                                        </h3>
+                                        <ul class="space-y-2 text-sm">
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Cloud GPU</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Cloud Server</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Cloud Odoo</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Cloud AMD</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Cloud N8N</a></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Hosting -->
+                                    <div>
+                                        <h3 class="text-step-blue font-semibold mb-4 flex items-center">
+                                            <i class="fas fa-server mr-2"></i>
+                                            Hosting
+                                        </h3>
+                                        <ul class="space-y-2 text-sm">
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Hosting WordPress</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Hosting Laravel</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Hosting NVME</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Reseller Hosting</a></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Máy Chủ -->
+                                    <div>
+                                        <h3 class="text-step-blue font-semibold mb-4 flex items-center">
+                                            <i class="fas fa-database mr-2"></i>
+                                            Máy Chủ
+                                        </h3>
+                                        <ul class="space-y-2 text-sm">
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Thiết bị máy chủ</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Thiết bị mạng</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Thuê máy chủ vật lý</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Chỗ đặt máy chủ</a></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Email -->
+                                    <div>
+                                        <h3 class="text-step-blue font-semibold mb-4 flex items-center">
+                                            <i class="fas fa-envelope mr-2"></i>
+                                            Email
+                                        </h3>
+                                        <ul class="space-y-2 text-sm">
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Email server doanh nghiệp</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Google Workspace</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Microsoft 365</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Hybrid Email</a></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Phần Mềm -->
+                                    <div>
+                                        <h3 class="text-step-blue font-semibold mb-4 flex items-center">
+                                            <i class="fas fa-desktop mr-2"></i>
+                                            Phần Mềm
+                                        </h3>
+                                        <ul class="space-y-2 text-sm">
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Microsoft</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Google</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">VMware</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Sangfor</a></li>
+                                            <li><a href="#" class="text-gray-600 hover:text-step-blue">Phần mềm AI</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <!-- Dịch Vụ Section -->
+                                <div class="mt-8 pt-8 border-t border-gray-200">
+                                    <h3 class="text-step-blue font-semibold mb-4 flex items-center">
+                                        <i class="fas fa-cogs mr-2"></i>
+                                        Dịch Vụ
+                                    </h3>
+                                    <div class="grid grid-cols-3 gap-4 text-sm">
+                                        <a href="#" class="text-gray-600 hover:text-step-blue">Tư vấn hạ tầng</a>
+                                        <a href="#" class="text-gray-600 hover:text-step-blue">Thiết kế hạ tầng</a>
+                                        <a href="#" class="text-gray-600 hover:text-step-blue">Triển khai hạ tầng</a>
+                                        <a href="#" class="text-gray-600 hover:text-step-blue">Vận hành hạ tầng</a>
+                                        <a href="#" class="text-gray-600 hover:text-step-blue">IT Support</a>
+                                        <a href="#" class="text-gray-600 hover:text-step-blue">Manage Service</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="text-gray-700 hover:text-step-blue transition-colors">Giá cả</a>
+                    <a href="#" class="text-gray-700 hover:text-step-blue transition-colors">Tài nguyên</a>
+                    <a href="#" class="text-gray-700 hover:text-step-blue transition-colors">Liên hệ</a>
+                </nav>
+
+                <!-- CTA Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="#" class="text-gray-700 hover:text-step-blue transition-colors">Đăng nhập</a>
+                    <a href="#" class="bg-step-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">Đăng ký</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="lg:hidden p-2">
+                    <i class="fas fa-bars text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-b from-step-gray to-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-5xl lg:text-6xl font-bold text-step-blue mb-6">
+                    Kết nối, bảo vệ và xây dựng hạ tầng CNTT toàn diện với STEP
+                </h1>
+                <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                    Cung cấp giải pháp cloud, hosting, máy chủ và dịch vụ IT đáng tin cậy, giúp doanh nghiệp của bạn phát triển nhanh chóng và an toàn hơn. Hơn 100 dịch vụ dành cho SMEs và chuyên gia IT.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#" class="bg-gradient-to-r from-step-blue to-step-light-blue text-white px-8 py-4 rounded-lg font-semibold hover:shadow-lg transition-all">
+                        Bắt đầu miễn phí
+                    </a>
+                    <a href="#" class="border border-step-blue text-step-blue px-8 py-4 rounded-lg font-semibold hover:bg-step-blue hover:text-white transition-all">
+                        Liên hệ chuyên gia
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-step-blue mb-4">Giải pháp CNTT toàn diện từ STEP</h2>
+                <p class="text-xl text-gray-600">Tối ưu hóa hạ tầng công nghệ cho doanh nghiệp của bạn</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Domain Service -->
+                <div class="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-gradient-to-r from-step-light-blue to-step-blue rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-globe text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-step-blue mb-4">Tên miền</h3>
+                    <p class="text-gray-600 mb-4">Cung cấp và quản lý tên miền cho doanh nghiệp, dễ dàng tích hợp với các dịch vụ khác.</p>
+                    <a href="#" class="text-step-blue hover:text-blue-700 font-semibold">Tìm hiểu thêm →</a>
+                </div>
+
+                <!-- Cloud Service -->
+                <div class="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-gradient-to-r from-step-light-blue to-step-blue rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-cloud text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-step-blue mb-4">Cloud</h3>
+                    <p class="text-gray-600 mb-4">Cloud GPU, Cloud Server, Cloud Odoo, Cloud AMD, Cloud N8N (hỗ trợ K8s và workflow automation) – Giải pháp đám mây linh hoạt cho DevOps và SysOps.</p>
+                    <a href="#" class="text-step-blue hover:text-blue-700 font-semibold">Tìm hiểu thêm →</a>
+                </div>
+
+                <!-- Hosting Service -->
+                <div class="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-gradient-to-r from-step-light-blue to-step-blue rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-server text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-step-blue mb-4">Hosting</h3>
+                    <p class="text-gray-600 mb-4">Hosting WordPress, Hosting Laravel, Hosting NVME, Reseller Hosting – Tối ưu tốc độ và bảo mật cho website doanh nghiệp.</p>
+                    <a href="#" class="text-step-blue hover:text-blue-700 font-semibold">Tìm hiểu thêm →</a>
+                </div>
+
+                <!-- Server Service -->
+                <div class="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-gradient-to-r from-step-light-blue to-step-blue rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-database text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-step-blue mb-4">Máy chủ</h3>
+                    <p class="text-gray-600 mb-4">Thiết bị máy chủ, thiết bị mạng, thuê máy chủ vật lý, chỗ đặt máy chủ, thuê thiết bị mạng – Hạ tầng mạnh mẽ cho IT Manager.</p>
+                    <a href="#" class="text-step-blue hover:text-blue-700 font-semibold">Tìm hiểu thêm →</a>
+                </div>
+
+                <!-- Email Service -->
+                <div class="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-gradient-to-r from-step-light-blue to-step-blue rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-envelope text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-step-blue mb-4">Email</h3>
+                    <p class="text-gray-600 mb-4">Email server cho doanh nghiệp, Google Workspace, Microsoft 365, Hybrid Email, dịch vụ vận hành Email server – Giải pháp email an toàn và chuyên nghiệp.</p>
+                    <a href="#" class="text-step-blue hover:text-blue-700 font-semibold">Tìm hiểu thêm →</a>
+                </div>
+
+                <!-- Software Service -->
+                <div class="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-gradient-to-r from-step-light-blue to-step-blue rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-desktop text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-step-blue mb-4">Phần mềm</h3>
+                    <p class="text-gray-600 mb-4">Microsoft, Google, VMware, Sangfor, phần mềm bản quyền, phần mềm AI, phần mềm khác – Cung cấp license và hỗ trợ tích hợp.</p>
+                    <a href="#" class="text-step-blue hover:text-blue-700 font-semibold">Tìm hiểu thêm →</a>
+                </div>
+            </div>
+
+            <!-- Additional Services -->
+            <div class="mt-16 bg-step-gray rounded-2xl p-8">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold text-step-blue mb-4">Dịch vụ chuyên nghiệp</h3>
+                    <p class="text-gray-600">Hỗ trợ toàn diện từ CTO đến Help Desk</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <i class="fas fa-lightbulb text-step-blue text-3xl mb-4"></i>
+                        <h4 class="font-semibold text-step-blue mb-2">Tư vấn & Thiết kế</h4>
+                        <p class="text-gray-600 text-sm">Tư vấn hạ tầng, thiết kế hạ tầng phù hợp với doanh nghiệp</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-tools text-step-blue text-3xl mb-4"></i>
+                        <h4 class="font-semibold text-step-blue mb-2">Triển khai</h4>
+                        <p class="text-gray-600 text-sm">Triển khai hạ tầng chuyên nghiệp và đáng tin cậy</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-headset text-step-blue text-3xl mb-4"></i>
+                        <h4 class="font-semibold text-step-blue mb-2">Vận hành & Hỗ trợ</h4>
+                        <p class="text-gray-600 text-sm">Vận hành hạ tầng, IT Support, Manage Service 24/7</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="py-20 bg-step-gray">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-step-blue mb-4">Tại sao chọn STEP?</h2>
+                <p class="text-xl text-gray-600">Đối tác tin cậy cho hạ tầng CNTT của bạn</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-step-blue mb-2">100+</div>
+                    <div class="text-gray-600">Giải pháp CNTT</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-step-blue mb-2">24/7</div>
+                    <div class="text-gray-600">Hỗ trợ cho SMEs</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-step-blue mb-2">1000+</div>
+                    <div class="text-gray-600">Doanh nghiệp tin dùng</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-step-blue mb-2">99.9%</div>
+                    <div class="text-gray-600">Thời gian hoạt động</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-step-blue mb-4">Các doanh nghiệp hàng đầu tin dùng STEP</h2>
+                <p class="text-xl text-gray-600">Hàng ngàn SMEs đã tối ưu hóa hạ tầng với chúng tôi</p>
+            </div>
+            
+            <!-- Modern IT infrastructure -->
+            <div class="mb-16">
+                <div class="bg-step-gray rounded-2xl p-8">
+                    <!-- Professional team discussion about IT infrastructure -->
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=600" alt="Professional business team discussing IT infrastructure" class="rounded-xl shadow-lg w-full h-64 object-cover mb-8" />
+                    <div class="text-center">
+                        <blockquote class="text-lg text-gray-700 italic mb-4">
+                            "STEP đã giúp chúng tôi xây dựng hạ tầng CNTT hiện đại và bảo mật. Đội ngũ chuyên nghiệp và hỗ trợ tận tình 24/7."
+                        </blockquote>
+                        <div class="text-step-blue font-semibold">CEO - Công ty Công nghệ ABC</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Logos Placeholder -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 opacity-50">
+                <div class="bg-gray-100 rounded-lg p-6 text-center">
+                    <div class="text-gray-400 text-sm">Logo khách hàng</div>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-6 text-center">
+                    <div class="text-gray-400 text-sm">Logo khách hàng</div>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-6 text-center">
+                    <div class="text-gray-400 text-sm">Logo khách hàng</div>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-6 text-center">
+                    <div class="text-gray-400 text-sm">Logo khách hàng</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="py-20 bg-step-gray">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-step-blue mb-4">Tài nguyên hữu ích</h2>
+                <p class="text-xl text-gray-600">Cập nhật kiến thức công nghệ và xu hướng IT</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <!-- Cloud computing servers in modern data center -->
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=300" alt="Modern cloud computing servers in data center" class="w-full h-48 object-cover" />
+                    <div class="p-6">
+                        <h3 class="font-semibold text-step-blue mb-2">Cách chọn Cloud Server phù hợp</h3>
+                        <p class="text-gray-600 text-sm mb-4">Hướng dẫn chi tiết về việc lựa chọn giải pháp cloud phù hợp với nhu cầu doanh nghiệp.</p>
+                        <a href="#" class="text-step-blue hover:text-blue-700 font-semibold text-sm">Đọc thêm →</a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <!-- Network security technology visualization -->
+                    <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=300" alt="Network security technology and cybersecurity visualization" class="w-full h-48 object-cover" />
+                    <div class="p-6">
+                        <h3 class="font-semibold text-step-blue mb-2">Bảo mật Email doanh nghiệp</h3>
+                        <p class="text-gray-600 text-sm mb-4">Những biện pháp bảo mật cần thiết để bảo vệ hệ thống email doanh nghiệp.</p>
+                        <a href="#" class="text-step-blue hover:text-blue-700 font-semibold text-sm">Đọc thêm →</a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <!-- Modern IT infrastructure setup -->
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=300" alt="Modern IT infrastructure and technology setup" class="w-full h-48 object-cover" />
+                    <div class="p-6">
+                        <h3 class="font-semibold text-step-blue mb-2">Xu hướng DevOps 2025</h3>
+                        <p class="text-gray-600 text-sm mb-4">Những xu hướng mới nhất trong DevOps và cách áp dụng vào doanh nghiệp.</p>
+                        <a href="#" class="text-step-blue hover:text-blue-700 font-semibold text-sm">Đọc thêm →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-step-blue to-step-light-blue text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-4">Sẵn sàng nâng cấp hạ tầng CNTT của bạn?</h2>
+            <p class="text-xl mb-8">Liên hệ với chuyên gia STEP để được tư vấn miễn phí</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#" class="bg-white text-step-blue px-8 py-4 rounded-lg font-semibold hover:shadow-lg transition-all">
+                    Tư vấn miễn phí
+                </a>
+                <a href="#" class="border border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-step-blue transition-all">
+                    Xem demo sản phẩm
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-step-light-blue to-step-blue rounded-full flex items-center justify-center">
+                            <i class="fas fa-arrow-right text-white transform rotate-45"></i>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-step-light-blue">STEP</div>
+                            <div class="text-xs text-gray-400">STEP BY STEP</div>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-4">CÔNG TY CỔ PHẦN ĐẦU TƯ CÔNG NGHỆ STEP</h3>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <p><strong>Mã số thuế:</strong> 0108230633</p>
+                        <p><strong>Địa chỉ:</strong> Xóm 9, Khu 3, Xã Quốc Oai, Thành phố Hà Nội</p>
+                        <p><strong>Văn phòng:</strong> Số 99 Hoàng Ngân - Phường Nhân Chính - Quận Thanh Xuân - Tp.Hà Nội</p>
+                        <p><strong>Điện thoại:</strong> <a href="tel:0985636289" class="text-step-light-blue hover:text-white">0985636289</a></p>
+                        <p><strong>Email:</strong> <a href="mailto:info@step.com.vn" class="text-step-light-blue hover:text-white">info@step.com.vn</a></p>
+                        <p><strong>Website:</strong> <a href="https://step.com.vn/" class="text-step-light-blue hover:text-white">https://step.com.vn/</a></p>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Dịch vụ</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-step-light-blue">Tên miền</a></li>
+                        <li><a href="#" class="hover:text-step-light-blue">Cloud Server</a></li>
+                        <li><a href="#" class="hover:text-step-light-blue">Hosting</a></li>
+                        <li><a href="#" class="hover:text-step-light-blue">Máy chủ</a></li>
+                        <li><a href="#" class="hover:text-step-light-blue">Email</a></li>
+                        <li><a href="#" class="hover:text-step-light-blue">Phần mềm</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social & Support -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Kết nối</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <i class="fab fa-facebook text-step-light-blue"></i>
+                            <a href="https://www.facebook.com/profile.php?id=61564705138608" class="text-gray-400 hover:text-step-light-blue text-sm">Facebook</a>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-map-marker-alt text-step-light-blue"></i>
+                            <a href="https://maps.app.goo.gl/Tg8mLAs6qHtVpDUZ8" class="text-gray-400 hover:text-step-light-blue text-sm">Bản đồ</a>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-comments text-step-light-blue"></i>
+                            <a href="https://zalo.me/93171011934970677" class="text-gray-400 hover:text-step-light-blue text-sm">Zalo OA</a>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h4 class="text-sm font-semibold mb-2">Thông tin ngân hàng</h4>
+                        <div class="text-xs text-gray-400">
+                            <p>STK: 19132608991888</p>
+                            <p>Techcombank - CN Hoàng Quốc Việt</p>
+                            <p>PGD Trần Thái Tông</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-sm text-gray-400">
+                    © 2025 STEP. All rights reserved.
+                </div>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-sm text-gray-400 hover:text-step-light-blue">Chính sách bảo mật</a>
+                    <a href="#" class="text-sm text-gray-400 hover:text-step-light-blue">Điều khoản sử dụng</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+        // TODO: Implement mobile menu toggle, smooth scrolling, and form validation
+        (function() {
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 100) {
+                    header.classList.add('backdrop-blur-md');
+                } else {
+                    header.classList.remove('backdrop-blur-md');
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
